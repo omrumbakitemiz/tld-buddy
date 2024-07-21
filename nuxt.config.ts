@@ -25,7 +25,13 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/devtools", "@nuxtjs/tailwindcss", "@vite-pwa/nuxt"],
+  modules: [
+    "@nuxt/devtools", 
+    "@nuxtjs/tailwindcss",
+    '@nuxtjs/color-mode',
+    "@vite-pwa/nuxt", 
+    "shadcn-nuxt"
+  ],
   pwa: {
     strategies: sw ? "injectManifest" : "generateSW",
     srcDir: sw ? "service-worker" : undefined,
@@ -39,7 +45,7 @@ export default defineNuxtConfig({
       short_name: "TLD Buddy",
       start_url: "https://tld-buddy.immino.dev",
       scope: "https://tld-buddy.immino.dev",
-      description: "TLD Buddy",
+      description: "TLD Buddy ",
       theme_color: "#8936FF",
       background_color: "#2EC6FE",
       icons: [
@@ -77,4 +83,11 @@ export default defineNuxtConfig({
       type: "module",
     },
   },
+  shadcn: {
+    prefix: '',
+    componentDir: './app/components/ui'
+  },
+  colorMode: {
+    classSuffix: ''
+  }
 });

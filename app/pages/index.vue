@@ -19,7 +19,7 @@ onMounted(() => {
       </ClientOnly>
 
       <div class="flex flex-col gap-y-4">
-        test
+        <Button>Click me</Button>
       </div>
     </div>
   </div>
