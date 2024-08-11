@@ -5,9 +5,7 @@ const { data: regionDetails } = await useFetch(`/api/regions/${route.params.slug
 
 <template>
   <div>
-    <u><b>route.params.slug</b></u> -> {{ route.params.slug }}
-
     <p>Region Details</p>
-    <pre>{{ JSON.stringify(regionDetails) }}</pre>
+    <pre>{{ regionDetails.items }}</pre>
   </div>
 </template>

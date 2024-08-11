@@ -2,6 +2,7 @@
   "clothing": [
     {
       "Name": "Aviator Cap",
+      "slug": "aviator-cap",
       "Temperature": "2.0 °C",
       "Windproofness": "2.0 °C",
       "Waterproofness": "30%",
@@ -12,6 +13,7 @@
     },
     {
       "Name": "Astrid's Toque",
+      "slug": "astrids-toque",
       "Temperature": "1.5 °C",
       "Windproofness": "0.75 °C",
       "Waterproofness": "30%",
@@ -22,6 +24,7 @@
     },
     {
       "Name": "Balaclava",
+      "slug": "balaclava",
       "Temperature": "2.0 °C",
       "Windproofness": "1.5 °C",
       "Waterproofness": "30%",
@@ -32,6 +35,7 @@
     },
     {
       "Name": "Baseball Cap",
+      "slug": "baseball-cap",
       "Temperature": "0.5 °C",
       "Windproofness": "0.0 °C",
       "Waterproofness": "0%",
@@ -42,6 +46,7 @@
     },
     {
       "Name": "Cotton Scarf",
+      "slug": "cotton-scarf",
       "Temperature": "0.5 °C",
       "Windproofness": "0.0 °C",
       "Waterproofness": "5%",
@@ -52,6 +57,7 @@
     },
     {
       "Name": "Cotton Toque",
+      "slug": "cotton-toque",
       "Temperature": "1.0 °C",
       "Windproofness": "0.5 °C",
       "Waterproofness": "10%",
@@ -62,6 +68,7 @@
     },
     {
       "Name": "Cougar Hide Wrap",
+      "slug": "cougar-hide-wrap",
       "Temperature": "3.0 °C",
       "Windproofness": "3.0 °C",
       "Waterproofness": "40%",
@@ -72,6 +79,7 @@
     },
     {
       "Name": "Fleece Cowl",
+      "slug": "fleece-cowl",
       "Temperature": "1.5 °C",
       "Windproofness": "1.0 °C",
       "Waterproofness": "20%",
@@ -82,6 +90,7 @@
     },
     {
       "Name": "Hardhat",
+      "slug": "hardhat",
       "Temperature": "0.0 °C",
       "Windproofness": "0.0 °C",
       "Waterproofness": "30%",
@@ -92,6 +101,7 @@
     },
     {
       "Name": "Improvised Head Wrap",
+      "slug": "improvised-head-wrap",
       "Temperature": "1.0 °C",
       "Windproofness": "0.5 °C",
       "Waterproofness": "0%",
@@ -102,6 +112,7 @@
     },
     {
       "Name": "Long Wool Scarf",
+      "slug": "long-wool-scarf",
       "Temperature": "1.5 °C",
       "Windproofness": "1.0 °C",
       "Waterproofness": "30%",
@@ -112,6 +123,7 @@
     },
     {
       "Name": "Mackenzie's Toque",
+      "slug": "mackenzies-toque",
       "Temperature": "1.5 °C",
       "Windproofness": "0.75 °C",
       "Waterproofness": "30%",
@@ -122,6 +134,7 @@
     },
     {
       "Name": "Rabbitskin Hat",
+      "slug": "rabbitskin-hat",
       "Temperature": "2.0 °C",
       "Windproofness": "1.5 °C",
       "Waterproofness": "30%",
@@ -132,6 +145,7 @@
     },
     {
       "Name": "Technical Balaclava",
+      "slug": "technical-balaclava",
       "Temperature": "2.0 °C",
       "Windproofness": "2.0 °C",
       "Waterproofness": "50%",

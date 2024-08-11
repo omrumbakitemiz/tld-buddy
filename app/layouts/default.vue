@@ -14,9 +14,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
     <div class="grid w-full pl-[53px]">
       <aside class="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
         <div class="border-b p-2">
-          <Button variant="outline" size="icon" aria-label="Home">
-            <Triangle class="size-5 fill-foreground" />
-          </Button>
+          <NuxtLink to="/">
+            <Button variant="outline" size="icon" aria-label="Home">
+              <Triangle class="size-5 fill-foreground" />
+            </Button>
+          </NuxtLink>
         </div>
         <nav class="grid gap-1 p-2">
           <TooltipProvider>
