@@ -1,0 +1,275 @@
+{
+  "regions": [
+    {
+      "name": "Mystery Lake",
+      "slug": "mystery-lake",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Beginner",
+      "area_size": 28,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "22 Sep 2014"
+    },
+    {
+      "name": "Coastal Highway",
+      "slug": "coastal-highway",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 20,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "30 Oct 2014"
+    },
+    {
+      "name": "Pleasant Valley",
+      "slug": "pleasant-valley",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Advanced",
+      "area_size": 33,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "7 Feb 2015"
+    },
+    {
+      "name": "Desolation Point",
+      "slug": "desolation-point",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 12,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "18 Sep 2015"
+    },
+    {
+      "name": "Timberwolf Mountain",
+      "slug": "timberwolf-mountain",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Advanced",
+      "area_size": 25,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "16 Dec 2015"
+    },
+    {
+      "name": "Forlorn Muskeg",
+      "slug": "forlorn-muskeg",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Advanced",
+      "area_size": 18,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "19 Dec 2016"
+    },
+    {
+      "name": "Broken Railroad",
+      "slug": "broken-railroad",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 10,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "1 Aug 2017"
+    },
+    {
+      "name": "Mountain Town",
+      "slug": "mountain-town",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Beginner",
+      "area_size": 27,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "1 Aug 2017"
+    },
+    {
+      "name": "Hushed River Valley",
+      "slug": "hushed-river-valley",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Advanced",
+      "area_size": 25,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "14 June 2018"
+    },
+    {
+      "name": "Bleak Inlet",
+      "slug": "bleak-inlet",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Advanced",
+      "area_size": 21,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "10 Dec 2019"
+    },
+    {
+      "name": "Ash Canyon",
+      "slug": "ash-canyon",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Advanced",
+      "area_size": 20,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "7 Dec 2020"
+    },
+    {
+      "name": "Blackrock",
+      "slug": "blackrock",
+      "type": "region",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 26,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "6 Oct 2021"
+    },
+    {
+      "name": "Transfer Pass",
+      "slug": "transfer-pass",
+      "type": "region",
+      "world": "The Far Territory",
+      "difficulty": "Intermediate",
+      "area_size": 11,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "5 Dec 2022"
+    },
+    {
+      "name": "Forsaken Airfield",
+      "slug": "forsaken-airfield",
+      "type": "region",
+      "world": "The Far Territory",
+      "difficulty": "Advanced",
+      "area_size": 26,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "5 Dec 2022"
+    },
+    {
+      "name": "Zone of Contamination",
+      "slug": "zone-of-contamination",
+      "type": "region",
+      "world": "The Far Territory",
+      "difficulty": "Advanced",
+      "area_size": 24,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "5 Dec 2023"
+    },
+    {
+      "name": "Sundered Pass",
+      "slug": "sundered-pass",
+      "type": "region",
+      "world": "The Far Territory",
+      "difficulty": "Advanced",
+      "area_size": 25,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "24 June 2024"
+    },
+    {
+      "name": "The Ravine (Raven Falls)",
+      "slug": "the-ravine-raven-falls",
+      "type": "transition-zone",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 4,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "30 Oct 2014"
+    },
+    {
+      "name": "Winding River",
+      "slug": "winding-river",
+      "type": "transition-zone",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 2,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "21 May 2015"
+    },
+    {
+      "name": "Crumbling Highway (Old Island Connector)",
+      "slug": "crumbling-highway-old-island-connector",
+      "type": "transition-zone",
+      "world": "Lower Great Bear",
+      "difficulty": "Intermediate",
+      "area_size": 5,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "18 Sep 2015"
+    },
+    {
+      "name": "Keeper's Pass South",
+      "slug": "keepers-pass-south",
+      "type": "transition-zone",
+      "world": "The Far Territory",
+      "difficulty": "Intermediate",
+      "area_size": 4,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "7 Dec 2021"
+    },
+    {
+      "name": "Keeper's Pass North",
+      "slug": "keepers-pass-north",
+      "type": "transition-zone",
+      "world": "The Far Territory",
+      "difficulty": "Intermediate",
+      "area_size": 4,
+      "modes": [
+        "Survival",
+        "Story"
+      ],
+      "release_date": "7 Dec 2021"
+    },
+    {
+      "name": "Far Range Branch Line",
+      "slug": "far-range-branch-line",
+      "type": "transition-zone",
+      "world": "The Far Territory",
+      "difficulty": "Intermediate",
+      "area_size": 9,
+      "modes": [
+        "Survival"
+      ],
+      "release_date": "5 Dec 2022"
+    }
+  ]
+}

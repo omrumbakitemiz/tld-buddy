@@ -3,6 +3,6 @@
 
 <template>
   <div>
-    <p>Select Page from the left</p>
+    Items
   </div>
 </template>
