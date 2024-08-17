@@ -12,7 +12,8 @@ export type Region = {
 export type RegionItem = {
   id: number;
   regionSlug: string;
-  itemaName: string;
+  itemName: string;
+  itemType: string;
   createdAt: Date;
   updatedAt: Date;
 }

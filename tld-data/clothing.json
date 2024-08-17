@@ -1,970 +1,966 @@
-{
-  "clothing": [
-    {
-      "Name": "Aviator Cap",
-      "slug": "aviator-cap",
-      "Temperature": "2.0 °C",
-      "Windproofness": "2.0 °C",
-      "Waterproofness": "30%",
-      "Protection": "4%",
-      "Mobility": "0%",
-      "Weight": "0.30 kg",
-      "Weight Ratio": "6.67 °C/kg"
-    },
-    {
-      "Name": "Astrid's Toque",
-      "slug": "astrids-toque",
-      "Temperature": "1.5 °C",
-      "Windproofness": "0.75 °C",
-      "Waterproofness": "30%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.15 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Balaclava",
-      "slug": "balaclava",
-      "Temperature": "2.0 °C",
-      "Windproofness": "1.5 °C",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg",
-      "Weight Ratio": "8.0 °C/kg"
-    },
-    {
-      "Name": "Baseball Cap",
-      "slug": "baseball-cap",
-      "Temperature": "0.5 °C",
-      "Windproofness": "0.0 °C",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "5.0 °C/kg"
-    },
-    {
-      "Name": "Cotton Scarf",
-      "slug": "cotton-scarf",
-      "Temperature": "0.5 °C",
-      "Windproofness": "0.0 °C",
-      "Waterproofness": "5%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "5.0 °C/kg"
-    },
-    {
-      "Name": "Cotton Toque",
-      "slug": "cotton-toque",
-      "Temperature": "1.0 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "10%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Cougar Hide Wrap",
-      "slug": "cougar-hide-wrap",
-      "Temperature": "3.0 °C",
-      "Windproofness": "3.0 °C",
-      "Waterproofness": "40%",
-      "Protection": "5%",
-      "Mobility": "0%",
-      "Weight": "1.00 kg",
-      "Weight Ratio": "3.0 °C/kg"
-    },
-    {
-      "Name": "Fleece Cowl",
-      "slug": "fleece-cowl",
-      "Temperature": "1.5 °C",
-      "Windproofness": "1.0 °C",
-      "Waterproofness": "20%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg",
-      "Weight Ratio": "6.0 °C/kg"
-    },
-    {
-      "Name": "Hardhat",
-      "slug": "hardhat",
-      "Temperature": "0.0 °C",
-      "Windproofness": "0.0 °C",
-      "Waterproofness": "30%",
-      "Protection": "4%",
-      "Mobility": "0%",
-      "Weight": "0.40 kg",
-      "Weight Ratio": "0.0 °C/kg"
-    },
-    {
-      "Name": "Improvised Head Wrap",
-      "slug": "improvised-head-wrap",
-      "Temperature": "1.0 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "0%",
-      "Protection": "0.5%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Long Wool Scarf",
-      "slug": "long-wool-scarf",
-      "Temperature": "1.5 °C",
-      "Windproofness": "1.0 °C",
-      "Waterproofness": "30%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg",
-      "Weight Ratio": "6.0 °C/kg"
-    },
-    {
-      "Name": "Mackenzie's Toque",
-      "slug": "mackenzies-toque",
-      "Temperature": "1.5 °C",
-      "Windproofness": "0.75 °C",
-      "Waterproofness": "30%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.15 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Rabbitskin Hat",
-      "slug": "rabbitskin-hat",
-      "Temperature": "2.0 °C",
-      "Windproofness": "1.5 °C",
-      "Waterproofness": "30%",
-      "Protection": "4%",
-      "Mobility": "0%",
-      "Weight": "0.35 kg",
-      "Weight Ratio": "5.71 °C/kg"
-    },
-    {
-      "Name": "Technical Balaclava",
-      "slug": "technical-balaclava",
-      "Temperature": "2.0 °C",
-      "Windproofness": "2.0 °C",
-      "Waterproofness": "50%",
-      "Protection": "5%",
-      "Mobility": "0%",
-      "Weight": "0.20 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Wool Scarf",
-      "Temperature": "1.0 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "20%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Wool Toque",
-      "Temperature": "2.0 °C",
-      "Windproofness": "1.0 °C",
-      "Waterproofness": "30%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg",
-      "Weight Ratio": "8.0 °C/kg"
-    },
-    {
-      "Name": "Astrid's Gloves",
-      "Temperature": "0.5 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "5%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "5.0 °C/kg"
-    },
-    {
-      "Name": "Driving Gloves",
-      "Temperature": "0.5 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "0%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "5.0 °C/kg"
-    },
-    {
-      "Name": "Fleece Mittens",
-      "Temperature": "0.5 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "5%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "5.0 °C/kg"
-    },
-    {
-      "Name": "Gauntlets",
-      "Temperature": "2.0 °C",
-      "Windproofness": "2.0 °C",
-      "Waterproofness": "40%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.00 kg",
-      "Weight Ratio": "2.0 °C/kg"
-    },
-    {
-      "Name": "Improvised Hand Wraps",
-      "Temperature": "0.5 °C",
-      "Windproofness": "0.25 °C",
-      "Waterproofness": "0%",
-      "Protection": "0.5%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "5.0 °C/kg"
-    },
-    {
-      "Name": "Rabbitskin Mitts",
-      "Temperature": "2.0 °C",
-      "Windproofness": "2.0 °C",
-      "Waterproofness": "50%",
-      "Protection": "3%",
-      "Mobility": "-5%",
-      "Weight": "1.00 kg",
-      "Weight Ratio": "2.0 °C/kg"
-    },
-    {
-      "Name": "Ski Gloves",
-      "Temperature": "1.0 °C",
-      "Windproofness": "1.0 °C",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-1%",
-      "Weight": "0.50 kg",
-      "Weight Ratio": "2.0 °C/kg"
-    },
-    {
-      "Name": "Tactical Gloves",
-      "Temperature": "1.5 °C",
-      "Windproofness": "3.0 °C",
-      "Waterproofness": "50%",
-      "Protection": "7%",
-      "Mobility": "-1%",
-      "Weight": "0.75 kg",
-      "Weight Ratio": "2.0 °C/kg"
-    },
-    {
-      "Name": "Wool Mittens",
-      "Temperature": "1.0 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "20%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg",
-      "Weight Ratio": "10.0 °C/kg"
-    },
-    {
-      "Name": "Work Gloves",
-      "Temperature": "1.0 °C",
-      "Windproofness": "0.5 °C",
-      "Waterproofness": "0%",
-      "Protection": "4%",
-      "Mobility": "-2%",
-      "Weight": "0.25 kg",
-      "Weight Ratio": "4.0 °C/kg"
-    },
-    {
-      "Name": "Astrid's Sweater",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "10%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Cowichan Sweater",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "50%",
-      "Protection": "5%",
-      "Mobility": "-2%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
-    },
-    {
-      "Name": "Dress Shirt",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Fisherman's Sweater",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "1.5 °C (2.7 °F)",
-      "Waterproofness": "40%",
-      "Protection": "5%",
-      "Mobility": "-1%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    },
-    {
-      "Name": "Hockey Jersey",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "15%",
-      "Protection": "3%",
-      "Mobility": "0%",
-      "Weight": "0.30 kg (0.66 lb)",
-      "Weight Ratio": "3.33 °C/kg (2.72 °F/lb)"
-    },
-    {
-      "Name": "Hoodie",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "10%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Mackenzie's Shirt",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "20%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Mackenzie's Sweater",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "10%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Plaid Shirt",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "20%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Sweatshirt",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "10%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Thick Wool Sweater",
-      "Temperature": "1.5 °C (2.7 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-1%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "3 °C/kg (2.45 °F/lb)"
-    },
-    {
-      "Name": "Thin Wool Sweater",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "20%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    },
-    {
-      "Name": "T-Shirt",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Wool Shirt",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "40%",
-      "Protection": "2%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    },
-    {
-      "Name": "Astrid's Jacket",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-4%",
-      "Weight": "1.25 kg (2.75 lb)",
-      "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
-    },
-    {
-      "Name": "Bearskin Coat",
-      "Temperature": "6.0 °C (10.8 °F)",
-      "Windproofness": "5.0 °C (9 °F)",
-      "Waterproofness": "80%",
-      "Protection": "15%",
-      "Mobility": "-20%",
-      "Weight": "5.00 kg (11 lb)",
-      "Weight Ratio": "1.2 °C/kg (0.98 °F/lb)"
-    },
-    {
-      "Name": "Down Vest",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "10%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Expedition Parka",
-      "Temperature": "4.0 °C (7.2 °F)",
-      "Windproofness": "6.0 °C (10.8 °F)",
-      "Waterproofness": "50%",
-      "Protection": "6%",
-      "Mobility": "-5%",
-      "Weight": "1.50 kg (3.3 lb)",
-      "Weight Ratio": "2.67 °C/kg (2.18 °F/lb)"
-    },
-    {
-      "Name": "Flight Jacket",
-      "Temperature": "3.0 °C (5.4 °F)",
-      "Windproofness": "5.0 °C (9 °F)",
-      "Waterproofness": "50%",
-      "Protection": "10%",
-      "Mobility": "-5%",
-      "Weight": "2.50 kg (5.5 lb)",
-      "Weight Ratio": "1.2 °C/kg (0.98 °F/lb)"
-    },
-    {
-      "Name": "Light Shell",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-2%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Mackenzie's Parka",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-4%",
-      "Weight": "1.25 kg (2.75 lb)",
-      "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
-    },
-    {
-      "Name": "Mackinaw Jacket",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "40%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.50 kg (3.3 lb)",
-      "Weight Ratio": "1.67 °C/kg (1.36 °F/lb)"
-    },
-    {
-      "Name": "Mariner's Pea Coat",
-      "Temperature": "3.0 °C (5.4 °F)",
-      "Windproofness": "4.0 °C (7.2 °F)",
-      "Waterproofness": "75%",
-      "Protection": "7%",
-      "Mobility": "-6%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
-    },
-    {
-      "Name": "Military Coat",
-      "Temperature": "3.0 °C (5.4 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "40%",
-      "Protection": "8%",
-      "Mobility": "-5%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
-    },
-    {
-      "Name": "Miner's Jacket",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "50%",
-      "Protection": "4%",
-      "Mobility": "-5%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Moose-Hide Cloak",
-      "Temperature": "3.5 °C (6.3 °F)",
-      "Windproofness": "4.0 °C (7.2 °F)",
-      "Waterproofness": "90%",
-      "Protection": "20%",
-      "Mobility": "-10%",
-      "Weight": "4.00 kg (8.8 lb)",
-      "Weight Ratio": "0.88 °C/kg (0.71 °F/lb)"
-    },
-    {
-      "Name": "Old Fashioned Parka",
-      "Temperature": "3.0 °C (5.4 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "20%",
-      "Protection": "5%",
-      "Mobility": "-7%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
-    },
-    {
-      "Name": "Simple Parka",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-4%",
-      "Weight": "1.25 kg (2.75 lb)",
-      "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
-    },
-    {
-      "Name": "Ski Jacket",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "30%",
-      "Protection": "3%",
-      "Mobility": "-2%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Sport Vest",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "5%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Tactical Jacket",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "4.0 °C (7.2 °F)",
-      "Waterproofness": "50%",
-      "Protection": "15%",
-      "Mobility": "-4%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Urban Parka",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "10%",
-      "Protection": "2%",
-      "Mobility": "-2%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
-    },
-    {
-      "Name": "Windbreaker",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "50%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Wolfskin Coat",
-      "Temperature": "4.0 °C (7.2 °F)",
-      "Windproofness": "4.0 °C (7.2 °F)",
-      "Waterproofness": "60%",
-      "Protection": "12%",
-      "Mobility": "-15%",
-      "Weight": "3.00 kg (6.6 lb)",
-      "Weight Ratio": "1.33 °C/kg (1.09 °F/lb)"
-    },
-    {
-      "Name": "Thermal Underwear",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "20%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    },
-    {
-      "Name": "Wool Longjohns",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "35%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    },
-    {
-      "Name": "Astrid's Jeans",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "2%",
-      "Mobility": "-1%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Cargo Pants",
-      "Temperature": "1.5 °C (2.7 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "0%",
-      "Protection": "3%",
-      "Mobility": "-1%",
-      "Weight": "0.75 kg (1.65 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Combat Pants",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "20%",
-      "Protection": "7%",
-      "Mobility": "0%",
-      "Weight": "0.75 kg (1.65 lb)",
-      "Weight Ratio": "2.67 °C/kg (2.18 °F/lb)"
-    },
-    {
-      "Name": "Deerskin Pants",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "60%",
-      "Protection": "10%",
-      "Mobility": "-5%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Jeans",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "2%",
-      "Mobility": "-1%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Mackenzie's Pants",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "2%",
-      "Mobility": "-1%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Miner's Pants",
-      "Temperature": "1.5 °C (2.7 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "20%",
-      "Protection": "6%",
-      "Mobility": "-3%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
-    },
-    {
-      "Name": "Snow Pants",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "50%",
-      "Protection": "5%",
-      "Mobility": "-5%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
-    },
-    {
-      "Name": "Work Pants",
-      "Temperature": "1.5 °C (2.7 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "10%",
-      "Protection": "8%",
-      "Mobility": "-3%",
-      "Weight": "1.50 kg (3.3 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Climbing Socks",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "25%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    },
-    {
-      "Name": "Sports Socks",
-      "Temperature": "0.25 °C (0.5 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.10 kg (0.22 lb)",
-      "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
-    },
-    {
-      "Name": "Wool Socks",
-      "Temperature": "0.5 °C (0.9 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "20%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Astrid's Boots",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "30%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Chemical Boots",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "3.0 °C (5.4 °F)",
-      "Waterproofness": "60%",
-      "Protection": "5%",
-      "Mobility": "-8%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Combat Boots",
-      "Temperature": "1.5 °C (2.7 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "20%",
-      "Protection": "10%",
-      "Mobility": "-7%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "0.75 °C/kg (0.61 °F/lb)"
-    },
-    {
-      "Name": "Deerskin Boots",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "50%",
-      "Protection": "7%",
-      "Mobility": "-5%",
-      "Weight": "2.00 kg (4.4 lb)",
-      "Weight Ratio": "1.25 °C/kg (1.02 °F/lb)"
-    },
-    {
-      "Name": "Insulated Boots",
-      "Temperature": "3.0 °C (5.4 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "50%",
-      "Protection": "4%",
-      "Mobility": "-12%",
-      "Weight": "1.50 kg (3.3 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Leather Shoes",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "10%",
-      "Protection": "2%",
-      "Mobility": "-3%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Mackenzie's Boots",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "30%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Mountaineering Boots",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "40%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
-    },
-    {
-      "Name": "Mukluks",
-      "Temperature": "2.5 °C (4.5 °F)",
-      "Windproofness": "2.0 °C (3.6 °F)",
-      "Waterproofness": "40%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.50 kg (3.3 lb)",
-      "Weight Ratio": "1.67 °C/kg (1.36 °F/lb)"
-    },
-    {
-      "Name": "Running Shoes",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "0%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
-    },
-    {
-      "Name": "Ski Boots",
-      "Temperature": "3.0 °C (5.4 °F)",
-      "Windproofness": "4.0 °C (7.2 °F)",
-      "Waterproofness": "30%",
-      "Protection": "10%",
-      "Mobility": "-20%",
-      "Weight": "4.0 kg (8.8 lb)",
-      "Weight Ratio": "0.75 °C/kg (0.61 °F/lb)"
-    },
-    {
-      "Name": "Trail Boots",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "30%",
-      "Protection": "5%",
-      "Mobility": "-3%",
-      "Weight": "1.00 kg (2.2 lb)",
-      "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
-    },
-    {
-      "Name": "Work Boots",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "5%",
-      "Protection": "7%",
-      "Mobility": "-10%",
-      "Weight": "1.50 kg (3.3 lb)",
-      "Weight Ratio": "1.33 °C/kg (1.09 °F/lb)"
-    },
-    {
-      "Name": "Ballistic Vest",
-      "Temperature": "0.0 °C (0 °F)",
-      "Windproofness": "0.0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "50%",
-      "Mobility": "-40%",
-      "Weight": "6.00 kg (13.2 lb)",
-      "Weight Ratio": "0 °C/kg (0 °F/lb)"
-    },
-    {
-      "Name": "Crampons",
-      "Temperature": "0 °C (0 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "100%",
-      "Protection": "3%",
-      "Mobility": "-5%",
-      "Weight": "0.50 kg (1.1 lb)",
-      "Weight Ratio": "0 °C/kg (0 °F/lb)"
-    },
-    {
-      "Name": "Foreman's Tool Belt",
-      "Temperature": "0 °C (0 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.20 kg (0.44 lb)",
-      "Weight Ratio": "0 °C/kg (0 °F/lb)"
-    },
-    {
-      "Name": "Improvised Crampons",
-      "Temperature": "0 °C (0 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "100%",
-      "Protection": "3%",
-      "Mobility": "-5%",
-      "Weight": "0.75 kg (1.65 lb)",
-      "Weight Ratio": "0 °C/kg (0 °F/lb)"
-    },
-    {
-      "Name": "Improvised Insulation",
-      "Temperature": "2.0 °C (3.6 °F)",
-      "Windproofness": "1.0 °C (1.8 °F)",
-      "Waterproofness": "0%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "8 °C/kg (6.53 °F/lb)"
-    },
-    {
-      "Name": "Moose-Hide Satchel",
-      "Temperature": "0 °C (0 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "0 °C/kg (0 °F/lb)"
-    },
-    {
-      "Name": "Security Chief's Rifle Holster",
-      "Temperature": "0 °C (0 °F)",
-      "Windproofness": "0 °C (0 °F)",
-      "Waterproofness": "0%",
-      "Protection": "0%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "0 °C/kg (0 °F/lb)"
-    },
-    {
-      "Name": "Wool Ear Wrap",
-      "Temperature": "1.0 °C (1.8 °F)",
-      "Windproofness": "0.5 °C (0.9 °F)",
-      "Waterproofness": "20%",
-      "Protection": "1%",
-      "Mobility": "0%",
-      "Weight": "0.25 kg (0.55 lb)",
-      "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
-    }
-  ]
-}
-
-
+[
+  {
+    "Name": "Aviator Cap",
+    "slug": "aviator-cap",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "4%",
+    "Mobility": "0%",
+    "Weight": "0.30 kg",
+    "Weight Ratio": "6.67 °C/kg"
+  },
+  {
+    "Name": "Astrid's Toque",
+    "slug": "astrids-toque",
+    "Temperature": "1.5 °C",
+    "Windproofness": "0.75 °C",
+    "Waterproofness": "30%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.15 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Balaclava",
+    "slug": "balaclava",
+    "Temperature": "2.0 °C",
+    "Windproofness": "1.5 °C",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "8.0 °C/kg"
+  },
+  {
+    "Name": "Baseball Cap",
+    "slug": "baseball-cap",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.0 °C",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "Name": "Cotton Scarf",
+    "slug": "cotton-scarf",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.0 °C",
+    "Waterproofness": "5%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "Name": "Cotton Toque",
+    "slug": "cotton-toque",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "10%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Cougar Hide Wrap",
+    "slug": "cougar-hide-wrap",
+    "Temperature": "3.0 °C",
+    "Windproofness": "3.0 °C",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "0%",
+    "Weight": "1.00 kg",
+    "Weight Ratio": "3.0 °C/kg"
+  },
+  {
+    "Name": "Fleece Cowl",
+    "slug": "fleece-cowl",
+    "Temperature": "1.5 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "20%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "6.0 °C/kg"
+  },
+  {
+    "Name": "Hardhat",
+    "slug": "hardhat",
+    "Temperature": "0.0 °C",
+    "Windproofness": "0.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "4%",
+    "Mobility": "0%",
+    "Weight": "0.40 kg",
+    "Weight Ratio": "0.0 °C/kg"
+  },
+  {
+    "Name": "Improvised Head Wrap",
+    "slug": "improvised-head-wrap",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "0%",
+    "Protection": "0.5%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Long Wool Scarf",
+    "slug": "long-wool-scarf",
+    "Temperature": "1.5 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "6.0 °C/kg"
+  },
+  {
+    "Name": "Mackenzie's Toque",
+    "slug": "mackenzies-toque",
+    "Temperature": "1.5 °C",
+    "Windproofness": "0.75 °C",
+    "Waterproofness": "30%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.15 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Rabbitskin Hat",
+    "slug": "rabbitskin-hat",
+    "Temperature": "2.0 °C",
+    "Windproofness": "1.5 °C",
+    "Waterproofness": "30%",
+    "Protection": "4%",
+    "Mobility": "0%",
+    "Weight": "0.35 kg",
+    "Weight Ratio": "5.71 °C/kg"
+  },
+  {
+    "Name": "Technical Balaclava",
+    "slug": "technical-balaclava",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "50%",
+    "Protection": "5%",
+    "Mobility": "0%",
+    "Weight": "0.20 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Wool Scarf",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Wool Toque",
+    "Temperature": "2.0 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "8.0 °C/kg"
+  },
+  {
+    "Name": "Astrid's Gloves",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "5%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "Name": "Driving Gloves",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "0%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "Name": "Fleece Mittens",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "5%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "Name": "Gauntlets",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "Name": "Improvised Hand Wraps",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.25 °C",
+    "Waterproofness": "0%",
+    "Protection": "0.5%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "Name": "Rabbitskin Mitts",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "50%",
+    "Protection": "3%",
+    "Mobility": "-5%",
+    "Weight": "1.00 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "Name": "Ski Gloves",
+    "Temperature": "1.0 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "Name": "Tactical Gloves",
+    "Temperature": "1.5 °C",
+    "Windproofness": "3.0 °C",
+    "Waterproofness": "50%",
+    "Protection": "7%",
+    "Mobility": "-1%",
+    "Weight": "0.75 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "Name": "Wool Mittens",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "Name": "Work Gloves",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "0%",
+    "Protection": "4%",
+    "Mobility": "-2%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "4.0 °C/kg"
+  },
+  {
+    "Name": "Astrid's Sweater",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Cowichan Sweater",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "5%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "Name": "Dress Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Fisherman's Sweater",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "1.5 °C (2.7 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "Name": "Hockey Jersey",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "15%",
+    "Protection": "3%",
+    "Mobility": "0%",
+    "Weight": "0.30 kg (0.66 lb)",
+    "Weight Ratio": "3.33 °C/kg (2.72 °F/lb)"
+  },
+  {
+    "Name": "Hoodie",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Mackenzie's Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Mackenzie's Sweater",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Plaid Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Sweatshirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Thick Wool Sweater",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "3 °C/kg (2.45 °F/lb)"
+  },
+  {
+    "Name": "Thin Wool Sweater",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "Name": "T-Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Wool Shirt",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "40%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "Name": "Astrid's Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-4%",
+    "Weight": "1.25 kg (2.75 lb)",
+    "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
+  },
+  {
+    "Name": "Bearskin Coat",
+    "Temperature": "6.0 °C (10.8 °F)",
+    "Windproofness": "5.0 °C (9 °F)",
+    "Waterproofness": "80%",
+    "Protection": "15%",
+    "Mobility": "-20%",
+    "Weight": "5.00 kg (11 lb)",
+    "Weight Ratio": "1.2 °C/kg (0.98 °F/lb)"
+  },
+  {
+    "Name": "Down Vest",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Expedition Parka",
+    "Temperature": "4.0 °C (7.2 °F)",
+    "Windproofness": "6.0 °C (10.8 °F)",
+    "Waterproofness": "50%",
+    "Protection": "6%",
+    "Mobility": "-5%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "2.67 °C/kg (2.18 °F/lb)"
+  },
+  {
+    "Name": "Flight Jacket",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "5.0 °C (9 °F)",
+    "Waterproofness": "50%",
+    "Protection": "10%",
+    "Mobility": "-5%",
+    "Weight": "2.50 kg (5.5 lb)",
+    "Weight Ratio": "1.2 °C/kg (0.98 °F/lb)"
+  },
+  {
+    "Name": "Light Shell",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Mackenzie's Parka",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-4%",
+    "Weight": "1.25 kg (2.75 lb)",
+    "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
+  },
+  {
+    "Name": "Mackinaw Jacket",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1.67 °C/kg (1.36 °F/lb)"
+  },
+  {
+    "Name": "Mariner's Pea Coat",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "75%",
+    "Protection": "7%",
+    "Mobility": "-6%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "Name": "Military Coat",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "40%",
+    "Protection": "8%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "Name": "Miner's Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "50%",
+    "Protection": "4%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Moose-Hide Cloak",
+    "Temperature": "3.5 °C (6.3 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "90%",
+    "Protection": "20%",
+    "Mobility": "-10%",
+    "Weight": "4.00 kg (8.8 lb)",
+    "Weight Ratio": "0.88 °C/kg (0.71 °F/lb)"
+  },
+  {
+    "Name": "Old Fashioned Parka",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "20%",
+    "Protection": "5%",
+    "Mobility": "-7%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "Name": "Simple Parka",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-4%",
+    "Weight": "1.25 kg (2.75 lb)",
+    "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
+  },
+  {
+    "Name": "Ski Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Sport Vest",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "5%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Tactical Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "50%",
+    "Protection": "15%",
+    "Mobility": "-4%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Urban Parka",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "Name": "Windbreaker",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "50%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Wolfskin Coat",
+    "Temperature": "4.0 °C (7.2 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "60%",
+    "Protection": "12%",
+    "Mobility": "-15%",
+    "Weight": "3.00 kg (6.6 lb)",
+    "Weight Ratio": "1.33 °C/kg (1.09 °F/lb)"
+  },
+  {
+    "Name": "Thermal Underwear",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "20%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "Name": "Wool Longjohns",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "35%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "Name": "Astrid's Jeans",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "2%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Cargo Pants",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "0%",
+    "Protection": "3%",
+    "Mobility": "-1%",
+    "Weight": "0.75 kg (1.65 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Combat Pants",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "7%",
+    "Mobility": "0%",
+    "Weight": "0.75 kg (1.65 lb)",
+    "Weight Ratio": "2.67 °C/kg (2.18 °F/lb)"
+  },
+  {
+    "Name": "Deerskin Pants",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "60%",
+    "Protection": "10%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Jeans",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "2%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Mackenzie's Pants",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "2%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Miner's Pants",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "20%",
+    "Protection": "6%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "Name": "Snow Pants",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "5%",
+    "Mobility": "-5%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "Name": "Work Pants",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "8%",
+    "Mobility": "-3%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Climbing Socks",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "25%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "Name": "Sports Socks",
+    "Temperature": "0.25 °C (0.5 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg (0.22 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "Name": "Wool Socks",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "20%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Astrid's Boots",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Chemical Boots",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "60%",
+    "Protection": "5%",
+    "Mobility": "-8%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Combat Boots",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "20%",
+    "Protection": "10%",
+    "Mobility": "-7%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "0.75 °C/kg (0.61 °F/lb)"
+  },
+  {
+    "Name": "Deerskin Boots",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "7%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.25 °C/kg (1.02 °F/lb)"
+  },
+  {
+    "Name": "Insulated Boots",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "4%",
+    "Mobility": "-12%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Leather Shoes",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "-3%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Mackenzie's Boots",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Mountaineering Boots",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "Name": "Mukluks",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1.67 °C/kg (1.36 °F/lb)"
+  },
+  {
+    "Name": "Running Shoes",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "0%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "Name": "Ski Boots",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "30%",
+    "Protection": "10%",
+    "Mobility": "-20%",
+    "Weight": "4.0 kg (8.8 lb)",
+    "Weight Ratio": "0.75 °C/kg (0.61 °F/lb)"
+  },
+  {
+    "Name": "Trail Boots",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "Name": "Work Boots",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "5%",
+    "Protection": "7%",
+    "Mobility": "-10%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1.33 °C/kg (1.09 °F/lb)"
+  },
+  {
+    "Name": "Ballistic Vest",
+    "Temperature": "0.0 °C (0 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "50%",
+    "Mobility": "-40%",
+    "Weight": "6.00 kg (13.2 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "Name": "Crampons",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "100%",
+    "Protection": "3%",
+    "Mobility": "-5%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "Name": "Foreman's Tool Belt",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.20 kg (0.44 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "Name": "Improvised Crampons",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "100%",
+    "Protection": "3%",
+    "Mobility": "-5%",
+    "Weight": "0.75 kg (1.65 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "Name": "Improvised Insulation",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "0%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "8 °C/kg (6.53 °F/lb)"
+  },
+  {
+    "Name": "Moose-Hide Satchel",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "Name": "Security Chief's Rifle Holster",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "Name": "Wool Ear Wrap",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  }
+]

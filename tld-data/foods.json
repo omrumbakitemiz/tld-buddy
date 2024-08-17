@@ -1,775 +1,773 @@
-{
-  "foods": [
-    {
-      "name": "Acorns (Cooked)",
-      "calories": 100,
-      "hydration": "0%",
-      "weight": "0.03 kg (0.066 lb)",
-      "calorie_density": "3333 kcal / kg (1,515 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Acorns (Cooked - Large Portion)",
-      "calories": 400,
-      "hydration": "0%",
-      "weight": "0.12 kg (0.264 lb)",
-      "calorie_density": null,
-      "vitamin_c": null
-    },
-    {
-      "name": "Airline Food - Chicken",
-      "calories": 620,
-      "hydration": "5%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "2480 kcal / kg (1,127 kcal / lb)",
-      "vitamin_c": "29%"
-    },
-    {
-      "name": "Airline Food - Vegetarian",
-      "calories": 560,
-      "hydration": "5%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "2240 kcal / kg (1,018 kcal / lb)",
-      "vitamin_c": "73%"
-    },
-    {
-      "name": "Bear Meat (Cooked)",
-      "calories": 900,
-      "hydration": "-15%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Bear Meat (Raw)",
-      "calories": 900,
-      "hydration": "-5%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Beef Jerky",
-      "calories": 350,
-      "hydration": "-10%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "3500 kcal / kg (1,591 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Burbot (Cooked)",
-      "calories": 1952.50,
-      "hydration": "-5%",
-      "weight": "4.00 kg (8.8 lb)",
-      "calorie_density": "488 kcal / kg (222 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Burbot (Raw)",
-      "calories": 1950,
-      "hydration": "0%",
-      "weight": "6.00 kg (13.2 lb)",
-      "calorie_density": "325 kcal / kg (148 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Cat Tail Stalk",
-      "calories": 150,
-      "hydration": "0%",
-      "weight": "0.05 kg (0.11 lb)",
-      "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
-      "vitamin_c": "1%"
-    },
-    {
-      "name": "Chocolate Bar",
-      "calories": 250,
-      "hydration": "-3%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Coho Salmon (Cooked)",
-      "calories": 1650,
-      "hydration": "-5%",
-      "weight": "3.70 kg (8.14 lb)",
-      "calorie_density": "455 kcal / kg (207 kcal / lb)",
-      "vitamin_c": "49%"
-    },
-    {
-      "name": "Coho Salmon (Raw)",
-      "calories": 1650,
-      "hydration": "0%",
-      "weight": "5.50 kg (12.1 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": "62%"
-    },
-    {
-      "name": "Condensed Milk",
-      "calories": 750,
-      "hydration": "25%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
-      "vitamin_c": "12%"
-    },
-    {
-      "name": "Cup of Acorn Coffee",
-      "calories": 100,
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Cup of Coffee",
-      "calories": 100,
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Cup of Herbal Tea",
-      "calories": 100,
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": "11%"
-    },
-    {
-      "name": "Dog Food",
-      "calories": 500,
-      "hydration": "5%",
-      "weight": "0.30 kg (0.66 lb)",
-      "calorie_density": "1667 kcal / kg (758 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Energy Bar",
-      "calories": 500,
-      "hydration": "0%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
-      "vitamin_c": "4%"
-    },
-    {
-      "name": "Granola Bar",
-      "calories": 300,
-      "hydration": "-5%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
-      "vitamin_c": "2%"
-    },
-    {
-      "name": "Goldeye (Cooked)",
-      "calories": 630,
-      "hydration": "-5%",
-      "weight": "1.60 kg (3.52 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Goldeye (Raw)",
-      "calories": 630,
-      "hydration": "0%",
-      "weight": "2.10 kg (4.62 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Ketchup Chips",
-      "calories": 300,
-      "hydration": "-6%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
-      "vitamin_c": "5%"
-    },
-    {
-      "name": "Lake Whitefish (Cooked)",
-      "calories": 575,
-      "hydration": "-5%",
-      "weight": "1.50 kg (3.3 lb)",
-      "calorie_density": "385 kcal / kg (175 kcal / lb)",
-      "vitamin_c": "37%"
-    },
-    {
-      "name": "Lake Whitefish (Raw)",
-      "calories": 575,
-      "hydration": "0%",
-      "weight": "2.30 kg (5.06 lb)",
-      "calorie_density": "250 kcal / kg (114 kcal / lb)",
-      "vitamin_c": "50%"
-    },
-    {
-      "name": "Maple Syrup",
-      "calories": 850,
-      "hydration": "0%",
-      "weight": "0.30 kg (0.66 lb)",
-      "calorie_density": "2833 kcal / kg (1,288 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Military-Grade MRE",
-      "calories": 1750,
-      "hydration": "5%",
-      "weight": "0.50 kg (1.1 lb)",
-      "calorie_density": "3500 kcal / kg (1,591 kcal / lb)",
-      "vitamin_c": "65%"
-    },
-    {
-      "name": "Moose Meat (Cooked)",
-      "calories": 900,
-      "hydration": "-5%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Moose Meat (Raw)",
-      "calories": 900,
-      "hydration": "0%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Orange Soda",
-      "calories": 250,
-      "hydration": "30%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Peanut Butter",
-      "calories": 900,
-      "hydration": "-5%",
-      "weight": "0.50 kg (1.1 lb)",
-      "calorie_density": "1800 kcal / kg (818 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Pinnacle Peaches",
-      "calories": 450,
-      "hydration": "20%",
-      "weight": "0.50 kg (1.1 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": "56%"
-    },
-    {
-      "name": "Pork and Beans",
-      "calories": 600,
-      "hydration": "-5%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "2400 kcal / kg (1,091 kcal / lb)",
-      "vitamin_c": "2%"
-    },
-    {
-      "name": "Rabbit (Cooked)",
-      "calories": 500,
-      "hydration": "-5%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "500 kcal / kg (227 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Rabbit (Raw)",
-      "calories": 500,
-      "hydration": "0%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "500 kcal / kg (227 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Rainbow Trout (Cooked)",
-      "calories": 575,
-      "hydration": "-5%",
-      "weight": "1.50 kg (3.3 lb)",
-      "calorie_density": "385 kcal / kg (175 kcal / lb)",
-      "vitamin_c": "34%"
-    },
-    {
-      "name": "Rainbow Trout (Raw)",
-      "calories": 575,
-      "hydration": "0%",
-      "weight": "2.30 kg (5.06 lb)",
-      "calorie_density": "250 kcal / kg (114 kcal / lb)",
-      "vitamin_c": "45%"
-    },
-    {
-      "name": "Red Irish Lord (Cooked)",
-      "calories": 930,
-      "hydration": "-5%",
-      "weight": "2.00 kg (4.4 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Red Irish Lord (Raw)",
-      "calories": 930,
-      "hydration": "0%",
-      "weight": "3.10 kg (6.82 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Rockfish (Cooked)",
-      "calories": 1500,
-      "hydration": "0%",
-      "weight": "3.25 kg (7.15 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Rockfish (Raw)",
-      "calories": 1500,
-      "hydration": "0%",
-      "weight": "5.00 kg (11 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Salty Crackers",
-      "calories": 600,
-      "hydration": "-20%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "6000 kcal / kg (2,727 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Smallmouth Bass (Cooked)",
-      "calories": 1500,
-      "hydration": "-5%",
-      "weight": "3.30 kg (7.26 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": "41%"
-    },
-    {
-      "name": "Smallmouth Bass (Raw)",
-      "calories": 1500,
-      "hydration": "0%",
-      "weight": "5.00 kg (11 lb)",
-      "calorie_density": "300 kcal / kg (136 kcal / lb)",
-      "vitamin_c": "55%"
-    },
-    {
-      "name": "Stacy's Grape Soda",
-      "calories": 250,
-      "hydration": "30%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Summit Soda",
-      "calories": 250,
-      "hydration": "30%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Tin of Sardines",
-      "calories": 300,
-      "hydration": "5%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
-      "vitamin_c": "3%"
-    },
-    {
-      "name": "Tomato Soup",
-      "calories": 300,
-      "hydration": "10%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "1200 kcal / kg (545 kcal / lb)",
-      "vitamin_c": "30%"
-    },
-    {
-      "name": "Venison (Cooked)",
-      "calories": 800,
-      "hydration": "-5%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Venison (Raw)",
-      "calories": 800,
-      "hydration": "0%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Wolf Meat (Cooked)",
-      "calories": 800,
-      "hydration": "-10%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Wolf Meat (Raw)",
-      "calories": 800,
-      "hydration": "0%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "900 kcal / kg (409 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Water (Potable)",
-      "calories": 0,
-      "hydration": "150%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "0 kcal / kg (0 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Water (Unsafe)",
-      "calories": 0,
-      "hydration": "150%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "0 kcal / kg (0 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Tin of Coffee",
-      "weight": "0.01 kg (0.022 lb)"
-    },
-    {
-      "name": "Herbal Tea",
-      "weight": "0.01 kg (0.022 lb)"
-    },
-    {
-      "name": "Birch Bark Tea",
-      "calories": "100 kcal",
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": "6%"
-    },
-    {
-      "name": "Burdock Tea",
-      "calories": "100 kcal",
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": "7%"
-    },
-    {
-      "name": "Go! Energy Drink",
-      "calories": "100 kcal",
-      "hydration": "30%",
-      "weight": "0.25 kg (0.55 lb)",
-      "calorie_density": "400 kcal / kg (182 kcal / lb)",
-      "vitamin_c": null
-    },
-    {
-      "name": "Prepared Burdock",
-      "calories": "275 kcal",
-      "hydration": "0%",
-      "weight": "0.15 kg (0.33 lb)",
-      "calorie_density": "1833 kcal / kg (833 kcal / lb)",
-      "vitamin_c": "8%"
-    },
-    {
-      "name": "Reishi Tea",
-      "calories": "100 kcal",
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": "5%"
-    },
-    {
-      "name": "Rose Hip Tea",
-      "calories": "100 kcal",
-      "hydration": "30%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "1000 kcal / kg (455 kcal / lb)",
-      "vitamin_c": "13%"
-    },
-    {
-      "name": "Bear Quarter"
-    },
-    {
-      "name": "Deer Quarter"
-    },
-    {
-      "name": "Moose Quarter"
-    },
-    {
-      "name": "Rabbit Carcass"
-    },
-    {
-      "name": "Wolf Quarter"
-    },
-    {
-      "name": "Canned Corn",
-      "calories": 295,
-      "hydration": "5%",
-      "weight": "0.30 kg (0.66 lb)",
-      "calorie_density": "983 kcal / kg (447 kcal / lb)",
-      "vitamin_c": "52%"
-    },
-    {
-      "name": "Canned Ham",
-      "calories": 550,
-      "hydration": "-5%",
-      "weight": "0.40 kg (0.88 lb)",
-      "calorie_density": "1375 kcal / kg (625 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Cougar Meat (Cooked)",
-      "calories": 800,
-      "hydration": "",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Cougar Meat (Raw)",
-      "calories": "",
-      "hydration": "0%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Cooked Potato",
-      "calories": 250,
-      "hydration": "-3%",
-      "weight": "0.15 kg (0.33 lb)",
-      "calorie_density": "1666 kcal / kg (757 kcal / lb)",
-      "vitamin_c": "24%"
-    },
-    {
-      "name": "Ptarmigan (Cooked)",
-      "calories": 500,
-      "hydration": "-5%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "500 kcal / kg (227 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Ptarmigan (Raw)",
-      "calories": 500,
-      "hydration": "0%",
-      "weight": "1.00 kg (2.2 lb)",
-      "calorie_density": "500 kcal / kg (227 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Acorn Bannock",
-      "calories": 250,
-      "hydration": "-3%",
-      "weight": "0.05 kg (0.11 lb)",
-      "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Acorn Pancakes",
-      "calories": 750,
-      "hydration": "-3%",
-      "weight": "0.15 kg (0.33 lb)",
-      "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Bannock",
-      "calories": 200,
-      "hydration": "-3%",
-      "weight": "0.05 kg (0.11 lb)",
-      "calorie_density": "4000 kcal / kg (1,818 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Breyerhouse Pie",
-      "calories": 2125,
-      "hydration": "-3%",
-      "weight": "0.20 kg (0.44 lb)",
-      "calorie_density": "10625 kcal / kg (4,830 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Broth",
-      "calories": 170,
-      "hydration": "5%",
-      "weight": "0.80 kg (1.76 lb)",
-      "calorie_density": "215 kcal / kg (98 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Camber Flight Porridge",
-      "calories": 1250,
-      "hydration": "0%",
-      "weight": "0.30 kg (0.66 lb)",
-      "calorie_density": "4166 kcal / kg (1,894 kcal / lb)",
-      "vitamin_c": "59%"
-    },
-    {
-      "name": "Coastal Fishcakes",
-      "calories": 312,
-      "hydration": "0%",
-      "weight": "0.053 kg (0.117 lb)",
-      "calorie_density": "5886 kcal / kg (2,675 kcal / lb)",
-      "vitamin_c": "14%"
-    },
-    {
-      "name": "Dockworker's Pie",
-      "calories": 1500,
-      "hydration": "-3%",
-      "weight": "0.30 kg (0.66 lb)",
-      "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
-      "vitamin_c": "68%"
-    },
-    {
-      "name": "Lily's Pancakes",
-      "calories": 1000,
-      "hydration": "0%",
-      "weight": "0.20 kg (0.44 lb)",
-      "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
-      "vitamin_c": "57%"
-    },
-    {
-      "name": "Pancakes",
-      "calories": 500,
-      "hydration": "-3%",
-      "weight": "0.15 kg (0.33 lb)",
-      "calorie_density": "3333 kcal / kg (1,515 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Peach Pie",
-      "calories": 250,
-      "hydration": "0%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
-      "vitamin_c": "19%"
-    },
-    {
-      "name": "Porridge",
-      "calories": 350,
-      "hydration": "0%",
-      "weight": "0.20 kg (0.44 lb)",
-      "calorie_density": "1750 kcal / kg (795 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Ptarmigan Pie",
-      "calories": 250,
-      "hydration": "0%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Ptarmigan Stew",
-      "calories": 750,
-      "hydration": "3%",
-      "weight": "0.35 kg (0.77 lb)",
-      "calorie_density": "2142 kcal / kg (974 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Prepper's Pie",
-      "calories": 900,
-      "hydration": "-3%",
-      "weight": "0.20 kg (0.44 lb)",
-      "calorie_density": "4500 kcal / kg (2,045 kcal / lb)",
-      "vitamin_c": "22%"
-    },
-    {
-      "name": "Rabbit Pie",
-      "calories": 250,
-      "hydration": "0%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Rabbit Stew",
-      "calories": 750,
-      "hydration": "3%",
-      "weight": "0.35 kg (0.77 lb)",
-      "calorie_density": "2142 kcal / kg (974 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Ranger Stew",
-      "calories": 1600,
-      "hydration": "-3%",
-      "weight": "0.40 kg (0.88 lb)",
-      "calorie_density": "4000 kcal / kg (1,818 kcal / lb)",
-      "vitamin_c": "42%"
-    },
-    {
-      "name": "Rose Hip Pie",
-      "calories": 225,
-      "hydration": "0%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "2250 kcal / kg (1,023 kcal / lb)",
-      "vitamin_c": "6%"
-    },
-    {
-      "name": "Stalker's Pie",
-      "calories": 1600,
-      "hydration": "-3%",
-      "weight": "0.20 kg (0.44 lb)",
-      "calorie_density": "8000 kcal / kg (3,636 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Thomson Family Stew",
-      "calories": 900,
-      "hydration": "3%",
-      "weight": "0.35 kg (0.77 lb)",
-      "calorie_density": "2571 kcal / kg (1,169 kcal / lb)",
-      "vitamin_c": "80%"
-    },
-    {
-      "name": "Trout Stew",
-      "calories": 750,
-      "hydration": "3%",
-      "weight": "0.35 kg (0.77 lb)",
-      "calorie_density": "2142 kcal / kg (974 kcal / lb)",
-      "vitamin_c": "17%"
-    },
-    {
-      "name": "Venison Pie",
-      "calories": 325,
-      "hydration": "0%",
-      "weight": "0.10 kg (0.22 lb)",
-      "calorie_density": "3250 kcal / kg (1,477 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Venison Stew",
-      "calories": 900,
-      "hydration": "3%",
-      "weight": "0.35 kg (0.77 lb)",
-      "calorie_density": "2571 kcal / kg (1,169 kcal / lb)",
-      "vitamin_c": ""
-    },
-    {
-      "name": "Cooking Oil",
-      "weight": "0.05 kg"
-    },
-    {
-      "name": "Old Mill Flour",
-      "weight": "1.50 kg"
-    },
-    {
-      "name": "Potato",
-      "weight": "0.20 kg"
-    },
-    {
-      "name": "Running River Oats",
-      "weight": "0.80 kg"
-    },
-    {
-      "name": "Salt",
-      "weight": "0.25 kg"
-    }
-  ]
-}
+[
+  {
+    "name": "Acorns (Cooked)",
+    "calories": 100,
+    "hydration": "0%",
+    "weight": "0.03 kg (0.066 lb)",
+    "calorie_density": "3333 kcal / kg (1,515 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Acorns (Cooked - Large Portion)",
+    "calories": 400,
+    "hydration": "0%",
+    "weight": "0.12 kg (0.264 lb)",
+    "calorie_density": null,
+    "vitamin_c": null
+  },
+  {
+    "name": "Airline Food - Chicken",
+    "calories": 620,
+    "hydration": "5%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "2480 kcal / kg (1,127 kcal / lb)",
+    "vitamin_c": "29%"
+  },
+  {
+    "name": "Airline Food - Vegetarian",
+    "calories": 560,
+    "hydration": "5%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "2240 kcal / kg (1,018 kcal / lb)",
+    "vitamin_c": "73%"
+  },
+  {
+    "name": "Bear Meat (Cooked)",
+    "calories": 900,
+    "hydration": "-15%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Bear Meat (Raw)",
+    "calories": 900,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Beef Jerky",
+    "calories": 350,
+    "hydration": "-10%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3500 kcal / kg (1,591 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Burbot (Cooked)",
+    "calories": 1952.50,
+    "hydration": "-5%",
+    "weight": "4.00 kg (8.8 lb)",
+    "calorie_density": "488 kcal / kg (222 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Burbot (Raw)",
+    "calories": 1950,
+    "hydration": "0%",
+    "weight": "6.00 kg (13.2 lb)",
+    "calorie_density": "325 kcal / kg (148 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Cat Tail Stalk",
+    "calories": 150,
+    "hydration": "0%",
+    "weight": "0.05 kg (0.11 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "1%"
+  },
+  {
+    "name": "Chocolate Bar",
+    "calories": 250,
+    "hydration": "-3%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Coho Salmon (Cooked)",
+    "calories": 1650,
+    "hydration": "-5%",
+    "weight": "3.70 kg (8.14 lb)",
+    "calorie_density": "455 kcal / kg (207 kcal / lb)",
+    "vitamin_c": "49%"
+  },
+  {
+    "name": "Coho Salmon (Raw)",
+    "calories": 1650,
+    "hydration": "0%",
+    "weight": "5.50 kg (12.1 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": "62%"
+  },
+  {
+    "name": "Condensed Milk",
+    "calories": 750,
+    "hydration": "25%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "12%"
+  },
+  {
+    "name": "Cup of Acorn Coffee",
+    "calories": 100,
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Cup of Coffee",
+    "calories": 100,
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Cup of Herbal Tea",
+    "calories": 100,
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "11%"
+  },
+  {
+    "name": "Dog Food",
+    "calories": 500,
+    "hydration": "5%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "1667 kcal / kg (758 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Energy Bar",
+    "calories": 500,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": "4%"
+  },
+  {
+    "name": "Granola Bar",
+    "calories": 300,
+    "hydration": "-5%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "2%"
+  },
+  {
+    "name": "Goldeye (Cooked)",
+    "calories": 630,
+    "hydration": "-5%",
+    "weight": "1.60 kg (3.52 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Goldeye (Raw)",
+    "calories": 630,
+    "hydration": "0%",
+    "weight": "2.10 kg (4.62 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Ketchup Chips",
+    "calories": 300,
+    "hydration": "-6%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "5%"
+  },
+  {
+    "name": "Lake Whitefish (Cooked)",
+    "calories": 575,
+    "hydration": "-5%",
+    "weight": "1.50 kg (3.3 lb)",
+    "calorie_density": "385 kcal / kg (175 kcal / lb)",
+    "vitamin_c": "37%"
+  },
+  {
+    "name": "Lake Whitefish (Raw)",
+    "calories": 575,
+    "hydration": "0%",
+    "weight": "2.30 kg (5.06 lb)",
+    "calorie_density": "250 kcal / kg (114 kcal / lb)",
+    "vitamin_c": "50%"
+  },
+  {
+    "name": "Maple Syrup",
+    "calories": 850,
+    "hydration": "0%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "2833 kcal / kg (1,288 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Military-Grade MRE",
+    "calories": 1750,
+    "hydration": "5%",
+    "weight": "0.50 kg (1.1 lb)",
+    "calorie_density": "3500 kcal / kg (1,591 kcal / lb)",
+    "vitamin_c": "65%"
+  },
+  {
+    "name": "Moose Meat (Cooked)",
+    "calories": 900,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Moose Meat (Raw)",
+    "calories": 900,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Orange Soda",
+    "calories": 250,
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Peanut Butter",
+    "calories": 900,
+    "hydration": "-5%",
+    "weight": "0.50 kg (1.1 lb)",
+    "calorie_density": "1800 kcal / kg (818 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Pinnacle Peaches",
+    "calories": 450,
+    "hydration": "20%",
+    "weight": "0.50 kg (1.1 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": "56%"
+  },
+  {
+    "name": "Pork and Beans",
+    "calories": 600,
+    "hydration": "-5%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "2400 kcal / kg (1,091 kcal / lb)",
+    "vitamin_c": "2%"
+  },
+  {
+    "name": "Rabbit (Cooked)",
+    "calories": 500,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rabbit (Raw)",
+    "calories": 500,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rainbow Trout (Cooked)",
+    "calories": 575,
+    "hydration": "-5%",
+    "weight": "1.50 kg (3.3 lb)",
+    "calorie_density": "385 kcal / kg (175 kcal / lb)",
+    "vitamin_c": "34%"
+  },
+  {
+    "name": "Rainbow Trout (Raw)",
+    "calories": 575,
+    "hydration": "0%",
+    "weight": "2.30 kg (5.06 lb)",
+    "calorie_density": "250 kcal / kg (114 kcal / lb)",
+    "vitamin_c": "45%"
+  },
+  {
+    "name": "Red Irish Lord (Cooked)",
+    "calories": 930,
+    "hydration": "-5%",
+    "weight": "2.00 kg (4.4 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Red Irish Lord (Raw)",
+    "calories": 930,
+    "hydration": "0%",
+    "weight": "3.10 kg (6.82 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rockfish (Cooked)",
+    "calories": 1500,
+    "hydration": "0%",
+    "weight": "3.25 kg (7.15 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rockfish (Raw)",
+    "calories": 1500,
+    "hydration": "0%",
+    "weight": "5.00 kg (11 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Salty Crackers",
+    "calories": 600,
+    "hydration": "-20%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "6000 kcal / kg (2,727 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Smallmouth Bass (Cooked)",
+    "calories": 1500,
+    "hydration": "-5%",
+    "weight": "3.30 kg (7.26 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": "41%"
+  },
+  {
+    "name": "Smallmouth Bass (Raw)",
+    "calories": 1500,
+    "hydration": "0%",
+    "weight": "5.00 kg (11 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": "55%"
+  },
+  {
+    "name": "Stacy's Grape Soda",
+    "calories": 250,
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Summit Soda",
+    "calories": 250,
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Tin of Sardines",
+    "calories": 300,
+    "hydration": "5%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "3%"
+  },
+  {
+    "name": "Tomato Soup",
+    "calories": 300,
+    "hydration": "10%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1200 kcal / kg (545 kcal / lb)",
+    "vitamin_c": "30%"
+  },
+  {
+    "name": "Venison (Cooked)",
+    "calories": 800,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Venison (Raw)",
+    "calories": 800,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Wolf Meat (Cooked)",
+    "calories": 800,
+    "hydration": "-10%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Wolf Meat (Raw)",
+    "calories": 800,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Water (Potable)",
+    "calories": 0,
+    "hydration": "150%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "0 kcal / kg (0 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Water (Unsafe)",
+    "calories": 0,
+    "hydration": "150%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "0 kcal / kg (0 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Tin of Coffee",
+    "weight": "0.01 kg (0.022 lb)"
+  },
+  {
+    "name": "Herbal Tea",
+    "weight": "0.01 kg (0.022 lb)"
+  },
+  {
+    "name": "Birch Bark Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "6%"
+  },
+  {
+    "name": "Burdock Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "7%"
+  },
+  {
+    "name": "Go! Energy Drink",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "400 kcal / kg (182 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Prepared Burdock",
+    "calories": "275 kcal",
+    "hydration": "0%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "1833 kcal / kg (833 kcal / lb)",
+    "vitamin_c": "8%"
+  },
+  {
+    "name": "Reishi Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "5%"
+  },
+  {
+    "name": "Rose Hip Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "13%"
+  },
+  {
+    "name": "Bear Quarter"
+  },
+  {
+    "name": "Deer Quarter"
+  },
+  {
+    "name": "Moose Quarter"
+  },
+  {
+    "name": "Rabbit Carcass"
+  },
+  {
+    "name": "Wolf Quarter"
+  },
+  {
+    "name": "Canned Corn",
+    "calories": 295,
+    "hydration": "5%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "983 kcal / kg (447 kcal / lb)",
+    "vitamin_c": "52%"
+  },
+  {
+    "name": "Canned Ham",
+    "calories": 550,
+    "hydration": "-5%",
+    "weight": "0.40 kg (0.88 lb)",
+    "calorie_density": "1375 kcal / kg (625 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cougar Meat (Cooked)",
+    "calories": 800,
+    "hydration": "",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cougar Meat (Raw)",
+    "calories": "",
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cooked Potato",
+    "calories": 250,
+    "hydration": "-3%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "1666 kcal / kg (757 kcal / lb)",
+    "vitamin_c": "24%"
+  },
+  {
+    "name": "Ptarmigan (Cooked)",
+    "calories": 500,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ptarmigan (Raw)",
+    "calories": 500,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Acorn Bannock",
+    "calories": 250,
+    "hydration": "-3%",
+    "weight": "0.05 kg (0.11 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Acorn Pancakes",
+    "calories": 750,
+    "hydration": "-3%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Bannock",
+    "calories": 200,
+    "hydration": "-3%",
+    "weight": "0.05 kg (0.11 lb)",
+    "calorie_density": "4000 kcal / kg (1,818 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Breyerhouse Pie",
+    "calories": 2125,
+    "hydration": "-3%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "10625 kcal / kg (4,830 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Broth",
+    "calories": 170,
+    "hydration": "5%",
+    "weight": "0.80 kg (1.76 lb)",
+    "calorie_density": "215 kcal / kg (98 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Camber Flight Porridge",
+    "calories": 1250,
+    "hydration": "0%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "4166 kcal / kg (1,894 kcal / lb)",
+    "vitamin_c": "59%"
+  },
+  {
+    "name": "Coastal Fishcakes",
+    "calories": 312,
+    "hydration": "0%",
+    "weight": "0.053 kg (0.117 lb)",
+    "calorie_density": "5886 kcal / kg (2,675 kcal / lb)",
+    "vitamin_c": "14%"
+  },
+  {
+    "name": "Dockworker's Pie",
+    "calories": 1500,
+    "hydration": "-3%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": "68%"
+  },
+  {
+    "name": "Lily's Pancakes",
+    "calories": 1000,
+    "hydration": "0%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": "57%"
+  },
+  {
+    "name": "Pancakes",
+    "calories": 500,
+    "hydration": "-3%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "3333 kcal / kg (1,515 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Peach Pie",
+    "calories": 250,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": "19%"
+  },
+  {
+    "name": "Porridge",
+    "calories": 350,
+    "hydration": "0%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "1750 kcal / kg (795 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ptarmigan Pie",
+    "calories": 250,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ptarmigan Stew",
+    "calories": 750,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2142 kcal / kg (974 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Prepper's Pie",
+    "calories": 900,
+    "hydration": "-3%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "4500 kcal / kg (2,045 kcal / lb)",
+    "vitamin_c": "22%"
+  },
+  {
+    "name": "Rabbit Pie",
+    "calories": 250,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Rabbit Stew",
+    "calories": 750,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2142 kcal / kg (974 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ranger Stew",
+    "calories": 1600,
+    "hydration": "-3%",
+    "weight": "0.40 kg (0.88 lb)",
+    "calorie_density": "4000 kcal / kg (1,818 kcal / lb)",
+    "vitamin_c": "42%"
+  },
+  {
+    "name": "Rose Hip Pie",
+    "calories": 225,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2250 kcal / kg (1,023 kcal / lb)",
+    "vitamin_c": "6%"
+  },
+  {
+    "name": "Stalker's Pie",
+    "calories": 1600,
+    "hydration": "-3%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "8000 kcal / kg (3,636 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Thomson Family Stew",
+    "calories": 900,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2571 kcal / kg (1,169 kcal / lb)",
+    "vitamin_c": "80%"
+  },
+  {
+    "name": "Trout Stew",
+    "calories": 750,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2142 kcal / kg (974 kcal / lb)",
+    "vitamin_c": "17%"
+  },
+  {
+    "name": "Venison Pie",
+    "calories": 325,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3250 kcal / kg (1,477 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Venison Stew",
+    "calories": 900,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2571 kcal / kg (1,169 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cooking Oil",
+    "weight": "0.05 kg"
+  },
+  {
+    "name": "Old Mill Flour",
+    "weight": "1.50 kg"
+  },
+  {
+    "name": "Potato",
+    "weight": "0.20 kg"
+  },
+  {
+    "name": "Running River Oats",
+    "weight": "0.80 kg"
+  },
+  {
+    "name": "Salt",
+    "weight": "0.25 kg"
+  }
+]

@@ -8,7 +8,8 @@ export const db = drizzle(sql);
 export const RegionItems = pgTable("region_items", {
   id: serial("id").primaryKey(),
   regionSlug: text("region_slug").notNull(),
-  itemaName: text("item_name").notNull(),
+  itemName: text("item_name").notNull(),
+  itemType: text("item_type").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

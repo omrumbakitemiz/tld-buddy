@@ -1,176 +1,168 @@
-{
-  "firstAidTypes": {
-    "preventative": [
-      {
-        "item": "Antiseptic",
-        "prevents": "Infection",
-        "effect": "Reduces the risk of infection from an animal attack by 40%",
-        "dose": "0.10 liters",
-        "weightKg": "0.14",
-        "weightLb": "0.308",
-        "type": "Artificial"
-      },
-      {
-        "item": "Old Man's Beard Wound Dressing",
-        "prevents": "Infection",
-        "effect": "Reduces the risk of infection from an animal attack by 40%",
-        "dose": "1 item",
-        "weightKg": "0.10",
-        "weightLb": "0.22",
-        "type": "Natural"
-      },
-      {
-        "item": "Water Purification Tablets",
-        "prevents": "Dysentery",
-        "effect": "Purifies 1 liter of unsafe water, allowing the player to drink without risk of Dysentery",
-        "dose": "1 tablet",
-        "weightKg": "0.06",
-        "weightLb": "0.132",
-        "type": "Artificial"
-      }
+[
+  {
+    "item": "Antiseptic",
+    "prevents": "Infection",
+    "effect": "Reduces the risk of infection from an animal attack by 40%",
+    "dose": "0.10 liters",
+    "weightKg": "0.14",
+    "weightLb": "0.308",
+    "type": "Artificial"
+  },
+  {
+    "item": "Old Man's Beard Wound Dressing",
+    "prevents": "Infection",
+    "effect": "Reduces the risk of infection from an animal attack by 40%",
+    "dose": "1 item",
+    "weightKg": "0.10",
+    "weightLb": "0.22",
+    "type": "Natural"
+  },
+  {
+    "item": "Water Purification Tablets",
+    "prevents": "Dysentery",
+    "effect": "Purifies 1 liter of unsafe water, allowing the player to drink without risk of Dysentery",
+    "dose": "1 tablet",
+    "weightKg": "0.06",
+    "weightLb": "0.132",
+    "type": "Artificial"
+  },
+  {
+    "item": "Prepared Birch Bark",
+    "cookedInto": "Birch Bark Tea",
+    "weightPerDoseKg": "0.05",
+    "weightPerDoseLb": "0.11"
+  },
+  {
+    "item": "Prepared Burdock",
+    "cookedInto": "Burdock Tea",
+    "weightPerDoseKg": "0.15",
+    "weightPerDoseLb": "0.33"
+  },
+  {
+    "item": "Prepared Reishi Mushrooms",
+    "cookedInto": "Reishi Tea",
+    "weightPerDoseKg": "0.05",
+    "weightPerDoseLb": "0.11"
+  },
+  {
+    "item": "Prepared Rose Hips",
+    "cookedInto": "Rose Hip Tea",
+    "weightPerDoseKg": "0.05",
+    "weightPerDoseLb": "0.11"
+  },
+  {
+    "item": "Antibiotics",
+    "treatsRestores": [
+      "Dysentery",
+      "Food Poisoning",
+      "Infection",
+      "Intestinal Parasites"
     ],
-    "preparedPlants": [
-      {
-        "item": "Prepared Birch Bark",
-        "cookedInto": "Birch Bark Tea",
-        "weightPerDoseKg": "0.05",
-        "weightPerDoseLb": "0.11"
-      },
-      {
-        "item": "Prepared Burdock",
-        "cookedInto": "Burdock Tea",
-        "weightPerDoseKg": "0.15",
-        "weightPerDoseLb": "0.33"
-      },
-      {
-        "item": "Prepared Reishi Mushrooms",
-        "cookedInto": "Reishi Tea",
-        "weightPerDoseKg": "0.05",
-        "weightPerDoseLb": "0.11"
-      },
-      {
-        "item": "Prepared Rose Hips",
-        "cookedInto": "Rose Hip Tea",
-        "weightPerDoseKg": "0.05",
-        "weightPerDoseLb": "0.11"
-      }
+    "doseSize": "2 pills",
+    "weightPerDoseKg": "0.03",
+    "weightPerDoseLb": "0.066",
+    "renewable": "Artificial"
+  },
+  {
+    "item": "Bandage",
+    "treatsRestores": [
+      "Blood Loss",
+      "Broken Ribs",
+      "Burns",
+      "Sprained Ankle",
+      "Sprained Wrist"
     ],
-    "treatment": [
-      {
-        "item": "Antibiotics",
-        "treatsRestores": [
-          "Dysentery",
-          "Food Poisoning",
-          "Infection",
-          "Intestinal Parasites"
-        ],
-        "doseSize": "2 pills",
-        "weightPerDoseKg": "0.03",
-        "weightPerDoseLb": "0.066",
-        "renewable": "Artificial"
-      },
-      {
-        "item": "Bandage",
-        "treatsRestores": [
-          "Blood Loss",
-          "Broken Ribs",
-          "Burns",
-          "Sprained Ankle",
-          "Sprained Wrist"
-        ],
-        "doseSize": "1",
-        "weightPerDoseKg": "0.10",
-        "weightPerDoseLb": "0.22",
-        "renewable": "Artificial"
-      },
-      {
-        "item": "Birch Bark Tea",
-        "treatsRestores": "Restore Condition",
-        "doseSize": "1",
-        "weightPerDoseKg": "0.10",
-        "weightPerDoseLb": "0.22",
-        "renewable": "Natural"
-      },
-      {
-        "item": "Burdock Tea",
-        "treatsRestores": [
-          "Dysentery",
-          "Food Poisoning",
-          "Infection",
-          "Intestinal Parasites"
-        ],
-        "doseSize": "1",
-        "weightPerDoseKg": "0.10",
-        "weightPerDoseLb": "0.22",
-        "renewable": "Natural"
-      },
-      {
-        "item": "Emergency Stim",
-        "treatsRestores": [
-          "Sprained Ankle",
-          "Restore Condition (15)",
-          "Energy Boost"
-        ],
-        "effect": "Gives unlimited Stamina for a limited time (before total depletion)",
-        "doseSize": "1",
-        "weightPerDoseKg": "0.10",
-        "weightPerDoseLb": "0.22",
-        "renewable": "Artificial"
-      },
-      {
-        "item": "Go! Energy Drink",
-        "treatsRestores": [
-          "Fatigue Reduced",
-          "Energy Boost",
-          "Headache"
-        ],
-        "effect": [
-          "Restores Fatigue (for a limited time before depletion)",
-          "Gives Energy Boost (for a limited time before depletion)",
-          "Gives Headache after a while"
-        ],
-        "doseSize": "1",
-        "weightPerDoseKg": "0.25",
-        "weightPerDoseLb": "0.55",
-        "renewable": "Artificial"
-      },
-      {
-        "item": "Painkillers",
-        "treatsRestores": [
-          "Broken Ribs",
-          "Burns",
-          "Pain"
-        ],
-        "doseSize": "2 pills",
-        "weightPerDoseKg": "0.03",
-        "weightPerDoseLb": "0.066",
-        "renewable": "Artificial"
-      },
-      {
-        "item": "Reishi Tea",
-        "treatsRestores": [
-          "Dysentery",
-          "Food Poisoning",
-          "Infection",
-          "Intestinal Parasites"
-        ],
-        "doseSize": "1",
-        "weightPerDoseKg": "0.10",
-        "weightPerDoseLb": "0.22",
-        "renewable": "Natural"
-      },
-      {
-        "item": "Rose Hip Tea",
-        "treatsRestores": [
-          "Broken Ribs",
-          "Burns",
-          "Pain"
-        ],
-        "doseSize": "1",
-        "weightPerDoseKg": "0.10",
-        "weightPerDoseLb": "0.22",
-        "renewable": "Natural"
-      }
-    ]
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Artificial"
+  },
+  {
+    "item": "Birch Bark Tea",
+    "treatsRestores": "Restore Condition",
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "item": "Burdock Tea",
+    "treatsRestores": [
+      "Dysentery",
+      "Food Poisoning",
+      "Infection",
+      "Intestinal Parasites"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "item": "Emergency Stim",
+    "treatsRestores": [
+      "Sprained Ankle",
+      "Restore Condition (15)",
+      "Energy Boost"
+    ],
+    "effect": "Gives unlimited Stamina for a limited time (before total depletion)",
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Artificial"
+  },
+  {
+    "item": "Go! Energy Drink",
+    "treatsRestores": [
+      "Fatigue Reduced",
+      "Energy Boost",
+      "Headache"
+    ],
+    "effect": [
+      "Restores Fatigue (for a limited time before depletion)",
+      "Gives Energy Boost (for a limited time before depletion)",
+      "Gives Headache after a while"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.25",
+    "weightPerDoseLb": "0.55",
+    "renewable": "Artificial"
+  },
+  {
+    "item": "Painkillers",
+    "treatsRestores": [
+      "Broken Ribs",
+      "Burns",
+      "Pain"
+    ],
+    "doseSize": "2 pills",
+    "weightPerDoseKg": "0.03",
+    "weightPerDoseLb": "0.066",
+    "renewable": "Artificial"
+  },
+  {
+    "item": "Reishi Tea",
+    "treatsRestores": [
+      "Dysentery",
+      "Food Poisoning",
+      "Infection",
+      "Intestinal Parasites"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "item": "Rose Hip Tea",
+    "treatsRestores": [
+      "Broken Ribs",
+      "Burns",
+      "Pain"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
   }
-}
+]

@@ -243,7 +243,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
             <ThemeToggle />
           </ClientOnly>
         </header>
-        <main class="grid gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
+        <main class="container">
           <slot />
         </main>
       </div>
