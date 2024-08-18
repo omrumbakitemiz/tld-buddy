@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronsDownUp, PlusCircleIcon } from "lucide-vue-next";
+import { ChevronsDownUp } from "lucide-vue-next";
 import type { RegionItem } from "~~/server/api/regions/type";
 
 const route = useRoute();
@@ -135,18 +135,6 @@ const materials = regionDetails.value.items.filter((item: RegionItem) => item.it
       </div>
     </div>
 
-    <div class="w-56">
-      <!-- Add a button to add a new item -->
-        <div class="flex items-center justify-between space-x-4 border border-slate-200 rounded-lg p-2 hover:bg-slate-100">
-          <h4 class="text-sm font-semibold">
-            Add Item
-          </h4>
-          <button class="flex items-center size-6 p-0 cursor-pointer">
-            <PlusCircleIcon class="h-4 w-4" />
-            <span class="sr-only">Add Item</span>
-          </button>
-        </div>
-
-    </div>
+    <ItemAdd />
   </div>
 </template>

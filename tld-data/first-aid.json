@@ -1,6 +1,6 @@
 [
   {
-    "item": "Antiseptic",
+    "name": "Antiseptic",
     "prevents": "Infection",
     "effect": "Reduces the risk of infection from an animal attack by 40%",
     "dose": "0.10 liters",
@@ -9,7 +9,7 @@
     "type": "Artificial"
   },
   {
-    "item": "Old Man's Beard Wound Dressing",
+    "name": "Old Man's Beard Wound Dressing",
     "prevents": "Infection",
     "effect": "Reduces the risk of infection from an animal attack by 40%",
     "dose": "1 item",
@@ -18,7 +18,7 @@
     "type": "Natural"
   },
   {
-    "item": "Water Purification Tablets",
+    "name": "Water Purification Tablets",
     "prevents": "Dysentery",
     "effect": "Purifies 1 liter of unsafe water, allowing the player to drink without risk of Dysentery",
     "dose": "1 tablet",
@@ -27,31 +27,31 @@
     "type": "Artificial"
   },
   {
-    "item": "Prepared Birch Bark",
+    "name": "Prepared Birch Bark",
     "cookedInto": "Birch Bark Tea",
     "weightPerDoseKg": "0.05",
     "weightPerDoseLb": "0.11"
   },
   {
-    "item": "Prepared Burdock",
+    "name": "Prepared Burdock",
     "cookedInto": "Burdock Tea",
     "weightPerDoseKg": "0.15",
     "weightPerDoseLb": "0.33"
   },
   {
-    "item": "Prepared Reishi Mushrooms",
+    "name": "Prepared Reishi Mushrooms",
     "cookedInto": "Reishi Tea",
     "weightPerDoseKg": "0.05",
     "weightPerDoseLb": "0.11"
   },
   {
-    "item": "Prepared Rose Hips",
+    "name": "Prepared Rose Hips",
     "cookedInto": "Rose Hip Tea",
     "weightPerDoseKg": "0.05",
     "weightPerDoseLb": "0.11"
   },
   {
-    "item": "Antibiotics",
+    "name": "Antibiotics",
     "treatsRestores": [
       "Dysentery",
       "Food Poisoning",
@@ -64,7 +64,7 @@
     "renewable": "Artificial"
   },
   {
-    "item": "Bandage",
+    "name": "Bandage",
     "treatsRestores": [
       "Blood Loss",
       "Broken Ribs",
@@ -78,7 +78,7 @@
     "renewable": "Artificial"
   },
   {
-    "item": "Birch Bark Tea",
+    "name": "Birch Bark Tea",
     "treatsRestores": "Restore Condition",
     "doseSize": "1",
     "weightPerDoseKg": "0.10",
@@ -86,7 +86,7 @@
     "renewable": "Natural"
   },
   {
-    "item": "Burdock Tea",
+    "name": "Burdock Tea",
     "treatsRestores": [
       "Dysentery",
       "Food Poisoning",
@@ -99,7 +99,7 @@
     "renewable": "Natural"
   },
   {
-    "item": "Emergency Stim",
+    "name": "Emergency Stim",
     "treatsRestores": [
       "Sprained Ankle",
       "Restore Condition (15)",
@@ -112,7 +112,7 @@
     "renewable": "Artificial"
   },
   {
-    "item": "Go! Energy Drink",
+    "name": "Go! Energy Drink",
     "treatsRestores": [
       "Fatigue Reduced",
       "Energy Boost",
@@ -129,7 +129,7 @@
     "renewable": "Artificial"
   },
   {
-    "item": "Painkillers",
+    "name": "Painkillers",
     "treatsRestores": [
       "Broken Ribs",
       "Burns",
@@ -141,7 +141,7 @@
     "renewable": "Artificial"
   },
   {
-    "item": "Reishi Tea",
+    "name": "Reishi Tea",
     "treatsRestores": [
       "Dysentery",
       "Food Poisoning",
@@ -154,7 +154,7 @@
     "renewable": "Natural"
   },
   {
-    "item": "Rose Hip Tea",
+    "name": "Rose Hip Tea",
     "treatsRestores": [
       "Broken Ribs",
       "Burns",

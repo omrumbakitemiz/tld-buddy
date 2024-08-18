@@ -243,7 +243,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
             <ThemeToggle />
           </ClientOnly>
         </header>
-        <main class="container">
+        <main class="container px-4">
           <slot />
         </main>
       </div>
