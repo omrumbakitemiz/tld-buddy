@@ -13,3 +13,16 @@ export const RegionItems = pgTable("region_items", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+export const Regions = pgTable("regions", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull(),
+  type: text("type").notNull(),
+  world: text("world").notNull(),
+  difficulty: text("difficulty").notNull(),
+  areaSize: text("area_size").notNull(),
+  releaseDate: text("release_date").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});

@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   modules: [
-    "@nuxt/devtools", 
+    "@nuxt/devtools",
     "@nuxtjs/tailwindcss",
     '@nuxtjs/color-mode',
     "shadcn-nuxt"
@@ -27,5 +27,8 @@ export default defineNuxtConfig({
   },
   colorMode: {
     classSuffix: ''
-  }
+  },
+  vue: {
+    propsDestructure: true,
+  },
 });

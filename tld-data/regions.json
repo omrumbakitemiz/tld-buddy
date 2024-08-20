@@ -7,10 +7,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Beginner",
       "area_size": 28,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "22 Sep 2014"
     },
     {
@@ -20,9 +16,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 20,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "30 Oct 2014"
     },
     {
@@ -32,10 +25,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Advanced",
       "area_size": 33,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "7 Feb 2015"
     },
     {
@@ -45,9 +34,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 12,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "18 Sep 2015"
     },
     {
@@ -57,9 +43,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Advanced",
       "area_size": 25,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "16 Dec 2015"
     },
     {
@@ -69,10 +52,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Advanced",
       "area_size": 18,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "19 Dec 2016"
     },
     {
@@ -82,10 +61,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 10,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "1 Aug 2017"
     },
     {
@@ -95,10 +70,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Beginner",
       "area_size": 27,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "1 Aug 2017"
     },
     {
@@ -108,9 +79,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Advanced",
       "area_size": 25,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "14 June 2018"
     },
     {
@@ -120,9 +88,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Advanced",
       "area_size": 21,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "10 Dec 2019"
     },
     {
@@ -132,9 +97,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Advanced",
       "area_size": 20,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "7 Dec 2020"
     },
     {
@@ -144,10 +106,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 26,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "6 Oct 2021"
     },
     {
@@ -157,9 +115,6 @@
       "world": "The Far Territory",
       "difficulty": "Intermediate",
       "area_size": 11,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "5 Dec 2022"
     },
     {
@@ -169,9 +124,6 @@
       "world": "The Far Territory",
       "difficulty": "Advanced",
       "area_size": 26,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "5 Dec 2022"
     },
     {
@@ -193,9 +145,6 @@
       "world": "The Far Territory",
       "difficulty": "Advanced",
       "area_size": 25,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "24 June 2024"
     },
     {
@@ -205,9 +154,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 4,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "30 Oct 2014"
     },
     {
@@ -217,9 +163,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 2,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "21 May 2015"
     },
     {
@@ -229,9 +172,6 @@
       "world": "Lower Great Bear",
       "difficulty": "Intermediate",
       "area_size": 5,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "18 Sep 2015"
     },
     {
@@ -241,9 +181,6 @@
       "world": "The Far Territory",
       "difficulty": "Intermediate",
       "area_size": 4,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "7 Dec 2021"
     },
     {
@@ -253,10 +190,6 @@
       "world": "The Far Territory",
       "difficulty": "Intermediate",
       "area_size": 4,
-      "modes": [
-        "Survival",
-        "Story"
-      ],
       "release_date": "7 Dec 2021"
     },
     {
@@ -266,9 +199,6 @@
       "world": "The Far Territory",
       "difficulty": "Intermediate",
       "area_size": 9,
-      "modes": [
-        "Survival"
-      ],
       "release_date": "5 Dec 2022"
     }
   ]

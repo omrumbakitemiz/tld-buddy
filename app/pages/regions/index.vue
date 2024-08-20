@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const { data: regions } = await useFetch('/api/regions/all');
 </script>
@@ -12,8 +12,6 @@ const { data: regions } = await useFetch('/api/regions/all');
       @click="$router.push(`/regions/${region.slug}`)">
       <CardHeader>
         <CardTitle>{{ region.name }}</CardTitle>
-
-        <!-- REGION IMAGE -->
       </CardHeader>
       <CardContent class="grid grid-cols-2 gap-4">
         <div class="space-y-1">
