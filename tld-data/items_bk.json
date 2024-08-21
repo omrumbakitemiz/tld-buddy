@@ -1,0 +1,2991 @@
+[
+  {
+    "name": "Cooking Pot",
+    "weight": "1.00 kg",
+    "comment": [
+      "Reduces the amount of time required to cook any food or drink on a fire.",
+      "Allows the player to melt snow and boil water on a fire.",
+      "Allows player to cook Food and Drinks",
+      "Allows the player to create (Pot) Cooking Recipes"
+    ],
+    "type": "cooking"
+  },
+  {
+    "name": "Cooking Skillet",
+    "weight": "1.00 kg",
+    "comment": [
+      "Allows the player to create (Skillet) Cooking Recipes",
+      "Allows player to cook Food and Drinks"
+    ],
+    "type": "cooking"
+  },
+  {
+    "name": "Recycled Can",
+    "weight": "0.15 kg",
+    "comment": [
+      "Allows the player to melt snow and boil water on a fire.",
+      "Allows player to cook Drinks"
+    ],
+    "type": "cooking"
+  },
+  {
+    "name": "Insulated Flask",
+    "weight": "0.20 kg",
+    "comment": [
+      "Can store and transport multiple drinks inside, keeping them warm",
+      "Comes in 6 fun design patterns!"
+    ],
+    "type": "cooking"
+  },
+  {
+    "name": "Can Opener",
+    "weight": "0.25 kg",
+    "comment": [
+      "Used to open food cans without losing food/damaging can",
+      "Repaired with scrap metal"
+    ],
+    "type": "cooking"
+  },
+  {
+    "name": "Flare",
+    "weight": "0.25 kg",
+    "comment": [
+      "Can keep Wolf at bay.",
+      "Lasts longer than the Marine flare."
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Flashlight",
+    "weight": "1.00 kg",
+    "comment": [
+      "Can keep predators at bay during Aurora or Glimmer Fog.",
+      "Usable only during Aurora or Glimmer Fog."
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Miner's Flashlight",
+    "weight": "1.25 kg",
+    "comment": [
+      "Can keep predators at bay during Aurora or Glimmer Fog.",
+      "Usable only during Aurora or Glimmer Fog.",
+      "Bigger battery, but Heavier than standard variant"
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Marine Flare",
+    "weight": "0.25 kg",
+    "comment": [
+      "Can keep Wolf and Timberwolf at bay.",
+      "Lasts shorter than the regular Flare."
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Storm Lantern",
+    "weight": "1.00 kg",
+    "comment": [
+      "You can refuel it with lantern fuel or kerosene.",
+      "Can hold up to 1L of fuel",
+      "Weighs 1.80 kg when full"
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Spelunker's Lantern",
+    "weight": "1.00 kg",
+    "comment": [
+      "You can refuel it with lantern fuel or kerosene.",
+      "Can hold up to 1L of fuel",
+      "Weighs 1.80 kg when full",
+      "Uses 40% less fuel, but light is 40% dimmer than regular variant"
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Torch",
+    "weight": "0.3 kg",
+    "comment": [
+      "Can keep Wolf at bay.",
+      "Can be obtained with a lit fire."
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Cardboard Matches/Wood Matches",
+    "weight": "0.005 kg",
+    "comment": [
+      "Very limited light source time. Only practical when used indoors"
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Wood Matches",
+    "weight": "0.10 kg",
+    "comment": [
+      "Very limited light source time. Only practical when used indoors"
+    ],
+    "type": "lighting"
+  },
+  {
+    "name": "Accelerant",
+    "weight": "0.10 kg",
+    "comment": [
+      "Greatly increases the chance of starting fires",
+      "Only used to start fires"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Can of Gunpowder",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be used to craft Ammunition",
+      "Can be used to greatly increase chances of starting fires",
+      "5 uses to start fires"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Cardboard Matches",
+    "weight": "0.005 kg",
+    "comment": [
+      "More common than wood matches",
+      "Less useful at starting fires than wood matches",
+      "Can be used as a light source"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Firestriker",
+    "weight": "0.10 kg",
+    "comment": [
+      "Most effective fire starter",
+      "Cannot be repaired and is very rare"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Flare",
+    "weight": "0.25 kg",
+    "comment": [
+      "Cannot turn off after activating. Limited Fire-starting capability"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Jerry Can",
+    "weight": "3.30 kg",
+    "comment": [
+      "0.30L can be used as accelerant",
+      "Can hold up to 4L of fuel",
+      "Collects fuel from scrapped lanterns"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Lantern Fuel",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be used to fuel Lanterns",
+      "Can hold up to 0.5L of fuel",
+      "Can be obtained from cooking fish",
+      "Can be used to greatly increase the chances of starting fires (requires 0.30 L)"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Magnifying Lens",
+    "weight": "0.10 kg",
+    "comment": [
+      "Doesn't lose condition when used",
+      "Can only be used outside in clear weather"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Marine Flare",
+    "weight": "0.25 kg",
+    "comment": [
+      "Cannot turn off after activating. Limited Fire-starting capability"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Torch",
+    "weight": "0.30 kg",
+    "comment": [
+      "Can be pulled from fires and used to start a fire elsewhere (Daisy Chaining)",
+      "Must use a match if unlit in order to start a fire"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Wood Matches",
+    "weight": "0.10 kg",
+    "comment": [
+      "Less common than Cardboard Matches",
+      "Increases chance of starting fires",
+      "Can be used as a light source"
+    ],
+    "type": "fire-starting"
+  },
+  {
+    "name": "Fishing Bait",
+    "weight": "0.05 kg",
+    "comment": [
+      "Can be used to increase Ice Fishing odds"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Fishing Lure (Acorns)",
+    "weight": "0.01 kg",
+    "comment": [
+      "Can be used to increase Ice Fishing odds",
+      "Better than Simple Fishing Lure"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Fishing Lure (Wire Bundle)",
+    "weight": "0.01 kg",
+    "comment": [
+      "Can be used to increase Ice Fishing odds",
+      "Better than Simple Fishing Lure"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Fishing Lure (Revolver Shell Casing)",
+    "weight": "0.01 kg",
+    "comment": [
+      "Can be used to increase Ice Fishing odds",
+      "Better than Simple Fishing Lure"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Simple Fishing Lure",
+    "weight": "0.01 kg",
+    "comment": [
+      "Can be used to increase Ice Fishing odds"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Fishing Tackle",
+    "weight": "0.02 kg",
+    "comment": [
+      "Required for fishing at ice holes",
+      "Can be used to repair clothing"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Fishing Tip-Up",
+    "weight": "0.30 kg",
+    "comment": [
+      "Trap used to catch fish over time",
+      "Breaks after multiple uses"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Hook",
+    "weight": "0.01 kg",
+    "comment": [
+      "Required to craft Fishing Tackle",
+      "Crafted using 1 Scrap Metal"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Line",
+    "weight": "0.01 kg",
+    "comment": [
+      "Required to craft Fishing Tackle",
+      "Crafted using 1 Cured Gut"
+    ],
+    "type": "fishing"
+  },
+  {
+    "name": "Hatchet",
+    "weight": "1.50 kg",
+    "comment": [
+      "Used to break down furniture and tree limbs",
+      "Can be used in a Wolf Struggle",
+      "Can be used to harvest and craft"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Improvised Hatchet",
+    "weight": "1.75 kg",
+    "comment": [
+      "Crafted in the Forge",
+      "Works slower than manufactured Hatchets"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Hunting Knife",
+    "weight": "0.50 kg",
+    "comment": [
+      "Used to break down cloth and cardboard items",
+      "Can be used in a Struggle",
+      "Can be used to harvest and craft"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Improvised Knife",
+    "weight": "0.75 kg",
+    "comment": [
+      "Crafted in the Forge",
+      "Slower than manufactured knives"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Cougar Claw Knife",
+    "weight": "0.60 kg",
+    "comment": [
+      "Crafted in the Forge",
+      "Does the highest damage during a Struggle",
+      "Requires killing a Cougar for materials"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Hacksaw",
+    "weight": "1.00 kg",
+    "comment": [
+      "Used to break down metal furniture",
+      "Can break down tree limbs and harvest saplings"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Heavy Hammer",
+    "weight": "2.00 kg",
+    "comment": [
+      "Used to craft tools in a Forge",
+      "Can be used to break down furniture"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Prybar",
+    "weight": "1.00 kg",
+    "comment": [
+      "Used to open locked doors and cars",
+      "Cannot be repaired"
+    ],
+    "type": "hand-tools"
+  },
+  {
+    "name": "Distress Pistol",
+    "weight": "0.40 kg",
+    "comment": [
+      "Rarest firearm in the game",
+      "Offers the best bleed out time of all weapons",
+      "Shots can scare off bears and wolves"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Fishing Tip-Up",
+    "weight": "0.30 kg",
+    "comment": [
+      "Trap used to catch fish over time",
+      "Breaks after multiple uses",
+      "Must be tended to more frequently than a Snare"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Flare Shell",
+    "weight": "0.05 kg",
+    "comment": [
+      "Used in the Distress Pistol",
+      "Very rare and difficult to find"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Hunting Rifle",
+    "weight": "4.00 kg",
+    "comment": [
+      "Most powerful firearm in the game",
+      "Holds 10 rounds",
+      "Very slow and can only be fired while aiming"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Barb's Rifle",
+    "weight": "4.50 kg",
+    "comment": [
+      "Most powerful firearm in the game",
+      "Heaviest Hunting Rifle",
+      "Highest durability of any Hunting Rifle"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Curator's Rifle",
+    "weight": "4.00 kg",
+    "comment": [
+      "Most powerful firearm in the game",
+      "Farthest range of any Hunting Rifle"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Vaughn's Rifle",
+    "weight": "3.00 kg",
+    "comment": [
+      "Most powerful firearm in the game",
+      "Lowest durability Hunting Rifle",
+      "Lightest Hunting Rifle"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Rifle Ammunition",
+    "weight": "0.02 kg",
+    "comment": [
+      "Can be crafted at an Ammunition Workbench",
+      "Used in the Hunting Rifle"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Revolver",
+    "weight": "1.50 kg",
+    "comment": [
+      "Holds fewer rounds than the Hunting Rifle (6 rounds)",
+      "Defensive over Offensive firearm",
+      "Faster draw speed than hunting rifle"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Forester's Revolver",
+    "weight": "1.50 kg",
+    "comment": [
+      "Highest durability of any Revolver"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Hunter's Revolver",
+    "weight": "1.75 kg",
+    "comment": [
+      "Heaviest Revolver",
+      "Farthest range of any Revolver"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Warden's Revolver",
+    "weight": "1.25 kg",
+    "comment": [
+      "Lightest Revolver",
+      "Fastest draw speed of any Revolver"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Revolver Ammunition",
+    "weight": "0.081 kg",
+    "comment": [
+      "Can be crafted at an Ammunition Workbench",
+      "More common than most ammunition",
+      "Used in the Revolver"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Survival Bow",
+    "weight": "0.50 kg",
+    "comment": [
+      "The only ranged weapon that can be crafted",
+      "Ammunition is reusable",
+      "Cannot be Repaired"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Woodwright's Bow",
+    "weight": "0.75 kg",
+    "comment": [
+      "Heaviest Bow",
+      "Highest durability Bow",
+      "Less sway and but also least range of any Bow",
+      "Ammunition is reusable",
+      "Cannot be Repaired"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Sport Bow",
+    "weight": "0.35 kg",
+    "comment": [
+      "Lightest Bow",
+      "Same stats as Survival Bow, but more durable",
+      "Ammunition is reusable",
+      "Cannot be Repaired"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Simple Arrow",
+    "weight": "0.15 kg",
+    "comment": [
+      "Can be crafted at a workbench",
+      "Harder to acquire resources to produce",
+      "Breaks after many shots",
+      "Can ricochet off of hard surfaces",
+      "Best durability arrow"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Fire Hardened Arrow",
+    "weight": "N/A",
+    "comment": [
+      "Improvised Arrow that can be made at Campfires",
+      "Easier to manufacture than Simple Arrows due to cheaper materials",
+      "Breaks after many shots",
+      "Can ricochet off of hard surfaces",
+      "Less durable than Simple Arrows"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Snare",
+    "weight": "0.30 kg",
+    "comment": [
+      "Crafted at a workbench with 1 Cured Gut and 1 Reclaimed Wood",
+      "Used to catch rabbits over time",
+      "Breaks after multiple uses"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Stone",
+    "weight": "0.15 kg",
+    "comment": [
+      "Most common ranged weapon",
+      "Used to stun rabbits and ptarmigans",
+      "Can be used to build rock caches"
+    ],
+    "type": "hunting"
+  },
+  {
+    "name": "Sewing Kit",
+    "survival_skill": "Mending",
+    "weight": "0.10 kg",
+    "comment": [
+      "Allows players to repair damaged clothing or craft new clothing with the appropriate materials."
+    ],
+    "type": "repair"
+  },
+  {
+    "name": "Fishing Tackle",
+    "survival_skill": "Mending",
+    "weight": "0.02 kg",
+    "comment": [
+      "Allows players to repair damaged clothing or craft new clothing with the appropriate materials."
+    ],
+    "type": "repair"
+  },
+  {
+    "name": "Firearm Cleaning Kit",
+    "survival_skill": "Cleaning",
+    "weight": "0.10 kg",
+    "comment": [
+      "Allows players to repair damaged hunting rifle and revolver."
+    ],
+    "type": "repair"
+  },
+  {
+    "name": "Whetstone",
+    "survival_skill": "Sharpening",
+    "weight": "0.10 kg",
+    "comment": [
+      "Allows players to repair damaged bladed tools."
+    ],
+    "type": "repair"
+  },
+  {
+    "name": "Simple Tools",
+    "survival_skill": "Repair",
+    "weight": "1.00 kg",
+    "comment": [
+      "Allows players to repair a variety of damaged tools."
+    ],
+    "type": "repair"
+  },
+  {
+    "name": "Quality Tools",
+    "survival_skill": "Repair",
+    "weight": "0.75 kg",
+    "comment": [
+      "Allows players to repair a variety of damaged tools at a better rate."
+    ],
+    "type": "repair"
+  },
+  {
+    "name": "Bedroll",
+    "weight": "1.00 kg",
+    "warmth": "5 °C",
+    "comment": [
+      "Allows players to sleep."
+    ],
+    "type": "sleep"
+  },
+  {
+    "name": "Improvised Down Bedroll",
+    "weight": "1.10 kg",
+    "warmth": "8 °C",
+    "comment": [
+      "Allows players to sleep.",
+      "Improved version of the Bedroll."
+    ],
+    "type": "sleep"
+  },
+  {
+    "name": "Bear Skin Bedroll",
+    "weight": "3.00 kg",
+    "warmth": "12 °C",
+    "comment": [
+      "Allows players to sleep.",
+      "Can keep Wolf at bay.",
+      "Warmest, but also Heaviest, Bedroll"
+    ],
+    "type": "sleep"
+  },
+  {
+    "name": "Handheld Shortwave Radio",
+    "weight": "0 kg",
+    "comment": [
+      "Used to find Supply Caches and hidden Bunkers in the Signal Void Tale",
+      "Requires a repaired Transmitter and the Aurora/Glimmer Fog to be present in order to pick up a signal"
+    ],
+    "type": "transmitter-parts"
+  },
+  {
+    "name": "Wire Bundle",
+    "weight": "0.10 kg",
+    "comment": [
+      "2 are needed to repair a Transmitter",
+      "1 bundle can be used to make a Fishing Lure (Wire Bundle)"
+    ],
+    "type": "transmitter-parts"
+  },
+  {
+    "name": "Car Battery",
+    "weight": "15.00 kg",
+    "comment": [
+      "Heaviest item in the game, but 1 is needed to repair Transmitters",
+      "Can be broken down into Scrap Lead and turned into Bullets at an Ammunition Work Bench"
+    ],
+    "type": "transmitter-parts"
+  },
+  {
+    "name": "Replacement Fuse",
+    "weight": "0.20 kg",
+    "comment": [
+      "3 are needed to repair a Transmitter"
+    ],
+    "type": "transmitter-parts"
+  },
+  {
+    "name": "Broken Arrow",
+    "weight": "0.15 kg",
+    "comment": [
+      "Can be harvested for 1 Arrowhead and 2 Crow Feathers"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Broken Fire Hardened Arrow",
+    "weight": "0.15 kg",
+    "comment": [
+      "Can be harvested for 1 Crow Feather"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Charcoal",
+    "weight": "0.10 kg",
+    "comment": [
+      "Allows players to map regions",
+      "Collected from burned out fires",
+      "Not available in story mode"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Elevator Crank",
+    "weight": "1.00 kg",
+    "comment": [
+      "Used to operate the elevator in the Last Prospect mine"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Gold Nugget",
+    "weight": "0.20 kg",
+    "comment": [
+      "A small clump of gold found in the Langston Mine."
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Mountaineering Rope",
+    "weight": "5.00 kg",
+    "comment": [
+      "Allows players to Rope Climb in designated areas",
+      "Can create safer, faster shortcuts at the expense of Fatigue"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Spray Paint",
+    "weight": "0.54 kg",
+    "comment": [
+      "Allows players to tag environments",
+      "Not available in story mode"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Spray Paint - Glyph",
+    "weight": "0.54 kg",
+    "comment": [
+      "Can be used to distract, stop, or halve the fog of the Darkwalker"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Travois",
+    "weight": "1.00 kg",
+    "comment": [
+      "Can be used to transport items anywhere on the Island"
+    ],
+    "type": "other"
+  },
+  {
+    "name": "Stay on Target",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Archery Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "Field Dressing Your Kill, Vol. I",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Carcass Harvesting Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "Wilderness Kitchen",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Cooking Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "Survive the Outdoors!",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Fire Starting Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "The Frozen Angler",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Ice Fishing Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "A Sewing Primer",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Mending Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "Frontier Shooting Guide",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Rifle Firearm Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+    "name": "Advanced Guns Guns Guns!",
+    "weight": "0.50 kg",
+    "comment": [
+      "Can be Researched to raise the Revolver Firearm Skill"
+    ],
+    "type": "research-book"
+  },
+  {
+		"name": "Fresh Gut",
+		"weightKg": "0.10",
+		"cureTime": "5 days",
+		"notes": "Can be dropped for Baiting"
+	},
+	{
+		"name": "Fresh Black Bear Hide",
+		"weightKg": "1.00",
+		"cureTime": "12 days"
+	},
+	{
+		"name": "Cougar Hide",
+		"weightKg": "0.75",
+		"cureTime": "10 days"
+	},
+	{
+		"name": "Fresh Deer Hide",
+		"weightKg": "0.50",
+		"cureTime": "5 days"
+	},
+	{
+		"name": "Fresh Moose Hide",
+		"weightKg": "5.00",
+		"cureTime": "10 days"
+	},
+	{
+		"name": "Fresh Rabbit Pelt",
+		"weightKg": "0.10",
+		"cureTime": "3 days"
+	},
+	{
+		"name": "Fresh Wolf Pelt",
+		"weightKg": "0.75",
+		"cureTime": "7 days"
+	},
+	{
+		"name": "Cured Gut",
+		"weightKg": "0.10",
+		"craftInto": [
+			"Line",
+			"Used to repair Animal Clothing",
+			"2 are used to repair Travois"
+		]
+	},
+	{
+		"name": "Cured Black Bear Hide",
+		"weightKg": "1.00",
+		"craftInto": ["Bear Skin Bedroll", "Bearskin Coat"]
+	},
+	{
+		"name": "Cured Cougar Hide",
+		"weightKg": "0.75",
+		"craftInto": "Cougar Hide Wrap"
+	},
+	{
+		"name": "Cured Deer Hide",
+		"weightKg": "0.50",
+		"craftInto": ["Deerskin Boots", "Deerskin Pants"]
+	},
+	{
+		"name": "Cured Moose Hide",
+		"weightKg": "5.00",
+		"craftInto": ["Moose-Hide Cloak", "Moose-Hide Satchel"]
+	},
+	{
+		"name": "Cured Rabbit Pelt",
+		"weightKg": "0.10",
+		"craftInto": ["Rabbitskin Hat", "Rabbitskin Mitts"]
+	},
+	{
+		"name": "Cured Wolf Pelt",
+		"weightKg": "0.75",
+		"craftInto": "Wolfskin Coat"
+	},
+	{
+		"name": "Cougar Claw",
+		"weightKg": "0.07",
+		"craftInto": "Cougar Claw Knife"
+	},
+	{
+		"name": "Acorns",
+		"weightKg": "0.10",
+		"comment": "Found around Oak Trees",
+		"canBeShelledInto": "Prepared Acorns"
+	},
+	{
+		"name": "Burdock Root",
+		"weightKg": "0.15",
+		"comment": "Dug up from Burdock plants",
+		"craftInto": "Prepared Burdock",
+		"usedAsRecipeIngredients": "Prepper's Pie"
+	},
+	{
+		"name": "Old Man's Beard Lichen",
+		"weightKg": "0.01",
+		"comment": "Found hanging on the low branches of trees",
+		"usedToCreate": "Old Man's Beard Wound Dressing"
+	},
+	{
+		"name": "Reishi Mushroom",
+		"weightKg": "0.05",
+		"comment": "Can be found on tree stumps in groups of 2-3",
+		"usedToCreate": [
+			"Prepared Reishi Mushrooms",
+			"Thomson Family Stew",
+			"Prepper's Pie"
+		]
+	},
+	{
+		"name": "Rose Hip",
+		"weightKg": "0.01",
+		"comment": "8 can be found when scavenging Rose Hip Bushes",
+		"usedToCreate": [
+			"Prepared Rose Hips",
+			"Camber Flight Porridge",
+			"Rose Hip Pie"
+		]
+	},
+	{
+		"name": "Acorn Grounds",
+		"weightKg": "0.20",
+		"comment": "Produced after using a Heavy Hammer to crush either 4 Acorns (Cooked) or 1 Acorns (Cooked - Large Portion)",
+		"usedToCreate": [
+			"Cup of Acorn Coffee",
+			"Acorn Bannock",
+			"Acorn Pancakes",
+			"Lily's Pancakes",
+			"Prepper's Pie",
+			"Stalker's Pie"
+		]
+	},
+	{
+		"name": "Prepared Acorns",
+		"weightKg": "0.05",
+		"comment": "Cook to produce Acorns (Cooked)"
+	},
+	{
+		"name": "Prepared Acorns (Large Portion)",
+		"weightKg": "0.25",
+		"comment": "Produced after grouping 4 Prepared Acorns together",
+		"cookToProduce": "Acorns (Cooked - Large Portion)"
+	},
+	{
+		"name": "Cured Birch Sapling",
+		"weightKg": "0.30",
+		"comment": "Used to produce 3 Arrow Shafts"
+	},
+	{
+		"name": "Cured Maple Sapling",
+		"weightKg": "0.20",
+		"comment": [
+			"1 is used to create Survival Bow",
+			"4 are used to create Travois"
+		]
+	},
+	{
+		"name": "Green Birch Sapling",
+		"weightKg": "0.30",
+		"comment": "Cure indoors for 4 days"
+	},
+	{
+		"name": "Green Maple Sapling",
+		"weightKg": "0.20",
+		"comment": "Cure indoors for 6 days"
+	},
+	{
+		"name": "Reclaimed Wood",
+		"weightKg": "0.10",
+		"comment": ["Used to craft Snare", "Can be used as Fuel for Fires"]
+	},
+	{
+		"name": "Stick",
+		"comment": [
+			"Used to create a Snow Shelter or Fire Hardened Arrow",
+			"Can be used as Fuel for Fires"
+		]
+	},
+	{
+		"name": "Bullet",
+		"weightKg": "0.005",
+		"comment": "Can be used to create Ammunition at an Ammunition Work Bench"
+	},
+	{
+		"name": "Dusting Sulfur",
+		"weightKg": "0.10",
+		"comment": "Can be mixed with Charcoal and Stump Remover at an Ammunition Work Bench to produce Can of Gunpowder"
+	},
+	{
+		"name": "Revolver Shell Casing",
+		"weightKg": "0.01",
+		"comment": "Can be reloaded with Bullets and Can of Gunpowder at an Ammunition Work Bench to create Revolver Ammunition"
+	},
+	{
+		"name": "Rifle Shell Casing",
+		"weightKg": "0.005",
+		"comment": "Can be reloaded with Bullets and Can of Gunpowder at an Ammunition Work Bench to create Rifle Ammunition"
+	},
+	{
+		"name": "Scrap Lead",
+		"weightKg": "0.25",
+		"comment": "Can be melted down at an Ammunition Work Bench to create Bullets"
+	},
+	{
+		"name": "Stump Remover",
+		"weightKg": "0.75",
+		"comment": "Can be mixed with Charcoal and Dusting Sulfur at an Ammunition Work Bench to produce Can of Gunpowder"
+	},
+	{
+		"name": "Arrow Shaft",
+		"weightKg": "0.05",
+		"comment": "Used to create Simple Arrow"
+	},
+	{
+		"name": "Crow Feather",
+		"weightKg": "0.01",
+		"comment": "Used to create Simple Arrow or Fire Hardened Arrow"
+	},
+	{
+		"name": "Cloth",
+		"weightKg": "0.10",
+		"comment": [
+			"Used to repair Cloth/Cotton Clothing",
+			"Used in the creation of some Tools"
+		]
+	},
+	{
+		"name": "Cured Leather",
+		"weightKg": "0.10",
+		"comment": "Used to repair Leather Clothing"
+	},
+	{
+		"name": "Ptarmigan Down",
+		"weightKg": "0.01",
+		"comment": "Used to craft and repair Improvised Down Bedroll and Improvised Insulation"
+	},
+	{
+		"name": "Scrap Metal",
+		"weightKg": "0.20",
+		"comment": [
+			"Used to craft Fishing Tip-Up, Hook, Improvised Crampons, Simple Fishing Lure, Fishing Lure (Acorns), Fishing Lure (Revolver Shell Casing), Fishing Lure (Wire Bundle)",
+			"Used to repair Metal Tools: Can Opener, Flashlight, Miner's Flashlight, Hacksaw, Quality Tools, Simple Tools, Storm Lantern, Spelunker's Lantern",
+			"Used to craft Tools at a Forge: Arrowhead, Improvised Hatchet, Improvised Knife, Spear Head"
+		]
+	},
+  {
+    "name": "Acorns (Cooked)",
+    "calories": 100,
+    "hydration": "0%",
+    "weight": "0.03 kg (0.066 lb)",
+    "calorie_density": "3333 kcal / kg (1,515 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Acorns (Cooked - Large Portion)",
+    "calories": 400,
+    "hydration": "0%",
+    "weight": "0.12 kg (0.264 lb)",
+    "calorie_density": null,
+    "vitamin_c": null
+  },
+  {
+    "name": "Airline Food - Chicken",
+    "calories": 620,
+    "hydration": "5%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "2480 kcal / kg (1,127 kcal / lb)",
+    "vitamin_c": "29%"
+  },
+  {
+    "name": "Airline Food - Vegetarian",
+    "calories": 560,
+    "hydration": "5%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "2240 kcal / kg (1,018 kcal / lb)",
+    "vitamin_c": "73%"
+  },
+  {
+    "name": "Bear Meat (Cooked)",
+    "calories": 900,
+    "hydration": "-15%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Bear Meat (Raw)",
+    "calories": 900,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Beef Jerky",
+    "calories": 350,
+    "hydration": "-10%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3500 kcal / kg (1,591 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Burbot (Cooked)",
+    "calories": 1952.50,
+    "hydration": "-5%",
+    "weight": "4.00 kg (8.8 lb)",
+    "calorie_density": "488 kcal / kg (222 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Burbot (Raw)",
+    "calories": 1950,
+    "hydration": "0%",
+    "weight": "6.00 kg (13.2 lb)",
+    "calorie_density": "325 kcal / kg (148 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Cat Tail Stalk",
+    "calories": 150,
+    "hydration": "0%",
+    "weight": "0.05 kg (0.11 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "1%"
+  },
+  {
+    "name": "Chocolate Bar",
+    "calories": 250,
+    "hydration": "-3%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Coho Salmon (Cooked)",
+    "calories": 1650,
+    "hydration": "-5%",
+    "weight": "3.70 kg (8.14 lb)",
+    "calorie_density": "455 kcal / kg (207 kcal / lb)",
+    "vitamin_c": "49%"
+  },
+  {
+    "name": "Coho Salmon (Raw)",
+    "calories": 1650,
+    "hydration": "0%",
+    "weight": "5.50 kg (12.1 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": "62%"
+  },
+  {
+    "name": "Condensed Milk",
+    "calories": 750,
+    "hydration": "25%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "12%"
+  },
+  {
+    "name": "Cup of Acorn Coffee",
+    "calories": 100,
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Cup of Coffee",
+    "calories": 100,
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Cup of Herbal Tea",
+    "calories": 100,
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "11%"
+  },
+  {
+    "name": "Dog Food",
+    "calories": 500,
+    "hydration": "5%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "1667 kcal / kg (758 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Energy Bar",
+    "calories": 500,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": "4%"
+  },
+  {
+    "name": "Granola Bar",
+    "calories": 300,
+    "hydration": "-5%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "2%"
+  },
+  {
+    "name": "Goldeye (Cooked)",
+    "calories": 630,
+    "hydration": "-5%",
+    "weight": "1.60 kg (3.52 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Goldeye (Raw)",
+    "calories": 630,
+    "hydration": "0%",
+    "weight": "2.10 kg (4.62 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Ketchup Chips",
+    "calories": 300,
+    "hydration": "-6%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "5%"
+  },
+  {
+    "name": "Lake Whitefish (Cooked)",
+    "calories": 575,
+    "hydration": "-5%",
+    "weight": "1.50 kg (3.3 lb)",
+    "calorie_density": "385 kcal / kg (175 kcal / lb)",
+    "vitamin_c": "37%"
+  },
+  {
+    "name": "Lake Whitefish (Raw)",
+    "calories": 575,
+    "hydration": "0%",
+    "weight": "2.30 kg (5.06 lb)",
+    "calorie_density": "250 kcal / kg (114 kcal / lb)",
+    "vitamin_c": "50%"
+  },
+  {
+    "name": "Maple Syrup",
+    "calories": 850,
+    "hydration": "0%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "2833 kcal / kg (1,288 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Military-Grade MRE",
+    "calories": 1750,
+    "hydration": "5%",
+    "weight": "0.50 kg (1.1 lb)",
+    "calorie_density": "3500 kcal / kg (1,591 kcal / lb)",
+    "vitamin_c": "65%"
+  },
+  {
+    "name": "Moose Meat (Cooked)",
+    "calories": 900,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Moose Meat (Raw)",
+    "calories": 900,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Orange Soda",
+    "calories": 250,
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Peanut Butter",
+    "calories": 900,
+    "hydration": "-5%",
+    "weight": "0.50 kg (1.1 lb)",
+    "calorie_density": "1800 kcal / kg (818 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Pinnacle Peaches",
+    "calories": 450,
+    "hydration": "20%",
+    "weight": "0.50 kg (1.1 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": "56%"
+  },
+  {
+    "name": "Pork and Beans",
+    "calories": 600,
+    "hydration": "-5%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "2400 kcal / kg (1,091 kcal / lb)",
+    "vitamin_c": "2%"
+  },
+  {
+    "name": "Rabbit (Cooked)",
+    "calories": 500,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rabbit (Raw)",
+    "calories": 500,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rainbow Trout (Cooked)",
+    "calories": 575,
+    "hydration": "-5%",
+    "weight": "1.50 kg (3.3 lb)",
+    "calorie_density": "385 kcal / kg (175 kcal / lb)",
+    "vitamin_c": "34%"
+  },
+  {
+    "name": "Rainbow Trout (Raw)",
+    "calories": 575,
+    "hydration": "0%",
+    "weight": "2.30 kg (5.06 lb)",
+    "calorie_density": "250 kcal / kg (114 kcal / lb)",
+    "vitamin_c": "45%"
+  },
+  {
+    "name": "Red Irish Lord (Cooked)",
+    "calories": 930,
+    "hydration": "-5%",
+    "weight": "2.00 kg (4.4 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Red Irish Lord (Raw)",
+    "calories": 930,
+    "hydration": "0%",
+    "weight": "3.10 kg (6.82 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rockfish (Cooked)",
+    "calories": 1500,
+    "hydration": "0%",
+    "weight": "3.25 kg (7.15 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Rockfish (Raw)",
+    "calories": 1500,
+    "hydration": "0%",
+    "weight": "5.00 kg (11 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Salty Crackers",
+    "calories": 600,
+    "hydration": "-20%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "6000 kcal / kg (2,727 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Smallmouth Bass (Cooked)",
+    "calories": 1500,
+    "hydration": "-5%",
+    "weight": "3.30 kg (7.26 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": "41%"
+  },
+  {
+    "name": "Smallmouth Bass (Raw)",
+    "calories": 1500,
+    "hydration": "0%",
+    "weight": "5.00 kg (11 lb)",
+    "calorie_density": "300 kcal / kg (136 kcal / lb)",
+    "vitamin_c": "55%"
+  },
+  {
+    "name": "Stacy's Grape Soda",
+    "calories": 250,
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Summit Soda",
+    "calories": 250,
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Tin of Sardines",
+    "calories": 300,
+    "hydration": "5%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3000 kcal / kg (1,364 kcal / lb)",
+    "vitamin_c": "3%"
+  },
+  {
+    "name": "Tomato Soup",
+    "calories": 300,
+    "hydration": "10%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "1200 kcal / kg (545 kcal / lb)",
+    "vitamin_c": "30%"
+  },
+  {
+    "name": "Venison (Cooked)",
+    "calories": 800,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Venison (Raw)",
+    "calories": 800,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Wolf Meat (Cooked)",
+    "calories": 800,
+    "hydration": "-10%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Wolf Meat (Raw)",
+    "calories": 800,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "900 kcal / kg (409 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Water (Potable)",
+    "calories": 0,
+    "hydration": "150%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "0 kcal / kg (0 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Water (Unsafe)",
+    "calories": 0,
+    "hydration": "150%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "0 kcal / kg (0 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Tin of Coffee",
+    "weight": "0.01 kg (0.022 lb)"
+  },
+  {
+    "name": "Herbal Tea",
+    "weight": "0.01 kg (0.022 lb)"
+  },
+  {
+    "name": "Birch Bark Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "6%"
+  },
+  {
+    "name": "Burdock Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "7%"
+  },
+  {
+    "name": "Go! Energy Drink",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.25 kg (0.55 lb)",
+    "calorie_density": "400 kcal / kg (182 kcal / lb)",
+    "vitamin_c": null
+  },
+  {
+    "name": "Prepared Burdock",
+    "calories": "275 kcal",
+    "hydration": "0%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "1833 kcal / kg (833 kcal / lb)",
+    "vitamin_c": "8%"
+  },
+  {
+    "name": "Reishi Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "5%"
+  },
+  {
+    "name": "Rose Hip Tea",
+    "calories": "100 kcal",
+    "hydration": "30%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "1000 kcal / kg (455 kcal / lb)",
+    "vitamin_c": "13%"
+  },
+  {
+    "name": "Bear Quarter"
+  },
+  {
+    "name": "Deer Quarter"
+  },
+  {
+    "name": "Moose Quarter"
+  },
+  {
+    "name": "Rabbit Carcass"
+  },
+  {
+    "name": "Wolf Quarter"
+  },
+  {
+    "name": "Canned Corn",
+    "calories": 295,
+    "hydration": "5%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "983 kcal / kg (447 kcal / lb)",
+    "vitamin_c": "52%"
+  },
+  {
+    "name": "Canned Ham",
+    "calories": 550,
+    "hydration": "-5%",
+    "weight": "0.40 kg (0.88 lb)",
+    "calorie_density": "1375 kcal / kg (625 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cougar Meat (Cooked)",
+    "calories": 800,
+    "hydration": "",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cougar Meat (Raw)",
+    "calories": "",
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cooked Potato",
+    "calories": 250,
+    "hydration": "-3%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "1666 kcal / kg (757 kcal / lb)",
+    "vitamin_c": "24%"
+  },
+  {
+    "name": "Ptarmigan (Cooked)",
+    "calories": 500,
+    "hydration": "-5%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ptarmigan (Raw)",
+    "calories": 500,
+    "hydration": "0%",
+    "weight": "1.00 kg (2.2 lb)",
+    "calorie_density": "500 kcal / kg (227 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Acorn Bannock",
+    "calories": 250,
+    "hydration": "-3%",
+    "weight": "0.05 kg (0.11 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Acorn Pancakes",
+    "calories": 750,
+    "hydration": "-3%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Bannock",
+    "calories": 200,
+    "hydration": "-3%",
+    "weight": "0.05 kg (0.11 lb)",
+    "calorie_density": "4000 kcal / kg (1,818 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Breyerhouse Pie",
+    "calories": 2125,
+    "hydration": "-3%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "10625 kcal / kg (4,830 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Broth",
+    "calories": 170,
+    "hydration": "5%",
+    "weight": "0.80 kg (1.76 lb)",
+    "calorie_density": "215 kcal / kg (98 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Camber Flight Porridge",
+    "calories": 1250,
+    "hydration": "0%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "4166 kcal / kg (1,894 kcal / lb)",
+    "vitamin_c": "59%"
+  },
+  {
+    "name": "Coastal Fishcakes",
+    "calories": 312,
+    "hydration": "0%",
+    "weight": "0.053 kg (0.117 lb)",
+    "calorie_density": "5886 kcal / kg (2,675 kcal / lb)",
+    "vitamin_c": "14%"
+  },
+  {
+    "name": "Dockworker's Pie",
+    "calories": 1500,
+    "hydration": "-3%",
+    "weight": "0.30 kg (0.66 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": "68%"
+  },
+  {
+    "name": "Lily's Pancakes",
+    "calories": 1000,
+    "hydration": "0%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "5000 kcal / kg (2,273 kcal / lb)",
+    "vitamin_c": "57%"
+  },
+  {
+    "name": "Pancakes",
+    "calories": 500,
+    "hydration": "-3%",
+    "weight": "0.15 kg (0.33 lb)",
+    "calorie_density": "3333 kcal / kg (1,515 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Peach Pie",
+    "calories": 250,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": "19%"
+  },
+  {
+    "name": "Porridge",
+    "calories": 350,
+    "hydration": "0%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "1750 kcal / kg (795 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ptarmigan Pie",
+    "calories": 250,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ptarmigan Stew",
+    "calories": 750,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2142 kcal / kg (974 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Prepper's Pie",
+    "calories": 900,
+    "hydration": "-3%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "4500 kcal / kg (2,045 kcal / lb)",
+    "vitamin_c": "22%"
+  },
+  {
+    "name": "Rabbit Pie",
+    "calories": 250,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2500 kcal / kg (1,136 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Rabbit Stew",
+    "calories": 750,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2142 kcal / kg (974 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Ranger Stew",
+    "calories": 1600,
+    "hydration": "-3%",
+    "weight": "0.40 kg (0.88 lb)",
+    "calorie_density": "4000 kcal / kg (1,818 kcal / lb)",
+    "vitamin_c": "42%"
+  },
+  {
+    "name": "Rose Hip Pie",
+    "calories": 225,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "2250 kcal / kg (1,023 kcal / lb)",
+    "vitamin_c": "6%"
+  },
+  {
+    "name": "Stalker's Pie",
+    "calories": 1600,
+    "hydration": "-3%",
+    "weight": "0.20 kg (0.44 lb)",
+    "calorie_density": "8000 kcal / kg (3,636 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Thomson Family Stew",
+    "calories": 900,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2571 kcal / kg (1,169 kcal / lb)",
+    "vitamin_c": "80%"
+  },
+  {
+    "name": "Trout Stew",
+    "calories": 750,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2142 kcal / kg (974 kcal / lb)",
+    "vitamin_c": "17%"
+  },
+  {
+    "name": "Venison Pie",
+    "calories": 325,
+    "hydration": "0%",
+    "weight": "0.10 kg (0.22 lb)",
+    "calorie_density": "3250 kcal / kg (1,477 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Venison Stew",
+    "calories": 900,
+    "hydration": "3%",
+    "weight": "0.35 kg (0.77 lb)",
+    "calorie_density": "2571 kcal / kg (1,169 kcal / lb)",
+    "vitamin_c": ""
+  },
+  {
+    "name": "Cooking Oil",
+    "weight": "0.05 kg"
+  },
+  {
+    "name": "Old Mill Flour",
+    "weight": "1.50 kg"
+  },
+  {
+    "name": "Potato",
+    "weight": "0.20 kg"
+  },
+  {
+    "name": "Running River Oats",
+    "weight": "0.80 kg"
+  },
+  {
+    "name": "Salt",
+    "weight": "0.25 kg"
+  },
+  {
+    "name": "Antiseptic",
+    "prevents": "Infection",
+    "effect": "Reduces the risk of infection from an animal attack by 40%",
+    "dose": "0.10 liters",
+    "weightKg": "0.14",
+    "type": "Artificial"
+  },
+  {
+    "name": "Old Man's Beard Wound Dressing",
+    "prevents": "Infection",
+    "effect": "Reduces the risk of infection from an animal attack by 40%",
+    "dose": "1 item",
+    "weightKg": "0.10",
+    "type": "Natural"
+  },
+  {
+    "name": "Water Purification Tablets",
+    "prevents": "Dysentery",
+    "effect": "Purifies 1 liter of unsafe water, allowing the player to drink without risk of Dysentery",
+    "dose": "1 tablet",
+    "weightKg": "0.06",
+    "type": "Artificial"
+  },
+  {
+    "name": "Prepared Birch Bark",
+    "cookedInto": "Birch Bark Tea",
+    "weightPerDoseKg": "0.05",
+    "weightPerDoseLb": "0.11"
+  },
+  {
+    "name": "Prepared Burdock",
+    "cookedInto": "Burdock Tea",
+    "weightPerDoseKg": "0.15",
+    "weightPerDoseLb": "0.33"
+  },
+  {
+    "name": "Prepared Reishi Mushrooms",
+    "cookedInto": "Reishi Tea",
+    "weightPerDoseKg": "0.05",
+    "weightPerDoseLb": "0.11"
+  },
+  {
+    "name": "Prepared Rose Hips",
+    "cookedInto": "Rose Hip Tea",
+    "weightPerDoseKg": "0.05",
+    "weightPerDoseLb": "0.11"
+  },
+  {
+    "name": "Antibiotics",
+    "treatsRestores": [
+      "Dysentery",
+      "Food Poisoning",
+      "Infection",
+      "Intestinal Parasites"
+    ],
+    "doseSize": "2 pills",
+    "weightPerDoseKg": "0.03",
+    "weightPerDoseLb": "0.066",
+    "renewable": "Artificial"
+  },
+  {
+    "name": "Bandage",
+    "treatsRestores": [
+      "Blood Loss",
+      "Broken Ribs",
+      "Burns",
+      "Sprained Ankle",
+      "Sprained Wrist"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Artificial"
+  },
+  {
+    "name": "Birch Bark Tea",
+    "treatsRestores": "Restore Condition",
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "name": "Burdock Tea",
+    "treatsRestores": [
+      "Dysentery",
+      "Food Poisoning",
+      "Infection",
+      "Intestinal Parasites"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "name": "Emergency Stim",
+    "treatsRestores": [
+      "Sprained Ankle",
+      "Restore Condition (15)",
+      "Energy Boost"
+    ],
+    "effect": "Gives unlimited Stamina for a limited time (before total depletion)",
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Artificial"
+  },
+  {
+    "name": "Go! Energy Drink",
+    "treatsRestores": [
+      "Fatigue Reduced",
+      "Energy Boost",
+      "Headache"
+    ],
+    "effect": [
+      "Restores Fatigue (for a limited time before depletion)",
+      "Gives Energy Boost (for a limited time before depletion)",
+      "Gives Headache after a while"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.25",
+    "weightPerDoseLb": "0.55",
+    "renewable": "Artificial"
+  },
+  {
+    "name": "Painkillers",
+    "treatsRestores": [
+      "Broken Ribs",
+      "Burns",
+      "Pain"
+    ],
+    "doseSize": "2 pills",
+    "weightPerDoseKg": "0.03",
+    "weightPerDoseLb": "0.066",
+    "renewable": "Artificial"
+  },
+  {
+    "name": "Reishi Tea",
+    "treatsRestores": [
+      "Dysentery",
+      "Food Poisoning",
+      "Infection",
+      "Intestinal Parasites"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "name": "Rose Hip Tea",
+    "treatsRestores": [
+      "Broken Ribs",
+      "Burns",
+      "Pain"
+    ],
+    "doseSize": "1",
+    "weightPerDoseKg": "0.10",
+    "weightPerDoseLb": "0.22",
+    "renewable": "Natural"
+  },
+  {
+    "name": "Aviator Cap",
+    "slug": "aviator-cap",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "4%",
+    "Mobility": "0%",
+    "Weight": "0.30 kg",
+    "Weight Ratio": "6.67 °C/kg"
+  },
+  {
+    "name": "Astrid's Toque",
+    "slug": "astrids-toque",
+    "Temperature": "1.5 °C",
+    "Windproofness": "0.75 °C",
+    "Waterproofness": "30%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.15 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Balaclava",
+    "slug": "balaclava",
+    "Temperature": "2.0 °C",
+    "Windproofness": "1.5 °C",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "8.0 °C/kg"
+  },
+  {
+    "name": "Baseball Cap",
+    "slug": "baseball-cap",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.0 °C",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "name": "Cotton Scarf",
+    "slug": "cotton-scarf",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.0 °C",
+    "Waterproofness": "5%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "name": "Cotton Toque",
+    "slug": "cotton-toque",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "10%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Cougar Hide Wrap",
+    "slug": "cougar-hide-wrap",
+    "Temperature": "3.0 °C",
+    "Windproofness": "3.0 °C",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "0%",
+    "Weight": "1.00 kg",
+    "Weight Ratio": "3.0 °C/kg"
+  },
+  {
+    "name": "Fleece Cowl",
+    "slug": "fleece-cowl",
+    "Temperature": "1.5 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "20%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "6.0 °C/kg"
+  },
+  {
+    "name": "Hardhat",
+    "slug": "hardhat",
+    "Temperature": "0.0 °C",
+    "Windproofness": "0.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "4%",
+    "Mobility": "0%",
+    "Weight": "0.40 kg",
+    "Weight Ratio": "0.0 °C/kg"
+  },
+  {
+    "name": "Improvised Head Wrap",
+    "slug": "improvised-head-wrap",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "0%",
+    "Protection": "0.5%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Long Wool Scarf",
+    "slug": "long-wool-scarf",
+    "Temperature": "1.5 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "6.0 °C/kg"
+  },
+  {
+    "name": "Mackenzie's Toque",
+    "slug": "mackenzies-toque",
+    "Temperature": "1.5 °C",
+    "Windproofness": "0.75 °C",
+    "Waterproofness": "30%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.15 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Rabbitskin Hat",
+    "slug": "rabbitskin-hat",
+    "Temperature": "2.0 °C",
+    "Windproofness": "1.5 °C",
+    "Waterproofness": "30%",
+    "Protection": "4%",
+    "Mobility": "0%",
+    "Weight": "0.35 kg",
+    "Weight Ratio": "5.71 °C/kg"
+  },
+  {
+    "name": "Technical Balaclava",
+    "slug": "technical-balaclava",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "50%",
+    "Protection": "5%",
+    "Mobility": "0%",
+    "Weight": "0.20 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Wool Scarf",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Wool Toque",
+    "Temperature": "2.0 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "8.0 °C/kg"
+  },
+  {
+    "name": "Astrid's Gloves",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "5%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "name": "Driving Gloves",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "0%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "name": "Fleece Mittens",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "5%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "name": "Gauntlets",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "name": "Improvised Hand Wraps",
+    "Temperature": "0.5 °C",
+    "Windproofness": "0.25 °C",
+    "Waterproofness": "0%",
+    "Protection": "0.5%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "5.0 °C/kg"
+  },
+  {
+    "name": "Rabbitskin Mitts",
+    "Temperature": "2.0 °C",
+    "Windproofness": "2.0 °C",
+    "Waterproofness": "50%",
+    "Protection": "3%",
+    "Mobility": "-5%",
+    "Weight": "1.00 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "name": "Ski Gloves",
+    "Temperature": "1.0 °C",
+    "Windproofness": "1.0 °C",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "name": "Tactical Gloves",
+    "Temperature": "1.5 °C",
+    "Windproofness": "3.0 °C",
+    "Waterproofness": "50%",
+    "Protection": "7%",
+    "Mobility": "-1%",
+    "Weight": "0.75 kg",
+    "Weight Ratio": "2.0 °C/kg"
+  },
+  {
+    "name": "Wool Mittens",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg",
+    "Weight Ratio": "10.0 °C/kg"
+  },
+  {
+    "name": "Work Gloves",
+    "Temperature": "1.0 °C",
+    "Windproofness": "0.5 °C",
+    "Waterproofness": "0%",
+    "Protection": "4%",
+    "Mobility": "-2%",
+    "Weight": "0.25 kg",
+    "Weight Ratio": "4.0 °C/kg"
+  },
+  {
+    "name": "Astrid's Sweater",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Cowichan Sweater",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "5%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "name": "Dress Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Fisherman's Sweater",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "1.5 °C (2.7 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "name": "Hockey Jersey",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "15%",
+    "Protection": "3%",
+    "Mobility": "0%",
+    "Weight": "0.30 kg (0.66 lb)",
+    "Weight Ratio": "3.33 °C/kg (2.72 °F/lb)"
+  },
+  {
+    "name": "Hoodie",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Mackenzie's Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Mackenzie's Sweater",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Plaid Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Sweatshirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Thick Wool Sweater",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "3 °C/kg (2.45 °F/lb)"
+  },
+  {
+    "name": "Thin Wool Sweater",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "name": "T-Shirt",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Wool Shirt",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "40%",
+    "Protection": "2%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "name": "Astrid's Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-4%",
+    "Weight": "1.25 kg (2.75 lb)",
+    "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
+  },
+  {
+    "name": "Bearskin Coat",
+    "Temperature": "6.0 °C (10.8 °F)",
+    "Windproofness": "5.0 °C (9 °F)",
+    "Waterproofness": "80%",
+    "Protection": "15%",
+    "Mobility": "-20%",
+    "Weight": "5.00 kg (11 lb)",
+    "Weight Ratio": "1.2 °C/kg (0.98 °F/lb)"
+  },
+  {
+    "name": "Down Vest",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Expedition Parka",
+    "Temperature": "4.0 °C (7.2 °F)",
+    "Windproofness": "6.0 °C (10.8 °F)",
+    "Waterproofness": "50%",
+    "Protection": "6%",
+    "Mobility": "-5%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "2.67 °C/kg (2.18 °F/lb)"
+  },
+  {
+    "name": "Flight Jacket",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "5.0 °C (9 °F)",
+    "Waterproofness": "50%",
+    "Protection": "10%",
+    "Mobility": "-5%",
+    "Weight": "2.50 kg (5.5 lb)",
+    "Weight Ratio": "1.2 °C/kg (0.98 °F/lb)"
+  },
+  {
+    "name": "Light Shell",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Mackenzie's Parka",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-4%",
+    "Weight": "1.25 kg (2.75 lb)",
+    "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
+  },
+  {
+    "name": "Mackinaw Jacket",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1.67 °C/kg (1.36 °F/lb)"
+  },
+  {
+    "name": "Mariner's Pea Coat",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "75%",
+    "Protection": "7%",
+    "Mobility": "-6%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "name": "Military Coat",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "40%",
+    "Protection": "8%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "name": "Miner's Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "50%",
+    "Protection": "4%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Moose-Hide Cloak",
+    "Temperature": "3.5 °C (6.3 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "90%",
+    "Protection": "20%",
+    "Mobility": "-10%",
+    "Weight": "4.00 kg (8.8 lb)",
+    "Weight Ratio": "0.88 °C/kg (0.71 °F/lb)"
+  },
+  {
+    "name": "Old Fashioned Parka",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "20%",
+    "Protection": "5%",
+    "Mobility": "-7%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "name": "Simple Parka",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-4%",
+    "Weight": "1.25 kg (2.75 lb)",
+    "Weight Ratio": "1.6 °C/kg (1.31 °F/lb)"
+  },
+  {
+    "name": "Ski Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "30%",
+    "Protection": "3%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Sport Vest",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "5%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Tactical Jacket",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "50%",
+    "Protection": "15%",
+    "Mobility": "-4%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Urban Parka",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "-2%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "name": "Windbreaker",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "50%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Wolfskin Coat",
+    "Temperature": "4.0 °C (7.2 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "60%",
+    "Protection": "12%",
+    "Mobility": "-15%",
+    "Weight": "3.00 kg (6.6 lb)",
+    "Weight Ratio": "1.33 °C/kg (1.09 °F/lb)"
+  },
+  {
+    "name": "Thermal Underwear",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "20%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "name": "Wool Longjohns",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "35%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "name": "Astrid's Jeans",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "2%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Cargo Pants",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "0%",
+    "Protection": "3%",
+    "Mobility": "-1%",
+    "Weight": "0.75 kg (1.65 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Combat Pants",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "7%",
+    "Mobility": "0%",
+    "Weight": "0.75 kg (1.65 lb)",
+    "Weight Ratio": "2.67 °C/kg (2.18 °F/lb)"
+  },
+  {
+    "name": "Deerskin Pants",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "60%",
+    "Protection": "10%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Jeans",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "2%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Mackenzie's Pants",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "2%",
+    "Mobility": "-1%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Miner's Pants",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "20%",
+    "Protection": "6%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1.5 °C/kg (1.22 °F/lb)"
+  },
+  {
+    "name": "Snow Pants",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "5%",
+    "Mobility": "-5%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "name": "Work Pants",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "10%",
+    "Protection": "8%",
+    "Mobility": "-3%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Climbing Socks",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "25%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  },
+  {
+    "name": "Sports Socks",
+    "Temperature": "0.25 °C (0.5 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.10 kg (0.22 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "name": "Wool Socks",
+    "Temperature": "0.5 °C (0.9 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "20%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Astrid's Boots",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Chemical Boots",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "3.0 °C (5.4 °F)",
+    "Waterproofness": "60%",
+    "Protection": "5%",
+    "Mobility": "-8%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Combat Boots",
+    "Temperature": "1.5 °C (2.7 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "20%",
+    "Protection": "10%",
+    "Mobility": "-7%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "0.75 °C/kg (0.61 °F/lb)"
+  },
+  {
+    "name": "Deerskin Boots",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "7%",
+    "Mobility": "-5%",
+    "Weight": "2.00 kg (4.4 lb)",
+    "Weight Ratio": "1.25 °C/kg (1.02 °F/lb)"
+  },
+  {
+    "name": "Insulated Boots",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "50%",
+    "Protection": "4%",
+    "Mobility": "-12%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Leather Shoes",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "10%",
+    "Protection": "2%",
+    "Mobility": "-3%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Mackenzie's Boots",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Mountaineering Boots",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "2.5 °C/kg (2.04 °F/lb)"
+  },
+  {
+    "name": "Mukluks",
+    "Temperature": "2.5 °C (4.5 °F)",
+    "Windproofness": "2.0 °C (3.6 °F)",
+    "Waterproofness": "40%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1.67 °C/kg (1.36 °F/lb)"
+  },
+  {
+    "name": "Running Shoes",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "0%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "2 °C/kg (1.63 °F/lb)"
+  },
+  {
+    "name": "Ski Boots",
+    "Temperature": "3.0 °C (5.4 °F)",
+    "Windproofness": "4.0 °C (7.2 °F)",
+    "Waterproofness": "30%",
+    "Protection": "10%",
+    "Mobility": "-20%",
+    "Weight": "4.0 kg (8.8 lb)",
+    "Weight Ratio": "0.75 °C/kg (0.61 °F/lb)"
+  },
+  {
+    "name": "Trail Boots",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "30%",
+    "Protection": "5%",
+    "Mobility": "-3%",
+    "Weight": "1.00 kg (2.2 lb)",
+    "Weight Ratio": "1 °C/kg (0.82 °F/lb)"
+  },
+  {
+    "name": "Work Boots",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "5%",
+    "Protection": "7%",
+    "Mobility": "-10%",
+    "Weight": "1.50 kg (3.3 lb)",
+    "Weight Ratio": "1.33 °C/kg (1.09 °F/lb)"
+  },
+  {
+    "name": "Ballistic Vest",
+    "Temperature": "0.0 °C (0 °F)",
+    "Windproofness": "0.0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "50%",
+    "Mobility": "-40%",
+    "Weight": "6.00 kg (13.2 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "name": "Crampons",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "100%",
+    "Protection": "3%",
+    "Mobility": "-5%",
+    "Weight": "0.50 kg (1.1 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "name": "Foreman's Tool Belt",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.20 kg (0.44 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "name": "Improvised Crampons",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "100%",
+    "Protection": "3%",
+    "Mobility": "-5%",
+    "Weight": "0.75 kg (1.65 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "name": "Improvised Insulation",
+    "Temperature": "2.0 °C (3.6 °F)",
+    "Windproofness": "1.0 °C (1.8 °F)",
+    "Waterproofness": "0%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "8 °C/kg (6.53 °F/lb)"
+  },
+  {
+    "name": "Moose-Hide Satchel",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "name": "Security Chief's Rifle Holster",
+    "Temperature": "0 °C (0 °F)",
+    "Windproofness": "0 °C (0 °F)",
+    "Waterproofness": "0%",
+    "Protection": "0%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "0 °C/kg (0 °F/lb)"
+  },
+  {
+    "name": "Wool Ear Wrap",
+    "Temperature": "1.0 °C (1.8 °F)",
+    "Windproofness": "0.5 °C (0.9 °F)",
+    "Waterproofness": "20%",
+    "Protection": "1%",
+    "Mobility": "0%",
+    "Weight": "0.25 kg (0.55 lb)",
+    "Weight Ratio": "4 °C/kg (3.27 °F/lb)"
+  }
+]

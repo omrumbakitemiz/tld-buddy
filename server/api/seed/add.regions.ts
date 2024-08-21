@@ -20,10 +20,7 @@ export default defineEventHandler(async () => {
       slug: region.slug,
       type: region.type,
       world: region.world,
-      difficulty: region.difficulty,
-      areaSize: region.area_size.toString(),
-      modes: region.modes,
-      releaseDate: region.release_date,
+      difficulty: region.difficulty
     };
   });
 

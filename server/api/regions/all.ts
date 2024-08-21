@@ -2,9 +2,9 @@
 import { Region } from "~~/server/api/regions/type";
 
 export default defineEventHandler(async () => {
-  const { regions } = (await import("../../../tld-data/regions.json")) as {
-    regions: Region[];
-  };
+  // const { regions } = (await import("../../../tld-data/regions.json")) as {
+  //   regions: Region[];
+  // };
 
-  return regions;
+  return [];
 });

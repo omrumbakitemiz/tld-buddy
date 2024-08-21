@@ -1,4 +1,4 @@
-import { db, RegionItems } from "~~/server/drizzle/schema";
+import { db } from "~~/server/drizzle/schema";
 
 export default defineEventHandler(async (event) => {
   const { regionSlug, itemName, itemType } = await readBody(event);
@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const result = await db.insert(RegionItems).values({
-    itemName,
-    itemType,
-    regionSlug,
-  })
+  // const result = await db.insert(RegionItems).values({
+  //   itemName,
+  //   itemType,
+  //   regionSlug,
+  // })
 
-  return result.rows;
+  // return result.rows;
 });
