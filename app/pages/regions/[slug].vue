@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import { ChevronsDownUp } from "lucide-vue-next";
-import type { RegionItem } from "~~/server/api/regions/type";
 
 const route = useRoute();
-// const { data: regionDetails } = await useFetch(`/api/regions/${route.params.slug}`);
-
-// const tools = regionDetails.value.items.filter((item: RegionItem) => item.itemType === "tools");
-// const clothing = regionDetails.value.items.filter((item: RegionItem) => item.itemType === "clothing");
-// const firstAid = regionDetails.value.items.filter((item: RegionItem) => item.itemType === "first-aid");
-// const foods = regionDetails.value.items.filter((item: RegionItem) => item.itemType === "foods");
-// const materials = regionDetails.value.items.filter((item: RegionItem) => item.itemType === "materials");
+const { data: regionDetails } = await useFetch(`/api/regions/${route.params.slug}`);
 </script>
 
 <template>
-  <div>test</div>
+  <div >
+    <p>{{  route.params }}</p>
+    
+    <p v-if="regionDetails">{{ JSON.stringify(regionDetails) }}</p>
+  </div>
   <!-- <div class="flex justify-between p-4" v-if="regionDetails">
     <div class="flex w-full flex-col gap-4">
       <div class="flex flex-col items-center justify-center gap-4 py-8 px-6 sm:px-10">
@@ -24,9 +21,6 @@ const route = useRoute();
             <div class="flex flex-col">
               <div class="text-2xl font-bold">
                 {{ regionDetails.name }}
-              </div>
-              <div class="text-sm text-muted-foreground">
-                {{ regionDetails.description }}
               </div>
             </div>
           </div>

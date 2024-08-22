@@ -1,37 +1,36 @@
 import { eq } from "drizzle-orm";
-import { db } from "../../drizzle/schema";
-// import { Region, RegionDetails } from "~~/server/api/regions/type";
+import { db, ItemLocations, Regions } from "~~/server/drizzle/schema";
 
-// return region details by id by filtering all items based on region id
 export default defineEventHandler(async (event) => {
-  // const slug = getRouterParam(event, "slug");
+  const slug = getRouterParam(event, 'slug')
 
-  // if (!slug) {
-  //   return new Response("Not Found", { status: 404 });
-  // }
+  if (!slug) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Bad Request",
+      message: "Missing required field: slug",
+    });
+  }
 
-  // // get all regions from tld-data/regions.json
-  // const { regions } = (await import("../../../tld-data/regions.json")) as {
-  //   regions: Region[];
-  // };
+  if (typeof slug !== "string") {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Bad Request",
+      message: "Invalid slug",
+    });
+  }
 
-  // const region = regions.find((region) => region.slug === slug);
+  const regions = await db.select().from(Regions).where(eq(Regions.slug, slug));
 
-  // if (!region) {
-  //   return new Response("Not Found", { status: 404 });
-  // }
+  const region = regions[0];
 
-  // const regionItems = await db
-  //   .select()
-  //   .from(RegionItems)
-  //   .where(eq(RegionItems.regionSlug, slug));
+  const itemLocationsResponse = await db
+    .select()
+    .from(ItemLocations)
+    .where(eq(ItemLocations.regionId, region.id));
 
-  // console.log(regionItems);
-
-  // const response = {
-  //   ...region,
-  //   items: [...regionItems],
-  // } as RegionDetails;
-
-  return [];
+  return {
+    name: region.name,
+    items: itemLocationsResponse,
+  }
 });

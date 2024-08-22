@@ -1,10 +1,12 @@
-// return regions from tld-data/regions.json for now
-import { Region } from "~~/server/api/regions/type";
+import { db, Regions } from "~~/server/drizzle/schema";
 
-export default defineEventHandler(async () => {
-  // const { regions } = (await import("../../../tld-data/regions.json")) as {
-  //   regions: Region[];
-  // };
-
-  return [];
-});
+export default defineCachedEventHandler(
+  async () => {
+    return await db.select().from(Regions);
+  },
+  {
+    name: "getAllRegions",
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+    getKey: () => "regions",
+  } // 1 day
+);

@@ -21,7 +21,6 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "lucide-vue-next": "^0.429.0",
-    "nuxt": "^3.12.4",
     "radix-vue": "^1.9.4",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
@@ -36,8 +35,9 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "drizzle-kit": "^0.24.0",
     "nuxi": "^3.12.0",
+    "nuxt": "^3.13.0",
     "shadcn-nuxt": "^0.10.4",
-    "typescript": "^5.5.4",
-    "tsx": "^4.17.0"
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
   }
 }

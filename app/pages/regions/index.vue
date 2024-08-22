@@ -3,6 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 const { data: regions } = await useFetch('/api/regions/all');
+
+const difficultColor = (difficulty: string | null) => {
+  if (difficulty === 'Beginner') {
+    return 'text-primary';
+  } if (difficulty === 'Intermediate') {
+    return 'text-primary';
+  }
+  return 'text-destructive';
+}
 </script>
 
 <template>
@@ -15,13 +24,9 @@ const { data: regions } = await useFetch('/api/regions/all');
       </CardHeader>
       <CardContent class="grid grid-cols-2 gap-4">
         <div class="space-y-1">
-          <!-- change color based on difficulty -->
           <p
-            :class="cn('text-sm font-medium leading-none', region.difficulty === 'Beginner' ? 'text-primary' : 'text-destructive')">
+            :class="cn('text-sm font-medium leading-none', difficultColor(region.difficulty))">
             {{ region.difficulty }}
-          </p>
-          <p class="text-sm text-muted-foreground">
-            {{ region.area_size }} km²
           </p>
         </div>
       </CardContent>

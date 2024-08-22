@@ -8,21 +8,17 @@ export const db = drizzle(sql);
 
 export const Regions = pgTable("regions", {
 	id: serial("id").primaryKey(),
-	name: text("name"),
-	slug: text("slug"),
+	name: text("name").notNull(),
+	slug: text("slug").notNull(),
 	type: text("type"),
 	world: text("world"),
 	difficulty: text("difficulty"),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const Locations = pgTable("locations", {
 	id: serial("id").primaryKey(),
-	name: text("name"),
-	regionName: text("region_name"),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+	name: text("name").notNull(),
+	regionName: text("region_name").notNull(),
 });
 
 export const Items = pgTable("items", {
@@ -63,13 +59,14 @@ export const Items = pgTable("items", {
   weightRatio: text('weightRatio'),
 });
 
-export const itemLocations = pgTable("item_locations", {
-	itemId: integer("item_id")
-		.references(() => Items.id)
-		.notNull(),
-	locationId: integer("location_id")
-		.references(() => Locations.id)
-		.notNull(),
+export const ItemLocations = pgTable("item_locations", {
+  id: serial("id").primaryKey(),
+	itemId: integer("item_id").notNull(),
+	locationId: integer("location_id").notNull(),
+  regionId: integer("region_id").notNull(),
+  count: integer("count").default(1).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 // export const locationsRelations = relations(Locations, ({ one, many }) => ({

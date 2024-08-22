@@ -1,16 +1,12 @@
-export default defineEventHandler(async (event) => {
-  // get all json files from tld-data folder and return them
-  const tools = await import("../../../tld-data/tools.json");
-  const clothing = await import("../../../tld-data/clothing.json");
-  const firstAid = await import("../../../tld-data/first-aid.json");
-  const foods = await import("../../../tld-data/foods.json");
-  const materials = await import("../../../tld-data/materials.json");
+import { db, Items } from "~~/server/drizzle/schema";
 
-  return {
-    tools,
-    clothing,
-    firstAid,
-    foods,
-    materials,
-  };
-});
+export default defineCachedEventHandler(
+  async () => {
+    return await db.select().from(Items);
+  },
+  {
+    name: "getAllItems",
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+    getKey: () => "items",
+  } // 1 day
+);
