@@ -65,6 +65,7 @@ export const ItemLocations = pgTable("item_locations", {
 	locationId: integer("location_id").notNull(),
   regionId: integer("region_id").notNull(),
   count: integer("count").default(1).notNull(),
+  notes: text("notes"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

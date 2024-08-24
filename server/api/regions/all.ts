@@ -8,5 +8,6 @@ export default defineCachedEventHandler(
     name: "getAllRegions",
     maxAge: 60 * 60 * 24 * 365, // 1 year
     getKey: () => "regions",
-  } // 1 day
+    shouldBypassCache: () => process.env.NODE_ENV === "development",
+  }
 );

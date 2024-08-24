@@ -8,5 +8,6 @@ export default defineCachedEventHandler(
     name: "getAllItems",
     maxAge: 60 * 60 * 24 * 365, // 1 year
     getKey: () => "items",
-  } // 1 day
+    shouldBypassCache: () => process.env.NODE_ENV === "development",
+  }
 );
