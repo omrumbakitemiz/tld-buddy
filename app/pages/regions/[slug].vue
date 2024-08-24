@@ -3,6 +3,8 @@ import type { RegionDetails } from '~~/server/type';
 
 const route = useRoute();
 const { data: regionDetails, status } = await useFetch<RegionDetails>(`/api/regions/${route.params.slug}`);
+
+const { data: items } = await useFetch('/api/items/all');
 </script>
 
 <template>
@@ -24,8 +26,10 @@ const { data: regionDetails, status } = await useFetch<RegionDetails>(`/api/regi
               </Badge>
             </div>
 
-            <div class="flex w-full justify-end">
+            <div class="flex w-full justify-end gap-x-2">
               <LocationItemDialog :location="location" />
+
+              <ItemAddDialog :items="items" :locationId="location.id" />
             </div>
           </div>
         </TooltipProvider>

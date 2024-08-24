@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Items } from "~~/server/drizzle/schema";
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -8,40 +9,35 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Plus } from 'lucide-vue-next';
 
-const { data: items } = await useFetch('/api/items/all');
+const props = defineProps<{ items: typeof Items.$inferInsert, locationId: number }>();
+
 const route = useRoute();
 
-const itemCount = ref(1);
-const itemName = ref('');
-const itemType = ref('');
-
-const onItemNameChange = (name: string, type: string) => {
-  itemName.value = name;
-  itemType.value = type;
-};
+const { itemCount, itemId } = useItemAdd();
 
 const saveChanges = async () => {
-  console.log('save changes', itemName.value, itemCount.value);
-  const result = await $fetch('/api/region-items/add', {
+  const result = await $fetch('/api/item-locations/add', {
     method: 'POST',
     body: {
       regionSlug: route.params.slug,
-      itemName: itemName.value,
-      itemType: itemType.value,
+      itemId: itemId.value,
+      count: itemCount.value,
+      locationId: props.locationId
     }
   });
 
   console.log('item added...', result);
-  
+
 };
 </script>
 
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <Button variant="outline">
-        Add Item
+      <Button variant="outline" size="icon">
+        <Plus class="size-4" />
       </Button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
@@ -50,9 +46,9 @@ const saveChanges = async () => {
         <DialogDescription>Add a new item to the database</DialogDescription>
       </DialogHeader>
       <div class="grid gap-4 py-4">
-        <ItemSelection v-if="items?.tools" :items="items?.tools.default" @onItemNameChange="onItemNameChange" />
+        <ItemSelection v-if="items" :items="items" />
 
-        <Input type="number" placeholder="Item Count" v-model="itemCount" />
+        <Input class="w-full" type="number" placeholder="Item Count" v-model="itemCount" />
       </div>
       <DialogFooter>
         <Button type="button" @click="saveChanges">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineModel } from 'vue';
+import { ref } from 'vue';
 import { CaretSortIcon, CheckIcon } from '@radix-icons/vue';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -16,22 +16,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import type { RegionItem } from '~~/server/api/regions/type';
+import type { Items } from '~~/server/drizzle/schema';
 
 defineProps<{
-  items: Array<any>;
+  items: Array<typeof Items.$inferSelect>;
 }>();
 
-const emit = defineEmits(['onItemNameChange']);
-
 const open = ref(false);
-const itemName = ref('');
 
-const onItemSelect = (item: any) => {
-  itemName.value = item.itemName;
+const { itemId } = useItemAdd();
 
+const onItemSelect = (item: typeof Items.$inferSelect) => {
+  itemId.value = item.id;
   open.value = false;
-  emit('onItemNameChange', item.name, item.type);
 }
 </script>
 
@@ -39,8 +36,8 @@ const onItemSelect = (item: any) => {
   <Popover v-model:open="open">
     <PopoverTrigger as-child>
       <Button variant="outline" role="combobox" :aria-expanded="open" class="w-[200px] justify-between">
-        {{ itemName
-          ? items.find((item: any) => item.name === itemName)?.name
+        {{ itemId
+          ? items.find((item) => item.id === itemId)?.name
           : "Select Item..." }}
         <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
@@ -51,11 +48,11 @@ const onItemSelect = (item: any) => {
         <CommandEmpty>No item found.</CommandEmpty>
         <CommandList>
           <CommandGroup>
-            <CommandItem v-for="item in items" :key="item.name" :value="item.name" @select="() => onItemSelect(item)">
+            <CommandItem v-for="item in items" :key="item.name" :value="item.id" @select="() => onItemSelect(item)">
               {{ item.name }}
               <CheckIcon :class="cn(
                 'ml-auto h-4 w-4',
-                itemName === item.name ? 'opacity-100' : 'opacity-0',
+                itemId === item.id ? 'opacity-100' : 'opacity-0',
               )" />
             </CommandItem>
           </CommandGroup>

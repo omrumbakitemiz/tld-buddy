@@ -23,8 +23,8 @@ export const Locations = pgTable("locations", {
 
 export const Items = pgTable("items", {
 	id: serial('id').primaryKey(),
-	slug: text('slug'),
-  name: text('name'),
+	slug: text('slug').notNull(),
+  name: text('name').notNull(),
   weight: text('weight'),
   comment: text('comment'),
   type: text('type'),
