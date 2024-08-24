@@ -24,7 +24,9 @@ const { data: regionDetails, status } = await useFetch<RegionDetails>(`/api/regi
               </Badge>
             </div>
 
-            <LocationItemDialog :location="location" />
+            <div class="flex w-full justify-end">
+              <LocationItemDialog :location="location" />
+            </div>
           </div>
         </TooltipProvider>
       </CardContent>

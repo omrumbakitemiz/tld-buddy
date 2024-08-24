@@ -27,7 +27,7 @@ const ignoredKeys = [
 
 <template>
   <Table>
-    <TableCaption>All Items</TableCaption>
+    <TableCaption>All Items ({{ items.length }})</TableCaption>
     <TableHeader>
       <TableRow>
         <TableHead>Name</TableHead>

@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ChevronRight } from "lucide-vue-next";
 
 defineProps<{ location: Location }>();
 </script>
@@ -13,8 +14,8 @@ defineProps<{ location: Location }>();
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <Button variant="outline">
-        Show All Items
+      <Button variant="outline" size="icon">
+        <ChevronRight class="size-4" />
       </Button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
