@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import type { Items } from '~~/server/drizzle/schema';
+import { useItemStore } from '~/store/item.store';
 
 defineProps<{
   items: Array<typeof Items.$inferSelect>;
@@ -24,10 +25,10 @@ defineProps<{
 
 const open = ref(false);
 
-const { itemId } = useItemAdd();
+const itemStore = useItemStore();
 
 const onItemSelect = (item: typeof Items.$inferSelect) => {
-  itemId.value = item.id;
+  itemStore.itemId = item.id;
   open.value = false;
 }
 </script>
@@ -36,8 +37,8 @@ const onItemSelect = (item: typeof Items.$inferSelect) => {
   <Popover v-model:open="open">
     <PopoverTrigger as-child>
       <Button variant="outline" role="combobox" :aria-expanded="open" class="w-[200px] justify-between">
-        {{ itemId
-          ? items.find((item) => item.id === itemId)?.name
+        {{ itemStore.itemId
+          ? items.find((item) => item.id === itemStore.itemId)?.name
           : "Select Item..." }}
         <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
@@ -52,7 +53,7 @@ const onItemSelect = (item: typeof Items.$inferSelect) => {
               {{ item.name }}
               <CheckIcon :class="cn(
                 'ml-auto h-4 w-4',
-                itemId === item.id ? 'opacity-100' : 'opacity-0',
+                itemStore.itemId === item.id ? 'opacity-100' : 'opacity-0',
               )" />
             </CommandItem>
           </CommandGroup>

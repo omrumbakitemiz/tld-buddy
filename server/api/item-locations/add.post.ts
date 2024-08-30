@@ -12,7 +12,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const region = await db.select().from(Regions).where(eq(Regions.slug, regionSlug));
+  const region = await db
+    .select()
+    .from(Regions)
+    .where(eq(Regions.slug, regionSlug));
 
   if (!region || region.length !== 1) {
     throw createError({
@@ -31,5 +34,12 @@ export default defineEventHandler(async (event) => {
     count,
   });
 
-  return new Response(`Item ${itemId} saved to region ${regionId} - location ${locationId} with count ${count}`, { status: 201 });
+  return Response.json(
+    {
+      message: `Item ${itemId} saved to region: ${regionId} - location: ${locationId} with count: ${count}`,
+    },
+    {
+      status: 201,
+    }
+  );
 });

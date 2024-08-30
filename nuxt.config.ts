@@ -19,7 +19,8 @@ export default defineNuxtConfig({
     "@nuxt/devtools",
     "@nuxtjs/tailwindcss",
     '@nuxtjs/color-mode',
-    "shadcn-nuxt"
+    "shadcn-nuxt",
+    "@pinia/nuxt",
   ],
   shadcn: {
     prefix: '',

@@ -2,7 +2,9 @@
 import type { RegionDetails } from '~~/server/type';
 
 const route = useRoute();
-const { data: regionDetails, status } = await useFetch<RegionDetails>(`/api/regions/${route.params.slug}`);
+const { data: regionDetails, status } = await useFetch<RegionDetails>(`/api/regions/${route.params.slug}`, {
+  key: typeof route.params.slug === 'string' ? route.params.slug : undefined,
+});
 
 const { data: items } = await useFetch('/api/items/all');
 </script>
