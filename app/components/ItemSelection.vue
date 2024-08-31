@@ -49,12 +49,8 @@ const onItemSelect = (item: typeof Items.$inferSelect) => {
         <CommandEmpty>No item found.</CommandEmpty>
         <CommandList>
           <CommandGroup>
-            <CommandItem v-for="item in items" :key="item.name" :value="item.id" @select="() => onItemSelect(item)">
+            <CommandItem v-for="item in items" :key="item.name" :value="item.name" @select="() => onItemSelect(item)">
               {{ item.name }}
-              <CheckIcon :class="cn(
-                'ml-auto h-4 w-4',
-                itemStore.itemId === item.id ? 'opacity-100' : 'opacity-0',
-              )" />
             </CommandItem>
           </CommandGroup>
         </CommandList>
