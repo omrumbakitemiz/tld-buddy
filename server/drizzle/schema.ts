@@ -1,9 +1,7 @@
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
-import { integer, pgTable, primaryKey, serial, text, timestamp } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
-// Use this object to send drizzle queries to your DB
 export const db = drizzle(sql);
 
 export const Regions = pgTable("regions", {
@@ -69,56 +67,3 @@ export const ItemLocations = pgTable("item_locations", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
-
-// export const locationsRelations = relations(Locations, ({ one, many }) => ({
-// 	region: one(Regions, {
-// 		fields: [Locations.regionId],
-// 		references: [Regions.id],
-// 	}),
-// 	materialsToLocations: many(materialsToLocations),
-// }));
-
-// export const Materials = pgTable("materials", {
-// 	id: serial("id").primaryKey(),
-// 	name: text("name"),
-// 	weightKg: text("weight_kg"),
-// 	cureTime: text("cure_time"),
-// 	notes: text("notes"),
-// 	usedToCreate: text("used_to_create"),
-// 	canBeShelledInto: text("can_be_shelled_into"),
-// 	usedAsRecipeIngredients: text("used_as_recipe_ingredients"),
-// 	cookToProduce: text("cook_to_produce"),
-// 	craftInto: text("craft_into"),
-// 	comment: text("comment"),
-// });
-
-// export const materialRelations = relations(Materials, ({ many }) => ({
-// 	materialsToLocations: many(materialsToLocations),
-// }));
-
-// export const materialsToLocations = pgTable(
-// 	"materials_to_locations",
-// 	{
-// 		materialId: integer("material_id")
-// 			.references(() => Materials.id)
-// 			.notNull(),
-// 		locationId: integer("location_id")
-// 			.references(() => Locations.id)
-// 			.notNull(),
-// 	},
-// 	(t) => ({
-// 		pk: primaryKey({columns: [t.materialId, t.locationId]}),
-// 	}),
-// );
-
-// export const materialsToLocationRelations = relations(materialsToLocations, ({ one }) => ({
-// 	location: one(Locations, {
-// 		fields: [materialsToLocations.locationId],
-// 		references: [Locations.id],
-// 	}),
-// 	material: one(Materials, {
-// 		fields: [materialsToLocations.materialId],
-// 		references: [Materials.id],
-// 	}),
-// }));
-
