@@ -1,4 +1,7 @@
 export default defineNuxtConfig({
+  experimental: {
+    typedPages: true,
+  },
   compatibilityDate: "2024-04-03",
   appConfig: {
     // you don't need to include this: only for testing purposes
