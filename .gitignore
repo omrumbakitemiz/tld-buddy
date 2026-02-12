@@ -1,0 +1,30 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Downloaded wiki assets (regenerate with scripts/import-wiki-*.ts)
+public/items/
+public/maps/
+public/data/items.json
+public/data/maps.json
