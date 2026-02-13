@@ -25,3 +25,5 @@ logs
 
 # Static assets are committed for Vercel CDN deployment
 # Regenerate with scripts/import-*.ts if needed
+.vercel
+.env*.local
