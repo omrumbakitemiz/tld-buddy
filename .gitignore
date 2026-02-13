@@ -23,9 +23,5 @@ logs
 .env.*
 !.env.example
 
-# Generated assets (regenerate with scripts/import-*.ts)
-public/items/
-public/maps/
-public/data/items.json
-public/data/maps.json
-public/data/pois.json
+# Static assets are committed for Vercel CDN deployment
+# Regenerate with scripts/import-*.ts if needed

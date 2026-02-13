@@ -2,7 +2,8 @@ import { ref, computed } from 'vue'
 import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant, POI, POIPin, StashedItem } from '~/types'
 import { getVariantKey } from '~/types'
 
-const STORAGE_KEY = 'tld-map-v8'
+const LOCAL_CACHE_KEY = 'tld-map-v9'
+const SAVE_DEBOUNCE_MS = 500
 
 const defaultData: AppData = {
   runs: [],
@@ -20,6 +21,7 @@ const staticItems = ref<Item[]>([])
 const staticPOIs = ref<POI[]>([])
 let loaded = false
 let staticDataLoaded = false
+let saveTimer: ReturnType<typeof setTimeout> | null = null
 
 // ── Load static data from JSON files ────────────────────────────────────────
 
@@ -64,40 +66,83 @@ async function loadPOIs(): Promise<POI[]> {
 
 // ── Persistence ─────────────────────────────────────────────────────────────
 
+function parseAppData(parsed: Partial<AppData>): AppData {
+  return {
+    runs: Array.isArray(parsed.runs) ? parsed.runs : [],
+    currentRunId: parsed.currentRunId ?? null,
+    currentMapId: parsed.currentMapId ?? null,
+    markers: Array.isArray(parsed.markers) ? parsed.markers : [],
+    enabledPOIs: Array.isArray(parsed.enabledPOIs) ? parsed.enabledPOIs : [],
+    poiPins: Array.isArray(parsed.poiPins) ? parsed.poiPins : [],
+    stashedItems: Array.isArray(parsed.stashedItems) ? parsed.stashedItems : [],
+  }
+}
+
+/** Load from localStorage first (instant), then reconcile with API (async). */
 function load() {
   if (loaded) return
   loaded = true
   if (typeof window === 'undefined') return
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if (!raw) return
+
+  // Step 1: Read from localStorage cache for instant UI
   try {
-    const parsed = JSON.parse(raw) as Partial<AppData>
-    appData.value = {
-      runs: Array.isArray(parsed.runs) ? parsed.runs : [],
-      currentRunId: parsed.currentRunId ?? null,
-      currentMapId: parsed.currentMapId ?? null,
-      markers: Array.isArray(parsed.markers) ? parsed.markers : [],
-      enabledPOIs: Array.isArray(parsed.enabledPOIs) ? parsed.enabledPOIs : [],
-      poiPins: Array.isArray(parsed.poiPins) ? parsed.poiPins : [],
-      stashedItems: Array.isArray(parsed.stashedItems) ? parsed.stashedItems : [],
+    const raw = localStorage.getItem(LOCAL_CACHE_KEY)
+    if (raw) {
+      appData.value = parseAppData(JSON.parse(raw))
     }
   } catch {
-    console.error('Failed to load saved data')
+    console.warn('Failed to read localStorage cache')
+  }
+
+  // Step 2: Fetch from API in background, API wins if available
+  loadFromAPI()
+}
+
+async function loadFromAPI() {
+  try {
+    const res = await fetch('/api/data')
+    if (!res.ok) return
+    const data = await res.json()
+    if (data && typeof data === 'object') {
+      appData.value = parseAppData(data)
+      // Update local cache with API data
+      saveToLocalStorage()
+    }
+  } catch {
+    console.warn('Could not fetch from API, using local cache')
   }
 }
 
-function save() {
+/** Write to localStorage (instant, synchronous). */
+function saveToLocalStorage() {
   if (typeof window === 'undefined') return
-  const toSave: AppData = {
-    runs: appData.value.runs,
-    currentRunId: appData.value.currentRunId,
-    currentMapId: appData.value.currentMapId,
-    markers: appData.value.markers,
-    enabledPOIs: appData.value.enabledPOIs,
-    poiPins: appData.value.poiPins,
-    stashedItems: appData.value.stashedItems,
+  try {
+    localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(appData.value))
+  } catch {
+    // localStorage full or unavailable -- not critical
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
+}
+
+/** Write to API (debounced, async). */
+function saveToAPI() {
+  if (typeof window === 'undefined') return
+  fetch('/api/data', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(appData.value),
+  }).catch(() => {
+    console.warn('Failed to save to API')
+  })
+}
+
+/** Save to both localStorage (instant) and API (debounced). */
+function save() {
+  // Instant write to localStorage cache
+  saveToLocalStorage()
+
+  // Debounced write to API
+  if (saveTimer) clearTimeout(saveTimer)
+  saveTimer = setTimeout(saveToAPI, SAVE_DEBOUNCE_MS)
 }
 
 // Auto-load on first import
@@ -218,8 +263,6 @@ export function useGameData() {
     appData.value.runs = appData.value.runs.filter((r) => r.id !== runId)
     appData.value.markers = appData.value.markers.filter((m) => m.runId !== runId)
     appData.value.stashedItems = appData.value.stashedItems.filter((s) => s.runId !== runId)
-    // POI pins are per-run conceptually but stored globally; clean up orphan pins
-    // (we keep poiPins global since they're coordinate data, but stashed items are per-run)
     if (appData.value.currentRunId === runId) {
       appData.value.currentRunId = appData.value.runs[0]?.id ?? null
     }
@@ -290,7 +333,6 @@ export function useGameData() {
   // ── POI Pins ──────────────────────────────────────────────────────────────
 
   function pinPOI(poiId: string, x: number, y: number) {
-    // Remove existing pin for this POI if any
     appData.value.poiPins = appData.value.poiPins.filter((p) => p.poiId !== poiId)
     appData.value.poiPins.push({ poiId, x, y })
     save()

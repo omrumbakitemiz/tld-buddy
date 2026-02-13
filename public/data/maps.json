@@ -1,0 +1,338 @@
+[
+  {
+    "id": "mystery-lake",
+    "name": "Mystery Lake",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/mystery-lake-default.jpg",
+      "imageWidth": 4235,
+      "imageHeight": 4650
+    },
+    "interloper": {
+      "imageUrl": "/maps/mystery-lake-interloper.jpg",
+      "imageWidth": 4235,
+      "imageHeight": 4650
+    }
+  },
+  {
+    "id": "coastal-highway",
+    "name": "Coastal Highway",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/coastal-highway-default.jpg",
+      "imageWidth": 4028,
+      "imageHeight": 3128
+    },
+    "interloper": {
+      "imageUrl": "/maps/coastal-highway-interloper.jpg",
+      "imageWidth": 4028,
+      "imageHeight": 3128
+    }
+  },
+  {
+    "id": "pleasant-valley",
+    "name": "Pleasant Valley",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/pleasant-valley-default.jpg",
+      "imageWidth": 4936,
+      "imageHeight": 4864
+    },
+    "interloper": {
+      "imageUrl": "/maps/pleasant-valley-interloper.jpg",
+      "imageWidth": 4936,
+      "imageHeight": 4864
+    }
+  },
+  {
+    "id": "desolation-point",
+    "name": "Desolation Point",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/desolation-point-default.jpg",
+      "imageWidth": 2490,
+      "imageHeight": 2493
+    },
+    "interloper": {
+      "imageUrl": "/maps/desolation-point-interloper.jpg",
+      "imageWidth": 2490,
+      "imageHeight": 2493
+    }
+  },
+  {
+    "id": "timberwolf-mountain",
+    "name": "Timberwolf Mountain",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/timberwolf-mountain-default.jpg",
+      "imageWidth": 3067,
+      "imageHeight": 3648
+    },
+    "interloper": {
+      "imageUrl": "/maps/timberwolf-mountain-interloper.jpg",
+      "imageWidth": 3067,
+      "imageHeight": 3648
+    }
+  },
+  {
+    "id": "forlorn-muskeg",
+    "name": "Forlorn Muskeg",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/forlorn-muskeg-default.jpg",
+      "imageWidth": 3308,
+      "imageHeight": 3894
+    },
+    "interloper": {
+      "imageUrl": "/maps/forlorn-muskeg-interloper.jpg",
+      "imageWidth": 3308,
+      "imageHeight": 3894
+    }
+  },
+  {
+    "id": "broken-railroad",
+    "name": "Broken Railroad",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/broken-railroad-default.jpg",
+      "imageWidth": 2506,
+      "imageHeight": 2424
+    },
+    "interloper": {
+      "imageUrl": "/maps/broken-railroad-interloper.jpg",
+      "imageWidth": 2506,
+      "imageHeight": 2424
+    }
+  },
+  {
+    "id": "mountain-town",
+    "name": "Mountain Town",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/mountain-town-default.jpg",
+      "imageWidth": 3171,
+      "imageHeight": 4235
+    },
+    "interloper": {
+      "imageUrl": "/maps/mountain-town-interloper.jpg",
+      "imageWidth": 3171,
+      "imageHeight": 4235
+    }
+  },
+  {
+    "id": "hushed-river-valley",
+    "name": "Hushed River Valley",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/hushed-river-valley-default.jpg",
+      "imageWidth": 3025,
+      "imageHeight": 3326
+    },
+    "interloper": {
+      "imageUrl": "/maps/hushed-river-valley-interloper.jpg",
+      "imageWidth": 3025,
+      "imageHeight": 3326
+    }
+  },
+  {
+    "id": "bleak-inlet",
+    "name": "Bleak Inlet",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/bleak-inlet-default.jpg",
+      "imageWidth": 3672,
+      "imageHeight": 3974
+    },
+    "interloper": {
+      "imageUrl": "/maps/bleak-inlet-interloper.jpg",
+      "imageWidth": 3672,
+      "imageHeight": 3974
+    }
+  },
+  {
+    "id": "ash-canyon",
+    "name": "Ash Canyon",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/ash-canyon-default.jpg",
+      "imageWidth": 3313,
+      "imageHeight": 3917
+    },
+    "interloper": {
+      "imageUrl": "/maps/ash-canyon-interloper.jpg",
+      "imageWidth": 3313,
+      "imageHeight": 3917
+    }
+  },
+  {
+    "id": "blackrock",
+    "name": "Blackrock",
+    "type": "region",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/blackrock-default.jpg",
+      "imageWidth": 3870,
+      "imageHeight": 4171
+    },
+    "interloper": {
+      "imageUrl": "/maps/blackrock-interloper.jpg",
+      "imageWidth": 3870,
+      "imageHeight": 4171
+    }
+  },
+  {
+    "id": "transfer-pass",
+    "name": "Transfer Pass",
+    "type": "region",
+    "isDLC": true,
+    "default": {
+      "imageUrl": "/maps/transfer-pass-default.jpg",
+      "imageWidth": 1987,
+      "imageHeight": 2146
+    },
+    "interloper": {
+      "imageUrl": "/maps/transfer-pass-interloper.jpg",
+      "imageWidth": 1987,
+      "imageHeight": 2146
+    }
+  },
+  {
+    "id": "forsaken-airfield",
+    "name": "Forsaken Airfield",
+    "type": "region",
+    "isDLC": true,
+    "default": {
+      "imageUrl": "/maps/forsaken-airfield-default.jpg",
+      "imageWidth": 4715,
+      "imageHeight": 5251
+    },
+    "interloper": {
+      "imageUrl": "/maps/forsaken-airfield-interloper.jpg",
+      "imageWidth": 4715,
+      "imageHeight": 5251
+    }
+  },
+  {
+    "id": "zone-of-contamination",
+    "name": "Zone of Contamination",
+    "type": "region",
+    "isDLC": true,
+    "default": {
+      "imageUrl": "/maps/zone-of-contamination-default.jpg",
+      "imageWidth": 3203,
+      "imageHeight": 3803
+    },
+    "interloper": {
+      "imageUrl": "/maps/zone-of-contamination-interloper.jpg",
+      "imageWidth": 3203,
+      "imageHeight": 3803
+    }
+  },
+  {
+    "id": "sundered-pass",
+    "name": "Sundered Pass",
+    "type": "region",
+    "isDLC": true,
+    "default": {
+      "imageUrl": "/maps/sundered-pass-default.jpg",
+      "imageWidth": 4254,
+      "imageHeight": 5006
+    },
+    "interloper": {
+      "imageUrl": "/maps/sundered-pass-interloper.jpg",
+      "imageWidth": 4254,
+      "imageHeight": 5006
+    }
+  },
+  {
+    "id": "ravine",
+    "name": "Ravine",
+    "type": "transition",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/ravine-default.jpg",
+      "imageWidth": 2275,
+      "imageHeight": 1436
+    },
+    "interloper": {
+      "imageUrl": "/maps/ravine-interloper.jpg",
+      "imageWidth": 2275,
+      "imageHeight": 1436
+    }
+  },
+  {
+    "id": "winding-river",
+    "name": "Winding River & Carter Hydro Dam",
+    "type": "transition",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/winding-river-default.jpg",
+      "imageWidth": 3826,
+      "imageHeight": 3375
+    },
+    "interloper": {
+      "imageUrl": "/maps/winding-river-interloper.jpg",
+      "imageWidth": 3826,
+      "imageHeight": 3375
+    }
+  },
+  {
+    "id": "crumbling-highway",
+    "name": "Crumbling Highway",
+    "type": "transition",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/crumbling-highway-default.jpg",
+      "imageWidth": 2097,
+      "imageHeight": 1867
+    },
+    "interloper": {
+      "imageUrl": "/maps/crumbling-highway-interloper.jpg",
+      "imageWidth": 2097,
+      "imageHeight": 1867
+    }
+  },
+  {
+    "id": "keepers-pass",
+    "name": "Keeper's Pass",
+    "type": "transition",
+    "isDLC": false,
+    "default": {
+      "imageUrl": "/maps/keepers-pass-default.jpg",
+      "imageWidth": 1859,
+      "imageHeight": 2461
+    },
+    "interloper": {
+      "imageUrl": "/maps/keepers-pass-interloper.jpg",
+      "imageWidth": 1859,
+      "imageHeight": 2461
+    }
+  },
+  {
+    "id": "far-range-branch-line",
+    "name": "Far Range Branch Line",
+    "type": "transition",
+    "isDLC": true,
+    "default": {
+      "imageUrl": "/maps/far-range-branch-line-default.jpg",
+      "imageWidth": 3194,
+      "imageHeight": 1542
+    },
+    "interloper": {
+      "imageUrl": "/maps/far-range-branch-line-interloper.jpg",
+      "imageWidth": 3194,
+      "imageHeight": 1542
+    }
+  }
+]

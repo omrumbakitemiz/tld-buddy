@@ -1,0 +1,2736 @@
+[
+  {
+    "id": "ash-canyon--anglers-den",
+    "name": "Angler's Den",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Angler's_Den",
+    "type": "sporting",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--bitter-marsh",
+    "name": "Bitter Marsh",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bitter_Marsh",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--broad-falls",
+    "name": "Broad Falls",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broad_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "ash-canyon--cave-ash-canyon-location",
+    "name": "Cave (Ash Canyon location)",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cave_(Ash_Canyon_location)",
+    "type": "sporting",
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--climbers-cave",
+    "name": "Climber's Cave",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Climber's_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--fire-overlook",
+    "name": "Fire Overlook",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fire_Overlook",
+    "type": "landmark"
+  },
+  {
+    "id": "ash-canyon--foremans-retreat",
+    "name": "Foreman's Retreat",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Retreat",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--gold-mine",
+    "name": "Gold Mine",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Gold_Mine",
+    "type": "cave",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--high-meadow",
+    "name": "High Meadow",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/High_Meadow",
+    "type": "outdoors"
+  },
+  {
+    "id": "ash-canyon--homesteaders-respite",
+    "name": "Homesteader's Respite",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Homesteader's_Respite",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--long-falls",
+    "name": "Long Falls",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Long_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "ash-canyon--miners-folly",
+    "name": "Miner's Folly",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Miner's_Folly",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--mining-camp",
+    "name": "Mining Camp",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mining_Camp",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--narrow-falls-cave",
+    "name": "Narrow Falls Cave",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Narrow_Falls_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--pillars-footrest",
+    "name": "Pillar's Footrest",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pillar's_Footrest",
+    "type": "landmark"
+  },
+  {
+    "id": "ash-canyon--runaway-bridge",
+    "name": "Runaway Bridge",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Runaway_Bridge",
+    "type": "outdoors"
+  },
+  {
+    "id": "ash-canyon--shattered-cove",
+    "name": "Shattered Cove",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Shattered_Cove",
+    "type": "landmark"
+  },
+  {
+    "id": "ash-canyon--stone-shelf-cave",
+    "name": "Stone Shelf Cave",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stone_Shelf_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "ash-canyon--wolfs-jaw-overlook",
+    "name": "Wolf's Jaw Overlook",
+    "mapId": "ash-canyon",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolf's_Jaw_Overlook",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--bears-bend",
+    "name": "Bear's Bend",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear's_Bend",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--blackrock-prison",
+    "name": "Blackrock Prison",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Prison",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--blocked-bridge",
+    "name": "Blocked Bridge",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blocked_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--bricklayers-retreat",
+    "name": "Bricklayer's Retreat",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bricklayer's_Retreat",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--cliff-cave",
+    "name": "Cliff Cave",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cliff_Cave",
+    "type": "cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--cooks-farm",
+    "name": "Cook's Farm",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cook's_Farm",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--creek-bed-cave",
+    "name": "Creek Bed Cave",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Creek_Bed_Cave",
+    "type": "cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--cuttys-cave",
+    "name": "Cutty's Cave",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cutty's_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--fools-corner",
+    "name": "Fool's Corner",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fool's_Corner",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--foragers-remnant",
+    "name": "Forager's Remnant",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forager's_Remnant",
+    "type": "outdoors",
+    "hasWorkbench": true
+  },
+  {
+    "id": "blackrock--foremans-clearcut",
+    "name": "Foreman's Clearcut",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Clearcut",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--grand-meadow",
+    "name": "Grand Meadow",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Grand_Meadow",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--jailers-residence",
+    "name": "Jailer's Residence",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jailer's_Residence",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--last-prospect",
+    "name": "Last Prospect",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Last_Prospect",
+    "type": "Cave"
+  },
+  {
+    "id": "blackrock--lineworkers-hideout",
+    "name": "Lineworker's Hideout",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lineworker's_Hideout",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--mule-bridge",
+    "name": "Mule Bridge",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mule_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--narrow-bridge",
+    "name": "Narrow Bridge",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Narrow_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "blackrock--no-road-cave",
+    "name": "No Road Cave",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/No_Road_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--old-substation",
+    "name": "Old Substation",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Substation",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--power-plant",
+    "name": "Power Plant",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Power_Plant",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--steam-tunnels",
+    "name": "Steam Tunnels",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Steam_Tunnels",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--wedge-cave",
+    "name": "Wedge Cave",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wedge_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "blackrock--whistling-perch",
+    "name": "Whistling Perch",
+    "mapId": "blackrock",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Whistling_Perch",
+    "type": "sporting"
+  },
+  {
+    "id": "bleak-inlet--bunker-alpha",
+    "name": "Bunker Alpha",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Alpha",
+    "type": "outdoors",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--cabin",
+    "name": "Cabin",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cabin",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--cannery-pier",
+    "name": "Cannery Pier",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cannery_Pier",
+    "type": "industrial",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--cannery-worker-residences",
+    "name": "Cannery Worker Residences",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cannery_Worker_Residences",
+    "type": "industrial",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--coast-mountain-road",
+    "name": "Coast Mountain Road",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coast_Mountain_Road",
+    "type": "outdoors"
+  },
+  {
+    "id": "bleak-inlet--coastal-highway-terminus",
+    "name": "Coastal Highway Terminus",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coastal_Highway_Terminus",
+    "type": "outdoors"
+  },
+  {
+    "id": "bleak-inlet--echo-one-radio-tower",
+    "name": "Echo One Radio Tower",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Echo_One_Radio_Tower",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--fallen-lighthouse",
+    "name": "Fallen Lighthouse",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fallen_Lighthouse",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--frozen-delta",
+    "name": "Frozen Delta",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Frozen_Delta",
+    "type": "outdoors"
+  },
+  {
+    "id": "bleak-inlet--island-cave",
+    "name": "Island Cave",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Island_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--landslide-bleak-inlet",
+    "name": "Landslide (Bleak Inlet)",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Landslide_(Bleak_Inlet)",
+    "type": "landmark"
+  },
+  {
+    "id": "bleak-inlet--last-resort-cannery",
+    "name": "Last Resort Cannery",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Last_Resort_Cannery",
+    "type": "industrial",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--long-bridge",
+    "name": "Long Bridge",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Long_Bridge",
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--lower-raven-falls",
+    "name": "Lower Raven Falls",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lower_Raven_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "bleak-inlet--pensive-lookout",
+    "name": "Pensive Lookout",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pensive_Lookout",
+    "type": "sporting",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--radio-control-hut",
+    "name": "Radio Control Hut",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Radio_Control_Hut",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--raven-crossing",
+    "name": "Raven Crossing",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Raven_Crossing",
+    "type": "outdoors"
+  },
+  {
+    "id": "bleak-inlet--ravines-end-waterfall",
+    "name": "Ravine's End Waterfall",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ravine's_End_Waterfall",
+    "type": "outdoors"
+  },
+  {
+    "id": "bleak-inlet--secret-mountain-path",
+    "name": "Secret Mountain Path",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Secret_Mountain_Path",
+    "type": "Outdoors",
+    "hasBed": true
+  },
+  {
+    "id": "bleak-inlet--summit-at-ravines-end",
+    "name": "Summit at Ravine's End",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Summit_at_Ravine's_End"
+  },
+  {
+    "id": "bleak-inlet--trailers-west-of-the-cannery",
+    "name": "Trailers west of the Cannery",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Trailers_west_of_the_Cannery",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--washed-out-trailers",
+    "name": "Washed Out Trailers",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Washed_Out_Trailers",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "bleak-inlet--workshop",
+    "name": "Workshop",
+    "mapId": "bleak-inlet",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Workshop",
+    "type": "industrial",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "broken-railroad--broken-bridge-broken-railroad-location",
+    "name": "Broken Bridge (Broken Railroad location)",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Bridge_(Broken_Railroad_location)",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "broken-railroad--hunters-blind",
+    "name": "Hunter's Blind",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunter's_Blind",
+    "type": "outdoors"
+  },
+  {
+    "id": "broken-railroad--hunting-lodge",
+    "name": "Hunting Lodge",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunting_Lodge",
+    "type": "residential",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "broken-railroad--landslide",
+    "name": "Landslide",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Landslide",
+    "type": "landmark"
+  },
+  {
+    "id": "broken-railroad--locomotive-engine",
+    "name": "Locomotive Engine",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Locomotive_Engine",
+    "type": "landmark"
+  },
+  {
+    "id": "broken-railroad--maintenance-yard",
+    "name": "Maintenance Yard",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Maintenance_Yard",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true,
+    "hasForge": true
+  },
+  {
+    "id": "broken-railroad--rickety-foot-bridge",
+    "name": "Rickety Foot Bridge",
+    "mapId": "broken-railroad",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rickety_Foot_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "coastal-highway--abandoned-lookout",
+    "name": "Abandoned Lookout",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Abandoned_Lookout",
+    "type": "sporting",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--bear-creek-campground",
+    "name": "Bear Creek Campground",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear_Creek_Campground",
+    "type": "outdoors"
+  },
+  {
+    "id": "coastal-highway--cinder-hills-coal-mine",
+    "name": "Cinder Hills Coal Mine",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cinder_Hills_Coal_Mine",
+    "type": "cave",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--coastal-house",
+    "name": "Coastal House",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coastal_House",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--coastal-townsite",
+    "name": "Coastal Townsite",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coastal_Townsite",
+    "type": "residential",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--commuters-lament",
+    "name": "Commuter's Lament",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Commuter's_Lament",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--fishing-camp",
+    "name": "Fishing Camp",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Camp",
+    "type": "residential",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--fishing-hut",
+    "name": "Fishing Hut",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Hut"
+  },
+  {
+    "id": "coastal-highway--great-bear-highway",
+    "name": "Great Bear Highway",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Great_Bear_Highway"
+  },
+  {
+    "id": "coastal-highway--jackrabbit-island",
+    "name": "Jackrabbit Island",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jackrabbit_Island",
+    "type": "outside",
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--log-sort",
+    "name": "Log Sort",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Log_Sort",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--misanthropes-homestead",
+    "name": "Misanthrope's Homestead",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Misanthrope's_Homestead",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--no-3-coal-mine",
+    "name": "No. 3 Coal Mine",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/No._3_Coal_Mine",
+    "type": "cave",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--quonset-garage",
+    "name": "Quonset Garage",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Quonset_Garage",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--rabbit-grove",
+    "name": "Rabbit Grove",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbit_Grove",
+    "type": "outside",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--rockfall",
+    "name": "Rockfall",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rockfall",
+    "type": "landmark"
+  },
+  {
+    "id": "coastal-highway--silent-clearing",
+    "name": "Silent Clearing",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Silent_Clearing",
+    "type": "outdoors"
+  },
+  {
+    "id": "coastal-highway--the-tooth",
+    "name": "The Tooth",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Tooth",
+    "type": "landmark"
+  },
+  {
+    "id": "coastal-highway--train-unloading",
+    "name": "Train Unloading",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Train_Unloading",
+    "type": "outdoors",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "coastal-highway--waterfront-cottages",
+    "name": "Waterfront Cottages",
+    "mapId": "coastal-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Waterfront_Cottages",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "crumbling-highway--abandoned-harris-home",
+    "name": "Abandoned Harris Home",
+    "mapId": "crumbling-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Abandoned_Harris_Home",
+    "type": "residential",
+    "hasShelter": true
+  },
+  {
+    "id": "crumbling-highway--basement-crumbling-highway",
+    "name": "Basement (Crumbling Highway)",
+    "mapId": "crumbling-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Basement_(Crumbling_Highway)",
+    "type": "residential",
+    "hasShelter": true
+  },
+  {
+    "id": "crumbling-highway--great-bear-highway",
+    "name": "Great Bear Highway",
+    "mapId": "crumbling-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Great_Bear_Highway"
+  },
+  {
+    "id": "crumbling-highway--no-3-coal-mine",
+    "name": "No. 3 Coal Mine",
+    "mapId": "crumbling-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/No._3_Coal_Mine",
+    "type": "cave",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "crumbling-highway--road-collapse",
+    "name": "Road Collapse",
+    "mapId": "crumbling-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Road_Collapse",
+    "type": "landmark"
+  },
+  {
+    "id": "crumbling-highway--the-arch-old-island-connector-location",
+    "name": "The Arch (Old Island Connector location)",
+    "mapId": "crumbling-highway",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Arch_(Old_Island_Connector_location)",
+    "type": "landmark"
+  },
+  {
+    "id": "desolation-point--abandoned-mine-no-5",
+    "name": "Abandoned Mine No. 5",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Abandoned_Mine_No._5",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "desolation-point--blocked-highway",
+    "name": "Blocked Highway",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blocked_Highway",
+    "type": "landmark"
+  },
+  {
+    "id": "desolation-point--broken-bridge-desolation-point-location",
+    "name": "Broken Bridge (Desolation Point location)",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Bridge_(Desolation_Point_location)",
+    "type": "landmark"
+  },
+  {
+    "id": "desolation-point--cave-desolation-point-location",
+    "name": "Cave (Desolation Point location)",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cave_(Desolation_Point_location)",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "desolation-point--great-bear-highway",
+    "name": "Great Bear Highway",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Great_Bear_Highway"
+  },
+  {
+    "id": "desolation-point--hibernia-processing",
+    "name": "Hibernia Processing",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hibernia_Processing",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "desolation-point--katies-secluded-corner",
+    "name": "Katie's Secluded Corner",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Katie's_Secluded_Corner",
+    "type": "outdoors"
+  },
+  {
+    "id": "desolation-point--little-island",
+    "name": "Little Island",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Little_Island",
+    "type": "outdoors"
+  },
+  {
+    "id": "desolation-point--lonely-lighthouse",
+    "name": "Lonely Lighthouse",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lonely_Lighthouse",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "desolation-point--matts-truck",
+    "name": "Matt's Truck",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Matt's_Truck",
+    "type": "outdoors"
+  },
+  {
+    "id": "desolation-point--no-3-coal-mine",
+    "name": "No. 3 Coal Mine",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/No._3_Coal_Mine",
+    "type": "cave",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "desolation-point--stone-church",
+    "name": "Stone Church",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stone_Church",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "desolation-point--the-riken",
+    "name": "The Riken",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Riken",
+    "type": "industrial",
+    "hasShelter": true,
+    "hasForge": true
+  },
+  {
+    "id": "desolation-point--waterfall",
+    "name": "Waterfall",
+    "mapId": "desolation-point",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Waterfall",
+    "type": "landmark"
+  },
+  {
+    "id": "far-range-branch-line--foundered-track",
+    "name": "Foundered Track",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foundered_Track"
+  },
+  {
+    "id": "far-range-branch-line--freighthoppers-rockfall",
+    "name": "Freighthopper's Rockfall",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Freighthopper's_Rockfall"
+  },
+  {
+    "id": "far-range-branch-line--oddment-falls",
+    "name": "Oddment Falls",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Oddment_Falls"
+  },
+  {
+    "id": "far-range-branch-line--platelayers-shortcut",
+    "name": "Platelayer's Shortcut",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Platelayer's_Shortcut",
+    "hasShelter": true
+  },
+  {
+    "id": "far-range-branch-line--remnant-cave",
+    "name": "Remnant Cave",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Remnant_Cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "far-range-branch-line--steely-chasm",
+    "name": "Steely Chasm",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Steely_Chasm"
+  },
+  {
+    "id": "far-range-branch-line--surfeit-trestle",
+    "name": "Surfeit Trestle",
+    "mapId": "far-range-branch-line",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Surfeit_Trestle"
+  },
+  {
+    "id": "forlorn-muskeg--abandoned-camp",
+    "name": "Abandoned Camp",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Abandoned_Camp",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forlorn-muskeg--bunkhouses",
+    "name": "Bunkhouses",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunkhouses",
+    "type": "outdoors"
+  },
+  {
+    "id": "forlorn-muskeg--hat-creek",
+    "name": "Hat Creek",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hat_Creek",
+    "type": "landmark"
+  },
+  {
+    "id": "forlorn-muskeg--high-blind",
+    "name": "High Blind",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/High_Blind",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forlorn-muskeg--low-blind",
+    "name": "Low Blind",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Low_Blind",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forlorn-muskeg--marsh-ridge",
+    "name": "Marsh Ridge",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Marsh_Ridge",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forlorn-muskeg--muskeg-overlook",
+    "name": "Muskeg Overlook",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Muskeg_Overlook",
+    "type": "outdoors"
+  },
+  {
+    "id": "forlorn-muskeg--old-bears-den",
+    "name": "Old Bear's Den",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Bear's_Den"
+  },
+  {
+    "id": "forlorn-muskeg--old-spence-family-homestead",
+    "name": "Old Spence Family Homestead",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Spence_Family_Homestead",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true,
+    "hasForge": true
+  },
+  {
+    "id": "forlorn-muskeg--poachers-camp",
+    "name": "Poacher's Camp",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Poacher's_Camp",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forlorn-muskeg--shortwave-tower",
+    "name": "Shortwave Tower",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Shortwave_Tower",
+    "type": "outdoors"
+  },
+  {
+    "id": "forlorn-muskeg--shortwave-tower-east",
+    "name": "Shortwave Tower East",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Shortwave_Tower_East",
+    "type": "outdoors"
+  },
+  {
+    "id": "forlorn-muskeg--shortwave-tower-west",
+    "name": "Shortwave Tower West",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Shortwave_Tower_West",
+    "type": "outdoors"
+  },
+  {
+    "id": "forlorn-muskeg--waterfall-forlorn-muskeg",
+    "name": "Waterfall (Forlorn Muskeg)",
+    "mapId": "forlorn-muskeg",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Waterfall_(Forlorn_Muskeg)",
+    "type": "outdoors"
+  },
+  {
+    "id": "forsaken-airfield--archies-crawlspace",
+    "name": "Archie's Crawlspace",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Archie's_Crawlspace",
+    "type": "Cave",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--brittle-cave",
+    "name": "Brittle Cave",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Brittle_Cave",
+    "type": "cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--bunker-omega",
+    "name": "Bunker Omega",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Omega",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--cargomasters-trailer",
+    "name": "Cargomaster's Trailer",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cargomaster's_Trailer",
+    "type": "trailer",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--control-tower",
+    "name": "Control Tower",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Control_Tower",
+    "type": "indoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--cove",
+    "name": "Cove",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cove",
+    "type": "landmark"
+  },
+  {
+    "id": "forsaken-airfield--drift-island",
+    "name": "Drift Island",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Drift_Island",
+    "type": "landmark"
+  },
+  {
+    "id": "forsaken-airfield--field-31",
+    "name": "Field 31",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Field_31",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true,
+    "hasForge": true
+  },
+  {
+    "id": "forsaken-airfield--final-approach",
+    "name": "Final Approach",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Final_Approach",
+    "type": "Outdoors",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--frost-cave",
+    "name": "Frost Cave",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Frost_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--grips-cave",
+    "name": "Grip's Cave",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Grip's_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--hangar-basement",
+    "name": "Hangar Basement",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hangar_Basement",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true,
+    "hasForge": true
+  },
+  {
+    "id": "forsaken-airfield--island-cottage",
+    "name": "Island Cottage",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Island_Cottage",
+    "type": "residential",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--junkers-paddock",
+    "name": "Junker's Paddock",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Junker's_Paddock",
+    "type": "trailer",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--justys-hovel",
+    "name": "Justy's Hovel",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Justy's_Hovel",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--main-hangar",
+    "name": "Main Hangar",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Main_Hangar",
+    "type": "indoors",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true,
+    "hasForge": true
+  },
+  {
+    "id": "forsaken-airfield--mindful-cabin",
+    "name": "Mindful Cabin",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mindful_Cabin",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--shoulder-lake",
+    "name": "Shoulder Lake",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Shoulder_Lake",
+    "type": "landmark"
+  },
+  {
+    "id": "forsaken-airfield--spotters-blind",
+    "name": "Spotter's Blind",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Spotter's_Blind",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--stony-passage",
+    "name": "Stony Passage",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stony_Passage",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--sudden-washout",
+    "name": "Sudden Washout",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sudden_Washout",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "forsaken-airfield--surveyors-memory",
+    "name": "Surveyor's Memory",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Surveyor's_Memory",
+    "type": "landmark"
+  },
+  {
+    "id": "forsaken-airfield--terminal",
+    "name": "Terminal",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Terminal"
+  },
+  {
+    "id": "forsaken-airfield--whealys-turn",
+    "name": "Whealy's Turn",
+    "mapId": "forsaken-airfield",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Whealy's_Turn"
+  },
+  {
+    "id": "hushed-river-valley--banner-falls",
+    "name": "Banner Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Banner_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--bunker-gamma",
+    "name": "Bunker Gamma",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Gamma",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--cloudtop-falls",
+    "name": "Cloudtop Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cloudtop_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--hushed-river",
+    "name": "Hushed River",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hushed_River",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--ice-cave",
+    "name": "Ice Cave",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ice_Cave"
+  },
+  {
+    "id": "hushed-river-valley--lake-cave",
+    "name": "Lake Cave",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lake_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--landslide-hushed-river-valley",
+    "name": "Landslide (Hushed River Valley)",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Landslide_(Hushed_River_Valley)",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--little-bear-and-cub-falls",
+    "name": "Little Bear and Cub Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Little_Bear_and_Cub_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--lonely-cave",
+    "name": "Lonely Cave",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lonely_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--long-shot-falls",
+    "name": "Long Shot Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Long_Shot_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--mammoth-falls",
+    "name": "Mammoth Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mammoth_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--many-falls-vista",
+    "name": "Many Falls Vista",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Many_Falls_Vista",
+    "type": "landmark"
+  },
+  {
+    "id": "hushed-river-valley--monolith-lake",
+    "name": "Monolith Lake",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Monolith_Lake",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--moose-overlook",
+    "name": "Moose Overlook",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose_Overlook",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--mysterious-signal-fire",
+    "name": "Mysterious Signal Fire",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mysterious_Signal_Fire",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--offset-falls",
+    "name": "Offset Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Offset_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--peak-cave",
+    "name": "Peak Cave",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Peak_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--pensive-vista",
+    "name": "Pensive Vista",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pensive_Vista",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--quarrelling-falls",
+    "name": "Quarrelling Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Quarrelling_Falls",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--reclusive-falls",
+    "name": "Reclusive Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Reclusive_Falls",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--stairsteps-lake",
+    "name": "Stairsteps Lake",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stairsteps_Lake",
+    "type": "landmark"
+  },
+  {
+    "id": "hushed-river-valley--twin-sisters-falls",
+    "name": "Twin Sisters Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Twin_Sisters_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "hushed-river-valley--valley-cave",
+    "name": "Valley Cave",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Valley_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "hushed-river-valley--valley-view-point",
+    "name": "Valley View Point",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Valley_View_Point",
+    "type": "outdoors"
+  },
+  {
+    "id": "hushed-river-valley--watchful-falls",
+    "name": "Watchful Falls",
+    "mapId": "hushed-river-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Watchful_Falls",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "keepers-pass--builders-bridge",
+    "name": "Builder's Bridge",
+    "mapId": "keepers-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Builder's_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "keepers-pass--foresters-hermitage",
+    "name": "Forester's Hermitage",
+    "mapId": "keepers-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forester's_Hermitage",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "keepers-pass--mirthless-fork",
+    "name": "Mirthless Fork",
+    "mapId": "keepers-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mirthless_Fork",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "keepers-pass--the-toe",
+    "name": "The Toe",
+    "mapId": "keepers-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Toe",
+    "type": "landmark"
+  },
+  {
+    "id": "mountain-town--bank-managers-house",
+    "name": "Bank Manager's House",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Manager's_House",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--cave-mountain-town-location",
+    "name": "Cave (Mountain Town location)",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cave_(Mountain_Town_location)",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--convenience-store",
+    "name": "Convenience Store",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Convenience_Store",
+    "type": "store",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--crashed-prison-transport-bus",
+    "name": "Crashed Prison Transport Bus",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crashed_Prison_Transport_Bus",
+    "type": "outdoors"
+  },
+  {
+    "id": "mountain-town--hermits-cabin",
+    "name": "Hermit's Cabin",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hermit's_Cabin",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--mackenzies-crashed-plane",
+    "name": "Mackenzie's Crashed Plane",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Crashed_Plane",
+    "type": "landmark",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton",
+    "name": "Milton",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-basin",
+    "name": "Milton Basin",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Basin",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-credit-union",
+    "name": "Milton Credit Union",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Credit_Union",
+    "type": "residential",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-house",
+    "name": "Milton House",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_House",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-house-grey-mothers",
+    "name": "Milton House (Grey Mother's)",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_House_(Grey_Mother's)",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-park",
+    "name": "Milton Park",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Park",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-post-office",
+    "name": "Milton Post Office",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Post_Office",
+    "type": "residential",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--milton-water-tower",
+    "name": "Milton Water Tower",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Water_Tower"
+  },
+  {
+    "id": "mountain-town--old-schoolhouse",
+    "name": "Old Schoolhouse",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Schoolhouse",
+    "type": "outdoors"
+  },
+  {
+    "id": "mountain-town--orca-gas-station",
+    "name": "Orca Gas Station",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Orca_Gas_Station",
+    "type": "store",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--paradise-meadows-farm",
+    "name": "Paradise Meadows Farm",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Paradise_Meadows_Farm",
+    "type": "residential",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--picnic-area",
+    "name": "Picnic Area",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Picnic_Area",
+    "type": "outdoors"
+  },
+  {
+    "id": "mountain-town--radio-tower",
+    "name": "Radio Tower",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Radio_Tower",
+    "type": "outdoors"
+  },
+  {
+    "id": "mountain-town--rocky-refuge",
+    "name": "Rocky Refuge",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rocky_Refuge",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--spruce-falls-bridge",
+    "name": "Spruce Falls Bridge",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Spruce_Falls_Bridge",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--st-christophers-church",
+    "name": "St. Christopher's Church",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/St._Christopher's_Church",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--the-arch-mountain-town-location",
+    "name": "The Arch (Mountain Town location)",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Arch_(Mountain_Town_location)",
+    "type": "landmark"
+  },
+  {
+    "id": "mountain-town--trailer-mountain-town-region",
+    "name": "Trailer (Mountain Town Region)",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Trailer_(Mountain_Town_Region)",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mountain-town--wood-lot",
+    "name": "Wood Lot",
+    "mapId": "mountain-town",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wood_Lot",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--alans-cave",
+    "name": "Alan's Cave",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Alan's_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--camp-office",
+    "name": "Camp Office",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Camp_Office",
+    "type": "sporting",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--carter-hydro-dam",
+    "name": "Carter Hydro Dam",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Dam",
+    "type": "industrial",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--clearcut",
+    "name": "Clearcut",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Clearcut",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--daves-quiet-clearing",
+    "name": "Dave's Quiet Clearing",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dave's_Quiet_Clearing",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--deadfall-area",
+    "name": "Deadfall Area",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Deadfall_Area",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--derailment",
+    "name": "Derailment",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Derailment",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--destroyed-lookout",
+    "name": "Destroyed Lookout",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Destroyed_Lookout",
+    "type": "landmark"
+  },
+  {
+    "id": "mystery-lake--fishing-hut",
+    "name": "Fishing Hut",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Hut"
+  },
+  {
+    "id": "mystery-lake--forestry-lookout",
+    "name": "Forestry Lookout",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forestry_Lookout",
+    "type": "sporting",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--frozen-creek",
+    "name": "Frozen Creek",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Frozen_Creek",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--lake-cabins",
+    "name": "Lake Cabins",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lake_Cabins",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--lake-overlook",
+    "name": "Lake Overlook",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lake_Overlook",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--lake-trail",
+    "name": "Lake Trail",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lake_Trail",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--logging-camp",
+    "name": "Logging Camp",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Logging_Camp",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--lone-lake-cabin",
+    "name": "Lone Lake Cabin",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lone_Lake_Cabin",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--lookout-mystery-lake-location",
+    "name": "Lookout (Mystery Lake location)",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lookout_(Mystery_Lake_location)",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--maxs-last-stand",
+    "name": "Max's Last Stand",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Max's_Last_Stand",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--mystery-lake-disambiguation",
+    "name": "Mystery Lake (disambiguation)",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mystery_Lake_(disambiguation)"
+  },
+  {
+    "id": "mystery-lake--mystery-lake-location",
+    "name": "Mystery Lake (location)",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mystery_Lake_(location)",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--mystery-lake-western-access",
+    "name": "Mystery Lake (Western Access)",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mystery_Lake_(Western_Access)",
+    "type": "outdoors"
+  },
+  {
+    "id": "mystery-lake--rail-tunnel",
+    "name": "Rail Tunnel",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rail_Tunnel",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--river-northern-access",
+    "name": "River (Northern Access)",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/River_(Northern_Access)"
+  },
+  {
+    "id": "mystery-lake--river-southern-access",
+    "name": "River (Southern Access)",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/River_(Southern_Access)"
+  },
+  {
+    "id": "mystery-lake--train-bridge",
+    "name": "Train Bridge",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Train_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "mystery-lake--train-loading-area",
+    "name": "Train Loading Area",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Train_Loading_Area",
+    "type": "landmark"
+  },
+  {
+    "id": "mystery-lake--trappers-homestead",
+    "name": "Trapper's Homestead",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Trapper's_Homestead",
+    "type": "sporting",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "mystery-lake--unnamed-pond",
+    "name": "Unnamed Pond",
+    "mapId": "mystery-lake",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Unnamed_Pond",
+    "type": "outdoors"
+  },
+  {
+    "id": "pleasant-valley--barn-mollys",
+    "name": "Barn (Molly's)",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Barn_(Molly's)",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--bunker-beta",
+    "name": "Bunker Beta",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Beta",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--burned-ridge-cave",
+    "name": "Burned Ridge Cave",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Burned_Ridge_Cave",
+    "type": "cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--cascading-falls",
+    "name": "Cascading Falls",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cascading_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "pleasant-valley--cinder-hills-coal-mine",
+    "name": "Cinder Hills Coal Mine",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cinder_Hills_Coal_Mine",
+    "type": "cave",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--community-hall",
+    "name": "Community Hall",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Community_Hall",
+    "type": "residential",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--contemplation-bridge",
+    "name": "Contemplation Bridge",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Contemplation_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "pleasant-valley--crash-site-pleasant-valley",
+    "name": "Crash Site (Pleasant Valley)",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crash_Site_(Pleasant_Valley)",
+    "type": "landmark"
+  },
+  {
+    "id": "pleasant-valley--crossroads-house",
+    "name": "Crossroads House",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crossroads_House",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--derelict-cabins",
+    "name": "Derelict Cabins",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Derelict_Cabins",
+    "type": "outdoors"
+  },
+  {
+    "id": "pleasant-valley--draft-dodgers-cabin",
+    "name": "Draft Dodger's Cabin",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Draft_Dodger's_Cabin",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--end-of-the-road",
+    "name": "End of the Road",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/End_of_the_Road",
+    "type": "landmark",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--forest-cave-pleasant-valley-location",
+    "name": "Forest Cave (Pleasant Valley location)",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Cave_(Pleasant_Valley_location)",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--heartbreak-bridge",
+    "name": "Heartbreak Bridge",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Heartbreak_Bridge",
+    "type": "landmark"
+  },
+  {
+    "id": "pleasant-valley--hilltop-cave",
+    "name": "Hilltop Cave",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hilltop_Cave",
+    "type": "cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--lonely-homestead",
+    "name": "Lonely Homestead",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lonely_Homestead",
+    "type": "outdoors"
+  },
+  {
+    "id": "pleasant-valley--long-curve",
+    "name": "Long Curve",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Long_Curve",
+    "type": "landmark"
+  },
+  {
+    "id": "pleasant-valley--lower-falls",
+    "name": "Lower Falls",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lower_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "pleasant-valley--misty-falls-cave",
+    "name": "Misty Falls Cave",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Misty_Falls_Cave",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--misty-falls-picnic-area",
+    "name": "Misty Falls Picnic Area",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Misty_Falls_Picnic_Area",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--pensive-pond",
+    "name": "Pensive Pond",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pensive_Pond",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--picnic-spot",
+    "name": "Picnic Spot",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Picnic_Spot",
+    "type": "outdoors"
+  },
+  {
+    "id": "pleasant-valley--pleasant-valley-church",
+    "name": "Pleasant Valley Church",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_Church",
+    "type": "Church"
+  },
+  {
+    "id": "pleasant-valley--pleasant-valley-farmstead",
+    "name": "Pleasant Valley Farmstead",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_Farmstead",
+    "type": "residential",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--pleasant-valley-outbuildings",
+    "name": "Pleasant Valley Outbuildings",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_Outbuildings",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--point-of-disagreement",
+    "name": "Point of Disagreement",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Point_of_Disagreement",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--preppers-abandoned-cache",
+    "name": "Prepper's Abandoned Cache",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepper's_Abandoned_Cache",
+    "type": "industrial",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--rural-store",
+    "name": "Rural Store",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rural_Store",
+    "type": "Commercial",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--signal-hill",
+    "name": "Signal Hill",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Signal_Hill",
+    "type": "sporting",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--skeeters-ridge",
+    "name": "Skeeter's Ridge",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Skeeter's_Ridge",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--thomsons-crossing",
+    "name": "Thomson's Crossing",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Thomson's_Crossing",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "pleasant-valley--three-strikes-farmstead",
+    "name": "Three Strikes Farmstead",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Three_Strikes_Farmstead",
+    "type": "outdoors"
+  },
+  {
+    "id": "pleasant-valley--upper-falls",
+    "name": "Upper Falls",
+    "mapId": "pleasant-valley",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Upper_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "ravine--raven-falls-trestle",
+    "name": "Raven Falls Trestle",
+    "mapId": "ravine",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Raven_Falls_Trestle",
+    "type": "industrial"
+  },
+  {
+    "id": "ravine--ravine-basin",
+    "name": "Ravine Basin",
+    "mapId": "ravine",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ravine_Basin"
+  },
+  {
+    "id": "sundered-pass--abandoned-mine",
+    "name": "Abandoned Mine",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Abandoned_Mine",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--amblers-lake",
+    "name": "Ambler's Lake",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ambler's_Lake",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--baneful-bridge",
+    "name": "Baneful Bridge",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Baneful_Bridge"
+  },
+  {
+    "id": "sundered-pass--basement-sundered-pass",
+    "name": "Basement (Sundered Pass)",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Basement_(Sundered_Pass)",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--bolt-choppers-haven",
+    "name": "Bolt Chopper's Haven",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bolt_Chopper's_Haven",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--cabin-sundered-pass",
+    "name": "Cabin (Sundered Pass)",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cabin_(Sundered_Pass)",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--cascading-gap",
+    "name": "Cascading Gap",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cascading_Gap"
+  },
+  {
+    "id": "sundered-pass--final-refuge",
+    "name": "Final Refuge",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Final_Refuge",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--giants-thumbprint",
+    "name": "Giant's Thumbprint",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Giant's_Thumbprint",
+    "type": "landmark"
+  },
+  {
+    "id": "sundered-pass--high-peak-plateau",
+    "name": "High Peak Plateau",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/High_Peak_Plateau",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--idle-hideout",
+    "name": "Idle Hideout",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Idle_Hideout"
+  },
+  {
+    "id": "sundered-pass--juniper-runoff",
+    "name": "Juniper Runoff",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Juniper_Runoff"
+  },
+  {
+    "id": "sundered-pass--last-lonely-house",
+    "name": "Last Lonely House",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Last_Lonely_House",
+    "type": "residential",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--lottes-rest",
+    "name": "Lotte's Rest",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lotte's_Rest",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--miserable-haunt",
+    "name": "Miserable Haunt",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Miserable_Haunt",
+    "type": "cave",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--ogres-teardrop",
+    "name": "Ogre's Teardrop",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ogre's_Teardrop"
+  },
+  {
+    "id": "sundered-pass--old-settlement",
+    "name": "Old Settlement",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Settlement",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--perilous-crossing",
+    "name": "Perilous Crossing",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Perilous_Crossing"
+  },
+  {
+    "id": "sundered-pass--placid-notch",
+    "name": "Placid Notch",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Placid_Notch",
+    "type": "residential",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--prayerful-window",
+    "name": "Prayerful Window",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prayerful_Window",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--reluctant-shortcut",
+    "name": "Reluctant Shortcut",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Reluctant_Shortcut"
+  },
+  {
+    "id": "sundered-pass--roamers-cave",
+    "name": "Roamer's Cave",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Roamer's_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--route-one-waterfall",
+    "name": "Route One Waterfall",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Route_One_Waterfall"
+  },
+  {
+    "id": "sundered-pass--second-pillar",
+    "name": "Second Pillar",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Second_Pillar"
+  },
+  {
+    "id": "sundered-pass--seedling-spring",
+    "name": "Seedling Spring",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Seedling_Spring"
+  },
+  {
+    "id": "sundered-pass--station-bunkhouse",
+    "name": "Station Bunkhouse",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Station_Bunkhouse",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "sundered-pass--unyielding-inundation",
+    "name": "Unyielding Inundation",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Unyielding_Inundation"
+  },
+  {
+    "id": "sundered-pass--weather-station",
+    "name": "Weather Station",
+    "mapId": "sundered-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Weather_Station",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--andres-peak",
+    "name": "Andre's Peak",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Andre's_Peak",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--cave-timberwolf-mountain-location-1",
+    "name": "Cave (Timberwolf Mountain location 1)",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cave_(Timberwolf_Mountain_location_1)",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--cave-timberwolf-mountain-location-2",
+    "name": "Cave (Timberwolf Mountain location 2)",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cave_(Timberwolf_Mountain_location_2)",
+    "type": "cave"
+  },
+  {
+    "id": "timberwolf-mountain--chasm-cave",
+    "name": "Chasm Cave",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Chasm_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--crystal-lake",
+    "name": "Crystal Lake",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crystal_Lake",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--deer-clearing",
+    "name": "Deer Clearing",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Deer_Clearing",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--echo-peak-east",
+    "name": "Echo Peak East",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Echo_Peak_East",
+    "type": "outdoors"
+  },
+  {
+    "id": "timberwolf-mountain--echo-peak-west",
+    "name": "Echo Peak West",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Echo_Peak_West",
+    "type": "outdoors"
+  },
+  {
+    "id": "timberwolf-mountain--echo-ravine",
+    "name": "Echo Ravine",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Echo_Ravine",
+    "type": "outdoors"
+  },
+  {
+    "id": "timberwolf-mountain--engine-east",
+    "name": "Engine (East)",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Engine_(East)",
+    "type": "outdoors"
+  },
+  {
+    "id": "timberwolf-mountain--engine-west",
+    "name": "Engine (West)",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Engine_(West)",
+    "type": "outdoors"
+  },
+  {
+    "id": "timberwolf-mountain--erics-falls",
+    "name": "Eric's Falls",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Eric's_Falls",
+    "type": "landmark"
+  },
+  {
+    "id": "timberwolf-mountain--forest-cave-timberwolf-mountain-location",
+    "name": "Forest Cave (Timberwolf Mountain location)",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Cave_(Timberwolf_Mountain_location)",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--landing-gear",
+    "name": "Landing Gear",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Landing_Gear",
+    "type": "landmark"
+  },
+  {
+    "id": "timberwolf-mountain--mountaineers-hut",
+    "name": "Mountaineer's Hut",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mountaineer's_Hut",
+    "hasBed": true,
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--secluded-shelf",
+    "name": "Secluded Shelf",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Secluded_Shelf",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--summit",
+    "name": "Summit",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Summit",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--tail-section",
+    "name": "Tail Section",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tail_Section",
+    "type": "outdoors",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--waterfall-cave",
+    "name": "Waterfall Cave",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Waterfall_Cave",
+    "type": "cave",
+    "hasShelter": true
+  },
+  {
+    "id": "timberwolf-mountain--wing",
+    "name": "Wing",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wing",
+    "type": "outdoors"
+  },
+  {
+    "id": "timberwolf-mountain--wing-summit",
+    "name": "Wing (Summit)",
+    "mapId": "timberwolf-mountain",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wing_(Summit)",
+    "type": "outdoors"
+  },
+  {
+    "id": "transfer-pass--broad-aerie",
+    "name": "Broad Aerie",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broad_Aerie"
+  },
+  {
+    "id": "transfer-pass--conductors-dropoff",
+    "name": "Conductor's Dropoff",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Conductor's_Dropoff"
+  },
+  {
+    "id": "transfer-pass--distempered-flatcars",
+    "name": "Distempered Flatcars",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Distempered_Flatcars",
+    "type": "landmark"
+  },
+  {
+    "id": "transfer-pass--feedwater-cave",
+    "name": "Feedwater Cave",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Feedwater_Cave"
+  },
+  {
+    "id": "transfer-pass--immutable-hesitation",
+    "name": "Immutable Hesitation",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Immutable_Hesitation"
+  },
+  {
+    "id": "transfer-pass--loitering-marsh",
+    "name": "Loitering Marsh",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Loitering_Marsh"
+  },
+  {
+    "id": "transfer-pass--vacant-depot",
+    "name": "Vacant Depot",
+    "mapId": "transfer-pass",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Vacant_Depot",
+    "type": "industrial",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--bosss-settlement",
+    "name": "Boss's Settlement",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Boss's_Settlement"
+  },
+  {
+    "id": "zone-of-contamination--bountiful-overlook",
+    "name": "Bountiful Overlook",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bountiful_Overlook"
+  },
+  {
+    "id": "zone-of-contamination--concentrator",
+    "name": "Concentrator",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Concentrator",
+    "type": "Building",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--conveyor-room",
+    "name": "Conveyor Room",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Conveyor_Room",
+    "type": "Building",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--craggy-passage",
+    "name": "Craggy Passage",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Craggy_Passage"
+  },
+  {
+    "id": "zone-of-contamination--desperate-elevation",
+    "name": "Desperate Elevation",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Desperate_Elevation"
+  },
+  {
+    "id": "zone-of-contamination--dubious-overlook",
+    "name": "Dubious Overlook",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dubious_Overlook"
+  },
+  {
+    "id": "zone-of-contamination--enduring-waterfall",
+    "name": "Enduring Waterfall",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Enduring_Waterfall"
+  },
+  {
+    "id": "zone-of-contamination--flagmans-gap",
+    "name": "Flagman's Gap",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Flagman's_Gap"
+  },
+  {
+    "id": "zone-of-contamination--forgotten-exploration",
+    "name": "Forgotten Exploration",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forgotten_Exploration",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--harrowed-residence",
+    "name": "Harrowed Residence",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Harrowed_Residence"
+  },
+  {
+    "id": "zone-of-contamination--headframe-building",
+    "name": "Headframe Building",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Headframe_Building",
+    "type": "Building",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--idle-camp",
+    "name": "Idle Camp",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Idle_Camp",
+    "hasBed": true,
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--indolent-hoppers",
+    "name": "Indolent Hoppers",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Indolent_Hoppers",
+    "type": "Building",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--langston-mine",
+    "name": "Langston Mine",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Langston_Mine",
+    "hasWorkbench": true,
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--miners-footpath",
+    "name": "Miner's Footpath",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Miner's_Footpath"
+  },
+  {
+    "id": "zone-of-contamination--old-corral",
+    "name": "Old Corral",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Corral",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--overladen-pond",
+    "name": "Overladen Pond",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Overladen_Pond"
+  },
+  {
+    "id": "zone-of-contamination--pump-house",
+    "name": "Pump House",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pump_House",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--r-digers-machine",
+    "name": "Rüdiger's Machine",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/R%C3%BCdiger's_Machine",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--scaffolders-hideout",
+    "name": "Scaffolder's Hideout",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Scaffolder's_Hideout",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--smokers-cave",
+    "name": "Smoker's Cave",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Smoker's_Cave",
+    "hasShelter": true
+  },
+  {
+    "id": "zone-of-contamination--turbulent-pasture",
+    "name": "Turbulent Pasture",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Turbulent_Pasture"
+  },
+  {
+    "id": "zone-of-contamination--unquenched-extraction",
+    "name": "Unquenched Extraction",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Unquenched_Extraction",
+    "type": "Lake"
+  },
+  {
+    "id": "zone-of-contamination--welkins-window",
+    "name": "Welkin's Window",
+    "mapId": "zone-of-contamination",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Welkin's_Window",
+    "type": "cave",
+    "hasShelter": true
+  }
+]

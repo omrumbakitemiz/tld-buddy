@@ -10,13 +10,20 @@ export default defineNuxtConfig({
     '~/assets/css/tailwind.css',
   ],
 
-  ssr: false,
+  // Client-rendered SPA, but with server routes enabled for API
+  routeRules: {
+    '/**': { ssr: false },
+  },
 
   modules: ['shadcn-nuxt'],
 
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui',
+  },
+
+  nitro: {
+    preset: 'vercel',
   },
 
   vite: {

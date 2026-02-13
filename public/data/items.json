@@ -1,0 +1,4377 @@
+[
+  {
+    "id": "aviator-cap",
+    "name": "Aviator Cap",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Aviator_Cap",
+    "icon": "/items/aviator-cap.png"
+  },
+  {
+    "id": "baseball-cap",
+    "name": "Baseball Cap",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Baseball_Cap",
+    "icon": "/items/baseball-cap.png"
+  },
+  {
+    "id": "bearskin-coat",
+    "name": "Bearskin Coat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bearskin_Coat",
+    "icon": "/items/bearskin-coat.png"
+  },
+  {
+    "id": "cargo-pants",
+    "name": "Cargo Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cargo_Pants",
+    "icon": "/items/cargo-pants.png"
+  },
+  {
+    "id": "chemical-boots",
+    "name": "Chemical Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Chemical_Boots",
+    "icon": "/items/chemical-boots.png"
+  },
+  {
+    "id": "climbing-socks",
+    "name": "Climbing Socks",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Climbing_Socks",
+    "icon": "/items/climbing-socks.png"
+  },
+  {
+    "id": "combat-pants",
+    "name": "Combat Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Combat_Pants",
+    "icon": "/items/combat-pants.png"
+  },
+  {
+    "id": "cotton-scarf",
+    "name": "Cotton Scarf",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cotton_Scarf",
+    "icon": "/items/cotton-scarf.png"
+  },
+  {
+    "id": "cotton-toque",
+    "name": "Cotton Toque",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cotton_Toque",
+    "icon": "/items/cotton-toque.png"
+  },
+  {
+    "id": "cougar-hide-wrap",
+    "name": "Cougar Hide Wrap",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Hide_Wrap",
+    "icon": "/items/cougar-hide-wrap.png"
+  },
+  {
+    "id": "crampons",
+    "name": "Crampons",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crampons",
+    "icon": "/items/crampons.png"
+  },
+  {
+    "id": "down-vest",
+    "name": "Down Vest",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Down_Vest",
+    "icon": "/items/down-vest.png"
+  },
+  {
+    "id": "dress-shirt",
+    "name": "Dress Shirt",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dress_Shirt",
+    "icon": "/items/dress-shirt.png"
+  },
+  {
+    "id": "driving-gloves",
+    "name": "Driving Gloves",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Driving_Gloves",
+    "icon": "/items/driving-gloves.png"
+  },
+  {
+    "id": "expedition-parka",
+    "name": "Expedition Parka",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Expedition_Parka",
+    "icon": "/items/expedition-parka.png"
+  },
+  {
+    "id": "festive-sweater",
+    "name": "Festive Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Festive_Sweater",
+    "icon": "/items/festive-sweater.png"
+  },
+  {
+    "id": "fishermans-sweater",
+    "name": "Fisherman's Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fisherman's_Sweater",
+    "icon": "/items/fishermans-sweater.png"
+  },
+  {
+    "id": "fleece-cowl",
+    "name": "Fleece Cowl",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fleece_Cowl",
+    "icon": "/items/fleece-cowl.png"
+  },
+  {
+    "id": "fleece-mittens",
+    "name": "Fleece Mittens",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fleece_Mittens",
+    "icon": "/items/fleece-mittens.png"
+  },
+  {
+    "id": "flight-jacket",
+    "name": "Flight Jacket",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Flight_Jacket",
+    "icon": "/items/flight-jacket.png"
+  },
+  {
+    "id": "hardhat",
+    "name": "Hardhat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hardhat",
+    "icon": "/items/hardhat.png"
+  },
+  {
+    "id": "hockey-jersey",
+    "name": "Hockey Jersey",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hockey_Jersey",
+    "icon": "/items/hockey-jersey.png"
+  },
+  {
+    "id": "hoodie",
+    "name": "Hoodie",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hoodie",
+    "icon": "/items/hoodie.png"
+  },
+  {
+    "id": "improvised-crampons",
+    "name": "Improvised Crampons",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Crampons",
+    "icon": "/items/improvised-crampons.png"
+  },
+  {
+    "id": "improvised-hand-wraps",
+    "name": "Improvised Hand Wraps",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Hand_Wraps",
+    "icon": "/items/improvised-hand-wraps.png"
+  },
+  {
+    "id": "improvised-head-wrap",
+    "name": "Improvised Head Wrap",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Head_Wrap",
+    "icon": "/items/improvised-head-wrap.png"
+  },
+  {
+    "id": "improvised-insulation",
+    "name": "Improvised Insulation",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Insulation",
+    "icon": "/items/improvised-insulation.png"
+  },
+  {
+    "id": "insulated-boots",
+    "name": "Insulated Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Insulated_Boots",
+    "icon": "/items/insulated-boots.png"
+  },
+  {
+    "id": "jeans",
+    "name": "Jeans",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jeans",
+    "icon": "/items/jeans.png"
+  },
+  {
+    "id": "jeremiahs-bearskin-coat",
+    "name": "Jeremiah's Bearskin Coat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jeremiah's_Bearskin_Coat",
+    "icon": "/items/jeremiahs-bearskin-coat.png"
+  },
+  {
+    "id": "leather-shoes",
+    "name": "Leather Shoes",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Leather_Shoes",
+    "icon": "/items/leather-shoes.png"
+  },
+  {
+    "id": "light-shell",
+    "name": "Light Shell",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Light_Shell",
+    "icon": "/items/light-shell.png"
+  },
+  {
+    "id": "long-wool-scarf",
+    "name": "Long Wool Scarf",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Long_Wool_Scarf",
+    "icon": "/items/long-wool-scarf.png"
+  },
+  {
+    "id": "mariners-pea-coat",
+    "name": "Mariner's Pea Coat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mariner's_Pea_Coat",
+    "icon": "/items/mariners-pea-coat.png"
+  },
+  {
+    "id": "miners-jacket",
+    "name": "Miner's Jacket",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Miner's_Jacket",
+    "icon": "/items/miners-jacket.png"
+  },
+  {
+    "id": "miners-pants",
+    "name": "Miner's Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Miner's_Pants",
+    "icon": "/items/miners-pants.png"
+  },
+  {
+    "id": "moose-hide-cloak",
+    "name": "Moose-Hide Cloak",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose-Hide_Cloak",
+    "icon": "/items/moose-hide-cloak.png"
+  },
+  {
+    "id": "moose-hide-satchel",
+    "name": "Moose-Hide Satchel",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose-Hide_Satchel",
+    "icon": "/items/moose-hide-satchel.png"
+  },
+  {
+    "id": "old-fashioned-parka",
+    "name": "Old Fashioned Parka",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Fashioned_Parka",
+    "icon": "/items/old-fashioned-parka.png"
+  },
+  {
+    "id": "patterned-wool-mittens-blue",
+    "name": "Patterned Wool Mittens (Blue)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Patterned_Wool_Mittens_(Blue)",
+    "icon": "/items/patterned-wool-mittens-blue.png"
+  },
+  {
+    "id": "patterned-wool-mittens-brown",
+    "name": "Patterned Wool Mittens (Brown)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Patterned_Wool_Mittens_(Brown)",
+    "icon": "/items/patterned-wool-mittens-brown.png"
+  },
+  {
+    "id": "patterned-wool-mittens-burgundy",
+    "name": "Patterned Wool Mittens (Burgundy)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Patterned_Wool_Mittens_(Burgundy)",
+    "icon": "/items/patterned-wool-mittens-burgundy.png"
+  },
+  {
+    "id": "patterned-wool-socks-dots",
+    "name": "Patterned Wool Socks (Dots)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Patterned_Wool_Socks_(Dots)",
+    "icon": "/items/patterned-wool-socks-dots.png"
+  },
+  {
+    "id": "patterned-wool-socks-moose",
+    "name": "Patterned Wool Socks (Moose)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Patterned_Wool_Socks_(Moose)",
+    "icon": "/items/patterned-wool-socks-moose.png"
+  },
+  {
+    "id": "patterned-wool-socks-plaid",
+    "name": "Patterned Wool Socks (Plaid)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Patterned_Wool_Socks_(Plaid)",
+    "icon": "/items/patterned-wool-socks-plaid.png"
+  },
+  {
+    "id": "plaid-shirt",
+    "name": "Plaid Shirt",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Plaid_Shirt",
+    "icon": "/items/plaid-shirt.png"
+  },
+  {
+    "id": "rabbitskin-mitts",
+    "name": "Rabbitskin Mitts",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbitskin_Mitts",
+    "icon": "/items/rabbitskin-mitts.png"
+  },
+  {
+    "id": "running-shoes",
+    "name": "Running Shoes",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Running_Shoes",
+    "icon": "/items/running-shoes.png"
+  },
+  {
+    "id": "simple-parka",
+    "name": "Simple Parka",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Simple_Parka",
+    "icon": "/items/simple-parka.png"
+  },
+  {
+    "id": "ski-gloves",
+    "name": "Ski Gloves",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ski_Gloves",
+    "icon": "/items/ski-gloves.png"
+  },
+  {
+    "id": "ski-jacket",
+    "name": "Ski Jacket",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ski_Jacket",
+    "icon": "/items/ski-jacket.png"
+  },
+  {
+    "id": "sport-vest",
+    "name": "Sport Vest",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sport_Vest",
+    "icon": "/items/sport-vest.png"
+  },
+  {
+    "id": "sports-socks",
+    "name": "Sports Socks",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sports_Socks",
+    "icon": "/items/sports-socks.png"
+  },
+  {
+    "id": "sweatshirt",
+    "name": "Sweatshirt",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sweatshirt",
+    "icon": "/items/sweatshirt.png"
+  },
+  {
+    "id": "t-shirt",
+    "name": "T-Shirt",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/T-Shirt",
+    "icon": "/items/t-shirt.png"
+  },
+  {
+    "id": "t-shirt-cm",
+    "name": "T-Shirt (CM)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/T-Shirt_(CM)",
+    "icon": "/items/t-shirt-cm.png"
+  },
+  {
+    "id": "t-shirt-gbi",
+    "name": "T-Shirt (GBI)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/T-Shirt_(GBI)",
+    "icon": "/items/t-shirt-gbi.png"
+  },
+  {
+    "id": "t-shirt-snappy",
+    "name": "T-Shirt (Snappy)",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/T-Shirt_(Snappy)",
+    "icon": "/items/t-shirt-snappy.png"
+  },
+  {
+    "id": "tactical-gloves",
+    "name": "Tactical Gloves",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tactical_Gloves",
+    "icon": "/items/tactical-gloves.png"
+  },
+  {
+    "id": "tactical-jacket",
+    "name": "Tactical Jacket",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tactical_Jacket",
+    "icon": "/items/tactical-jacket.png"
+  },
+  {
+    "id": "technical-balaclava",
+    "name": "Technical Balaclava",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Technical_Balaclava",
+    "icon": "/items/technical-balaclava.png"
+  },
+  {
+    "id": "thermal-underwear",
+    "name": "Thermal Underwear",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Thermal_Underwear",
+    "icon": "/items/thermal-underwear.png"
+  },
+  {
+    "id": "thick-wool-sweater",
+    "name": "Thick Wool Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Thick_Wool_Sweater",
+    "icon": "/items/thick-wool-sweater.png"
+  },
+  {
+    "id": "trail-boots",
+    "name": "Trail Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Trail_Boots",
+    "icon": "/items/trail-boots.png"
+  },
+  {
+    "id": "urban-parka",
+    "name": "Urban Parka",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Urban_Parka",
+    "icon": "/items/urban-parka.png"
+  },
+  {
+    "id": "windbreaker",
+    "name": "Windbreaker",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Windbreaker",
+    "icon": "/items/windbreaker.png"
+  },
+  {
+    "id": "wolfskin-hat",
+    "name": "Wolfskin Hat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolfskin_Hat",
+    "icon": "/items/wolfskin-hat.png"
+  },
+  {
+    "id": "wolfskin-pants",
+    "name": "Wolfskin Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolfskin_Pants",
+    "icon": "/items/wolfskin-pants.png"
+  },
+  {
+    "id": "wool-ear-wrap",
+    "name": "Wool Ear Wrap",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Ear_Wrap",
+    "icon": "/items/wool-ear-wrap.png"
+  },
+  {
+    "id": "wool-mittens",
+    "name": "Wool Mittens",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Mittens",
+    "icon": "/items/wool-mittens.png"
+  },
+  {
+    "id": "wool-scarf",
+    "name": "Wool Scarf",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Scarf",
+    "icon": "/items/wool-scarf.png"
+  },
+  {
+    "id": "wool-shirt",
+    "name": "Wool Shirt",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Shirt",
+    "icon": "/items/wool-shirt.png"
+  },
+  {
+    "id": "wool-socks",
+    "name": "Wool Socks",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Socks",
+    "icon": "/items/wool-socks.png"
+  },
+  {
+    "id": "wool-toque",
+    "name": "Wool Toque",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Toque",
+    "icon": "/items/wool-toque.png"
+  },
+  {
+    "id": "work-boots",
+    "name": "Work Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Work_Boots",
+    "icon": "/items/work-boots.png"
+  },
+  {
+    "id": "work-gloves",
+    "name": "Work Gloves",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Work_Gloves",
+    "icon": "/items/work-gloves.png"
+  },
+  {
+    "id": "work-pants",
+    "name": "Work Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Work_Pants",
+    "icon": "/items/work-pants.png"
+  },
+  {
+    "id": "a-note-left-behind",
+    "name": "A Note Left Behind",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_Note_Left_Behind",
+    "icon": "/items/a-note-left-behind.png"
+  },
+  {
+    "id": "a-page-from-a-journal",
+    "name": "A Page From A Journal",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_Page_From_A_Journal",
+    "icon": "/items/a-page-from-a-journal.png"
+  },
+  {
+    "id": "a-page-from-an-old-newsletter",
+    "name": "A page from an old newsletter.",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_page_from_an_old_newsletter.",
+    "icon": "/items/a-page-from-an-old-newsletter.png"
+  },
+  {
+    "id": "a-sewing-primer-the-basics-of-survival",
+    "name": "A Sewing Primer (The Basics of Survival)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_Sewing_Primer_(The_Basics_of_Survival)",
+    "icon": "/items/a-sewing-primer-the-basics-of-survival.png"
+  },
+  {
+    "id": "admin-office-key",
+    "name": "Admin Office Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Admin_Office_Key",
+    "icon": "/items/admin-office-key.png"
+  },
+  {
+    "id": "advanced-guns-guns-guns-survival-school",
+    "name": "Advanced Guns Guns Guns! (Survival School)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Advanced_Guns_Guns_Guns!_(Survival_School)",
+    "icon": "/items/advanced-guns-guns-guns-survival-school.png"
+  },
+  {
+    "id": "aid-station-medical-locker-key",
+    "name": "Aid Station Medical Locker Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Aid_Station_Medical_Locker_Key",
+    "icon": "/items/aid-station-medical-locker-key.png"
+  },
+  {
+    "id": "an-old-house-key",
+    "name": "An Old House Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/An_Old_House_Key",
+    "icon": "/items/an-old-house-key.png"
+  },
+  {
+    "id": "archival-report",
+    "name": "Archival Report",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Archival_Report",
+    "icon": "/items/archival-report.png"
+  },
+  {
+    "id": "aurora-hatch-door-entry-code",
+    "name": "Aurora Hatch Door Entry Code",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Aurora_Hatch_Door_Entry_Code",
+    "icon": "/items/aurora-hatch-door-entry-code.png"
+  },
+  {
+    "id": "aurora-observations",
+    "name": "Aurora Observations",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Aurora_Observations",
+    "icon": "/items/aurora-observations.png"
+  },
+  {
+    "id": "bank-deposit-box-key-13",
+    "name": "Bank Deposit Box Key 13",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Deposit_Box_Key_13",
+    "icon": "/items/bank-deposit-box-key-13.png"
+  },
+  {
+    "id": "bank-deposit-box-key-15",
+    "name": "Bank Deposit Box Key 15",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Deposit_Box_Key_15",
+    "icon": "/items/bank-deposit-box-key-15.png"
+  },
+  {
+    "id": "bank-deposit-box-key-20",
+    "name": "Bank Deposit Box Key 20",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Deposit_Box_Key_20",
+    "icon": "/items/bank-deposit-box-key-20.png"
+  },
+  {
+    "id": "bank-deposit-box-key-7",
+    "name": "Bank Deposit Box Key 7",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Deposit_Box_Key_7",
+    "icon": "/items/bank-deposit-box-key-7.png"
+  },
+  {
+    "id": "bank-managers-house-key",
+    "name": "Bank Manager's House Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Manager's_House_Key",
+    "icon": "/items/bank-managers-house-key.png"
+  },
+  {
+    "id": "bank-vault-code",
+    "name": "Bank Vault Code",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bank_Vault_Code",
+    "icon": "/items/bank-vault-code.png"
+  },
+  {
+    "id": "basement-key",
+    "name": "Basement Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Basement_Key",
+    "icon": "/items/basement-key.png"
+  },
+  {
+    "id": "betrayal",
+    "name": "Betrayal",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Betrayal",
+    "icon": "/items/betrayal.png"
+  },
+  {
+    "id": "blackrock-gate-key",
+    "name": "Blackrock Gate Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Gate_Key",
+    "icon": "/items/blackrock-gate-key.png"
+  },
+  {
+    "id": "blackrock-locker-key-2",
+    "name": "Blackrock Locker Key 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Locker_Key_2",
+    "icon": "/items/blackrock-locker-key-2.png"
+  },
+  {
+    "id": "blackrock-locker-key-3",
+    "name": "Blackrock Locker Key 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Locker_Key_3",
+    "icon": "/items/blackrock-locker-key-3.png"
+  },
+  {
+    "id": "blackrock-locker-key-8",
+    "name": "Blackrock Locker Key 8",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Locker_Key_8",
+    "icon": "/items/blackrock-locker-key-8.png"
+  },
+  {
+    "id": "blackrock-memo",
+    "name": "Blackrock Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Memo",
+    "icon": "/items/blackrock-memo.png"
+  },
+  {
+    "id": "blackrock-memo-highly-aggressive-wolf",
+    "name": "Blackrock Memo - Highly Aggressive Wolf",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Memo_-_Highly_Aggressive_Wolf",
+    "icon": "/items/blackrock-memo-highly-aggressive-wolf.png"
+  },
+  {
+    "id": "blackrock-memo-late-employee",
+    "name": "Blackrock Memo - Late Employee",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Memo_-_Late_Employee",
+    "icon": "/items/blackrock-memo-late-employee.png"
+  },
+  {
+    "id": "blackrock-memo-suspicious-person",
+    "name": "Blackrock Memo - Suspicious Person",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Memo_-_Suspicious_Person",
+    "icon": "/items/blackrock-memo-suspicious-person.png"
+  },
+  {
+    "id": "blackrock-penitentiary-memo",
+    "name": "Blackrock Penitentiary Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Penitentiary_Memo",
+    "icon": "/items/blackrock-penitentiary-memo.png"
+  },
+  {
+    "id": "blackrock-prisoner-release-record",
+    "name": "Blackrock Prisoner Release Record",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Prisoner_Release_Record",
+    "icon": "/items/blackrock-prisoner-release-record.png"
+  },
+  {
+    "id": "blood-soaked-forest-talker-documents",
+    "name": "Blood Soaked Forest Talker Documents",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blood_Soaked_Forest_Talker_Documents",
+    "icon": "/items/blood-soaked-forest-talker-documents.png"
+  },
+  {
+    "id": "blood-soaked-note",
+    "name": "Blood Soaked Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blood_Soaked_Note",
+    "icon": "/items/blood-soaked-note.png"
+  },
+  {
+    "id": "blood-stained-convict-note",
+    "name": "Blood Stained-Convict Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blood_Stained-Convict_Note",
+    "icon": "/items/blood-stained-convict-note.png"
+  },
+  {
+    "id": "bloody-note",
+    "name": "Bloody note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bloody_note",
+    "icon": "/items/bloody-note.png"
+  },
+  {
+    "id": "breyerhouse-crew-winter-warning",
+    "name": "Breyerhouse Crew Winter Warning",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Breyerhouse_Crew_Winter_Warning",
+    "icon": "/items/breyerhouse-crew-winter-warning.png"
+  },
+  {
+    "id": "buffer-memories",
+    "name": "Buffer Memories",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Buffer_Memories",
+    "icon": "/items/buffer-memories.png"
+  },
+  {
+    "id": "building-blackrock",
+    "name": "Building Blackrock",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Building_Blackrock",
+    "icon": "/items/building-blackrock.png"
+  },
+  {
+    "id": "bunker-schematic-fragment-1",
+    "name": "Bunker Schematic Fragment 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Schematic_Fragment_1",
+    "icon": "/items/bunker-schematic-fragment-1.png"
+  },
+  {
+    "id": "bunker-schematic-fragment-2",
+    "name": "Bunker Schematic Fragment 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Schematic_Fragment_2",
+    "icon": "/items/bunker-schematic-fragment-2.png"
+  },
+  {
+    "id": "bunker-schematic-fragment-3",
+    "name": "Bunker Schematic Fragment 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Schematic_Fragment_3",
+    "icon": "/items/bunker-schematic-fragment-3.png"
+  },
+  {
+    "id": "bushcraft-bow-blueprint-card",
+    "name": "Bushcraft Bow Blueprint Card",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bushcraft_Bow_Blueprint_Card",
+    "icon": "/items/bushcraft-bow-blueprint-card.png"
+  },
+  {
+    "id": "cairns",
+    "name": "Cairns",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cairns",
+    "icon": "/items/cairns.png"
+  },
+  {
+    "id": "cannery-memo",
+    "name": "Cannery Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cannery_Memo",
+    "icon": "/items/cannery-memo.png"
+  },
+  {
+    "id": "carter-hydro-dam-safety-shutdown-notice",
+    "name": "Carter Hydro Dam -- Safety & Shutdown Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Dam_--_Safety_%26_Shutdown_Notice",
+    "icon": "/items/carter-hydro-dam-safety-shutdown-notice.png"
+  },
+  {
+    "id": "carter-hydro-dam-collectible",
+    "name": "Carter Hydro Dam (Collectible)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Dam_(Collectible)",
+    "icon": "/items/carter-hydro-dam-collectible.png"
+  },
+  {
+    "id": "carter-hydro-medical-supplies",
+    "name": "Carter Hydro Medical Supplies",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Medical_Supplies",
+    "icon": "/items/carter-hydro-medical-supplies.png"
+  },
+  {
+    "id": "carter-hydro-staging-area-gate-key",
+    "name": "Carter Hydro Staging Area Gate Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Staging_Area_Gate_Key",
+    "icon": "/items/carter-hydro-staging-area-gate-key.png"
+  },
+  {
+    "id": "cave-hidden-cache-note",
+    "name": "Cave Hidden Cache Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cave_Hidden_Cache_Note",
+    "icon": "/items/cave-hidden-cache-note.png"
+  },
+  {
+    "id": "charcoal-note",
+    "name": "Charcoal Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Charcoal_Note",
+    "icon": "/items/charcoal-note.png"
+  },
+  {
+    "id": "church-artifact",
+    "name": "Church Artifact",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Church_Artifact",
+    "icon": "/items/church-artifact.png"
+  },
+  {
+    "id": "church-flyer",
+    "name": "Church Flyer",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Church_Flyer",
+    "icon": "/items/church-flyer.png"
+  },
+  {
+    "id": "climbers-journal-page",
+    "name": "Climber's Journal Page",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Climber's_Journal_Page",
+    "icon": "/items/climbers-journal-page.png"
+  },
+  {
+    "id": "communication-report",
+    "name": "Communication Report",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Communication_Report",
+    "icon": "/items/communication-report.png"
+  },
+  {
+    "id": "community-hall-flyer",
+    "name": "Community Hall Flyer",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Community_Hall_Flyer",
+    "icon": "/items/community-hall-flyer.png"
+  },
+  {
+    "id": "conspiracy-theories",
+    "name": "Conspiracy Theories",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Conspiracy_Theories",
+    "icon": "/items/conspiracy-theories.png"
+  },
+  {
+    "id": "convict-cache-directions",
+    "name": "Convict Cache Directions",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Convict_Cache_Directions",
+    "icon": "/items/convict-cache-directions.png"
+  },
+  {
+    "id": "convict-journal-entry",
+    "name": "Convict Journal Entry",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Convict_Journal_Entry",
+    "icon": "/items/convict-journal-entry.png"
+  },
+  {
+    "id": "convict-note",
+    "name": "Convict Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Convict_Note",
+    "icon": "/items/convict-note.png"
+  },
+  {
+    "id": "cougar-warning-flyer",
+    "name": "Cougar Warning Flyer",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Warning_Flyer",
+    "icon": "/items/cougar-warning-flyer.png"
+  },
+  {
+    "id": "cougar-warning-flyer-2",
+    "name": "Cougar Warning Flyer (2)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Warning_Flyer_(2)",
+    "icon": "/items/cougar-warning-flyer-2.png"
+  },
+  {
+    "id": "crumpled-note",
+    "name": "Crumpled Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crumpled_Note",
+    "icon": "/items/crumpled-note.png"
+  },
+  {
+    "id": "crumpled-note-2",
+    "name": "Crumpled Note (2)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crumpled_Note_(2)",
+    "icon": "/items/crumpled-note-2.png"
+  },
+  {
+    "id": "dam-control-room-code",
+    "name": "Dam Control Room Code",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dam_Control_Room_Code",
+    "icon": "/items/dam-control-room-code.png"
+  },
+  {
+    "id": "detonators",
+    "name": "Detonators",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Detonators",
+    "icon": "/items/detonators.png"
+  },
+  {
+    "id": "diary-page",
+    "name": "Diary Page",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Diary_Page",
+    "icon": "/items/diary-page.png"
+  },
+  {
+    "id": "diary-page-darkwalker",
+    "name": "Diary Page (Darkwalker)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Diary_Page_(Darkwalker)",
+    "icon": "/items/diary-page-darkwalker.png"
+  },
+  {
+    "id": "diocese-report",
+    "name": "Diocese Report",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Diocese_Report",
+    "icon": "/items/diocese-report.png"
+  },
+  {
+    "id": "elevator-crank",
+    "name": "Elevator Crank",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Elevator_Crank",
+    "icon": "/items/elevator-crank.png"
+  },
+  {
+    "id": "elevator-maintenance-note",
+    "name": "Elevator Maintenance Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Elevator_Maintenance_Note",
+    "icon": "/items/elevator-maintenance-note.png"
+  },
+  {
+    "id": "emergency-kit-note",
+    "name": "Emergency Kit Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Emergency_Kit_Note",
+    "icon": "/items/emergency-kit-note.png"
+  },
+  {
+    "id": "faded-notebook-paper",
+    "name": "Faded Notebook Paper",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Faded_Notebook_Paper",
+    "icon": "/items/faded-notebook-paper.png"
+  },
+  {
+    "id": "faded-paper",
+    "name": "Faded Paper",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Faded_Paper",
+    "icon": "/items/faded-paper.png"
+  },
+  {
+    "id": "faded-photograph",
+    "name": "Faded Photograph",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Faded_Photograph",
+    "icon": "/items/faded-photograph.png"
+  },
+  {
+    "id": "field-31-operation-memo",
+    "name": "Field 31 Operation Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Field_31_Operation_Memo",
+    "icon": "/items/field-31-operation-memo.png"
+  },
+  {
+    "id": "field-dressing-your-kill-vol-i-the-basics-of-survival",
+    "name": "Field Dressing Your Kill, Vol. I (The Basics of Survival)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Field_Dressing_Your_Kill%2C_Vol._I_(The_Basics_of_Survival)",
+    "icon": "/items/field-dressing-your-kill-vol-i-the-basics-of-survival.png"
+  },
+  {
+    "id": "foremans-key",
+    "name": "Foreman's Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Key",
+    "icon": "/items/foremans-key.png"
+  },
+  {
+    "id": "foremans-polaroid-1",
+    "name": "Foreman's Polaroid 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Polaroid_1",
+    "icon": "/items/foremans-polaroid-1.png"
+  },
+  {
+    "id": "foremans-polaroid-2",
+    "name": "Foreman's Polaroid 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Polaroid_2",
+    "icon": "/items/foremans-polaroid-2.png"
+  },
+  {
+    "id": "foremans-polaroid-3",
+    "name": "Foreman's Polaroid 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Polaroid_3",
+    "icon": "/items/foremans-polaroid-3.png"
+  },
+  {
+    "id": "foremans-polaroid-4",
+    "name": "Foreman's Polaroid 4",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Polaroid_4",
+    "icon": "/items/foremans-polaroid-4.png"
+  },
+  {
+    "id": "foremans-polaroid-5",
+    "name": "Foreman's Polaroid 5",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Polaroid_5",
+    "icon": "/items/foremans-polaroid-5.png"
+  },
+  {
+    "id": "foremans-site-report-day-illegible",
+    "name": "Foreman's Site Report Day (illegible)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Site_Report_Day_(illegible)",
+    "icon": "/items/foremans-site-report-day-illegible.png"
+  },
+  {
+    "id": "foremans-site-report-day-38",
+    "name": "Foreman's Site Report Day 38",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Site_Report_Day_38",
+    "icon": "/items/foremans-site-report-day-38.png"
+  },
+  {
+    "id": "foremans-site-report-day-45",
+    "name": "Foreman's Site Report Day 45",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Site_Report_Day_45",
+    "icon": "/items/foremans-site-report-day-45.png"
+  },
+  {
+    "id": "foremans-site-report-day-64",
+    "name": "Foreman's Site Report Day 64",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Site_Report_Day_64",
+    "icon": "/items/foremans-site-report-day-64.png"
+  },
+  {
+    "id": "foremans-technical-log-1",
+    "name": "Foreman's Technical Log 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Technical_Log_1",
+    "icon": "/items/foremans-technical-log-1.png"
+  },
+  {
+    "id": "foremans-technical-log-2",
+    "name": "Foreman's Technical Log 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Technical_Log_2",
+    "icon": "/items/foremans-technical-log-2.png"
+  },
+  {
+    "id": "foremans-technical-log-3",
+    "name": "Foreman's Technical Log 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Technical_Log_3",
+    "icon": "/items/foremans-technical-log-3.png"
+  },
+  {
+    "id": "foremans-technical-log-4",
+    "name": "Foreman's Technical Log 4",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Foreman's_Technical_Log_4",
+    "icon": "/items/foremans-technical-log-4.png"
+  },
+  {
+    "id": "forest-talker-bunker-memo",
+    "name": "Forest Talker Bunker Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Bunker_Memo",
+    "icon": "/items/forest-talker-bunker-memo.png"
+  },
+  {
+    "id": "forest-talker-collectible-part-one",
+    "name": "Forest Talker Collectible, Part One",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Collectible%2C_Part_One",
+    "icon": "/items/forest-talker-collectible-part-one.png"
+  },
+  {
+    "id": "forest-talker-collectible-part-three",
+    "name": "Forest Talker Collectible, Part Three",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Collectible%2C_Part_Three",
+    "icon": "/items/forest-talker-collectible-part-three.png"
+  },
+  {
+    "id": "forest-talker-collectible-part-two",
+    "name": "Forest Talker Collectible, Part Two",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Collectible%2C_Part_Two",
+    "icon": "/items/forest-talker-collectible-part-two.png"
+  },
+  {
+    "id": "forest-talker-dam-note",
+    "name": "Forest Talker Dam Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Dam_Note",
+    "icon": "/items/forest-talker-dam-note.png"
+  },
+  {
+    "id": "forest-talker-documents",
+    "name": "Forest Talker Documents",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Documents",
+    "icon": "/items/forest-talker-documents.png"
+  },
+  {
+    "id": "forest-talker-flyer",
+    "name": "Forest Talker Flyer",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Flyer",
+    "icon": "/items/forest-talker-flyer.png"
+  },
+  {
+    "id": "forest-talker-letter",
+    "name": "Forest Talker Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Letter",
+    "icon": "/items/forest-talker-letter.png"
+  },
+  {
+    "id": "forest-talker-map-note",
+    "name": "Forest Talker Map Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Map_Note",
+    "icon": "/items/forest-talker-map-note.png"
+  },
+  {
+    "id": "forest-talker-memo",
+    "name": "Forest Talker Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Memo",
+    "icon": "/items/forest-talker-memo.png"
+  },
+  {
+    "id": "forest-talker-note",
+    "name": "Forest Talker Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Note",
+    "icon": "/items/forest-talker-note.png"
+  },
+  {
+    "id": "forest-talker-supplies",
+    "name": "Forest Talker Supplies",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forest_Talker_Supplies",
+    "icon": "/items/forest-talker-supplies.png"
+  },
+  {
+    "id": "forge-blueprints",
+    "name": "Forge Blueprints",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forge_Blueprints",
+    "icon": "/items/forge-blueprints.png"
+  },
+  {
+    "id": "frontier-shooting-guide-survival-school",
+    "name": "Frontier Shooting Guide (Survival School)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Frontier_Shooting_Guide_(Survival_School)",
+    "icon": "/items/frontier-shooting-guide-survival-school.png"
+  },
+  {
+    "id": "gold-nugget",
+    "name": "Gold Nugget",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Gold_Nugget",
+    "icon": "/items/gold-nugget.png"
+  },
+  {
+    "id": "great-bear-wolf-behaviour-study",
+    "name": "Great Bear Wolf Behaviour Study",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Great_Bear_Wolf_Behaviour_Study",
+    "icon": "/items/great-bear-wolf-behaviour-study.png"
+  },
+  {
+    "id": "grey-mothers-pearls",
+    "name": "Grey Mother's Pearls",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Grey_Mother's_Pearls",
+    "icon": "/items/grey-mothers-pearls.png"
+  },
+  {
+    "id": "grey-mothers-safety-deposit-box",
+    "name": "Grey Mother's Safety Deposit Box",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Grey_Mother's_Safety_Deposit_Box",
+    "icon": "/items/grey-mothers-safety-deposit-box.png"
+  },
+  {
+    "id": "handwritten-note",
+    "name": "Handwritten Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Handwritten_Note",
+    "icon": "/items/handwritten-note.png"
+  },
+  {
+    "id": "handwritten-note-survival",
+    "name": "Handwritten Note (Survival)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Handwritten_Note_(Survival)",
+    "icon": "/items/handwritten-note-survival.png"
+  },
+  {
+    "id": "hanks-journal-part-one",
+    "name": "Hank's Journal - Part One",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hank's_Journal_-_Part_One",
+    "icon": "/items/hanks-journal-part-one.png"
+  },
+  {
+    "id": "hanks-journal-part-two",
+    "name": "Hank's Journal - Part Two",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hank's_Journal_-_Part_Two",
+    "icon": "/items/hanks-journal-part-two.png"
+  },
+  {
+    "id": "hanks-lock-box-key",
+    "name": "Hank's Lock Box Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hank's_Lock_Box_Key",
+    "icon": "/items/hanks-lock-box-key.png"
+  },
+  {
+    "id": "hanks-prepper-cache-code",
+    "name": "Hank's Prepper Cache Code",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hank's_Prepper_Cache_Code",
+    "icon": "/items/hanks-prepper-cache-code.png"
+  },
+  {
+    "id": "highway-robbery",
+    "name": "Highway Robbery",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Highway_Robbery",
+    "icon": "/items/highway-robbery.png"
+  },
+  {
+    "id": "history-of-the-collapse",
+    "name": "History of The Collapse",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/History_of_The_Collapse",
+    "icon": "/items/history-of-the-collapse.png"
+  },
+  {
+    "id": "hymnal",
+    "name": "Hymnal",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hymnal",
+    "icon": "/items/hymnal.png"
+  },
+  {
+    "id": "id-a-lewis",
+    "name": "ID - A. Lewis",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_A._Lewis",
+    "icon": "/items/id-a-lewis.png"
+  },
+  {
+    "id": "id-d-belanger",
+    "name": "ID - D. Belanger",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_D._Belanger",
+    "icon": "/items/id-d-belanger.png"
+  },
+  {
+    "id": "id-f-leblanc",
+    "name": "ID - F. Leblanc",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_F._Leblanc",
+    "icon": "/items/id-f-leblanc.png"
+  },
+  {
+    "id": "id-g-russell",
+    "name": "ID - G. Russell",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_G._Russell",
+    "icon": "/items/id-g-russell.png"
+  },
+  {
+    "id": "id-k-morrison",
+    "name": "ID - K. Morrison",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_K._Morrison",
+    "icon": "/items/id-k-morrison.png"
+  },
+  {
+    "id": "id-o-gould",
+    "name": "ID - O. Gould",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_O._Gould",
+    "icon": "/items/id-o-gould.png"
+  },
+  {
+    "id": "id-r-tan",
+    "name": "ID - R. Tan",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_R._Tan",
+    "icon": "/items/id-r-tan.png"
+  },
+  {
+    "id": "id-s-gagne",
+    "name": "ID - S. Gagne",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_S._Gagne",
+    "icon": "/items/id-s-gagne.png"
+  },
+  {
+    "id": "id-t-chan",
+    "name": "ID - T. Chan",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_T._Chan",
+    "icon": "/items/id-t-chan.png"
+  },
+  {
+    "id": "id-v-singh",
+    "name": "ID - V. Singh",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_-_V._Singh",
+    "icon": "/items/id-v-singh.png"
+  },
+  {
+    "id": "id-naomi-moore",
+    "name": "ID Naomi Moore",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/ID_Naomi_Moore",
+    "icon": "/items/id-naomi-moore.png"
+  },
+  {
+    "id": "illegible-note",
+    "name": "Illegible Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Illegible_Note",
+    "icon": "/items/illegible-note.png"
+  },
+  {
+    "id": "interview-transcript-12",
+    "name": "Interview Transcript 12",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Interview_Transcript_12",
+    "icon": "/items/interview-transcript-12.png"
+  },
+  {
+    "id": "interview-transcript-14",
+    "name": "Interview Transcript 14",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Interview_Transcript_14",
+    "icon": "/items/interview-transcript-14.png"
+  },
+  {
+    "id": "interview-transcript-17",
+    "name": "Interview Transcript 17",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Interview_Transcript_17",
+    "icon": "/items/interview-transcript-17.png"
+  },
+  {
+    "id": "interview-transcript-4",
+    "name": "Interview Transcript 4",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Interview_Transcript_4",
+    "icon": "/items/interview-transcript-4.png"
+  },
+  {
+    "id": "jeremiahs-broken-rifle",
+    "name": "Jeremiah's Broken Rifle",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jeremiah's_Broken_Rifle",
+    "icon": "/items/jeremiahs-broken-rifle.png"
+  },
+  {
+    "id": "jeremiahs-papers",
+    "name": "Jeremiah's Papers",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jeremiah's_Papers",
+    "icon": "/items/jeremiahs-papers.png"
+  },
+  {
+    "id": "jeremiahs-repaired-rifle",
+    "name": "Jeremiah's Repaired Rifle",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jeremiah's_Repaired_Rifle",
+    "icon": "/items/jeremiahs-repaired-rifle.png"
+  },
+  {
+    "id": "joplins-journal-part-one",
+    "name": "Joplin's Journal, Part One",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Joplin's_Journal%2C_Part_One",
+    "icon": "/items/joplins-journal-part-one.png"
+  },
+  {
+    "id": "joplins-journal-part-two",
+    "name": "Joplin's Journal, Part Two",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Joplin's_Journal%2C_Part_Two",
+    "icon": "/items/joplins-journal-part-two.png"
+  },
+  {
+    "id": "journal-page",
+    "name": "Journal Page",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Journal_Page",
+    "icon": "/items/journal-page.png"
+  },
+  {
+    "id": "key-to-lake-cabin-1",
+    "name": "Key To Lake Cabin 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Key_To_Lake_Cabin_1",
+    "icon": "/items/key-to-lake-cabin-1.png"
+  },
+  {
+    "id": "key-to-lake-cabin-2",
+    "name": "Key To Lake Cabin 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Key_To_Lake_Cabin_2",
+    "icon": "/items/key-to-lake-cabin-2.png"
+  },
+  {
+    "id": "key-to-lake-cabin-3",
+    "name": "Key To Lake Cabin 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Key_To_Lake_Cabin_3",
+    "icon": "/items/key-to-lake-cabin-3.png"
+  },
+  {
+    "id": "langston-mine-memo",
+    "name": "Langston Mine Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Langston_Mine_Memo",
+    "icon": "/items/langston-mine-memo.png"
+  },
+  {
+    "id": "letter",
+    "name": "Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Letter",
+    "icon": "/items/letter.png"
+  },
+  {
+    "id": "letter-car",
+    "name": "Letter (Car)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Letter_(Car)",
+    "icon": "/items/letter-car.png"
+  },
+  {
+    "id": "letter-for-hanks-niece",
+    "name": "Letter for Hank's Niece",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Letter_for_Hank's_Niece",
+    "icon": "/items/letter-for-hanks-niece.png"
+  },
+  {
+    "id": "lilys-trunk-key",
+    "name": "Lily's Trunk Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lily's_Trunk_Key",
+    "icon": "/items/lilys-trunk-key.png"
+  },
+  {
+    "id": "local-legends-ghost-stag",
+    "name": "Local Legends - Ghost Stag",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Local_Legends_-_Ghost_Stag",
+    "icon": "/items/local-legends-ghost-stag.png"
+  },
+  {
+    "id": "local-legends-sasquatch",
+    "name": "Local Legends - Sasquatch",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Local_Legends_-_Sasquatch",
+    "icon": "/items/local-legends-sasquatch.png"
+  },
+  {
+    "id": "local-legends-the-big-one",
+    "name": "Local Legends - The Big One",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Local_Legends_-_The_Big_One",
+    "icon": "/items/local-legends-the-big-one.png"
+  },
+  {
+    "id": "local-legends-the-lost-cave",
+    "name": "Local Legends - The Lost Cave",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Local_Legends_-_The_Lost_Cave",
+    "icon": "/items/local-legends-the-lost-cave.png"
+  },
+  {
+    "id": "lock-box-key",
+    "name": "Lock Box Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lock_Box_Key",
+    "icon": "/items/lock-box-key.png"
+  },
+  {
+    "id": "lock-box-key-predux",
+    "name": "Lock Box Key (Predux)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lock_Box_Key_(Predux)",
+    "icon": "/items/lock-box-key-predux.png"
+  },
+  {
+    "id": "logging-camp-trailer-key",
+    "name": "Logging Camp Trailer Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Logging_Camp_Trailer_Key",
+    "icon": "/items/logging-camp-trailer-key.png"
+  },
+  {
+    "id": "lost-in-the-storm",
+    "name": "Lost in the Storm",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lost_in_the_Storm",
+    "icon": "/items/lost-in-the-storm.png"
+  },
+  {
+    "id": "lost-workers-note",
+    "name": "Lost Worker's Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lost_Worker's_Note",
+    "icon": "/items/lost-workers-note.png"
+  },
+  {
+    "id": "map-of-pleasant-valley",
+    "name": "Map of Pleasant Valley",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Map_of_Pleasant_Valley",
+    "icon": "/items/map-of-pleasant-valley.png"
+  },
+  {
+    "id": "medicinal-plants-of-great-bear",
+    "name": "Medicinal Plants of Great Bear",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Medicinal_Plants_of_Great_Bear",
+    "icon": "/items/medicinal-plants-of-great-bear.png"
+  },
+  {
+    "id": "medicinal-plants-of-great-bear-note",
+    "name": "Medicinal Plants of Great Bear (Note)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Medicinal_Plants_of_Great_Bear_(Note)",
+    "icon": "/items/medicinal-plants-of-great-bear-note.png"
+  },
+  {
+    "id": "medicine-in-my-backyard",
+    "name": "Medicine in my backyard",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Medicine_in_my_backyard",
+    "icon": "/items/medicine-in-my-backyard.png"
+  },
+  {
+    "id": "memento-mori-1",
+    "name": "Memento Mori 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memento_Mori_1",
+    "icon": "/items/memento-mori-1.png"
+  },
+  {
+    "id": "memento-mori-2",
+    "name": "Memento Mori 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memento_Mori_2",
+    "icon": "/items/memento-mori-2.png"
+  },
+  {
+    "id": "memento-mori-3",
+    "name": "Memento Mori 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memento_Mori_3",
+    "icon": "/items/memento-mori-3.png"
+  },
+  {
+    "id": "memento-mori-4",
+    "name": "Memento Mori 4",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memento_Mori_4",
+    "icon": "/items/memento-mori-4.png"
+  },
+  {
+    "id": "memento-mori-5",
+    "name": "Memento Mori 5",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memento_Mori_5",
+    "icon": "/items/memento-mori-5.png"
+  },
+  {
+    "id": "mementos",
+    "name": "Mementos",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mementos",
+    "icon": "/items/mementos.png"
+  },
+  {
+    "id": "memo",
+    "name": "Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memo",
+    "icon": "/items/memo.png"
+  },
+  {
+    "id": "memo-survival",
+    "name": "Memo (Survival)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Memo_(Survival)",
+    "icon": "/items/memo-survival.png"
+  },
+  {
+    "id": "milton-credit-union-letter",
+    "name": "Milton Credit Union Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Credit_Union_Letter",
+    "icon": "/items/milton-credit-union-letter.png"
+  },
+  {
+    "id": "milton-hidden-cache-note",
+    "name": "Milton Hidden Cache Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Hidden_Cache_Note",
+    "icon": "/items/milton-hidden-cache-note.png"
+  },
+  {
+    "id": "milton-post-office-note",
+    "name": "Milton Post Office Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Milton_Post_Office_Note",
+    "icon": "/items/milton-post-office-note.png"
+  },
+  {
+    "id": "mine-gate-key",
+    "name": "Mine Gate Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mine_Gate_Key",
+    "icon": "/items/mine-gate-key.png"
+  },
+  {
+    "id": "mine-lockbox-key",
+    "name": "Mine Lockbox Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mine_Lockbox_Key",
+    "icon": "/items/mine-lockbox-key.png"
+  },
+  {
+    "id": "mine-office-key",
+    "name": "Mine Office Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mine_Office_Key",
+    "icon": "/items/mine-office-key.png"
+  },
+  {
+    "id": "mine-safety-notice",
+    "name": "Mine Safety Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mine_Safety_Notice",
+    "icon": "/items/mine-safety-notice.png"
+  },
+  {
+    "id": "mining-log-page",
+    "name": "Mining Log Page",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mining_Log_Page",
+    "icon": "/items/mining-log-page.png"
+  },
+  {
+    "id": "mining-newsletter",
+    "name": "Mining Newsletter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mining_Newsletter",
+    "icon": "/items/mining-newsletter.png"
+  },
+  {
+    "id": "my-testament",
+    "name": "My Testament",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/My_Testament",
+    "icon": "/items/my-testament.png"
+  },
+  {
+    "id": "mysterious-note",
+    "name": "Mysterious Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mysterious_Note",
+    "icon": "/items/mysterious-note.png"
+  },
+  {
+    "id": "mystery-lake-area",
+    "name": "Mystery Lake & Area",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mystery_Lake_%26_Area",
+    "icon": "/items/mystery-lake-area.png"
+  },
+  {
+    "id": "naturalist-notebook-1",
+    "name": "Naturalist Notebook 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Naturalist_Notebook_1",
+    "icon": "/items/naturalist-notebook-1.png"
+  },
+  {
+    "id": "naturalist-notebook-2",
+    "name": "Naturalist Notebook 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Naturalist_Notebook_2",
+    "icon": "/items/naturalist-notebook-2.png"
+  },
+  {
+    "id": "neighbours-note",
+    "name": "Neighbour's Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Neighbour's_Note",
+    "icon": "/items/neighbours-note.png"
+  },
+  {
+    "id": "newspaper-clipping",
+    "name": "Newspaper Clipping",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Newspaper_Clipping",
+    "icon": "/items/newspaper-clipping.png"
+  },
+  {
+    "id": "newspaper-clipping-2",
+    "name": "Newspaper Clipping 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Newspaper_Clipping_2",
+    "icon": "/items/newspaper-clipping-2.png"
+  },
+  {
+    "id": "note-ep4",
+    "name": "Note (EP4)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Note_(EP4)",
+    "icon": "/items/note-ep4.png"
+  },
+  {
+    "id": "note-forsaken-airfield",
+    "name": "Note (Forsaken Airfield)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Note_(Forsaken_Airfield)",
+    "icon": "/items/note-forsaken-airfield.png"
+  },
+  {
+    "id": "note-sundered-pass",
+    "name": "Note (Sundered Pass)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Note_(Sundered_Pass)",
+    "icon": "/items/note-sundered-pass.png"
+  },
+  {
+    "id": "note-survival-2",
+    "name": "Note (Survival 2)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Note_(Survival_2)",
+    "icon": "/items/note-survival-2.png"
+  },
+  {
+    "id": "note-survival",
+    "name": "Note (Survival)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Note_(Survival)",
+    "icon": "/items/note-survival.png"
+  },
+  {
+    "id": "notebook-page",
+    "name": "Notebook Page",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Notebook_Page",
+    "icon": "/items/notebook-page.png"
+  },
+  {
+    "id": "notebook-page-survival-2",
+    "name": "Notebook Page (Survival 2)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Notebook_Page_(Survival_2)",
+    "icon": "/items/notebook-page-survival-2.png"
+  },
+  {
+    "id": "notebook-page-survival",
+    "name": "Notebook Page (Survival)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Notebook_Page_(Survival)",
+    "icon": "/items/notebook-page-survival.png"
+  },
+  {
+    "id": "notes",
+    "name": "Notes",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Notes",
+    "icon": "/items/notes.png"
+  },
+  {
+    "id": "off-season-fun",
+    "name": "Off Season Fun",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Off_Season_Fun",
+    "icon": "/items/off-season-fun.png"
+  },
+  {
+    "id": "office-memo",
+    "name": "Office Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Office_Memo",
+    "icon": "/items/office-memo.png"
+  },
+  {
+    "id": "old-substation-work-memo",
+    "name": "Old Substation Work Memo",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Substation_Work_Memo",
+    "icon": "/items/old-substation-work-memo.png"
+  },
+  {
+    "id": "on-the-nature-of-darkwalkers",
+    "name": "On the Nature of Darkwalkers",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/On_the_Nature_of_Darkwalkers",
+    "icon": "/items/on-the-nature-of-darkwalkers.png"
+  },
+  {
+    "id": "orca-gas-store-notice",
+    "name": "Orca Gas Store Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Orca_Gas_Store_Notice",
+    "icon": "/items/orca-gas-store-notice.png"
+  },
+  {
+    "id": "page",
+    "name": "Page",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Page",
+    "icon": "/items/page.png"
+  },
+  {
+    "id": "page-2",
+    "name": "Page (2)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Page_(2)",
+    "icon": "/items/page-2.png"
+  },
+  {
+    "id": "paper",
+    "name": "Paper",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Paper",
+    "icon": "/items/paper.png"
+  },
+  {
+    "id": "paradise-meadows-farm-key",
+    "name": "Paradise Meadows Farm Key",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Paradise_Meadows_Farm_Key",
+    "icon": "/items/paradise-meadows-farm-key.png"
+  },
+  {
+    "id": "park-notice",
+    "name": "Park Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Park_Notice",
+    "icon": "/items/park-notice.png"
+  },
+  {
+    "id": "park-warning-notice",
+    "name": "Park Warning Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Park_Warning_Notice",
+    "icon": "/items/park-warning-notice.png"
+  },
+  {
+    "id": "passenger-manifest",
+    "name": "Passenger Manifest",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Passenger_Manifest",
+    "icon": "/items/passenger-manifest.png"
+  },
+  {
+    "id": "pastors-note",
+    "name": "Pastor's Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pastor's_Note",
+    "icon": "/items/pastors-note.png"
+  },
+  {
+    "id": "pleasant-valley-collectible-part-one",
+    "name": "Pleasant Valley Collectible, Part One",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_Collectible%2C_Part_One",
+    "icon": "/items/pleasant-valley-collectible-part-one.png"
+  },
+  {
+    "id": "pleasant-valley-collectible-part-three",
+    "name": "Pleasant Valley Collectible, Part Three",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_Collectible%2C_Part_Three",
+    "icon": "/items/pleasant-valley-collectible-part-three.png"
+  },
+  {
+    "id": "pleasant-valley-collectible-part-two",
+    "name": "Pleasant Valley Collectible, Part Two",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_Collectible%2C_Part_Two",
+    "icon": "/items/pleasant-valley-collectible-part-two.png"
+  },
+  {
+    "id": "pleasant-valley-history",
+    "name": "Pleasant Valley History",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pleasant_Valley_History",
+    "icon": "/items/pleasant-valley-history.png"
+  },
+  {
+    "id": "polaroids",
+    "name": "Polaroids",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Polaroids",
+    "icon": "/items/polaroids.png"
+  },
+  {
+    "id": "power-company-id",
+    "name": "Power Company ID",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Power_Company_ID",
+    "icon": "/items/power-company-id.png"
+  },
+  {
+    "id": "prepper-hatch-location",
+    "name": "Prepper Hatch Location",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepper_Hatch_Location",
+    "icon": "/items/prepper-hatch-location.png"
+  },
+  {
+    "id": "prison-transport-manifest",
+    "name": "Prison Transport Manifest",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prison_Transport_Manifest",
+    "icon": "/items/prison-transport-manifest.png"
+  },
+  {
+    "id": "public-notice",
+    "name": "Public Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Public_Notice",
+    "icon": "/items/public-notice.png"
+  },
+  {
+    "id": "radio-parts",
+    "name": "Radio Parts",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Radio_Parts",
+    "icon": "/items/radio-parts.png"
+  },
+  {
+    "id": "rosary",
+    "name": "Rosary",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rosary",
+    "icon": "/items/rosary.png"
+  },
+  {
+    "id": "r-digers-diary-1",
+    "name": "Rüdiger's Diary 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/R%C3%BCdiger's_Diary_1",
+    "icon": "/items/r-digers-diary-1.png"
+  },
+  {
+    "id": "r-digers-diary-2",
+    "name": "Rüdiger's Diary 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/R%C3%BCdiger's_Diary_2",
+    "icon": "/items/r-digers-diary-2.png"
+  },
+  {
+    "id": "r-digers-diary-3",
+    "name": "Rüdiger's Diary 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/R%C3%BCdiger's_Diary_3",
+    "icon": "/items/r-digers-diary-3.png"
+  },
+  {
+    "id": "r-digers-watch",
+    "name": "Rüdiger's Watch",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/R%C3%BCdiger's_Watch",
+    "icon": "/items/r-digers-watch.png"
+  },
+  {
+    "id": "security-chiefs-id-badge",
+    "name": "Security Chief's ID Badge",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_ID_Badge",
+    "icon": "/items/security-chiefs-id-badge.png"
+  },
+  {
+    "id": "security-chiefs-log-illegible",
+    "name": "Security Chief's Log (illegible)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_(illegible)",
+    "icon": "/items/security-chiefs-log-illegible.png"
+  },
+  {
+    "id": "security-chiefs-log-14",
+    "name": "Security Chief's Log 14",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_14",
+    "icon": "/items/security-chiefs-log-14.png"
+  },
+  {
+    "id": "security-chiefs-log-23",
+    "name": "Security Chief's Log 23",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_23",
+    "icon": "/items/security-chiefs-log-23.png"
+  },
+  {
+    "id": "security-chiefs-log-29",
+    "name": "Security Chief's Log 29",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_29",
+    "icon": "/items/security-chiefs-log-29.png"
+  },
+  {
+    "id": "security-chiefs-log-31",
+    "name": "Security Chief's Log 31",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_31",
+    "icon": "/items/security-chiefs-log-31.png"
+  },
+  {
+    "id": "security-chiefs-log-32",
+    "name": "Security Chief's Log 32",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_32",
+    "icon": "/items/security-chiefs-log-32.png"
+  },
+  {
+    "id": "security-chiefs-log-33",
+    "name": "Security Chief's Log 33",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_33",
+    "icon": "/items/security-chiefs-log-33.png"
+  },
+  {
+    "id": "security-chiefs-log-6",
+    "name": "Security Chief's Log 6",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Security_Chief's_Log_6",
+    "icon": "/items/security-chiefs-log-6.png"
+  },
+  {
+    "id": "simple-note",
+    "name": "Simple Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Simple_Note",
+    "icon": "/items/simple-note.png"
+  },
+  {
+    "id": "stained-paper",
+    "name": "Stained Paper",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stained_Paper",
+    "icon": "/items/stained-paper.png"
+  },
+  {
+    "id": "sutherlands-note",
+    "name": "Sutherland's Note",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sutherland's_Note",
+    "icon": "/items/sutherlands-note.png"
+  },
+  {
+    "id": "tearful-letter",
+    "name": "Tearful Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tearful_Letter",
+    "icon": "/items/tearful-letter.png"
+  },
+  {
+    "id": "technical-backpack",
+    "name": "Technical Backpack",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Technical_Backpack",
+    "icon": "/items/technical-backpack.png"
+  },
+  {
+    "id": "thankyou-letter",
+    "name": "Thankyou Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Thankyou_Letter",
+    "icon": "/items/thankyou-letter.png"
+  },
+  {
+    "id": "the-frozen-angler-survival-school",
+    "name": "The Frozen Angler (Survival School)",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Frozen_Angler_(Survival_School)",
+    "icon": "/items/the-frozen-angler-survival-school.png"
+  },
+  {
+    "id": "the-old-bears-ear",
+    "name": "The Old Bear's Ear",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Old_Bear's_Ear",
+    "icon": "/items/the-old-bears-ear.png"
+  },
+  {
+    "id": "the-security-chiefs-remains",
+    "name": "The Security Chief's Remains",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Security_Chief's_Remains",
+    "icon": "/items/the-security-chiefs-remains.png"
+  },
+  {
+    "id": "the-technicians-notebook",
+    "name": "The Technician's Notebook",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Technician's_Notebook",
+    "icon": "/items/the-technicians-notebook.png"
+  },
+  {
+    "id": "torn-paper",
+    "name": "Torn Paper",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Torn_Paper",
+    "icon": "/items/torn-paper.png"
+  },
+  {
+    "id": "town-of-milton",
+    "name": "Town of Milton",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Town_of_Milton",
+    "icon": "/items/town-of-milton.png"
+  },
+  {
+    "id": "transponder-parts",
+    "name": "Transponder Parts",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Transponder_Parts",
+    "icon": "/items/transponder-parts.png"
+  },
+  {
+    "id": "trash-can-letter",
+    "name": "Trash Can Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Trash_Can_Letter",
+    "icon": "/items/trash-can-letter.png"
+  },
+  {
+    "id": "undelivered-letter",
+    "name": "Undelivered Letter",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Undelivered_Letter",
+    "icon": "/items/undelivered-letter.png"
+  },
+  {
+    "id": "utilities-bill",
+    "name": "Utilities Bill",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Utilities_Bill",
+    "icon": "/items/utilities-bill.png"
+  },
+  {
+    "id": "valve-socket-handle",
+    "name": "Valve Socket Handle",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Valve_Socket_Handle",
+    "icon": "/items/valve-socket-handle.png"
+  },
+  {
+    "id": "winter-forecast",
+    "name": "Winter Forecast",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Winter_Forecast",
+    "icon": "/items/winter-forecast.png"
+  },
+  {
+    "id": "wolfskin-hat-blueprint-card",
+    "name": "Wolfskin Hat Blueprint Card",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolfskin_Hat_Blueprint_Card",
+    "icon": "/items/wolfskin-hat-blueprint-card.png"
+  },
+  {
+    "id": "wolfskin-pants-blueprint-card",
+    "name": "Wolfskin Pants Blueprint Card",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolfskin_Pants_Blueprint_Card",
+    "icon": "/items/wolfskin-pants-blueprint-card.png"
+  },
+  {
+    "id": "work-order",
+    "name": "Work Order",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Work_Order",
+    "icon": "/items/work-order.png"
+  },
+  {
+    "id": "wyatts-lost-papers-1",
+    "name": "Wyatt's Lost Papers 1",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wyatt's_Lost_Papers_1",
+    "icon": "/items/wyatts-lost-papers-1.png"
+  },
+  {
+    "id": "wyatts-lost-papers-2",
+    "name": "Wyatt's Lost Papers 2",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wyatt's_Lost_Papers_2",
+    "icon": "/items/wyatts-lost-papers-2.png"
+  },
+  {
+    "id": "wyatts-lost-papers-3",
+    "name": "Wyatt's Lost Papers 3",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wyatt's_Lost_Papers_3",
+    "icon": "/items/wyatts-lost-papers-3.png"
+  },
+  {
+    "id": "a-sewing-primer",
+    "name": "A Sewing Primer",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_Sewing_Primer",
+    "icon": "/items/a-sewing-primer.png"
+  },
+  {
+    "id": "accelerant",
+    "name": "Accelerant",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Accelerant",
+    "icon": "/items/accelerant.png"
+  },
+  {
+    "id": "advanced-guns-guns-guns",
+    "name": "Advanced Guns Guns Guns!",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Advanced_Guns_Guns_Guns!",
+    "icon": "/items/advanced-guns-guns-guns.png"
+  },
+  {
+    "id": "birch-bark",
+    "name": "Birch Bark",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Birch_Bark",
+    "icon": "/items/birch-bark.png"
+  },
+  {
+    "id": "book",
+    "name": "Book",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Book",
+    "icon": "/items/book.png"
+  },
+  {
+    "id": "cardboard-matches",
+    "name": "Cardboard Matches",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cardboard_Matches",
+    "icon": "/items/cardboard-matches.png"
+  },
+  {
+    "id": "cash",
+    "name": "Cash",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cash",
+    "icon": "/items/cash.png"
+  },
+  {
+    "id": "cat-tail-head",
+    "name": "Cat Tail Head",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cat_Tail_Head",
+    "icon": "/items/cat-tail-head.png"
+  },
+  {
+    "id": "cedar-firewood",
+    "name": "Cedar Firewood",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cedar_Firewood",
+    "icon": "/items/cedar-firewood.png"
+  },
+  {
+    "id": "coal",
+    "name": "Coal",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coal",
+    "icon": "/items/coal.png"
+  },
+  {
+    "id": "field-dressing-your-kill-vol-i",
+    "name": "Field Dressing Your Kill, Vol. I",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Field_Dressing_Your_Kill%2C_Vol._I",
+    "icon": "/items/field-dressing-your-kill-vol-i.png"
+  },
+  {
+    "id": "fir-firewood",
+    "name": "Fir Firewood",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fir_Firewood",
+    "icon": "/items/fir-firewood.png"
+  },
+  {
+    "id": "firelog",
+    "name": "Firelog",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Firelog",
+    "icon": "/items/firelog.png"
+  },
+  {
+    "id": "firestriker",
+    "name": "Firestriker",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Firestriker",
+    "icon": "/items/firestriker.png"
+  },
+  {
+    "id": "frontier-shooting-guide",
+    "name": "Frontier Shooting Guide",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Frontier_Shooting_Guide",
+    "icon": "/items/frontier-shooting-guide.png"
+  },
+  {
+    "id": "jerry-can",
+    "name": "Jerry Can",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jerry_Can",
+    "icon": "/items/jerry-can.png"
+  },
+  {
+    "id": "lantern-fuel",
+    "name": "Lantern Fuel",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lantern_Fuel",
+    "icon": "/items/lantern-fuel.png"
+  },
+  {
+    "id": "magnifying-lens",
+    "name": "Magnifying Lens",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Magnifying_Lens",
+    "icon": "/items/magnifying-lens.png"
+  },
+  {
+    "id": "newsprint",
+    "name": "Newsprint",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Newsprint",
+    "icon": "/items/newsprint.png"
+  },
+  {
+    "id": "newsprint-roll",
+    "name": "Newsprint Roll",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Newsprint_Roll",
+    "icon": "/items/newsprint-roll.png"
+  },
+  {
+    "id": "practical-gunsmithing",
+    "name": "Practical Gunsmithing",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Practical_Gunsmithing",
+    "icon": "/items/practical-gunsmithing.png"
+  },
+  {
+    "id": "reclaimed-wood",
+    "name": "Reclaimed Wood",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Reclaimed_Wood",
+    "icon": "/items/reclaimed-wood.png"
+  },
+  {
+    "id": "small-arms-handbook",
+    "name": "Small Arms Handbook",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Small_Arms_Handbook",
+    "icon": "/items/small-arms-handbook.png"
+  },
+  {
+    "id": "stack-of-papers",
+    "name": "Stack of Papers",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stack_of_Papers",
+    "icon": "/items/stack-of-papers.png"
+  },
+  {
+    "id": "stay-on-target",
+    "name": "Stay on Target",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stay_on_Target",
+    "icon": "/items/stay-on-target.png"
+  },
+  {
+    "id": "stick",
+    "name": "Stick",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stick",
+    "icon": "/items/stick.png"
+  },
+  {
+    "id": "survive-the-outdoors",
+    "name": "Survive the Outdoors!",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Survive_the_Outdoors!",
+    "icon": "/items/survive-the-outdoors.png"
+  },
+  {
+    "id": "the-frozen-angler",
+    "name": "The Frozen Angler",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/The_Frozen_Angler",
+    "icon": "/items/the-frozen-angler.png"
+  },
+  {
+    "id": "tinder-plug",
+    "name": "Tinder Plug",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tinder_Plug",
+    "icon": "/items/tinder-plug.png"
+  },
+  {
+    "id": "torch",
+    "name": "Torch",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Torch",
+    "icon": "/items/torch.png"
+  },
+  {
+    "id": "wilderness-kitchen",
+    "name": "Wilderness Kitchen",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wilderness_Kitchen",
+    "icon": "/items/wilderness-kitchen.png"
+  },
+  {
+    "id": "wood-matches",
+    "name": "Wood Matches",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wood_Matches",
+    "icon": "/items/wood-matches.png"
+  },
+  {
+    "id": "acorn-bannock",
+    "name": "Acorn Bannock",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Acorn_Bannock",
+    "icon": "/items/acorn-bannock.png"
+  },
+  {
+    "id": "acorn-pancakes",
+    "name": "Acorn Pancakes",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Acorn_Pancakes",
+    "icon": "/items/acorn-pancakes.png"
+  },
+  {
+    "id": "acorns-cooked-large-portion",
+    "name": "Acorns (Cooked - Large Portion)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Acorns_(Cooked_-_Large_Portion)",
+    "icon": "/items/acorns-cooked-large-portion.png"
+  },
+  {
+    "id": "acorns-cooked",
+    "name": "Acorns (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Acorns_(Cooked)",
+    "icon": "/items/acorns-cooked.png"
+  },
+  {
+    "id": "airline-food-chicken",
+    "name": "Airline Food - Chicken",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Airline_Food_-_Chicken",
+    "icon": "/items/airline-food-chicken.png"
+  },
+  {
+    "id": "airline-food-vegetarian",
+    "name": "Airline Food - Vegetarian",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Airline_Food_-_Vegetarian",
+    "icon": "/items/airline-food-vegetarian.png"
+  },
+  {
+    "id": "animal-fat",
+    "name": "Animal Fat",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Animal_Fat",
+    "icon": "/items/animal-fat.png"
+  },
+  {
+    "id": "bannock",
+    "name": "Bannock",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bannock",
+    "icon": "/items/bannock.png"
+  },
+  {
+    "id": "bear-meat-cooked",
+    "name": "Bear Meat (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear_Meat_(Cooked)",
+    "icon": "/items/bear-meat-cooked.png"
+  },
+  {
+    "id": "bear-meat-raw",
+    "name": "Bear Meat (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear_Meat_(Raw)",
+    "icon": "/items/bear-meat-raw.png"
+  },
+  {
+    "id": "bear-quarter",
+    "name": "Bear Quarter",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear_Quarter",
+    "icon": "/items/bear-quarter.png"
+  },
+  {
+    "id": "beef-jerky",
+    "name": "Beef Jerky",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Beef_Jerky",
+    "icon": "/items/beef-jerky.png"
+  },
+  {
+    "id": "big-bass-cooked",
+    "name": "Big Bass (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Big_Bass_(Cooked)",
+    "icon": "/items/big-bass-cooked.png"
+  },
+  {
+    "id": "big-bass-raw",
+    "name": "Big Bass (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Big_Bass_(Raw)",
+    "icon": "/items/big-bass-raw.png"
+  },
+  {
+    "id": "breyerhouse-pie",
+    "name": "Breyerhouse Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Breyerhouse_Pie",
+    "icon": "/items/breyerhouse-pie.png"
+  },
+  {
+    "id": "broth",
+    "name": "Broth",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broth",
+    "icon": "/items/broth.png"
+  },
+  {
+    "id": "burbot-cooked",
+    "name": "Burbot (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Burbot_(Cooked)",
+    "icon": "/items/burbot-cooked.png"
+  },
+  {
+    "id": "burbot-raw",
+    "name": "Burbot (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Burbot_(Raw)",
+    "icon": "/items/burbot-raw.png"
+  },
+  {
+    "id": "camber-flight-porridge",
+    "name": "Camber Flight Porridge",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Camber_Flight_Porridge",
+    "icon": "/items/camber-flight-porridge.png"
+  },
+  {
+    "id": "canned-corn",
+    "name": "Canned Corn",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Canned_Corn",
+    "icon": "/items/canned-corn.png"
+  },
+  {
+    "id": "canned-ham",
+    "name": "Canned Ham",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Canned_Ham",
+    "icon": "/items/canned-ham.png"
+  },
+  {
+    "id": "canned-pineapple",
+    "name": "Canned Pineapple",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Canned_Pineapple",
+    "icon": "/items/canned-pineapple.png"
+  },
+  {
+    "id": "carrot",
+    "name": "Carrot",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carrot",
+    "icon": "/items/carrot.png"
+  },
+  {
+    "id": "cat-tail-stalk",
+    "name": "Cat Tail Stalk",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cat_Tail_Stalk",
+    "icon": "/items/cat-tail-stalk.png"
+  },
+  {
+    "id": "cereal",
+    "name": "Cereal",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cereal",
+    "icon": "/items/cereal.png"
+  },
+  {
+    "id": "chocolate-bar",
+    "name": "Chocolate Bar",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Chocolate_Bar",
+    "icon": "/items/chocolate-bar.png"
+  },
+  {
+    "id": "chocolate-bar-4-days-of-night",
+    "name": "Chocolate Bar (4 Days of Night)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Chocolate_Bar_(4_Days_of_Night)",
+    "icon": null
+  },
+  {
+    "id": "coastal-fishcakes",
+    "name": "Coastal Fishcakes",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coastal_Fishcakes",
+    "icon": "/items/coastal-fishcakes.png"
+  },
+  {
+    "id": "coho-salmon-cooked",
+    "name": "Coho Salmon (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coho_Salmon_(Cooked)",
+    "icon": "/items/coho-salmon-cooked.png"
+  },
+  {
+    "id": "coho-salmon-raw",
+    "name": "Coho Salmon (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Coho_Salmon_(Raw)",
+    "icon": "/items/coho-salmon-raw.png"
+  },
+  {
+    "id": "condensed-milk",
+    "name": "Condensed Milk",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Condensed_Milk",
+    "icon": "/items/condensed-milk.png"
+  },
+  {
+    "id": "cooked-potato",
+    "name": "Cooked Potato",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cooked_Potato",
+    "icon": "/items/cooked-potato.png"
+  },
+  {
+    "id": "cooking-oil",
+    "name": "Cooking Oil",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cooking_Oil",
+    "icon": "/items/cooking-oil.png"
+  },
+  {
+    "id": "cougar-meat-cooked",
+    "name": "Cougar Meat (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Meat_(Cooked)",
+    "icon": "/items/cougar-meat-cooked.png"
+  },
+  {
+    "id": "cougar-meat-raw",
+    "name": "Cougar Meat (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Meat_(Raw)",
+    "icon": "/items/cougar-meat-raw.png"
+  },
+  {
+    "id": "cougar-quarter",
+    "name": "Cougar Quarter",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Quarter",
+    "icon": "/items/cougar-quarter.png"
+  },
+  {
+    "id": "cup-of-acorn-coffee",
+    "name": "Cup of Acorn Coffee",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cup_of_Acorn_Coffee",
+    "icon": "/items/cup-of-acorn-coffee.png"
+  },
+  {
+    "id": "cup-of-coffee",
+    "name": "Cup of Coffee",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cup_of_Coffee",
+    "icon": "/items/cup-of-coffee.png"
+  },
+  {
+    "id": "cup-of-herbal-tea",
+    "name": "Cup of Herbal Tea",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cup_of_Herbal_Tea",
+    "icon": "/items/cup-of-herbal-tea.png"
+  },
+  {
+    "id": "cured-fish",
+    "name": "Cured Fish",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Fish",
+    "icon": "/items/cured-fish.png"
+  },
+  {
+    "id": "cured-meat",
+    "name": "Cured Meat",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Meat",
+    "icon": "/items/cured-meat.png"
+  },
+  {
+    "id": "deer-quarter",
+    "name": "Deer Quarter",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Deer_Quarter",
+    "icon": "/items/deer-quarter.png"
+  },
+  {
+    "id": "dockworkers-pie",
+    "name": "Dockworker's Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dockworker's_Pie",
+    "icon": "/items/dockworkers-pie.png"
+  },
+  {
+    "id": "dog-food",
+    "name": "Dog Food",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dog_Food",
+    "icon": "/items/dog-food.png"
+  },
+  {
+    "id": "dried-apples",
+    "name": "Dried Apples",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dried_Apples",
+    "icon": "/items/dried-apples.png"
+  },
+  {
+    "id": "energy-bar",
+    "name": "Energy Bar",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Energy_Bar",
+    "icon": "/items/energy-bar.png"
+  },
+  {
+    "id": "goldeye-cooked",
+    "name": "Goldeye (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Goldeye_(Cooked)",
+    "icon": "/items/goldeye-cooked.png"
+  },
+  {
+    "id": "goldeye-raw",
+    "name": "Goldeye (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Goldeye_(Raw)",
+    "icon": "/items/goldeye-raw.png"
+  },
+  {
+    "id": "granola-bar",
+    "name": "Granola Bar",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Granola_Bar",
+    "icon": "/items/granola-bar.png"
+  },
+  {
+    "id": "herbal-tea",
+    "name": "Herbal Tea",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Herbal_Tea",
+    "icon": "/items/herbal-tea.png"
+  },
+  {
+    "id": "home-made-soup",
+    "name": "Home-made Soup",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Home-made_Soup",
+    "icon": "/items/home-made-soup.png"
+  },
+  {
+    "id": "ketchup-chips",
+    "name": "Ketchup Chips",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ketchup_Chips",
+    "icon": "/items/ketchup-chips.png"
+  },
+  {
+    "id": "lake-whitefish-cooked",
+    "name": "Lake Whitefish (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lake_Whitefish_(Cooked)",
+    "icon": "/items/lake-whitefish-cooked.png"
+  },
+  {
+    "id": "lake-whitefish-raw",
+    "name": "Lake Whitefish (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lake_Whitefish_(Raw)",
+    "icon": "/items/lake-whitefish-raw.png"
+  },
+  {
+    "id": "last-resort-soup",
+    "name": "Last Resort Soup",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Last_Resort_Soup",
+    "icon": "/items/last-resort-soup.png"
+  },
+  {
+    "id": "lilys-pancakes",
+    "name": "Lily's Pancakes",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lily's_Pancakes",
+    "icon": "/items/lilys-pancakes.png"
+  },
+  {
+    "id": "maple-syrup",
+    "name": "Maple Syrup",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Maple_Syrup",
+    "icon": "/items/maple-syrup.png"
+  },
+  {
+    "id": "military-grade-mre",
+    "name": "Military-Grade MRE",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Military-Grade_MRE",
+    "icon": "/items/military-grade-mre.png"
+  },
+  {
+    "id": "moose-meat-cooked",
+    "name": "Moose Meat (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose_Meat_(Cooked)",
+    "icon": "/items/moose-meat-cooked.png"
+  },
+  {
+    "id": "moose-meat-raw",
+    "name": "Moose Meat (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose_Meat_(Raw)",
+    "icon": "/items/moose-meat-raw.png"
+  },
+  {
+    "id": "moose-quarter",
+    "name": "Moose Quarter",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose_Quarter",
+    "icon": "/items/moose-quarter.png"
+  },
+  {
+    "id": "old-mill-flour",
+    "name": "Old Mill Flour",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Mill_Flour",
+    "icon": "/items/old-mill-flour.png"
+  },
+  {
+    "id": "orange-soda",
+    "name": "Orange Soda",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Orange_Soda",
+    "icon": "/items/orange-soda.png"
+  },
+  {
+    "id": "pancakes",
+    "name": "Pancakes",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pancakes",
+    "icon": "/items/pancakes.png"
+  },
+  {
+    "id": "peach-pie",
+    "name": "Peach Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Peach_Pie",
+    "icon": "/items/peach-pie.png"
+  },
+  {
+    "id": "peanut-butter",
+    "name": "Peanut Butter",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Peanut_Butter",
+    "icon": "/items/peanut-butter.png"
+  },
+  {
+    "id": "pemmican-bar",
+    "name": "Pemmican Bar",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pemmican_Bar",
+    "icon": "/items/pemmican-bar.png"
+  },
+  {
+    "id": "pickles",
+    "name": "Pickles",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pickles",
+    "icon": "/items/pickles.png"
+  },
+  {
+    "id": "pinnacle-peaches",
+    "name": "Pinnacle Peaches",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pinnacle_Peaches",
+    "icon": "/items/pinnacle-peaches.png"
+  },
+  {
+    "id": "pork-and-beans",
+    "name": "Pork and Beans",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pork_and_Beans",
+    "icon": "/items/pork-and-beans.png"
+  },
+  {
+    "id": "porridge",
+    "name": "Porridge",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Porridge",
+    "icon": "/items/porridge.png"
+  },
+  {
+    "id": "porters-soup",
+    "name": "Porter's Soup",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Porter's_Soup",
+    "icon": "/items/porters-soup.png"
+  },
+  {
+    "id": "potato",
+    "name": "Potato",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Potato",
+    "icon": "/items/potato.png"
+  },
+  {
+    "id": "preppers-pie",
+    "name": "Prepper's Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepper's_Pie",
+    "icon": "/items/preppers-pie.png"
+  },
+  {
+    "id": "ptarmigan-cooked",
+    "name": "Ptarmigan (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ptarmigan_(Cooked)",
+    "icon": "/items/ptarmigan-cooked.png"
+  },
+  {
+    "id": "ptarmigan-raw",
+    "name": "Ptarmigan (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ptarmigan_(Raw)",
+    "icon": "/items/ptarmigan-raw.png"
+  },
+  {
+    "id": "ptarmigan-carcass",
+    "name": "Ptarmigan Carcass",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ptarmigan_Carcass",
+    "icon": "/items/ptarmigan-carcass.png"
+  },
+  {
+    "id": "ptarmigan-pie",
+    "name": "Ptarmigan Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ptarmigan_Pie",
+    "icon": "/items/ptarmigan-pie.png"
+  },
+  {
+    "id": "ptarmigan-stew",
+    "name": "Ptarmigan Stew",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ptarmigan_Stew",
+    "icon": "/items/ptarmigan-stew.png"
+  },
+  {
+    "id": "pumpkin-pie",
+    "name": "Pumpkin Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Pumpkin_Pie",
+    "icon": "/items/pumpkin-pie.png"
+  },
+  {
+    "id": "rabbit-cooked",
+    "name": "Rabbit (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbit_(Cooked)",
+    "icon": "/items/rabbit-cooked.png"
+  },
+  {
+    "id": "rabbit-raw",
+    "name": "Rabbit (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbit_(Raw)",
+    "icon": "/items/rabbit-raw.png"
+  },
+  {
+    "id": "rabbit-carcass",
+    "name": "Rabbit Carcass",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbit_Carcass",
+    "icon": "/items/rabbit-carcass.png"
+  },
+  {
+    "id": "rabbit-pie",
+    "name": "Rabbit Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbit_Pie",
+    "icon": "/items/rabbit-pie.png"
+  },
+  {
+    "id": "rabbit-stew",
+    "name": "Rabbit Stew",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbit_Stew",
+    "icon": "/items/rabbit-stew.png"
+  },
+  {
+    "id": "rainbow-trout-cooked",
+    "name": "Rainbow Trout (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rainbow_Trout_(Cooked)",
+    "icon": "/items/rainbow-trout-cooked.png"
+  },
+  {
+    "id": "rainbow-trout-raw",
+    "name": "Rainbow Trout (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rainbow_Trout_(Raw)",
+    "icon": "/items/rainbow-trout-raw.png"
+  },
+  {
+    "id": "ranger-stew",
+    "name": "Ranger Stew",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ranger_Stew",
+    "icon": "/items/ranger-stew.png"
+  },
+  {
+    "id": "red-irish-lord-cooked",
+    "name": "Red Irish Lord (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Red_Irish_Lord_(Cooked)",
+    "icon": "/items/red-irish-lord-cooked.png"
+  },
+  {
+    "id": "red-irish-lord-raw",
+    "name": "Red Irish Lord (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Red_Irish_Lord_(Raw)",
+    "icon": "/items/red-irish-lord-raw.png"
+  },
+  {
+    "id": "rockfish-cooked",
+    "name": "Rockfish (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rockfish_(Cooked)",
+    "icon": "/items/rockfish-cooked.png"
+  },
+  {
+    "id": "rockfish-raw",
+    "name": "Rockfish (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rockfish_(Raw)",
+    "icon": "/items/rockfish-raw.png"
+  },
+  {
+    "id": "rose-hip-pie",
+    "name": "Rose Hip Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rose_Hip_Pie",
+    "icon": "/items/rose-hip-pie.png"
+  },
+  {
+    "id": "running-river-oats",
+    "name": "Running River Oats",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Running_River_Oats",
+    "icon": "/items/running-river-oats.png"
+  },
+  {
+    "id": "salt",
+    "name": "Salt",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Salt",
+    "icon": "/items/salt.png"
+  },
+  {
+    "id": "salt-bag",
+    "name": "Salt (Bag)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Salt_(Bag)",
+    "icon": "/items/salt-bag.png"
+  },
+  {
+    "id": "salty-crackers",
+    "name": "Salty Crackers",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Salty_Crackers",
+    "icon": "/items/salty-crackers.png"
+  },
+  {
+    "id": "smallmouth-bass-cooked",
+    "name": "Smallmouth Bass (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Smallmouth_Bass_(Cooked)",
+    "icon": "/items/smallmouth-bass-cooked.png"
+  },
+  {
+    "id": "smallmouth-bass-raw",
+    "name": "Smallmouth Bass (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Smallmouth_Bass_(Raw)",
+    "icon": "/items/smallmouth-bass-raw.png"
+  },
+  {
+    "id": "stacys-grape-soda",
+    "name": "Stacy's Grape Soda",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stacy's_Grape_Soda",
+    "icon": "/items/stacys-grape-soda.png"
+  },
+  {
+    "id": "stalkers-pie",
+    "name": "Stalker's Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stalker's_Pie",
+    "icon": "/items/stalkers-pie.png"
+  },
+  {
+    "id": "summit-soda",
+    "name": "Summit Soda",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Summit_Soda",
+    "icon": "/items/summit-soda.png"
+  },
+  {
+    "id": "thomson-family-stew",
+    "name": "Thomson Family Stew",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Thomson_Family_Stew",
+    "icon": "/items/thomson-family-stew.png"
+  },
+  {
+    "id": "tin-of-coffee",
+    "name": "Tin of Coffee",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tin_of_Coffee",
+    "icon": "/items/tin-of-coffee.png"
+  },
+  {
+    "id": "tin-of-sardines",
+    "name": "Tin of Sardines",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tin_of_Sardines",
+    "icon": "/items/tin-of-sardines.png"
+  },
+  {
+    "id": "tomato-soup",
+    "name": "Tomato Soup",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Tomato_Soup",
+    "icon": "/items/tomato-soup.png"
+  },
+  {
+    "id": "trout-stew",
+    "name": "Trout Stew",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Trout_Stew",
+    "icon": "/items/trout-stew.png"
+  },
+  {
+    "id": "vagabond-soup",
+    "name": "Vagabond Soup",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Vagabond_Soup",
+    "icon": "/items/vagabond-soup.png"
+  },
+  {
+    "id": "venison-cooked",
+    "name": "Venison (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Venison_(Cooked)",
+    "icon": "/items/venison-cooked.png"
+  },
+  {
+    "id": "venison-raw",
+    "name": "Venison (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Venison_(Raw)",
+    "icon": "/items/venison-raw.png"
+  },
+  {
+    "id": "venison-pie",
+    "name": "Venison Pie",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Venison_Pie",
+    "icon": "/items/venison-pie.png"
+  },
+  {
+    "id": "venison-stew",
+    "name": "Venison Stew",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Venison_Stew",
+    "icon": "/items/venison-stew.png"
+  },
+  {
+    "id": "water-potable",
+    "name": "Water (Potable)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Water_(Potable)",
+    "icon": "/items/water-potable.png"
+  },
+  {
+    "id": "water-unsafe",
+    "name": "Water (Unsafe)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Water_(Unsafe)",
+    "icon": "/items/water-unsafe.png"
+  },
+  {
+    "id": "wolf-meat-cooked",
+    "name": "Wolf Meat (Cooked)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolf_Meat_(Cooked)",
+    "icon": "/items/wolf-meat-cooked.png"
+  },
+  {
+    "id": "wolf-meat-raw",
+    "name": "Wolf Meat (Raw)",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolf_Meat_(Raw)",
+    "icon": "/items/wolf-meat-raw.png"
+  },
+  {
+    "id": "wolf-quarter",
+    "name": "Wolf Quarter",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolf_Quarter",
+    "icon": "/items/wolf-quarter.png"
+  },
+  {
+    "id": "antibiotics",
+    "name": "Antibiotics",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Antibiotics",
+    "icon": "/items/antibiotics.png"
+  },
+  {
+    "id": "antiseptic",
+    "name": "Antiseptic",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Antiseptic",
+    "icon": "/items/antiseptic.png"
+  },
+  {
+    "id": "bandage",
+    "name": "Bandage",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bandage",
+    "icon": "/items/bandage.png"
+  },
+  {
+    "id": "birch-bark-tea",
+    "name": "Birch Bark Tea",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Birch_Bark_Tea",
+    "icon": "/items/birch-bark-tea.png"
+  },
+  {
+    "id": "blackrock-infirmary-medication",
+    "name": "Blackrock Infirmary Medication",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Blackrock_Infirmary_Medication",
+    "icon": "/items/blackrock-infirmary-medication.png"
+  },
+  {
+    "id": "burdock-tea",
+    "name": "Burdock Tea",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Burdock_Tea",
+    "icon": "/items/burdock-tea.png"
+  },
+  {
+    "id": "caffeine-pills",
+    "name": "Caffeine Pills",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Caffeine_Pills",
+    "icon": "/items/caffeine-pills.png"
+  },
+  {
+    "id": "canister",
+    "name": "Canister",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Canister",
+    "icon": "/items/canister.png"
+  },
+  {
+    "id": "emergency-stim",
+    "name": "Emergency Stim",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Emergency_Stim",
+    "icon": "/items/emergency-stim.png"
+  },
+  {
+    "id": "go-energy-drink",
+    "name": "Go! Energy Drink",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Go!_Energy_Drink",
+    "icon": "/items/go-energy-drink.png"
+  },
+  {
+    "id": "heat-pack",
+    "name": "Heat Pack",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Heat_Pack",
+    "icon": "/items/heat-pack.png"
+  },
+  {
+    "id": "insulin",
+    "name": "Insulin",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Insulin",
+    "icon": "/items/insulin.png"
+  },
+  {
+    "id": "painkillers",
+    "name": "Painkillers",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Painkillers",
+    "icon": "/items/painkillers.png"
+  },
+  {
+    "id": "prepared-birch-bark",
+    "name": "Prepared Birch Bark",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepared_Birch_Bark",
+    "icon": "/items/prepared-birch-bark.png"
+  },
+  {
+    "id": "prepared-burdock",
+    "name": "Prepared Burdock",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepared_Burdock",
+    "icon": "/items/prepared-burdock.png"
+  },
+  {
+    "id": "prepared-reishi-mushrooms",
+    "name": "Prepared Reishi Mushrooms",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepared_Reishi_Mushrooms",
+    "icon": "/items/prepared-reishi-mushrooms.png"
+  },
+  {
+    "id": "reishi-tea",
+    "name": "Reishi Tea",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Reishi_Tea",
+    "icon": "/items/reishi-tea.png"
+  },
+  {
+    "id": "respirator",
+    "name": "Respirator",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Respirator",
+    "icon": "/items/respirator.png"
+  },
+  {
+    "id": "rose-hip-tea",
+    "name": "Rose Hip Tea",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rose_Hip_Tea",
+    "icon": "/items/rose-hip-tea.png"
+  },
+  {
+    "id": "vitamin-c-pills",
+    "name": "Vitamin-C Pills",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Vitamin-C_Pills",
+    "icon": "/items/vitamin-c-pills.png"
+  },
+  {
+    "id": "water-purification-tablets",
+    "name": "Water Purification Tablets",
+    "category": "Medical",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Water_Purification_Tablets",
+    "icon": "/items/water-purification-tablets.png"
+  },
+  {
+    "id": "acorn-grounds",
+    "name": "Acorn Grounds",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Acorn_Grounds",
+    "icon": "/items/acorn-grounds.png"
+  },
+  {
+    "id": "acorns",
+    "name": "Acorns",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Acorns",
+    "icon": "/items/acorns.png"
+  },
+  {
+    "id": "arrow-shaft",
+    "name": "Arrow Shaft",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Arrow_Shaft",
+    "icon": "/items/arrow-shaft.png"
+  },
+  {
+    "id": "arrowhead",
+    "name": "Arrowhead",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Arrowhead",
+    "icon": "/items/arrowhead.png"
+  },
+  {
+    "id": "bullet",
+    "name": "Bullet",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bullet",
+    "icon": "/items/bullet.png"
+  },
+  {
+    "id": "burdock-root",
+    "name": "Burdock Root",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Burdock_Root",
+    "icon": "/items/burdock-root.png"
+  },
+  {
+    "id": "cat-tail",
+    "name": "Cat Tail",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cat_Tail",
+    "icon": "/items/cat-tail.png"
+  },
+  {
+    "id": "cloth",
+    "name": "Cloth",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cloth",
+    "icon": "/items/cloth.png"
+  },
+  {
+    "id": "cougar-claw",
+    "name": "Cougar Claw",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Claw",
+    "icon": "/items/cougar-claw.png"
+  },
+  {
+    "id": "crow-feather",
+    "name": "Crow Feather",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Crow_Feather",
+    "icon": "/items/crow-feather.png"
+  },
+  {
+    "id": "cured-birch-sapling",
+    "name": "Cured Birch Sapling",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Birch_Sapling",
+    "icon": "/items/cured-birch-sapling.png"
+  },
+  {
+    "id": "cured-black-bear-hide",
+    "name": "Cured Black Bear Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Black_Bear_Hide",
+    "icon": "/items/cured-black-bear-hide.png"
+  },
+  {
+    "id": "cured-cougar-hide",
+    "name": "Cured Cougar Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Cougar_Hide",
+    "icon": "/items/cured-cougar-hide.png"
+  },
+  {
+    "id": "cured-deer-hide",
+    "name": "Cured Deer Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Deer_Hide",
+    "icon": "/items/cured-deer-hide.png"
+  },
+  {
+    "id": "cured-gut",
+    "name": "Cured Gut",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Gut",
+    "icon": "/items/cured-gut.png"
+  },
+  {
+    "id": "cured-leather",
+    "name": "Cured Leather",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Leather",
+    "icon": "/items/cured-leather.png"
+  },
+  {
+    "id": "cured-maple-sapling",
+    "name": "Cured Maple Sapling",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Maple_Sapling",
+    "icon": "/items/cured-maple-sapling.png"
+  },
+  {
+    "id": "cured-moose-hide",
+    "name": "Cured Moose Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Moose_Hide",
+    "icon": "/items/cured-moose-hide.png"
+  },
+  {
+    "id": "cured-rabbit-pelt",
+    "name": "Cured Rabbit Pelt",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Rabbit_Pelt",
+    "icon": "/items/cured-rabbit-pelt.png"
+  },
+  {
+    "id": "cured-wolf-pelt",
+    "name": "Cured Wolf Pelt",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cured_Wolf_Pelt",
+    "icon": "/items/cured-wolf-pelt.png"
+  },
+  {
+    "id": "dusting-sulfur",
+    "name": "Dusting Sulfur",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Dusting_Sulfur",
+    "icon": "/items/dusting-sulfur.png"
+  },
+  {
+    "id": "fresh-black-bear-hide",
+    "name": "Fresh Black Bear Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Black_Bear_Hide",
+    "icon": "/items/fresh-black-bear-hide.png"
+  },
+  {
+    "id": "fresh-cougar-hide",
+    "name": "Fresh Cougar Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Cougar_Hide",
+    "icon": "/items/fresh-cougar-hide.png"
+  },
+  {
+    "id": "fresh-deer-hide",
+    "name": "Fresh Deer Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Deer_Hide",
+    "icon": "/items/fresh-deer-hide.png"
+  },
+  {
+    "id": "fresh-gut",
+    "name": "Fresh Gut",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Gut",
+    "icon": "/items/fresh-gut.png"
+  },
+  {
+    "id": "fresh-leather",
+    "name": "Fresh Leather",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Leather",
+    "icon": "/items/fresh-leather.png"
+  },
+  {
+    "id": "fresh-moose-hide",
+    "name": "Fresh Moose Hide",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Moose_Hide",
+    "icon": "/items/fresh-moose-hide.png"
+  },
+  {
+    "id": "fresh-rabbit-pelt",
+    "name": "Fresh Rabbit Pelt",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Rabbit_Pelt",
+    "icon": "/items/fresh-rabbit-pelt.png"
+  },
+  {
+    "id": "fresh-wolf-pelt",
+    "name": "Fresh Wolf Pelt",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fresh_Wolf_Pelt",
+    "icon": "/items/fresh-wolf-pelt.png"
+  },
+  {
+    "id": "green-birch-sapling",
+    "name": "Green Birch Sapling",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Green_Birch_Sapling",
+    "icon": "/items/green-birch-sapling.png"
+  },
+  {
+    "id": "green-maple-sapling",
+    "name": "Green Maple Sapling",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Green_Maple_Sapling",
+    "icon": "/items/green-maple-sapling.png"
+  },
+  {
+    "id": "old-mans-beard-lichen",
+    "name": "Old Man's Beard Lichen",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Man's_Beard_Lichen",
+    "icon": "/items/old-mans-beard-lichen.png"
+  },
+  {
+    "id": "old-mans-beard-wound-dressing",
+    "name": "Old Man's Beard Wound Dressing",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Old_Man's_Beard_Wound_Dressing",
+    "icon": "/items/old-mans-beard-wound-dressing.png"
+  },
+  {
+    "id": "prepared-acorns",
+    "name": "Prepared Acorns",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepared_Acorns",
+    "icon": "/items/prepared-acorns.png"
+  },
+  {
+    "id": "prepared-acorns-large-portion",
+    "name": "Prepared Acorns (Large Portion)",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prepared_Acorns_(Large_Portion)",
+    "icon": "/items/prepared-acorns-large-portion.png"
+  },
+  {
+    "id": "ptarmigan-down",
+    "name": "Ptarmigan Down",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ptarmigan_Down",
+    "icon": "/items/ptarmigan-down.png"
+  },
+  {
+    "id": "reishi-mushroom",
+    "name": "Reishi Mushroom",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Reishi_Mushroom",
+    "icon": "/items/reishi-mushroom.png"
+  },
+  {
+    "id": "revolver-shell-casing",
+    "name": "Revolver Shell Casing",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Revolver_Shell_Casing",
+    "icon": "/items/revolver-shell-casing.png"
+  },
+  {
+    "id": "rifle-shell-casing",
+    "name": "Rifle Shell Casing",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rifle_Shell_Casing",
+    "icon": "/items/rifle-shell-casing.png"
+  },
+  {
+    "id": "scrap-lead",
+    "name": "Scrap Lead",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Scrap_Lead",
+    "icon": "/items/scrap-lead.png"
+  },
+  {
+    "id": "scrap-metal",
+    "name": "Scrap Metal",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Scrap_Metal",
+    "icon": "/items/scrap-metal.png"
+  },
+  {
+    "id": "stump-remover",
+    "name": "Stump Remover",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stump_Remover",
+    "icon": "/items/stump-remover.png"
+  },
+  {
+    "id": "workbench-vice",
+    "name": "Workbench Vice",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Workbench_Vice",
+    "icon": "/items/workbench-vice.png"
+  },
+  {
+    "id": "a-skeleton-and-note",
+    "name": "A Skeleton And Note",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_Skeleton_And_Note",
+    "icon": "/items/a-skeleton-and-note.png"
+  },
+  {
+    "id": "barbs-rifle",
+    "name": "Barb's Rifle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Barb's_Rifle",
+    "icon": "/items/barbs-rifle.png"
+  },
+  {
+    "id": "bear-skin-bedroll",
+    "name": "Bear Skin Bedroll",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear_Skin_Bedroll",
+    "icon": "/items/bear-skin-bedroll.png"
+  },
+  {
+    "id": "bear-spear",
+    "name": "Bear Spear",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bear_Spear",
+    "icon": "/items/bear-spear.png"
+  },
+  {
+    "id": "bedroll",
+    "name": "Bedroll",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bedroll",
+    "icon": "/items/bedroll.png"
+  },
+  {
+    "id": "bolt-cutters",
+    "name": "Bolt Cutters",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bolt_Cutters",
+    "icon": "/items/bolt-cutters.png"
+  },
+  {
+    "id": "brand",
+    "name": "Brand",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Brand",
+    "icon": "/items/brand.png"
+  },
+  {
+    "id": "broken-bear-spear",
+    "name": "Broken Bear Spear",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Bear_Spear",
+    "icon": "/items/broken-bear-spear.png"
+  },
+  {
+    "id": "broken-fire-hardened-arrow",
+    "name": "Broken Fire Hardened Arrow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Fire_Hardened_Arrow",
+    "icon": "/items/broken-fire-hardened-arrow.png"
+  },
+  {
+    "id": "broken-hatch-wheel",
+    "name": "Broken Hatch Wheel",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Hatch_Wheel",
+    "icon": "/items/broken-hatch-wheel.png"
+  },
+  {
+    "id": "broken-manufactured-arrow",
+    "name": "Broken Manufactured Arrow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Manufactured_Arrow",
+    "icon": "/items/broken-manufactured-arrow.png"
+  },
+  {
+    "id": "bunker-rifle",
+    "name": "Bunker Rifle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bunker_Rifle",
+    "icon": "/items/bunker-rifle.png"
+  },
+  {
+    "id": "burned-out-fuse",
+    "name": "Burned Out Fuse",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Burned_Out_Fuse",
+    "icon": "/items/burned-out-fuse.png"
+  },
+  {
+    "id": "bushcraft-bow",
+    "name": "Bushcraft Bow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Bushcraft_Bow",
+    "icon": "/items/bushcraft-bow.png"
+  },
+  {
+    "id": "camera",
+    "name": "Camera",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Camera",
+    "icon": "/items/camera.png"
+  },
+  {
+    "id": "can-of-gunpowder",
+    "name": "Can of Gunpowder",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Can_of_Gunpowder",
+    "icon": "/items/can-of-gunpowder.png"
+  },
+  {
+    "id": "can-opener",
+    "name": "Can Opener",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Can_Opener",
+    "icon": "/items/can-opener.png"
+  },
+  {
+    "id": "charcoal",
+    "name": "Charcoal",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Charcoal",
+    "icon": "/items/charcoal.png"
+  },
+  {
+    "id": "cooking-pot",
+    "name": "Cooking Pot",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cooking_Pot",
+    "icon": "/items/cooking-pot.png"
+  },
+  {
+    "id": "cooking-skillet",
+    "name": "Cooking Skillet",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cooking_Skillet",
+    "icon": "/items/cooking-skillet.png"
+  },
+  {
+    "id": "cougar-claw-knife",
+    "name": "Cougar Claw Knife",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cougar_Claw_Knife",
+    "icon": "/items/cougar-claw-knife.png"
+  },
+  {
+    "id": "curators-rifle",
+    "name": "Curator's Rifle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Curator's_Rifle",
+    "icon": "/items/curators-rifle.png"
+  },
+  {
+    "id": "distress-pistol",
+    "name": "Distress Pistol",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Distress_Pistol",
+    "icon": "/items/distress-pistol.png"
+  },
+  {
+    "id": "document-stash-1",
+    "name": "Document Stash 1",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Document_Stash_1",
+    "icon": "/items/document-stash-1.png"
+  },
+  {
+    "id": "document-stash-2",
+    "name": "Document Stash 2",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Document_Stash_2",
+    "icon": "/items/document-stash-2.png"
+  },
+  {
+    "id": "document-stash-3",
+    "name": "Document Stash 3",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Document_Stash_3",
+    "icon": "/items/document-stash-3.png"
+  },
+  {
+    "id": "document-stash-4",
+    "name": "Document Stash 4",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Document_Stash_4",
+    "icon": "/items/document-stash-4.png"
+  },
+  {
+    "id": "fire-hardened-arrow",
+    "name": "Fire Hardened Arrow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fire_Hardened_Arrow",
+    "icon": "/items/fire-hardened-arrow.png"
+  },
+  {
+    "id": "firearm-cleaning-kit",
+    "name": "Firearm Cleaning Kit",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Firearm_Cleaning_Kit",
+    "icon": "/items/firearm-cleaning-kit.png"
+  },
+  {
+    "id": "first-aid-kit-tool",
+    "name": "First Aid Kit (tool)",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/First_Aid_Kit_(tool)",
+    "icon": "/items/first-aid-kit-tool.png"
+  },
+  {
+    "id": "fishing-bait",
+    "name": "Fishing Bait",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Bait",
+    "icon": "/items/fishing-bait.png"
+  },
+  {
+    "id": "fishing-lure-acorns",
+    "name": "Fishing Lure (Acorns)",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Lure_(Acorns)",
+    "icon": "/items/fishing-lure-acorns.png"
+  },
+  {
+    "id": "fishing-lure-revolver-shell-casing",
+    "name": "Fishing Lure (Revolver Shell Casing)",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Lure_(Revolver_Shell_Casing)",
+    "icon": "/items/fishing-lure-revolver-shell-casing.png"
+  },
+  {
+    "id": "fishing-lure-wire-bundle",
+    "name": "Fishing Lure (Wire Bundle)",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Lure_(Wire_Bundle)",
+    "icon": "/items/fishing-lure-wire-bundle.png"
+  },
+  {
+    "id": "fishing-tackle",
+    "name": "Fishing Tackle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Tackle",
+    "icon": "/items/fishing-tackle.png"
+  },
+  {
+    "id": "fishing-tip-up",
+    "name": "Fishing Tip-Up",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Fishing_Tip-Up",
+    "icon": "/items/fishing-tip-up.png"
+  },
+  {
+    "id": "flare",
+    "name": "Flare",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Flare",
+    "icon": "/items/flare.png"
+  },
+  {
+    "id": "flare-shell",
+    "name": "Flare Shell",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Flare_Shell",
+    "icon": "/items/flare-shell.png"
+  },
+  {
+    "id": "foresters-revolver",
+    "name": "Forester's Revolver",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Forester's_Revolver",
+    "icon": "/items/foresters-revolver.png"
+  },
+  {
+    "id": "hacksaw",
+    "name": "Hacksaw",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hacksaw",
+    "icon": "/items/hacksaw.png"
+  },
+  {
+    "id": "handheld-shortwave-radio",
+    "name": "Handheld Shortwave Radio",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Handheld_Shortwave_Radio",
+    "icon": "/items/handheld-shortwave-radio.png"
+  },
+  {
+    "id": "heavy-hammer",
+    "name": "Heavy Hammer",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Heavy_Hammer",
+    "icon": "/items/heavy-hammer.png"
+  },
+  {
+    "id": "hook",
+    "name": "Hook",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hook",
+    "icon": "/items/hook.png"
+  },
+  {
+    "id": "hunters-revolver",
+    "name": "Hunter's Revolver",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunter's_Revolver",
+    "icon": "/items/hunters-revolver.png"
+  },
+  {
+    "id": "hunting-lodge-rifle",
+    "name": "Hunting Lodge Rifle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunting_Lodge_Rifle",
+    "icon": "/items/hunting-lodge-rifle.png"
+  },
+  {
+    "id": "hunting-rifle",
+    "name": "Hunting Rifle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunting_Rifle",
+    "icon": "/items/hunting-rifle.png"
+  },
+  {
+    "id": "improvised-down-bedroll",
+    "name": "Improvised Down Bedroll",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Down_Bedroll",
+    "icon": "/items/improvised-down-bedroll.png"
+  },
+  {
+    "id": "improvised-hatchet",
+    "name": "Improvised Hatchet",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Hatchet",
+    "icon": "/items/improvised-hatchet.png"
+  },
+  {
+    "id": "insulated-flask",
+    "name": "Insulated Flask",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Insulated_Flask",
+    "icon": "/items/insulated-flask.png"
+  },
+  {
+    "id": "jeremiahs-knife",
+    "name": "Jeremiah's Knife",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Jeremiah's_Knife",
+    "icon": "/items/jeremiahs-knife.png"
+  },
+  {
+    "id": "line",
+    "name": "Line",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Line",
+    "icon": "/items/line.png"
+  },
+  {
+    "id": "manufactured-arrow",
+    "name": "Manufactured Arrow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Manufactured_Arrow",
+    "icon": "/items/manufactured-arrow.png"
+  },
+  {
+    "id": "miners-flashlight",
+    "name": "Miner's Flashlight",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Miner's_Flashlight",
+    "icon": "/items/miners-flashlight.png"
+  },
+  {
+    "id": "mountaineering-rope",
+    "name": "Mountaineering Rope",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mountaineering_Rope",
+    "icon": "/items/mountaineering-rope.png"
+  },
+  {
+    "id": "noisemaker",
+    "name": "Noisemaker",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Noisemaker",
+    "icon": "/items/noisemaker.png"
+  },
+  {
+    "id": "recycled-can",
+    "name": "Recycled Can",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Recycled_Can",
+    "icon": "/items/recycled-can.png"
+  },
+  {
+    "id": "replacement-fuse",
+    "name": "Replacement Fuse",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Replacement_Fuse",
+    "icon": "/items/replacement-fuse.png"
+  },
+  {
+    "id": "revolver",
+    "name": "Revolver",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Revolver",
+    "icon": "/items/revolver.png"
+  },
+  {
+    "id": "revolver-ammunition",
+    "name": "Revolver Ammunition",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Revolver_Ammunition",
+    "icon": "/items/revolver-ammunition.png"
+  },
+  {
+    "id": "rifle-ammunition",
+    "name": "Rifle Ammunition",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rifle_Ammunition",
+    "icon": "/items/rifle-ammunition.png"
+  },
+  {
+    "id": "sewing-kit",
+    "name": "Sewing Kit",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sewing_Kit",
+    "icon": "/items/sewing-kit.png"
+  },
+  {
+    "id": "simple-arrow",
+    "name": "Simple Arrow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Simple_Arrow",
+    "icon": "/items/simple-arrow.png"
+  },
+  {
+    "id": "simple-fishing-lure",
+    "name": "Simple Fishing Lure",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Simple_Fishing_Lure",
+    "icon": "/items/simple-fishing-lure.png"
+  },
+  {
+    "id": "simple-tools",
+    "name": "Simple Tools",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Simple_Tools",
+    "icon": "/items/simple-tools.png"
+  },
+  {
+    "id": "snare",
+    "name": "Snare",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Snare",
+    "icon": "/items/snare.png"
+  },
+  {
+    "id": "spear-head",
+    "name": "Spear Head",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Spear_Head",
+    "icon": "/items/spear-head.png"
+  },
+  {
+    "id": "spelunkers-lantern",
+    "name": "Spelunker's Lantern",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Spelunker's_Lantern",
+    "icon": "/items/spelunkers-lantern.png"
+  },
+  {
+    "id": "sport-bow",
+    "name": "Sport Bow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Sport_Bow",
+    "icon": "/items/sport-bow.png"
+  },
+  {
+    "id": "spray-paint",
+    "name": "Spray Paint",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Spray_Paint",
+    "icon": "/items/spray-paint.png"
+  },
+  {
+    "id": "spray-paint-glyph",
+    "name": "Spray Paint - Glyph",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Spray_Paint_-_Glyph",
+    "icon": "/items/spray-paint-glyph.png"
+  },
+  {
+    "id": "stone",
+    "name": "Stone",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Stone",
+    "icon": "/items/stone.png"
+  },
+  {
+    "id": "storm-lantern",
+    "name": "Storm Lantern",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Storm_Lantern",
+    "icon": "/items/storm-lantern.png"
+  },
+  {
+    "id": "survival-bow",
+    "name": "Survival Bow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Survival_Bow",
+    "icon": "/items/survival-bow.png"
+  },
+  {
+    "id": "survival-knife",
+    "name": "Survival Knife",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Survival_Knife",
+    "icon": "/items/survival-knife.png"
+  },
+  {
+    "id": "travois",
+    "name": "Travois",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Travois",
+    "icon": "/items/travois.png"
+  },
+  {
+    "id": "vaughns-rifle",
+    "name": "Vaughn's Rifle",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Vaughn's_Rifle",
+    "icon": "/items/vaughns-rifle.png"
+  },
+  {
+    "id": "wardens-revolver",
+    "name": "Warden's Revolver",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Warden's_Revolver",
+    "icon": "/items/wardens-revolver.png"
+  },
+  {
+    "id": "whetstone",
+    "name": "Whetstone",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Whetstone",
+    "icon": "/items/whetstone.png"
+  },
+  {
+    "id": "wires",
+    "name": "Wires",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wires",
+    "icon": "/items/wires.png"
+  },
+  {
+    "id": "woodworking-tools",
+    "name": "Woodworking Tools",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Woodworking_Tools",
+    "icon": "/items/woodworking-tools.png"
+  },
+  {
+    "id": "woodwrights-bow",
+    "name": "Woodwright's Bow",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Woodwright's_Bow",
+    "icon": "/items/woodwrights-bow.png"
+  },
+  {
+    "id": "wyatts-skeleton",
+    "name": "Wyatt's Skeleton",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wyatt's_Skeleton",
+    "icon": "/items/wyatts-skeleton.png"
+  }
+]
