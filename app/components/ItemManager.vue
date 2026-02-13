@@ -4,7 +4,7 @@
       <DialogHeader class="px-6 pt-6 pb-3">
         <DialogTitle>Item Library</DialogTitle>
         <DialogDescription>
-          Manage items that can be placed as markers on maps
+          Browse game items available for map markers
         </DialogDescription>
       </DialogHeader>
 
@@ -60,15 +60,6 @@
                 {{ item.description }}
               </p>
             </div>
-
-            <Button
-              size="icon"
-              variant="ghost"
-              class="h-7 w-7 opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive shrink-0"
-              @click="handleDeleteItem(item.id)"
-            >
-              <TrashIcon class="h-3.5 w-3.5" />
-            </Button>
           </div>
 
           <div v-if="filteredItems.length === 0" class="text-center py-8 text-muted-foreground text-sm">
@@ -78,36 +69,11 @@
         </div>
       </div>
 
-      <Separator />
-
-      <!-- Add item form -->
-      <div class="space-y-3 px-6 py-5">
-        <p class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Add New Item</p>
-        <div class="grid grid-cols-2 gap-2">
-          <Input
-            v-model="newName"
-            placeholder="Item name"
-            class="h-8 text-sm"
-          />
-          <Input
-            v-model="newCategory"
-            placeholder="Category"
-            class="h-8 text-sm"
-          />
-        </div>
-        <Input
-          v-model="newDescription"
-          placeholder="Description (optional)"
-          class="h-8 text-sm"
-        />
-        <Button
-          class="w-full h-8 text-sm"
-          :disabled="!newName"
-          @click="handleAddItem"
-        >
-          <PlusIcon class="h-3.5 w-3.5 mr-1.5" />
-          Add Item
-        </Button>
+      <!-- Item count footer -->
+      <div class="px-6 py-3 border-t border-border">
+        <p class="text-xs text-muted-foreground">
+          {{ filteredItems.length }} of {{ items.length }} items
+        </p>
       </div>
     </DialogContent>
   </Dialog>
@@ -115,25 +81,20 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { PackageIcon, PlusIcon, TrashIcon } from 'lucide-vue-next'
+import { PackageIcon } from 'lucide-vue-next'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
-import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
 import { Input } from '~/components/ui/input'
-import { Separator } from '~/components/ui/separator'
 import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
 
 defineProps<{ open: boolean }>()
 defineEmits<{ 'update:open': [value: boolean] }>()
 
-const { items, addItem, deleteItem } = useGameData()
+const { items } = useGameData()
 
 const searchQuery = ref('')
 const activeCategories = ref<string[]>([])
-const newName = ref('')
-const newCategory = ref('')
-const newDescription = ref('')
 
 // Derive available categories
 const availableCategories = computed(() => {
@@ -184,18 +145,4 @@ const filteredItems = computed(() => {
 
   return result
 })
-
-function handleAddItem() {
-  if (!newName.value) return
-  addItem(newName.value, newDescription.value || undefined, newCategory.value || undefined)
-  newName.value = ''
-  newCategory.value = ''
-  newDescription.value = ''
-}
-
-function handleDeleteItem(itemId: string) {
-  if (confirm('Delete this item?')) {
-    deleteItem(itemId)
-  }
-}
 </script>

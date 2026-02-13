@@ -4,12 +4,46 @@
 
     <!-- Top Bar -->
     <header class="relative z-[1000] flex items-center justify-between h-10 px-4 bg-card/80 backdrop-blur-md border-b border-border shrink-0">
-      <h1 class="text-sm font-bold tracking-wide text-primary uppercase">
-        TLD Map
-      </h1>
+      <div class="flex items-center gap-3">
+        <h1 class="text-sm font-bold tracking-wide text-primary uppercase">
+          TLD Map
+        </h1>
+
+        <!-- Current run info -->
+        <button
+          v-if="currentRun"
+          class="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-muted/50 hover:bg-muted transition-colors cursor-pointer text-xs"
+          @click="showRunSelector = true"
+        >
+          <SwordsIcon class="h-3 w-3 text-muted-foreground" />
+          <span class="font-medium truncate max-w-[120px]">{{ currentRun.name }}</span>
+          <Badge :variant="currentRun.difficulty === 'interloper' || currentRun.difficulty === 'misery' ? 'destructive' : 'default'" class="text-[9px] px-1 py-0 h-3.5 capitalize">
+            {{ currentRun.difficulty }}
+          </Badge>
+        </button>
+        <button
+          v-else
+          class="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-muted/50 hover:bg-muted transition-colors cursor-pointer text-xs text-muted-foreground"
+          @click="showRunSelector = true"
+        >
+          <SwordsIcon class="h-3 w-3" />
+          <span>Select Run</span>
+        </button>
+      </div>
 
       <div class="flex items-center gap-1">
         <TooltipProvider :delay-duration="200">
+          <Tooltip>
+            <TooltipTrigger as-child>
+              <Button variant="ghost" size="icon" class="h-7 w-7" @click="showRunSelector = true">
+                <SwordsIcon class="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Runs</p>
+            </TooltipContent>
+          </Tooltip>
+
           <Tooltip>
             <TooltipTrigger as-child>
               <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('maps')">
@@ -54,6 +88,9 @@
       />
     </main>
 
+    <!-- Run Selector Dialog -->
+    <RunSelector v-model:open="showRunSelector" />
+
     <!-- Left Sheet: Map Selector -->
     <MapSelector v-model:open="showMapSelector" />
 
@@ -77,26 +114,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
-import { MapIcon, CrosshairIcon, PackageIcon } from 'lucide-vue-next'
+import { ref, nextTick, watch, onMounted } from 'vue'
+import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
+import { Badge } from '~/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import InteractiveMap from '~/components/InteractiveMap.vue'
 import MapSelector from '~/components/MapSelector.vue'
 import MarkerPanel from '~/components/MarkerPanel.vue'
 import ItemManager from '~/components/ItemManager.vue'
 import MarkerDialog from '~/components/MarkerDialog.vue'
+import RunSelector from '~/components/RunSelector.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 
-const { currentMap, addMarker, getItemById } = useGameData()
+const { currentMap, currentRun, addMarker, getItemById } = useGameData()
 
 const mapRef = ref<InstanceType<typeof InteractiveMap> | null>(null)
 const showMapSelector = ref(false)
 const showMarkerPanel = ref(false)
 const showItemManager = ref(false)
 const showMarkerDialog = ref(false)
+const showRunSelector = ref(false)
 const pendingMarkerPosition = ref<{ x: number; y: number } | null>(null)
+
+// Show run selector on startup if no run is selected
+watch(currentRun, (run) => {
+  // Only on initial load
+}, { immediate: true })
+
+// Check once on mount — if no run exists, show selector
+onMounted(() => {
+  if (!currentRun.value) {
+    showRunSelector.value = true
+  }
+})
 
 function closeAllPanels() {
   showMapSelector.value = false
@@ -115,17 +167,22 @@ function openPanel(panel: 'maps' | 'markers' | 'items') {
 }
 
 function onRequestAddMarker(position: { x: number; y: number }) {
+  if (!currentRun.value) {
+    showRunSelector.value = true
+    return
+  }
   pendingMarkerPosition.value = position
   showMarkerDialog.value = true
 }
 
 function onSaveMarker(data: { itemId: string; quantity: number; note: string; name: string }) {
-  if (!pendingMarkerPosition.value || !currentMap.value) return
+  if (!pendingMarkerPosition.value || !currentMap.value || !currentRun.value) return
 
   const item = getItemById(data.itemId)
   const markerName = data.name || item?.name || 'Marker'
 
   addMarker({
+    runId: currentRun.value.id,
     mapId: currentMap.value.id,
     itemId: data.itemId,
     name: markerName,

@@ -24,6 +24,7 @@
         variant="default"
         class="shadow-lg"
         @click="addMarkerMode = true"
+        title="Or Shift+Click anywhere on the map"
       >
         <PlusIcon class="h-4 w-4 mr-2" />
         Add Marker
@@ -53,7 +54,7 @@ const emit = defineEmits<{
   'request-add-marker': [position: { x: number; y: number }]
 }>()
 
-const { currentMap, currentMapMarkers, getItemById } = useGameData()
+const { currentMap, currentMapVariant, currentMapMarkers, getItemById } = useGameData()
 
 const mapContainer = ref<HTMLElement | null>(null)
 const addMarkerMode = ref(false)
@@ -63,7 +64,7 @@ let imageOverlay: L.ImageOverlay | null = null
 let markerLayer: L.LayerGroup | null = null
 
 function initMap() {
-  if (!mapContainer.value || !currentMap.value) return
+  if (!mapContainer.value || !currentMapVariant.value) return
   destroyMap()
 
   map = L.map(mapContainer.value, {
@@ -75,7 +76,7 @@ function initMap() {
     attributionControl: false,
   })
 
-  const { imageWidth, imageHeight, imageUrl } = currentMap.value
+  const { imageWidth, imageHeight, imageUrl } = currentMapVariant.value
   const bounds: L.LatLngBoundsExpression = [
     [0, 0],
     [imageHeight, imageWidth],
@@ -87,7 +88,13 @@ function initMap() {
   markerLayer = L.layerGroup().addTo(map)
 
   // Handle click-to-add-marker
+  // Shift+Click → instant marker placement (no need to enter add-marker mode first)
+  // Normal click while in add-marker mode → place marker and exit mode
   map.on('click', (e: L.LeafletMouseEvent) => {
+    if (e.originalEvent.shiftKey) {
+      emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
+      return
+    }
     if (!addMarkerMode.value) return
     addMarkerMode.value = false
     emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
@@ -180,11 +187,11 @@ watch(currentMapMarkers, () => {
   renderMarkers()
 }, { deep: true })
 
-// Watch map changes to reinitialize
+// Watch map variant changes to reinitialize (handles both map switch and difficulty change)
 watch(
-  () => currentMap.value?.id,
-  (newId, oldId) => {
-    if (newId !== oldId) {
+  () => currentMapVariant.value?.imageUrl,
+  (newUrl, oldUrl) => {
+    if (newUrl !== oldUrl) {
       nextTick(() => initMap())
     }
   },

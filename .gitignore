@@ -23,7 +23,7 @@ logs
 .env.*
 !.env.example
 
-# Downloaded wiki assets (regenerate with scripts/import-wiki-*.ts)
+# Generated assets (regenerate with scripts/import-*.ts)
 public/items/
 public/maps/
 public/data/items.json

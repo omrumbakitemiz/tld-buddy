@@ -1,21 +1,25 @@
 import { ref, computed } from 'vue'
-import type { GameMap, Item, Marker, AppData } from '~/types'
+import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant } from '~/types'
+import { getVariantKey } from '~/types'
 
-const STORAGE_KEY = 'tld-map-v6'
+const STORAGE_KEY = 'tld-map-v7'
 
 const defaultData: AppData = {
-  maps: [],
-  items: [],
-  markers: [],
+  runs: [],
+  currentRunId: null,
   currentMapId: null,
+  markers: [],
 }
 
 const appData = ref<AppData>({ ...defaultData })
+const staticMaps = ref<GameMap[]>([])
+const staticItems = ref<Item[]>([])
 let loaded = false
-let wikiDataLoaded = false
+let staticDataLoaded = false
 
-// Load wiki items from the generated JSON file
-async function loadWikiItems(): Promise<Item[]> {
+// ── Load static data from JSON files ────────────────────────────────────────
+
+async function loadItems(): Promise<Item[]> {
   try {
     const res = await fetch('/data/items.json')
     if (!res.ok) return []
@@ -23,34 +27,25 @@ async function loadWikiItems(): Promise<Item[]> {
     if (!Array.isArray(data)) return []
     return data as Item[]
   } catch {
-    console.warn('Could not load wiki items from /data/items.json')
+    console.warn('Could not load items from /data/items.json')
     return []
   }
 }
 
-// Load wiki maps from the generated JSON file
-async function loadWikiMaps(): Promise<GameMap[]> {
+async function loadMaps(): Promise<GameMap[]> {
   try {
     const res = await fetch('/data/maps.json')
     if (!res.ok) return []
     const data = await res.json()
     if (!Array.isArray(data)) return []
-    // Convert wiki map format → GameMap format
-    return data.map((m: any) => ({
-      id: m.id,
-      name: m.name,
-      imageUrl: m.imageUrl,
-      imageWidth: m.imageWidth,
-      imageHeight: m.imageHeight,
-      createdAt: 0,
-      type: m.type ?? 'region',
-      wikiUrl: m.wikiUrl,
-    })) as GameMap[]
+    return data as GameMap[]
   } catch {
-    console.warn('Could not load wiki maps from /data/maps.json')
+    console.warn('Could not load maps from /data/maps.json')
     return []
   }
 }
+
+// ── Persistence ─────────────────────────────────────────────────────────────
 
 function load() {
   if (loaded) return
@@ -61,10 +56,10 @@ function load() {
   try {
     const parsed = JSON.parse(raw) as Partial<AppData>
     appData.value = {
-      maps: Array.isArray(parsed.maps) ? parsed.maps : [],
-      items: Array.isArray(parsed.items) ? parsed.items : [],
-      markers: Array.isArray(parsed.markers) ? parsed.markers : [],
+      runs: Array.isArray(parsed.runs) ? parsed.runs : [],
+      currentRunId: parsed.currentRunId ?? null,
       currentMapId: parsed.currentMapId ?? null,
+      markers: Array.isArray(parsed.markers) ? parsed.markers : [],
     }
   } catch {
     console.error('Failed to load saved data')
@@ -73,12 +68,11 @@ function load() {
 
 function save() {
   if (typeof window === 'undefined') return
-  // Don't persist wiki data in localStorage -- they come from JSON files
-  const toSave = {
-    maps: appData.value.maps.filter((m) => m.type === 'custom'),
-    items: appData.value.items.filter((i) => i.id.startsWith('custom-')),
-    markers: appData.value.markers,
+  const toSave: AppData = {
+    runs: appData.value.runs,
+    currentRunId: appData.value.currentRunId,
     currentMapId: appData.value.currentMapId,
+    markers: appData.value.markers,
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
 }
@@ -88,86 +82,110 @@ if (typeof window !== 'undefined') {
   load()
 }
 
+// ── Composable ──────────────────────────────────────────────────────────────
+
 export function useGameData() {
   load()
 
-  // Load wiki data (items + maps) asynchronously on first use
-  if (typeof window !== 'undefined' && !wikiDataLoaded) {
-    wikiDataLoaded = true
+  // Load static data (items + maps) asynchronously on first use
+  if (typeof window !== 'undefined' && !staticDataLoaded) {
+    staticDataLoaded = true
 
-    // Load items and maps in parallel
-    Promise.all([loadWikiItems(), loadWikiMaps()]).then(([wikiItems, wikiMaps]) => {
-      if (wikiItems.length > 0) {
-        const customItems = appData.value.items.filter((i) => i.id.startsWith('custom-'))
-        appData.value.items = [...wikiItems, ...customItems]
-      }
+    Promise.all([loadItems(), loadMaps()]).then(([items, maps]) => {
+      if (items.length > 0) staticItems.value = items
+      if (maps.length > 0) staticMaps.value = maps
 
-      if (wikiMaps.length > 0) {
-        const customMaps = appData.value.maps.filter((m) => m.type === 'custom')
-        appData.value.maps = [...wikiMaps, ...customMaps]
-
-        // Auto-select first map if none selected
-        if (!appData.value.currentMapId && appData.value.maps.length > 0) {
-          appData.value.currentMapId = appData.value.maps[0].id
-        }
+      // Auto-select first map if none selected
+      if (!appData.value.currentMapId && maps.length > 0) {
+        appData.value.currentMapId = maps[0].id
       }
     })
   }
 
-  const maps = computed(() => appData.value.maps)
-  const items = computed(() => appData.value.items)
+  // ── Computed ────────────────────────────────────────────────────────────
+
+  const maps = computed(() => staticMaps.value)
+  const items = computed(() => staticItems.value)
   const markers = computed(() => appData.value.markers)
+  const runs = computed(() => appData.value.runs)
   const currentMapId = computed(() => appData.value.currentMapId)
+
+  const currentRun = computed(() =>
+    appData.value.runs.find((r) => r.id === appData.value.currentRunId) ?? null,
+  )
+
   const currentMap = computed(() =>
-    appData.value.maps.find((m) => m.id === appData.value.currentMapId) ?? null,
+    staticMaps.value.find((m) => m.id === appData.value.currentMapId) ?? null,
   )
+
+  /**
+   * Resolves the correct map variant (default or interloper)
+   * based on the current run's difficulty.
+   */
+  const currentMapVariant = computed<MapVariant | null>(() => {
+    const map = currentMap.value
+    if (!map) return null
+    const run = currentRun.value
+    if (!run) return map.default // fallback to default when no run selected
+    const key = getVariantKey(run.difficulty)
+    return map[key]
+  })
+
+  /**
+   * Markers for the current map AND current run.
+   */
   const currentMapMarkers = computed(() =>
-    appData.value.markers.filter((m) => m.mapId === appData.value.currentMapId),
+    appData.value.markers.filter(
+      (m) =>
+        m.mapId === appData.value.currentMapId &&
+        m.runId === appData.value.currentRunId,
+    ),
   )
 
-  // Maps
-  function addMap(map: Omit<GameMap, 'id' | 'createdAt' | 'type'>) {
-    const newMap: GameMap = { ...map, id: `map-${Date.now()}`, createdAt: Date.now(), type: 'custom' }
-    appData.value.maps.push(newMap)
-    if (!appData.value.currentMapId) {
-      appData.value.currentMapId = newMap.id
+  // ── Run management ──────────────────────────────────────────────────────
+
+  function addRun(name: string, difficulty: Difficulty): Run {
+    const run: Run = {
+      id: `run-${Date.now()}`,
+      name,
+      difficulty,
+      createdAt: Date.now(),
     }
+    appData.value.runs.push(run)
+    appData.value.currentRunId = run.id
     save()
-    return newMap
+    return run
   }
 
-  function deleteMap(mapId: string) {
-    appData.value.maps = appData.value.maps.filter((m) => m.id !== mapId)
-    appData.value.markers = appData.value.markers.filter((m) => m.mapId !== mapId)
-    if (appData.value.currentMapId === mapId) {
-      appData.value.currentMapId = appData.value.maps[0]?.id ?? null
+  function deleteRun(runId: string) {
+    appData.value.runs = appData.value.runs.filter((r) => r.id !== runId)
+    appData.value.markers = appData.value.markers.filter((m) => m.runId !== runId)
+    if (appData.value.currentRunId === runId) {
+      appData.value.currentRunId = appData.value.runs[0]?.id ?? null
     }
     save()
   }
+
+  function setCurrentRun(runId: string) {
+    appData.value.currentRunId = runId
+    save()
+  }
+
+  // ── Map selection ───────────────────────────────────────────────────────
 
   function setCurrentMap(mapId: string) {
     appData.value.currentMapId = mapId
     save()
   }
 
-  // Items
-  function addItem(name: string, description?: string, category?: string) {
-    const newItem: Item = { id: `custom-${Date.now()}`, name, description, category }
-    appData.value.items.push(newItem)
-    save()
-    return newItem
-  }
-
-  function deleteItem(itemId: string) {
-    appData.value.items = appData.value.items.filter((i) => i.id !== itemId)
-    save()
-  }
+  // ── Items ───────────────────────────────────────────────────────────────
 
   function getItemById(itemId: string) {
-    return appData.value.items.find((i) => i.id === itemId)
+    return staticItems.value.find((i) => i.id === itemId)
   }
 
-  // Markers
+  // ── Markers ─────────────────────────────────────────────────────────────
+
   function addMarker(marker: Omit<Marker, 'id'>) {
     const newMarker: Marker = { ...marker, id: `marker-${Date.now()}` }
     appData.value.markers.push(newMarker)
@@ -181,19 +199,26 @@ export function useGameData() {
   }
 
   return {
+    // Static data
     maps,
     items,
     markers,
+    // Runs
+    runs,
+    currentRun,
+    addRun,
+    deleteRun,
+    setCurrentRun,
+    // Maps
     currentMap,
     currentMapId,
-    currentMapMarkers,
-    addMap,
-    deleteMap,
+    currentMapVariant,
     setCurrentMap,
-    addItem,
-    deleteItem,
-    getItemById,
+    // Markers (scoped to current map + run)
+    currentMapMarkers,
     addMarker,
     deleteMarker,
+    // Items
+    getItemById,
   }
 }

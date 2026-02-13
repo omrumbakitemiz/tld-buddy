@@ -5,7 +5,8 @@
         <SheetTitle class="text-base">Markers</SheetTitle>
         <SheetDescription class="text-xs text-muted-foreground">
           {{ currentMap ? currentMap.name : 'No map selected' }}
-          <span v-if="currentMap" class="text-primary">&middot; {{ currentMapMarkers.length }}</span>
+          <span v-if="currentRun" class="text-muted-foreground/60"> &middot; {{ currentRun.name }}</span>
+          <span v-if="currentMap" class="text-primary"> &middot; {{ currentMapMarkers.length }}</span>
         </SheetDescription>
       </SheetHeader>
 
@@ -85,7 +86,7 @@ defineEmits<{
   'fly-to': [marker: Marker]
 }>()
 
-const { currentMap, currentMapMarkers, getItemById, deleteMarker } = useGameData()
+const { currentMap, currentRun, currentMapMarkers, getItemById, deleteMarker } = useGameData()
 
 const searchQuery = ref('')
 

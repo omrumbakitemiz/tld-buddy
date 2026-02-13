@@ -1,12 +1,25 @@
-export interface GameMap {
+export type Difficulty = 'pilgrim' | 'voyageur' | 'stalker' | 'interloper' | 'misery'
+
+export interface Run {
   id: string
   name: string
+  difficulty: Difficulty
+  createdAt: number
+}
+
+export interface MapVariant {
   imageUrl: string
   imageWidth: number
   imageHeight: number
-  createdAt: number
-  type?: 'region' | 'transition' | 'custom'
-  wikiUrl?: string
+}
+
+export interface GameMap {
+  id: string
+  name: string
+  type: 'region' | 'transition'
+  isDLC: boolean
+  default: MapVariant
+  interloper: MapVariant
 }
 
 export interface Item {
@@ -20,18 +33,28 @@ export interface Item {
 
 export interface Marker {
   id: string
+  runId: string
   mapId: string
   itemId: string
   name: string
-  x: number // pixel coordinate on the image
-  y: number // pixel coordinate on the image
+  x: number
+  y: number
   quantity: number
   note?: string
 }
 
 export interface AppData {
-  maps: GameMap[]
-  items: Item[]
-  markers: Marker[]
+  runs: Run[]
+  currentRunId: string | null
   currentMapId: string | null
+  markers: Marker[]
+}
+
+/**
+ * Returns the map variant key for a given difficulty.
+ * pilgrim/voyageur/stalker → 'default'
+ * interloper/misery → 'interloper'
+ */
+export function getVariantKey(difficulty: Difficulty): 'default' | 'interloper' {
+  return difficulty === 'interloper' || difficulty === 'misery' ? 'interloper' : 'default'
 }

@@ -8,9 +8,9 @@
         </DialogDescription>
       </DialogHeader>
 
-      <div class="space-y-5 py-4">
+      <div class="space-y-3 py-3">
         <!-- Item selection -->
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           <Label class="text-sm font-semibold">Select Item *</Label>
 
           <!-- Frequently Used icon grid -->
@@ -83,102 +83,122 @@
             </button>
           </div>
 
-          <!-- Item list -->
-          <div class="h-[240px] overflow-y-auto rounded-lg border border-border">
-            <div class="p-1.5 space-y-1">
-              <div
-                v-for="item in filteredItems"
-                :key="item.id"
-                @click="selectedItemId = item.id"
-                :class="cn(
-                  'flex items-center gap-2.5 p-2.5 rounded-md cursor-pointer transition-all text-sm',
-                  selectedItemId === item.id
-                    ? 'bg-primary text-primary-foreground'
-                    : 'hover:bg-accent'
-                )"
-              >
-                <img
-                  v-if="item.icon"
-                  :src="item.icon"
-                  :alt="item.name"
-                  class="h-7 w-7 rounded object-contain shrink-0"
-                  :class="selectedItemId === item.id ? 'bg-primary-foreground/20' : 'bg-muted/50'"
-                />
-                <div v-else class="h-7 w-7 rounded shrink-0" :class="selectedItemId === item.id ? 'bg-primary-foreground/20' : 'bg-muted/50'" />
-
-                <div class="flex-1 min-w-0">
-                  <span class="font-medium">{{ item.name }}</span>
+          <!-- Item grid -->
+          <div class="h-[180px] overflow-y-auto rounded-lg border border-border">
+            <div class="p-1.5">
+              <TooltipProvider :delay-duration="150">
+                <div class="grid grid-cols-10 gap-1">
+                  <Tooltip v-for="item in filteredItems" :key="item.id">
+                    <TooltipTrigger as-child>
+                      <button
+                        @click="selectedItemId = item.id"
+                        :class="cn(
+                          'relative h-10 w-full rounded-md border transition-all cursor-pointer flex items-center justify-center',
+                          selectedItemId === item.id
+                            ? 'border-primary ring-1 ring-primary bg-primary/10'
+                            : 'border-border bg-muted/30 hover:border-primary/40 hover:bg-muted/60'
+                        )"
+                      >
+                        <img
+                          v-if="item.icon"
+                          :src="item.icon"
+                          :alt="item.name"
+                          class="h-7 w-7 object-contain"
+                        />
+                        <div v-else class="h-7 w-7 rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground font-medium leading-tight text-center overflow-hidden px-0.5">
+                          {{ item.name.substring(0, 3) }}
+                        </div>
+                        <CheckIcon v-if="selectedItemId === item.id" class="absolute -top-1 -right-1 h-3.5 w-3.5 text-primary bg-background rounded-full" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" class="text-xs">
+                      {{ item.name }}
+                      <span v-if="item.category" class="text-muted-foreground ml-1">&middot; {{ item.category }}</span>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
-                <CheckIcon v-if="selectedItemId === item.id" class="h-4 w-4 shrink-0 ml-2" />
-              </div>
+              </TooltipProvider>
 
               <div v-if="filteredItems.length === 0" class="text-center py-6 text-muted-foreground text-sm">
                 No items match your filters
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Custom name -->
-        <div class="space-y-1.5">
-          <Label for="marker-name" class="text-sm">Custom Name</Label>
-          <Input
-            id="marker-name"
-            v-model="markerName"
-            placeholder="Leave empty to use item name"
-            class="h-9 text-sm"
-          />
-        </div>
-
-        <!-- Quantity -->
-        <div class="space-y-1.5">
-          <Label class="text-sm">Quantity *</Label>
-          <div class="flex items-center gap-1.5">
-            <button
-              v-for="preset in [1, 3, 5, 10]"
-              :key="preset"
-              @click="quantity = preset; customQty = false"
-              :class="cn(
-                'inline-flex items-center justify-center rounded-md px-4 py-1.5 text-xs font-medium border transition-colors cursor-pointer min-w-[44px]',
-                quantity === preset && !customQty
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
-              )"
-            >
-              {{ preset }}
-            </button>
-            <button
-              @click="customQty = true"
-              :class="cn(
-                'inline-flex items-center justify-center rounded-md px-4 py-1.5 text-xs font-medium border transition-colors cursor-pointer',
-                customQty
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
-              )"
-            >
-              Custom
-            </button>
-            <Input
-              v-if="customQty"
-              v-model.number="quantity"
-              type="number"
-              min="1"
-              placeholder="1"
-              class="h-7 text-sm w-20 ml-1"
-              autofocus
+          <!-- Selected item preview -->
+          <div v-if="selectedItem" class="flex items-center gap-2.5 p-2 rounded-md bg-primary/10 border border-primary/30">
+            <img
+              v-if="selectedItem.icon"
+              :src="selectedItem.icon"
+              :alt="selectedItem.name"
+              class="h-7 w-7 rounded object-contain shrink-0"
             />
+            <div class="flex-1 min-w-0">
+              <span class="text-sm font-medium">{{ selectedItem.name }}</span>
+              <span v-if="selectedItem.category" class="text-xs text-muted-foreground ml-2">{{ selectedItem.category }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Name + Quantity row -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <Label for="marker-name" class="text-xs">Custom Name</Label>
+            <Input
+              id="marker-name"
+              v-model="markerName"
+              placeholder="Use item name"
+              class="h-8 text-sm"
+            />
+          </div>
+          <div class="space-y-1">
+            <Label class="text-xs">Quantity</Label>
+            <div class="flex items-center gap-1">
+              <button
+                v-for="preset in [1, 3, 5, 10]"
+                :key="preset"
+                @click="quantity = preset; customQty = false"
+                :class="cn(
+                  'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer',
+                  quantity === preset && !customQty
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
+                )"
+              >
+                {{ preset }}
+              </button>
+              <button
+                @click="customQty = true"
+                :class="cn(
+                  'inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium border transition-colors cursor-pointer',
+                  customQty
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
+                )"
+              >
+                #
+              </button>
+              <Input
+                v-if="customQty"
+                v-model.number="quantity"
+                type="number"
+                min="1"
+                placeholder="1"
+                class="h-7 text-sm w-14"
+                autofocus
+              />
+            </div>
           </div>
         </div>
 
         <!-- Note -->
-        <div class="space-y-1.5">
-          <Label for="note" class="text-sm">Note</Label>
-          <Textarea
+        <div class="space-y-1">
+          <Label for="note" class="text-xs">Note</Label>
+          <Input
             id="note"
             v-model="note"
-            placeholder="Add any notes about this location..."
-            rows="2"
-            class="text-sm resize-none"
+            placeholder="Optional notes about this location..."
+            class="h-8 text-sm"
           />
         </div>
       </div>
@@ -200,7 +220,6 @@ import { Dialog, DialogScrollContent, DialogDescription, DialogFooter, DialogHea
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
-import { Textarea } from '~/components/ui/textarea'
 import { Label } from '~/components/ui/label'
 import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
@@ -216,7 +235,7 @@ const emit = defineEmits<{
   save: [data: { itemId: string; quantity: number; note: string; name: string }]
 }>()
 
-const { items, markers } = useGameData()
+const { items, markers, currentRun } = useGameData()
 
 // ── Frequently used items ────────────────────────────────────────────────
 const FREQ_COLS = 8 // icons per row
@@ -224,9 +243,11 @@ const FREQ_VISIBLE_ROWS = 2
 const freqExpanded = ref(false)
 
 const frequentItems = computed(() => {
-  // Count itemId occurrences across all markers
+  // Count itemId occurrences across current run's markers only
+  const runId = currentRun.value?.id
   const counts = new Map<string, number>()
   for (const m of markers.value) {
+    if (runId && m.runId !== runId) continue
     counts.set(m.itemId, (counts.get(m.itemId) ?? 0) + 1)
   }
   if (counts.size === 0) return []
@@ -250,6 +271,7 @@ const hasMoreFrequent = computed(() => frequentItems.value.length > FREQ_COLS * 
 const showFrequentSection = computed(() => frequentItems.value.length > 0 && !searchQuery.value.trim())
 
 const selectedItemId = ref('')
+const selectedItem = computed(() => items.value.find((i) => i.id === selectedItemId.value) ?? null)
 const markerName = ref('')
 const quantity = ref(1)
 const customQty = ref(false)
