@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant, POI, POIPin, StashedItem } from '~/types'
 import { getVariantKey } from '~/types'
 
-const LOCAL_CACHE_KEY = 'tld-map-v9'
+const LOCAL_CACHE_KEY = 'tld-buddy-v1'
 const SAVE_DEBOUNCE_MS = 500
 
 const defaultData: AppData = {

@@ -6,7 +6,7 @@
     <header class="relative z-[1000] flex items-center justify-between h-10 px-4 bg-card/80 backdrop-blur-md border-b border-border shrink-0">
       <div class="flex items-center gap-3">
         <h1 class="text-sm font-bold tracking-wide text-primary uppercase">
-          TLD Map
+          TLD Buddy
         </h1>
 
         <!-- Current run info -->
