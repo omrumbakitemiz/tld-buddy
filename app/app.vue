@@ -57,6 +57,17 @@
 
           <Tooltip>
             <TooltipTrigger as-child>
+              <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('pois')">
+                <LandmarkIcon class="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Locations</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger as-child>
               <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('markers')">
                 <CrosshairIcon class="h-4 w-4" />
               </Button>
@@ -74,6 +85,17 @@
             </TooltipTrigger>
             <TooltipContent side="bottom">
               <p>Items</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger as-child>
+              <Button variant="ghost" size="icon" class="h-7 w-7" @click="showPOIConfig = true">
+                <SlidersHorizontalIcon class="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>POI Settings</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -100,8 +122,18 @@
       @fly-to="onFlyToMarker"
     />
 
+    <!-- Right Sheet: POI Panel -->
+    <POIPanel
+      v-model:open="showPOIPanel"
+      @fly-to="onFlyToPosition"
+      @start-pin="onStartPinPOI"
+    />
+
     <!-- Dialog: Item Manager -->
     <ItemManager v-model:open="showItemManager" />
+
+    <!-- Dialog: POI Config -->
+    <POIConfig v-model:open="showPOIConfig" />
 
     <!-- Dialog: Add Marker -->
     <MarkerDialog
@@ -114,14 +146,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, watch, onMounted } from 'vue'
-import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon } from 'lucide-vue-next'
+import { ref, nextTick, onMounted } from 'vue'
+import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import InteractiveMap from '~/components/InteractiveMap.vue'
 import MapSelector from '~/components/MapSelector.vue'
 import MarkerPanel from '~/components/MarkerPanel.vue'
+import POIPanel from '~/components/POIPanel.vue'
+import POIConfig from '~/components/POIConfig.vue'
 import ItemManager from '~/components/ItemManager.vue'
 import MarkerDialog from '~/components/MarkerDialog.vue'
 import RunSelector from '~/components/RunSelector.vue'
@@ -133,15 +167,12 @@ const { currentMap, currentRun, addMarker, getItemById } = useGameData()
 const mapRef = ref<InstanceType<typeof InteractiveMap> | null>(null)
 const showMapSelector = ref(false)
 const showMarkerPanel = ref(false)
+const showPOIPanel = ref(false)
 const showItemManager = ref(false)
 const showMarkerDialog = ref(false)
 const showRunSelector = ref(false)
+const showPOIConfig = ref(false)
 const pendingMarkerPosition = ref<{ x: number; y: number } | null>(null)
-
-// Show run selector on startup if no run is selected
-watch(currentRun, (run) => {
-  // Only on initial load
-}, { immediate: true })
 
 // Check once on mount — if no run exists, show selector
 onMounted(() => {
@@ -153,16 +184,17 @@ onMounted(() => {
 function closeAllPanels() {
   showMapSelector.value = false
   showMarkerPanel.value = false
+  showPOIPanel.value = false
   showItemManager.value = false
 }
 
-function openPanel(panel: 'maps' | 'markers' | 'items') {
+function openPanel(panel: 'maps' | 'markers' | 'items' | 'pois') {
   closeAllPanels()
-  // Use nextTick so the closing animation completes before reopening
   nextTick(() => {
     if (panel === 'maps') showMapSelector.value = true
     else if (panel === 'markers') showMarkerPanel.value = true
     else if (panel === 'items') showItemManager.value = true
+    else if (panel === 'pois') showPOIPanel.value = true
   })
 }
 
@@ -199,5 +231,13 @@ function onSaveMarker(data: { itemId: string; quantity: number; note: string; na
 function onFlyToMarker(marker: Marker) {
   mapRef.value?.flyToMarker(marker)
   showMarkerPanel.value = false
+}
+
+function onFlyToPosition(position: { x: number; y: number }) {
+  mapRef.value?.flyToPosition(position)
+}
+
+function onStartPinPOI(poiId: string) {
+  mapRef.value?.startPinMode(poiId)
 }
 </script>

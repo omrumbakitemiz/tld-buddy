@@ -43,11 +43,47 @@ export interface Marker {
   note?: string
 }
 
+// ── POI (Point of Interest) ─────────────────────────────────────────────────
+
+export interface POI {
+  id: string           // e.g. "ash-canyon--anglers-den"
+  name: string         // e.g. "Angler's Den"
+  mapId: string        // e.g. "ash-canyon"
+  type?: string        // e.g. "cave", "sporting", "residential"
+  hasBed?: boolean
+  hasWorkbench?: boolean
+  hasShelter?: boolean
+  hasForge?: boolean
+  wikiUrl?: string
+}
+
+/** User-placed coordinates for a POI on the map (persisted per run) */
+export interface POIPin {
+  poiId: string
+  x: number
+  y: number
+}
+
+/** An item stashed at a POI location (persisted per run) */
+export interface StashedItem {
+  id: string
+  runId: string
+  poiId: string
+  itemId: string
+  quantity: number
+  note?: string
+}
+
+// ── App persistence ─────────────────────────────────────────────────────────
+
 export interface AppData {
   runs: Run[]
   currentRunId: string | null
   currentMapId: string | null
   markers: Marker[]
+  enabledPOIs: string[]       // global list of enabled POI ids
+  poiPins: POIPin[]           // per-run pin positions
+  stashedItems: StashedItem[] // per-run item stashes at POIs
 }
 
 /**

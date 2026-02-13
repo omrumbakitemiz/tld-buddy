@@ -1,19 +1,23 @@
 import { ref, computed } from 'vue'
-import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant } from '~/types'
+import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant, POI, POIPin, StashedItem } from '~/types'
 import { getVariantKey } from '~/types'
 
-const STORAGE_KEY = 'tld-map-v7'
+const STORAGE_KEY = 'tld-map-v8'
 
 const defaultData: AppData = {
   runs: [],
   currentRunId: null,
   currentMapId: null,
   markers: [],
+  enabledPOIs: [],
+  poiPins: [],
+  stashedItems: [],
 }
 
 const appData = ref<AppData>({ ...defaultData })
 const staticMaps = ref<GameMap[]>([])
 const staticItems = ref<Item[]>([])
+const staticPOIs = ref<POI[]>([])
 let loaded = false
 let staticDataLoaded = false
 
@@ -45,6 +49,19 @@ async function loadMaps(): Promise<GameMap[]> {
   }
 }
 
+async function loadPOIs(): Promise<POI[]> {
+  try {
+    const res = await fetch('/data/pois.json')
+    if (!res.ok) return []
+    const data = await res.json()
+    if (!Array.isArray(data)) return []
+    return data as POI[]
+  } catch {
+    console.warn('Could not load POIs from /data/pois.json')
+    return []
+  }
+}
+
 // ── Persistence ─────────────────────────────────────────────────────────────
 
 function load() {
@@ -60,6 +77,9 @@ function load() {
       currentRunId: parsed.currentRunId ?? null,
       currentMapId: parsed.currentMapId ?? null,
       markers: Array.isArray(parsed.markers) ? parsed.markers : [],
+      enabledPOIs: Array.isArray(parsed.enabledPOIs) ? parsed.enabledPOIs : [],
+      poiPins: Array.isArray(parsed.poiPins) ? parsed.poiPins : [],
+      stashedItems: Array.isArray(parsed.stashedItems) ? parsed.stashedItems : [],
     }
   } catch {
     console.error('Failed to load saved data')
@@ -73,6 +93,9 @@ function save() {
     currentRunId: appData.value.currentRunId,
     currentMapId: appData.value.currentMapId,
     markers: appData.value.markers,
+    enabledPOIs: appData.value.enabledPOIs,
+    poiPins: appData.value.poiPins,
+    stashedItems: appData.value.stashedItems,
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
 }
@@ -87,13 +110,14 @@ if (typeof window !== 'undefined') {
 export function useGameData() {
   load()
 
-  // Load static data (items + maps) asynchronously on first use
+  // Load static data (items + maps + pois) asynchronously on first use
   if (typeof window !== 'undefined' && !staticDataLoaded) {
     staticDataLoaded = true
 
-    Promise.all([loadItems(), loadMaps()]).then(([items, maps]) => {
+    Promise.all([loadItems(), loadMaps(), loadPOIs()]).then(([items, maps, pois]) => {
       if (items.length > 0) staticItems.value = items
       if (maps.length > 0) staticMaps.value = maps
+      if (pois.length > 0) staticPOIs.value = pois
 
       // Auto-select first map if none selected
       if (!appData.value.currentMapId && maps.length > 0) {
@@ -109,6 +133,8 @@ export function useGameData() {
   const markers = computed(() => appData.value.markers)
   const runs = computed(() => appData.value.runs)
   const currentMapId = computed(() => appData.value.currentMapId)
+  const pois = computed(() => staticPOIs.value)
+  const enabledPOIs = computed(() => appData.value.enabledPOIs)
 
   const currentRun = computed(() =>
     appData.value.runs.find((r) => r.id === appData.value.currentRunId) ?? null,
@@ -126,7 +152,7 @@ export function useGameData() {
     const map = currentMap.value
     if (!map) return null
     const run = currentRun.value
-    if (!run) return map.default // fallback to default when no run selected
+    if (!run) return map.default
     const key = getVariantKey(run.difficulty)
     return map[key]
   })
@@ -141,6 +167,37 @@ export function useGameData() {
         m.runId === appData.value.currentRunId,
     ),
   )
+
+  // ── POI computed ──────────────────────────────────────────────────────────
+
+  /** All POIs for the current map */
+  const currentMapAllPOIs = computed(() =>
+    staticPOIs.value.filter((p) => p.mapId === appData.value.currentMapId),
+  )
+
+  /** Only enabled POIs for the current map */
+  const currentMapPOIs = computed(() =>
+    currentMapAllPOIs.value.filter((p) => appData.value.enabledPOIs.includes(p.id)),
+  )
+
+  /** Pinned POIs for the current map + current run */
+  const currentMapPOIPins = computed(() => {
+    const runId = appData.value.currentRunId
+    if (!runId) return []
+    const enabledIds = new Set(appData.value.enabledPOIs)
+    return appData.value.poiPins.filter((pin) => {
+      if (!enabledIds.has(pin.poiId)) return false
+      const poi = staticPOIs.value.find((p) => p.id === pin.poiId)
+      return poi?.mapId === appData.value.currentMapId
+    })
+  })
+
+  /** Stashed items for the current run */
+  const currentRunStashedItems = computed(() => {
+    const runId = appData.value.currentRunId
+    if (!runId) return []
+    return appData.value.stashedItems.filter((s) => s.runId === runId)
+  })
 
   // ── Run management ──────────────────────────────────────────────────────
 
@@ -160,6 +217,9 @@ export function useGameData() {
   function deleteRun(runId: string) {
     appData.value.runs = appData.value.runs.filter((r) => r.id !== runId)
     appData.value.markers = appData.value.markers.filter((m) => m.runId !== runId)
+    appData.value.stashedItems = appData.value.stashedItems.filter((s) => s.runId !== runId)
+    // POI pins are per-run conceptually but stored globally; clean up orphan pins
+    // (we keep poiPins global since they're coordinate data, but stashed items are per-run)
     if (appData.value.currentRunId === runId) {
       appData.value.currentRunId = appData.value.runs[0]?.id ?? null
     }
@@ -198,11 +258,83 @@ export function useGameData() {
     save()
   }
 
+  // ── POI management ────────────────────────────────────────────────────────
+
+  function togglePOI(poiId: string) {
+    const idx = appData.value.enabledPOIs.indexOf(poiId)
+    if (idx >= 0) {
+      appData.value.enabledPOIs.splice(idx, 1)
+    } else {
+      appData.value.enabledPOIs.push(poiId)
+    }
+    save()
+  }
+
+  function enablePOIs(poiIds: string[]) {
+    const current = new Set(appData.value.enabledPOIs)
+    for (const id of poiIds) current.add(id)
+    appData.value.enabledPOIs = [...current]
+    save()
+  }
+
+  function disablePOIs(poiIds: string[]) {
+    const toRemove = new Set(poiIds)
+    appData.value.enabledPOIs = appData.value.enabledPOIs.filter((id) => !toRemove.has(id))
+    save()
+  }
+
+  function isPOIEnabled(poiId: string): boolean {
+    return appData.value.enabledPOIs.includes(poiId)
+  }
+
+  // ── POI Pins ──────────────────────────────────────────────────────────────
+
+  function pinPOI(poiId: string, x: number, y: number) {
+    // Remove existing pin for this POI if any
+    appData.value.poiPins = appData.value.poiPins.filter((p) => p.poiId !== poiId)
+    appData.value.poiPins.push({ poiId, x, y })
+    save()
+  }
+
+  function unpinPOI(poiId: string) {
+    appData.value.poiPins = appData.value.poiPins.filter((p) => p.poiId !== poiId)
+    save()
+  }
+
+  function getPOIPin(poiId: string): POIPin | undefined {
+    return appData.value.poiPins.find((p) => p.poiId === poiId)
+  }
+
+  // ── Stashed Items ─────────────────────────────────────────────────────────
+
+  function addStashedItem(stash: Omit<StashedItem, 'id'>) {
+    const newStash: StashedItem = { ...stash, id: `stash-${Date.now()}` }
+    appData.value.stashedItems.push(newStash)
+    save()
+    return newStash
+  }
+
+  function removeStashedItem(stashId: string) {
+    appData.value.stashedItems = appData.value.stashedItems.filter((s) => s.id !== stashId)
+    save()
+  }
+
+  function getStashedItems(poiId: string): StashedItem[] {
+    const runId = appData.value.currentRunId
+    if (!runId) return []
+    return appData.value.stashedItems.filter((s) => s.poiId === poiId && s.runId === runId)
+  }
+
+  function getStashedItemCount(poiId: string): number {
+    return getStashedItems(poiId).length
+  }
+
   return {
     // Static data
     maps,
     items,
     markers,
+    pois,
     // Runs
     runs,
     currentRun,
@@ -220,5 +352,22 @@ export function useGameData() {
     deleteMarker,
     // Items
     getItemById,
+    // POIs
+    enabledPOIs,
+    currentMapAllPOIs,
+    currentMapPOIs,
+    currentMapPOIPins,
+    currentRunStashedItems,
+    togglePOI,
+    enablePOIs,
+    disablePOIs,
+    isPOIEnabled,
+    pinPOI,
+    unpinPOI,
+    getPOIPin,
+    addStashedItem,
+    removeStashedItem,
+    getStashedItems,
+    getStashedItemCount,
   }
 }

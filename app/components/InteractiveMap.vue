@@ -17,10 +17,31 @@
       class="w-full h-full"
     />
 
-    <!-- Add marker mode controls -->
+    <!-- Bottom controls -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-[999] flex items-center gap-3">
+      <!-- Pin POI mode -->
+      <template v-if="pinPOIMode">
+        <div class="bg-amber-600 text-white px-5 py-2.5 rounded-full font-medium shadow-lg animate-pulse text-sm">
+          Click to pin "{{ pinPOIName }}"
+        </div>
+        <Button variant="destructive" size="sm" @click="cancelPinMode">
+          Cancel
+        </Button>
+      </template>
+
+      <!-- Add marker mode -->
+      <template v-else-if="addMarkerMode">
+        <div class="bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-medium shadow-lg animate-pulse text-sm">
+          Click on the map to place a marker
+        </div>
+        <Button variant="destructive" size="sm" @click="addMarkerMode = false">
+          Cancel
+        </Button>
+      </template>
+
+      <!-- Default: Add Marker button -->
       <Button
-        v-if="!addMarkerMode"
+        v-else
         variant="default"
         class="shadow-lg"
         @click="addMarkerMode = true"
@@ -29,15 +50,6 @@
         <PlusIcon class="h-4 w-4 mr-2" />
         Add Marker
       </Button>
-
-      <template v-else>
-        <div class="bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-medium shadow-lg animate-pulse text-sm">
-          Click on the map to place a marker
-        </div>
-        <Button variant="destructive" size="sm" @click="addMarkerMode = false">
-          Cancel
-        </Button>
-      </template>
     </div>
   </div>
 </template>
@@ -54,14 +66,23 @@ const emit = defineEmits<{
   'request-add-marker': [position: { x: number; y: number }]
 }>()
 
-const { currentMap, currentMapVariant, currentMapMarkers, getItemById } = useGameData()
+const {
+  currentMap, currentMapVariant, currentMapMarkers, currentMapPOIPins,
+  pois, getItemById, getStashedItems, pinPOI,
+} = useGameData()
 
 const mapContainer = ref<HTMLElement | null>(null)
 const addMarkerMode = ref(false)
 
+// POI pin placement mode
+const pinPOIMode = ref(false)
+const pinPOIId = ref<string | null>(null)
+const pinPOIName = ref('')
+
 let map: L.Map | null = null
 let imageOverlay: L.ImageOverlay | null = null
 let markerLayer: L.LayerGroup | null = null
+let poiLayer: L.LayerGroup | null = null
 
 function initMap() {
   if (!mapContainer.value || !currentMapVariant.value) return
@@ -86,21 +107,32 @@ function initMap() {
   map.fitBounds(bounds)
 
   markerLayer = L.layerGroup().addTo(map)
+  poiLayer = L.layerGroup().addTo(map)
 
-  // Handle click-to-add-marker
-  // Shift+Click → instant marker placement (no need to enter add-marker mode first)
-  // Normal click while in add-marker mode → place marker and exit mode
+  // Handle clicks
   map.on('click', (e: L.LeafletMouseEvent) => {
+    // POI pin placement mode
+    if (pinPOIMode.value && pinPOIId.value) {
+      pinPOI(pinPOIId.value, e.latlng.lng, e.latlng.lat)
+      cancelPinMode()
+      renderPOIs()
+      return
+    }
+
+    // Shift+Click → instant marker
     if (e.originalEvent.shiftKey) {
       emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
       return
     }
+
+    // Add marker mode
     if (!addMarkerMode.value) return
     addMarkerMode.value = false
     emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
   })
 
   renderMarkers()
+  renderPOIs()
 }
 
 function destroyMap() {
@@ -109,6 +141,7 @@ function destroyMap() {
     map = null
     imageOverlay = null
     markerLayer = null
+    poiLayer = null
   }
 }
 
@@ -128,13 +161,11 @@ function renderMarkers() {
     let popupOffset: [number, number]
 
     if (item?.icon) {
-      // Icon marker: rounded square with item image
       markerHtml = `<div class="tld-marker tld-marker--icon"><img src="${item.icon}" alt="" class="tld-marker__img" />${qtyBadge}</div>`
       size = [32, 32]
       anchor = [16, 16]
       popupOffset = [0, -20]
     } else {
-      // Fallback: amber circle with quantity or dot
       const label = marker.quantity > 1 ? String(marker.quantity) : '&bull;'
       markerHtml = `<div class="tld-marker">${label}</div>`
       size = [28, 28]
@@ -171,9 +202,93 @@ function renderMarkers() {
   })
 }
 
+function renderPOIs() {
+  if (!poiLayer) return
+  poiLayer.clearLayers()
+
+  currentMapPOIPins.value.forEach((pin) => {
+    const poi = pois.value.find((p) => p.id === pin.poiId)
+    if (!poi) return
+
+    const stashItems = getStashedItems(pin.poiId)
+    const stashCount = stashItems.length
+
+    // POI marker: landmark-style label
+    const stashBadge = stashCount > 0
+      ? `<span class="tld-poi__count">${stashCount}</span>`
+      : ''
+
+    const poiHtml = `<div class="tld-poi">${escapeHtml(poi.name)}${stashBadge}</div>`
+
+    const icon = L.divIcon({
+      className: '',
+      html: poiHtml,
+      iconSize: [0, 0], // auto-sized by CSS
+      iconAnchor: [0, 16],
+      popupAnchor: [60, -10],
+    })
+
+    const lMarker = L.marker([pin.y, pin.x], { icon }).addTo(poiLayer!)
+
+    // Build popup with stash info
+    let stashHtml = ''
+    if (stashCount > 0) {
+      const itemRows = stashItems.map((s) => {
+        const item = getItemById(s.itemId)
+        const iconImg = item?.icon
+          ? `<img src="${item.icon}" style="width:18px;height:18px;object-fit:contain;margin-right:6px;flex-shrink:0" />`
+          : ''
+        return `<div style="display:flex;align-items:center;font-size:11px;padding:2px 0">
+          ${iconImg}<span>${escapeHtml(item?.name ?? 'Unknown')}</span>
+          ${s.quantity > 1 ? `<span style="opacity:0.6;margin-left:4px">&times;${s.quantity}</span>` : ''}
+        </div>`
+      }).join('')
+      stashHtml = `<div style="margin-top:6px;border-top:1px solid rgba(255,255,255,0.1);padding-top:6px">${itemRows}</div>`
+    }
+
+    const featureTags = [
+      poi.hasForge ? '<span style="color:#f97316">Forge</span>' : '',
+      poi.hasWorkbench ? '<span style="color:#3b82f6">Bench</span>' : '',
+      poi.hasBed ? '<span style="color:#10b981">Bed</span>' : '',
+      poi.hasShelter ? '<span style="color:#a855f7">Shelter</span>' : '',
+    ].filter(Boolean).join(' &middot; ')
+
+    const popupContent = `
+      <div style="min-width:140px">
+        <div style="font-weight:700;font-size:13px">${escapeHtml(poi.name)}</div>
+        ${poi.type ? `<div style="font-size:11px;opacity:0.6;text-transform:capitalize">${escapeHtml(poi.type)}</div>` : ''}
+        ${featureTags ? `<div style="font-size:10px;margin-top:3px">${featureTags}</div>` : ''}
+        ${stashHtml}
+      </div>
+    `
+
+    lMarker.bindPopup(popupContent, { closeButton: true, maxWidth: 250 })
+  })
+}
+
 function flyToMarker(marker: Marker) {
   if (!map) return
-  map.flyTo([marker.y, marker.x], 2, { duration: 0.8 })
+  map.flyTo([marker.y, marker.x], 0, { duration: 0.8 })
+}
+
+function flyToPosition(pos: { x: number; y: number }) {
+  if (!map) return
+  map.flyTo([pos.y, pos.x], 0, { duration: 0.8 })
+}
+
+function startPinMode(poiId: string) {
+  const poi = pois.value.find((p) => p.id === poiId)
+  if (!poi) return
+  pinPOIMode.value = true
+  pinPOIId.value = poiId
+  pinPOIName.value = poi.name
+  addMarkerMode.value = false
+}
+
+function cancelPinMode() {
+  pinPOIMode.value = false
+  pinPOIId.value = null
+  pinPOIName.value = ''
 }
 
 function escapeHtml(text: string) {
@@ -187,7 +302,12 @@ watch(currentMapMarkers, () => {
   renderMarkers()
 }, { deep: true })
 
-// Watch map variant changes to reinitialize (handles both map switch and difficulty change)
+// Watch POI pins to re-render
+watch(currentMapPOIPins, () => {
+  renderPOIs()
+}, { deep: true })
+
+// Watch map variant changes to reinitialize
 watch(
   () => currentMapVariant.value?.imageUrl,
   (newUrl, oldUrl) => {
@@ -207,6 +327,6 @@ onUnmounted(() => {
   destroyMap()
 })
 
-// Expose flyToMarker for parent component
-defineExpose({ flyToMarker })
+// Expose methods for parent component
+defineExpose({ flyToMarker, flyToPosition, startPinMode })
 </script>
