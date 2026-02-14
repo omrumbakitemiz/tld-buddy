@@ -257,7 +257,7 @@ function onRequestAddMarker(position: { x: number; y: number }) {
   showMarkerDialog.value = true
 }
 
-function onSaveMarker(data: { items: Array<{ itemId: string; name: string }>; quantity: number; note: string }) {
+function onSaveMarker(data: { items: Array<{ itemId: string; name: string; quantity: number }>; note: string }) {
   if (!pendingMarkerPosition.value || !currentMap.value || !currentRun.value) return
 
   const pos = { x: pendingMarkerPosition.value.x, y: pendingMarkerPosition.value.y }
@@ -287,7 +287,7 @@ function onSaveMarker(data: { items: Array<{ itemId: string; name: string }>; qu
       name: markerName,
       x,
       y,
-      quantity: data.quantity,
+      quantity: entry.quantity,
       note: data.note,
     })
   }

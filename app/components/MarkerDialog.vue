@@ -13,8 +13,8 @@
         <div class="space-y-1.5">
           <div class="flex items-center justify-between">
             <Label class="text-sm font-semibold">Select Items *</Label>
-            <span v-if="selectedItemIds.size > 0" class="text-xs text-muted-foreground">
-              {{ selectedItemIds.size }} selected
+            <span v-if="itemQuantities.size > 0" class="text-xs text-muted-foreground">
+              {{ itemQuantities.size }} selected
             </span>
           </div>
 
@@ -131,23 +131,23 @@
             </div>
           </div>
 
-          <!-- Selected items preview -->
+          <!-- Selected items preview with per-item quantity -->
           <div v-if="selectedItems.length > 0" class="space-y-1.5">
             <div class="flex items-center justify-between">
               <span class="text-xs font-medium text-muted-foreground">Selected ({{ selectedItems.length }})</span>
               <button
                 v-if="selectedItems.length > 1"
-                @click="selectedItemIds.clear()"
+                @click="itemQuantities.clear()"
                 class="text-[11px] text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
               >
                 Clear all
               </button>
             </div>
-            <div class="flex flex-wrap gap-1.5">
+            <div class="flex flex-col gap-1.5">
               <div
                 v-for="selItem in selectedItems"
                 :key="selItem.id"
-                class="inline-flex items-center gap-1.5 pl-1 pr-1 py-0.5 rounded-md bg-primary/10 border border-primary/30 text-xs"
+                class="flex items-center gap-2 px-2 py-1.5 rounded-md bg-primary/10 border border-primary/30 text-xs"
               >
                 <img
                   v-if="selItem.icon"
@@ -155,7 +155,38 @@
                   :alt="selItem.name"
                   class="h-5 w-5 rounded object-contain shrink-0"
                 />
-                <span class="font-medium truncate max-w-[100px]">{{ selItem.name }}</span>
+                <span class="font-medium truncate flex-1 min-w-0">{{ selItem.name }}</span>
+
+                <!-- Per-item quantity controls -->
+                <div class="flex items-center gap-0.5 shrink-0">
+                  <button
+                    @click="decrementQuantity(selItem.id)"
+                    :disabled="getItemQuantity(selItem.id) <= 1"
+                    :class="cn(
+                      'h-5 w-5 rounded flex items-center justify-center transition-colors cursor-pointer text-[10px] font-bold',
+                      getItemQuantity(selItem.id) <= 1
+                        ? 'text-muted-foreground/40 cursor-not-allowed'
+                        : 'hover:bg-primary/20 text-foreground'
+                    )"
+                  >
+                    <MinusIcon class="h-3 w-3" />
+                  </button>
+                  <input
+                    type="number"
+                    :value="getItemQuantity(selItem.id)"
+                    @change="(e) => setItemQuantity(selItem.id, parseInt((e.target as HTMLInputElement).value) || 1)"
+                    min="1"
+                    class="w-8 h-5 text-center text-xs font-semibold bg-background/60 border border-border rounded px-0 py-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                  <button
+                    @click="incrementQuantity(selItem.id)"
+                    class="h-5 w-5 rounded flex items-center justify-center hover:bg-primary/20 text-foreground transition-colors cursor-pointer text-[10px] font-bold"
+                  >
+                    <PlusIcon class="h-3 w-3" />
+                  </button>
+                </div>
+
+                <!-- Remove button -->
                 <button
                   @click="toggleItemSelection(selItem.id)"
                   class="h-4 w-4 rounded-full hover:bg-destructive/20 hover:text-destructive flex items-center justify-center transition-colors cursor-pointer shrink-0"
@@ -167,77 +198,51 @@
           </div>
         </div>
 
-        <!-- Name + Quantity row -->
-        <div class="grid grid-cols-2 gap-3">
-          <div class="space-y-1">
-            <Label for="marker-name" class="text-xs">Custom Name</Label>
-            <Input
-              id="marker-name"
-              v-model="markerName"
-              :placeholder="selectedItems.length > 1 ? 'Use item names' : 'Use item name'"
-              class="h-8 text-sm"
-              :disabled="selectedItems.length > 1"
-            />
-            <span v-if="selectedItems.length > 1" class="text-[10px] text-muted-foreground">
-              Each marker will use its item name
-            </span>
-          </div>
-          <div class="space-y-1">
-            <Label class="text-xs">Quantity</Label>
-            <div class="flex items-center gap-1">
-              <button
-                v-for="preset in [1, 3, 5, 10]"
-                :key="preset"
-                @click="quantity = preset; customQty = false"
-                :class="cn(
-                  'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer',
-                  quantity === preset && !customQty
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
-                )"
-              >
-                {{ preset }}
-              </button>
-              <button
-                @click="customQty = true"
-                :class="cn(
-                  'inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium border transition-colors cursor-pointer',
-                  customQty
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
-                )"
-              >
-                #
-              </button>
+        <!-- More options toggle -->
+        <div>
+          <button
+            @click="showMoreOptions = !showMoreOptions"
+            class="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            <ChevronRightIcon :class="cn('h-3.5 w-3.5 transition-transform', showMoreOptions && 'rotate-90')" />
+            More options
+            <span v-if="markerName || note" class="h-1.5 w-1.5 rounded-full bg-primary" />
+          </button>
+
+          <div v-if="showMoreOptions" class="mt-2 space-y-2.5 pl-1 border-l-2 border-border ml-1.5">
+            <!-- Custom Name -->
+            <div class="space-y-1 pl-3">
+              <Label for="marker-name" class="text-xs">Custom Name</Label>
               <Input
-                v-if="customQty"
-                v-model.number="quantity"
-                type="number"
-                min="1"
-                placeholder="1"
-                class="h-7 text-sm w-14"
-                autofocus
+                id="marker-name"
+                v-model="markerName"
+                :placeholder="selectedItems.length > 1 ? 'Use item names' : 'Use item name'"
+                class="h-8 text-sm"
+                :disabled="selectedItems.length > 1"
+              />
+              <span v-if="selectedItems.length > 1" class="text-[10px] text-muted-foreground">
+                Each marker will use its item name
+              </span>
+            </div>
+
+            <!-- Note -->
+            <div class="space-y-1 pl-3">
+              <Label for="note" class="text-xs">Note</Label>
+              <Input
+                id="note"
+                v-model="note"
+                placeholder="Optional notes about this location..."
+                class="h-8 text-sm"
               />
             </div>
           </div>
-        </div>
-
-        <!-- Note -->
-        <div class="space-y-1">
-          <Label for="note" class="text-xs">Note</Label>
-          <Input
-            id="note"
-            v-model="note"
-            placeholder="Optional notes about this location..."
-            class="h-8 text-sm"
-          />
         </div>
       </div>
 
       <DialogFooter>
         <Button variant="outline" size="sm" @click="$emit('close')">Cancel</Button>
-        <Button size="sm" @click="handleSave" :disabled="selectedItemIds.size === 0">
-          {{ selectedItemIds.size > 1 ? `Add ${selectedItemIds.size} Markers` : 'Add Marker' }}
+        <Button size="sm" @click="handleSave" :disabled="itemQuantities.size === 0">
+          {{ itemQuantities.size > 1 ? `Add ${itemQuantities.size} Markers` : 'Add Marker' }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>
@@ -246,7 +251,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-vue-next'
+import { CheckIcon, ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, MinusIcon, PlusIcon, XIcon } from 'lucide-vue-next'
 import { Dialog, DialogScrollContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { Button } from '~/components/ui/button'
@@ -263,7 +268,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   close: []
-  save: [data: { items: Array<{ itemId: string; name: string }>; quantity: number; note: string }]
+  save: [data: { items: Array<{ itemId: string; name: string; quantity: number }>; note: string }]
 }>()
 
 const { items, markers, currentRun } = useGameData()
@@ -301,23 +306,40 @@ const visibleFrequentItems = computed(() => {
 const hasMoreFrequent = computed(() => frequentItems.value.length > FREQ_COLS * FREQ_VISIBLE_ROWS)
 const showFrequentSection = computed(() => frequentItems.value.length > 0 && !searchQuery.value.trim())
 
-const selectedItemIds = reactive(new Set<string>())
+const itemQuantities = reactive(new Map<string, number>())
+const selectedItemIds = computed(() => new Set(itemQuantities.keys()))
 const selectedItems = computed(() =>
-  items.value.filter((i) => selectedItemIds.has(i.id))
+  items.value.filter((i) => itemQuantities.has(i.id))
 )
 const markerName = ref('')
-const quantity = ref(1)
-const customQty = ref(false)
 const note = ref('')
+const showMoreOptions = ref(false)
 const searchQuery = ref('')
 const activeCategories = ref<string[]>([])
 
 function toggleItemSelection(itemId: string) {
-  if (selectedItemIds.has(itemId)) {
-    selectedItemIds.delete(itemId)
+  if (itemQuantities.has(itemId)) {
+    itemQuantities.delete(itemId)
   } else {
-    selectedItemIds.add(itemId)
+    itemQuantities.set(itemId, 1)
   }
+}
+
+function getItemQuantity(itemId: string): number {
+  return itemQuantities.get(itemId) ?? 1
+}
+
+function setItemQuantity(itemId: string, qty: number) {
+  if (qty < 1) qty = 1
+  itemQuantities.set(itemId, qty)
+}
+
+function incrementQuantity(itemId: string) {
+  setItemQuantity(itemId, getItemQuantity(itemId) + 1)
+}
+
+function decrementQuantity(itemId: string) {
+  setItemQuantity(itemId, getItemQuantity(itemId) - 1)
 }
 
 // Derive available categories from items
@@ -379,27 +401,26 @@ const filteredItems = computed(() => {
 // Reset form when dialog opens
 watch(() => props.show, (isOpen) => {
   if (isOpen) {
-    selectedItemIds.clear()
+    itemQuantities.clear()
     markerName.value = ''
-    quantity.value = 1
-    customQty.value = false
     note.value = ''
+    showMoreOptions.value = false
     searchQuery.value = ''
     freqExpanded.value = false
   }
 })
 
 function handleSave() {
-  if (selectedItemIds.size === 0) return
+  if (itemQuantities.size === 0) return
 
   const selectedList = selectedItems.value.map((item) => ({
     itemId: item.id,
-    name: selectedItemIds.size === 1 ? (markerName.value || item.name) : item.name,
+    name: itemQuantities.size === 1 ? (markerName.value || item.name) : item.name,
+    quantity: getItemQuantity(item.id),
   }))
 
   emit('save', {
     items: selectedList,
-    quantity: quantity.value || 1,
     note: note.value,
   })
 }
