@@ -116,6 +116,11 @@
   font-family: inherit !important;
 }
 
+/* Offset zoom controls so they don't overlap the recent-maps sidebar (52px wide) */
+.leaflet-top.leaflet-left {
+  left: 56px !important;
+}
+
 .leaflet-popup-content-wrapper {
   background: oklch(0.18 0.012 55) !important;
   color: oklch(0.90 0.02 75) !important;
