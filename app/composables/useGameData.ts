@@ -299,6 +299,11 @@ export function useGameData() {
     save()
   }
 
+  function clearRecentMaps() {
+    appData.value.recentMapIds = []
+    save()
+  }
+
   // ── Items ───────────────────────────────────────────────────────────────
 
   function getItemById(itemId: string) {
@@ -407,6 +412,7 @@ export function useGameData() {
     currentMapVariant,
     recentMaps,
     setCurrentMap,
+    clearRecentMaps,
     // Markers (scoped to current map + run)
     currentMapMarkers,
     addMarker,

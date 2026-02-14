@@ -7,17 +7,24 @@
     @mouseleave="expanded = false"
   >
     <!-- Toggle / header -->
-    <button
-      class="recent-sidebar__header"
-      @click="expanded = !expanded"
-    >
+    <div class="recent-sidebar__header" @click="expanded = !expanded">
       <HistoryIcon class="h-4 w-4 shrink-0 text-muted-foreground" />
       <Transition name="fade">
-        <span v-if="expanded" class="text-xs font-semibold tracking-wide uppercase text-muted-foreground">
+        <span v-if="expanded" class="text-xs font-semibold tracking-wide uppercase text-muted-foreground flex-1">
           Recent Maps
         </span>
       </Transition>
-    </button>
+      <Transition name="fade">
+        <button
+          v-if="expanded"
+          class="recent-sidebar__clear"
+          title="Clear recent maps"
+          @click.stop="clearRecentMaps()"
+        >
+          <XIcon class="h-3.5 w-3.5" />
+        </button>
+      </Transition>
+    </div>
 
     <!-- Map list -->
     <ScrollArea class="recent-sidebar__list">
@@ -63,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { HistoryIcon } from 'lucide-vue-next'
+import { HistoryIcon, XIcon } from 'lucide-vue-next'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { useGameData } from '~/composables/useGameData'
@@ -71,7 +78,7 @@ import { cn } from '~/lib/utils'
 import type { GameMap } from '~/types'
 import { getVariantKey } from '~/types'
 
-const { recentMaps, currentMapId, currentRun, setCurrentMap } = useGameData()
+const { recentMaps, currentMapId, currentRun, setCurrentMap, clearRecentMaps } = useGameData()
 
 const expanded = ref(false)
 
@@ -121,6 +128,23 @@ function handleSelectMap(mapId: string) {
 
 .recent-sidebar__header:hover {
   background: oklch(0.22 0.015 60 / 0.5);
+}
+
+.recent-sidebar__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: oklch(0.58 0.03 70);
+  transition: background 0.15s ease, color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.recent-sidebar__clear:hover {
+  background: oklch(0.50 0.16 25 / 0.3);
+  color: oklch(0.75 0.14 25);
 }
 
 .recent-sidebar__list {
