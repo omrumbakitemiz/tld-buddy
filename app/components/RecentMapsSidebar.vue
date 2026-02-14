@@ -75,19 +75,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/comp
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
-import type { GameMap } from '~/types'
-import { getVariantKey } from '~/types'
 
-const { recentMaps, currentMapId, currentRun, setCurrentMap, clearRecentMaps } = useGameData()
+const { recentMaps, currentMapId, setCurrentMap, clearRecentMaps, getMapThumbnail } = useGameData()
 
 const expanded = ref(false)
-
-function getMapThumbnail(map: GameMap): string {
-  const run = currentRun.value
-  if (!run) return map.default.imageUrl
-  const key = getVariantKey(run.difficulty)
-  return map[key].imageUrl
-}
 
 function handleClearRecentMaps() {
   expanded.value = false

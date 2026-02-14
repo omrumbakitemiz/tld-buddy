@@ -394,6 +394,16 @@ export function useGameData() {
     return getStashedItems(poiId).length
   }
 
+  // ── Map thumbnails ──────────────────────────────────────────────────────
+
+  /** Resolve the thumbnail URL for a map based on the current run's difficulty. */
+  function getMapThumbnail(map: GameMap): string {
+    const run = currentRun.value
+    if (!run) return map.default.imageUrl
+    const key = getVariantKey(run.difficulty)
+    return map[key].imageUrl
+  }
+
   return {
     // Static data
     maps,
@@ -413,6 +423,7 @@ export function useGameData() {
     recentMaps,
     setCurrentMap,
     clearRecentMaps,
+    getMapThumbnail,
     // Markers (scoped to current map + run)
     currentMapMarkers,
     addMarker,

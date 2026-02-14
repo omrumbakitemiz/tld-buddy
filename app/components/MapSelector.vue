@@ -93,13 +93,11 @@ import { Input } from '~/components/ui/input'
 import { Separator } from '~/components/ui/separator'
 import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
-import type { GameMap } from '~/types'
-import { getVariantKey } from '~/types'
 
 defineProps<{ open: boolean }>()
 defineEmits<{ 'update:open': [value: boolean] }>()
 
-const { maps, markers, currentMapId, currentRun, setCurrentMap } = useGameData()
+const { maps, markers, currentMapId, currentRun, setCurrentMap, getMapThumbnail } = useGameData()
 
 const searchQuery = ref('')
 const mapTypes = ['Region', 'Transition'] as const
@@ -127,13 +125,6 @@ const filteredMaps = computed(() => {
     return true
   })
 })
-
-function getMapThumbnail(map: GameMap): string {
-  const run = currentRun.value
-  if (!run) return map.default.imageUrl
-  const key = getVariantKey(run.difficulty)
-  return map[key].imageUrl
-}
 
 function getMapMarkerCount(mapId: string) {
   // Show markers for the current run only
