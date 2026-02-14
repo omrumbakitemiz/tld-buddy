@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
+    <Analytics />
     <NuxtRouteAnnouncer />
 
     <!-- Top Bar -->
@@ -147,6 +148,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted } from 'vue'
+import { Analytics } from '@vercel/analytics/nuxt'
 import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
