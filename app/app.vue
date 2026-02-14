@@ -109,6 +109,8 @@
         ref="mapRef"
         @request-add-marker="onRequestAddMarker"
       />
+      <!-- Recent maps sidebar (left edge overlay) -->
+      <RecentMapsSidebar />
     </main>
 
     <!-- Run Selector Dialog -->
@@ -161,6 +163,7 @@ import POIConfig from '~/components/POIConfig.vue'
 import ItemManager from '~/components/ItemManager.vue'
 import MarkerDialog from '~/components/MarkerDialog.vue'
 import RunSelector from '~/components/RunSelector.vue'
+import RecentMapsSidebar from '~/components/RecentMapsSidebar.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 

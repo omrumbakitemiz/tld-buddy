@@ -5,6 +5,8 @@ import { getVariantKey } from '~/types'
 const LOCAL_CACHE_KEY = 'tld-buddy-v1'
 const SAVE_DEBOUNCE_MS = 500
 
+const MAX_RECENT_MAPS = 10
+
 const defaultData: AppData = {
   runs: [],
   currentRunId: null,
@@ -13,6 +15,7 @@ const defaultData: AppData = {
   enabledPOIs: [],
   poiPins: [],
   stashedItems: [],
+  recentMapIds: [],
 }
 
 const appData = ref<AppData>({ ...defaultData })
@@ -75,6 +78,7 @@ function parseAppData(parsed: Partial<AppData>): AppData {
     enabledPOIs: Array.isArray(parsed.enabledPOIs) ? parsed.enabledPOIs : [],
     poiPins: Array.isArray(parsed.poiPins) ? parsed.poiPins : [],
     stashedItems: Array.isArray(parsed.stashedItems) ? parsed.stashedItems : [],
+    recentMapIds: Array.isArray(parsed.recentMapIds) ? parsed.recentMapIds : [],
   }
 }
 
@@ -276,8 +280,22 @@ export function useGameData() {
 
   // ── Map selection ───────────────────────────────────────────────────────
 
+  /** Ordered list of recently visited maps (most recent first), resolved to GameMap objects */
+  const recentMaps = computed(() => {
+    return appData.value.recentMapIds
+      .map((id) => staticMaps.value.find((m) => m.id === id))
+      .filter((m): m is GameMap => !!m)
+  })
+
+  function trackRecentMap(mapId: string) {
+    const ids = appData.value.recentMapIds.filter((id) => id !== mapId)
+    ids.unshift(mapId)
+    appData.value.recentMapIds = ids.slice(0, MAX_RECENT_MAPS)
+  }
+
   function setCurrentMap(mapId: string) {
     appData.value.currentMapId = mapId
+    trackRecentMap(mapId)
     save()
   }
 
@@ -387,6 +405,7 @@ export function useGameData() {
     currentMap,
     currentMapId,
     currentMapVariant,
+    recentMaps,
     setCurrentMap,
     // Markers (scoped to current map + run)
     currentMapMarkers,

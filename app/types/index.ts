@@ -84,6 +84,7 @@ export interface AppData {
   enabledPOIs: string[]       // global list of enabled POI ids
   poiPins: POIPin[]           // per-run pin positions
   stashedItems: StashedItem[] // per-run item stashes at POIs
+  recentMapIds: string[]      // ordered list of recently visited map ids (most recent first)
 }
 
 /**
