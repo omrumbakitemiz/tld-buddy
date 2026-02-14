@@ -198,30 +198,44 @@
           </div>
         </div>
 
-        <!-- Custom Name -->
-        <div class="space-y-1">
-          <Label for="marker-name" class="text-xs">Custom Name</Label>
-          <Input
-            id="marker-name"
-            v-model="markerName"
-            :placeholder="selectedItems.length > 1 ? 'Use item names' : 'Use item name'"
-            class="h-8 text-sm"
-            :disabled="selectedItems.length > 1"
-          />
-          <span v-if="selectedItems.length > 1" class="text-[10px] text-muted-foreground">
-            Each marker will use its item name
-          </span>
-        </div>
+        <!-- More options toggle -->
+        <div>
+          <button
+            @click="showMoreOptions = !showMoreOptions"
+            class="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            <ChevronRightIcon :class="cn('h-3.5 w-3.5 transition-transform', showMoreOptions && 'rotate-90')" />
+            More options
+            <span v-if="markerName || note" class="h-1.5 w-1.5 rounded-full bg-primary" />
+          </button>
 
-        <!-- Note -->
-        <div class="space-y-1">
-          <Label for="note" class="text-xs">Note</Label>
-          <Input
-            id="note"
-            v-model="note"
-            placeholder="Optional notes about this location..."
-            class="h-8 text-sm"
-          />
+          <div v-if="showMoreOptions" class="mt-2 space-y-2.5 pl-1 border-l-2 border-border ml-1.5">
+            <!-- Custom Name -->
+            <div class="space-y-1 pl-3">
+              <Label for="marker-name" class="text-xs">Custom Name</Label>
+              <Input
+                id="marker-name"
+                v-model="markerName"
+                :placeholder="selectedItems.length > 1 ? 'Use item names' : 'Use item name'"
+                class="h-8 text-sm"
+                :disabled="selectedItems.length > 1"
+              />
+              <span v-if="selectedItems.length > 1" class="text-[10px] text-muted-foreground">
+                Each marker will use its item name
+              </span>
+            </div>
+
+            <!-- Note -->
+            <div class="space-y-1 pl-3">
+              <Label for="note" class="text-xs">Note</Label>
+              <Input
+                id="note"
+                v-model="note"
+                placeholder="Optional notes about this location..."
+                class="h-8 text-sm"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -237,7 +251,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, MinusIcon, PlusIcon, XIcon } from 'lucide-vue-next'
+import { CheckIcon, ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, MinusIcon, PlusIcon, XIcon } from 'lucide-vue-next'
 import { Dialog, DialogScrollContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { Button } from '~/components/ui/button'
@@ -299,6 +313,7 @@ const selectedItems = computed(() =>
 )
 const markerName = ref('')
 const note = ref('')
+const showMoreOptions = ref(false)
 const searchQuery = ref('')
 const activeCategories = ref<string[]>([])
 
@@ -389,6 +404,7 @@ watch(() => props.show, (isOpen) => {
     itemQuantities.clear()
     markerName.value = ''
     note.value = ''
+    showMoreOptions.value = false
     searchQuery.value = ''
     freqExpanded.value = false
   }
