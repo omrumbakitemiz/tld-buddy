@@ -222,7 +222,7 @@ function onSaveMarker(data: { items: Array<{ itemId: string; name: string }>; qu
   const SPREAD_RADIUS = 25
 
   for (let i = 0; i < count; i++) {
-    const entry = data.items[i]
+    const entry = data.items[i]!
     const item = getItemById(entry.itemId)
     const markerName = entry.name || item?.name || 'Marker'
 
