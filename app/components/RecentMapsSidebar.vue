@@ -28,7 +28,7 @@
 
     <!-- Map list -->
     <ScrollArea class="recent-sidebar__list">
-      <div class="flex flex-col gap-1.5 p-1.5">
+      <div class="flex flex-col gap-1.5 px-1 py-1.5">
         <TooltipProvider :delay-duration="300">
           <Tooltip v-for="mapItem in recentMaps" :key="mapItem.id">
             <TooltipTrigger as-child>
@@ -153,7 +153,7 @@ function handleSelectMap(mapId: string) {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 4px;
+  padding: 3px;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s ease;
