@@ -43,14 +43,24 @@
               </p>
             </div>
 
-            <Button
-              size="icon"
-              variant="ghost"
-              class="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive shrink-0"
-              @click.stop="handleDeleteMarker(marker.id)"
-            >
-              <TrashIcon class="h-3 w-3" />
-            </Button>
+            <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 shrink-0">
+              <Button
+                size="icon"
+                variant="ghost"
+                class="h-6 w-6 hover:bg-primary/10 hover:text-primary"
+                @click.stop="$emit('edit-marker', marker)"
+              >
+                <PencilIcon class="h-3 w-3" />
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                class="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
+                @click.stop="handleDeleteMarker(marker.id)"
+              >
+                <TrashIcon class="h-3 w-3" />
+              </Button>
+            </div>
           </div>
 
           <!-- Empty states -->
@@ -70,7 +80,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CrosshairIcon, TrashIcon } from 'lucide-vue-next'
+import { CrosshairIcon, PencilIcon, TrashIcon } from 'lucide-vue-next'
 import Fuse from 'fuse.js'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '~/components/ui/sheet'
 import { Button } from '~/components/ui/button'
@@ -84,6 +94,7 @@ defineProps<{ open: boolean }>()
 defineEmits<{
   'update:open': [value: boolean]
   'fly-to': [marker: Marker]
+  'edit-marker': [marker: Marker]
 }>()
 
 const { currentMap, currentRun, currentMapMarkers, getItemById, deleteMarker } = useGameData()
