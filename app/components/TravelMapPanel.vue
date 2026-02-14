@@ -194,6 +194,7 @@ function initMap() {
     zoomSnap: 0.25,
     zoomDelta: 0.5,
     attributionControl: false,
+    zoomControl: false,
   })
 
   const bounds: L.LatLngBoundsExpression = [
