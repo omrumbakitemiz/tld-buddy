@@ -138,15 +138,6 @@
   color: oklch(0.90 0.02 75) !important;
 }
 
-.leaflet-control-zoom a {
-  background: oklch(0.18 0.012 55) !important;
-  color: oklch(0.90 0.02 75) !important;
-  border-color: oklch(0.26 0.015 60) !important;
-}
-
-.leaflet-control-zoom a:hover {
-  background: oklch(0.24 0.02 70) !important;
-}
 
 /* Custom marker styles -- default (circle with quantity) */
 .tld-marker {

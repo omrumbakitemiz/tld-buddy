@@ -95,6 +95,7 @@ function initMap() {
     zoomSnap: 0.25,
     zoomDelta: 0.5,
     attributionControl: false,
+    zoomControl: false,
   })
 
   const { imageWidth, imageHeight, imageUrl } = currentMapVariant.value
