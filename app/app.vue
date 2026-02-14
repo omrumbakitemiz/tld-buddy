@@ -9,6 +9,10 @@
         <h1 class="text-sm font-bold tracking-wide text-primary uppercase">
           TLD Buddy
         </h1>
+        <Badge v-if="travelMode" variant="default" class="text-[9px] px-1.5 py-0 h-4 bg-primary/80">
+          <CompassIcon class="h-2.5 w-2.5 mr-0.5" />
+          Travel
+        </Badge>
 
         <!-- Current run info -->
         <button
@@ -34,78 +38,105 @@
 
       <div class="flex items-center gap-1">
         <TooltipProvider :delay-duration="200">
+          <!-- Travel Mode Toggle -->
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" class="h-7 w-7" @click="showRunSelector = true">
-                <SwordsIcon class="h-4 w-4" />
+              <Button
+                :variant="travelMode ? 'default' : 'ghost'"
+                size="icon"
+                class="h-7 w-7"
+                @click="toggleTravelMode"
+              >
+                <CompassIcon class="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>Runs</p>
+              <p>{{ travelMode ? 'Exit Travel Mode' : 'Travel Mode' }}</p>
             </TooltipContent>
           </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('maps')">
-                <MapIcon class="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>Maps</p>
-            </TooltipContent>
-          </Tooltip>
+          <!-- Separator between travel and other tools -->
+          <div v-if="!travelMode" class="w-px h-4 bg-border mx-0.5" />
 
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('pois')">
-                <LandmarkIcon class="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>Locations</p>
-            </TooltipContent>
-          </Tooltip>
+          <template v-if="!travelMode">
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="ghost" size="icon" class="h-7 w-7" @click="showRunSelector = true">
+                  <SwordsIcon class="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Runs</p>
+              </TooltipContent>
+            </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('markers')">
-                <CrosshairIcon class="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>Markers</p>
-            </TooltipContent>
-          </Tooltip>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('maps')">
+                  <MapIcon class="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Maps</p>
+              </TooltipContent>
+            </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('items')">
-                <PackageIcon class="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>Items</p>
-            </TooltipContent>
-          </Tooltip>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('pois')">
+                  <LandmarkIcon class="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Locations</p>
+              </TooltipContent>
+            </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" class="h-7 w-7" @click="showPOIConfig = true">
-                <SlidersHorizontalIcon class="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>POI Settings</p>
-            </TooltipContent>
-          </Tooltip>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('markers')">
+                  <CrosshairIcon class="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Markers</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="ghost" size="icon" class="h-7 w-7" @click="openPanel('items')">
+                  <PackageIcon class="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Items</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="ghost" size="icon" class="h-7 w-7" @click="showPOIConfig = true">
+                  <SlidersHorizontalIcon class="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>POI Settings</p>
+              </TooltipContent>
+            </Tooltip>
+          </template>
         </TooltipProvider>
       </div>
     </header>
 
     <!-- Map fills remaining space (z-0 creates stacking context to contain Leaflet's internal z-indexes) -->
     <main class="flex-1 min-h-0 relative z-0">
+      <!-- Travel Mode: dual side-by-side maps -->
+      <TravelModeView v-if="travelMode" />
+
+      <!-- Default Mode: single interactive map -->
       <InteractiveMap
+        v-else
         ref="mapRef"
         @request-add-marker="onRequestAddMarker"
       />
@@ -151,11 +182,12 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted } from 'vue'
 import { Analytics } from '@vercel/analytics/nuxt'
-import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon } from 'lucide-vue-next'
+import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon, CompassIcon } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import InteractiveMap from '~/components/InteractiveMap.vue'
+import TravelModeView from '~/components/TravelModeView.vue'
 import MapSelector from '~/components/MapSelector.vue'
 import MarkerPanel from '~/components/MarkerPanel.vue'
 import POIPanel from '~/components/POIPanel.vue'
@@ -167,7 +199,7 @@ import RecentMapsSidebar from '~/components/RecentMapsSidebar.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 
-const { currentMap, currentRun, addMarker, getItemById } = useGameData()
+const { currentMap, currentRun, addMarker, getItemById, travelMode, toggleTravelMode } = useGameData()
 
 const mapRef = ref<InstanceType<typeof InteractiveMap> | null>(null)
 const showMapSelector = ref(false)
