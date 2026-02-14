@@ -288,9 +288,9 @@ export function useGameData() {
   })
 
   function trackRecentMap(mapId: string) {
-    const ids = appData.value.recentMapIds.filter((id) => id !== mapId)
-    ids.unshift(mapId)
-    appData.value.recentMapIds = ids.slice(0, MAX_RECENT_MAPS)
+    // If already in the list, don't reorder — keeps the sidebar stable
+    if (appData.value.recentMapIds.includes(mapId)) return
+    appData.value.recentMapIds = [mapId, ...appData.value.recentMapIds].slice(0, MAX_RECENT_MAPS)
   }
 
   function setCurrentMap(mapId: string) {
