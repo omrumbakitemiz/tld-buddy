@@ -140,8 +140,8 @@
         ref="mapRef"
         @request-add-marker="onRequestAddMarker"
       />
-      <!-- Recent maps sidebar (left edge overlay) -->
-      <RecentMapsSidebar />
+      <!-- Recent maps sidebar (left edge overlay, hidden in travel mode) -->
+      <RecentMapsSidebar v-if="!travelMode" />
     </main>
 
     <!-- Run Selector Dialog -->
