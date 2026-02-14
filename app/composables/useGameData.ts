@@ -398,6 +398,15 @@ export function useGameData() {
     return newMarker
   }
 
+  function updateMarker(markerId: string, updates: Partial<Pick<Marker, 'name' | 'quantity' | 'note'>>) {
+    const marker = appData.value.markers.find((m) => m.id === markerId)
+    if (!marker) return
+    if (updates.name !== undefined) marker.name = updates.name
+    if (updates.quantity !== undefined) marker.quantity = updates.quantity
+    if (updates.note !== undefined) marker.note = updates.note
+    save()
+  }
+
   function deleteMarker(markerId: string) {
     appData.value.markers = appData.value.markers.filter((m) => m.id !== markerId)
     save()
@@ -507,6 +516,7 @@ export function useGameData() {
     // Markers (scoped to current map + run)
     currentMapMarkers,
     addMarker,
+    updateMarker,
     deleteMarker,
     // Items
     getItemById,

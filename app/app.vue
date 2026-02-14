@@ -139,6 +139,8 @@
         v-else
         ref="mapRef"
         @request-add-marker="onRequestAddMarker"
+        @request-edit-marker="onRequestEditMarker"
+        @request-delete-marker="onRequestDeleteMarker"
       />
       <!-- Recent maps sidebar (left edge overlay, hidden in travel mode) -->
       <RecentMapsSidebar v-if="!travelMode" />
@@ -154,6 +156,7 @@
     <MarkerPanel
       v-model:open="showMarkerPanel"
       @fly-to="onFlyToMarker"
+      @edit-marker="onRequestEditMarker"
     />
 
     <!-- Right Sheet: POI Panel -->
@@ -176,6 +179,14 @@
       @close="showMarkerDialog = false"
       @save="onSaveMarker"
     />
+
+    <!-- Dialog: Edit Marker -->
+    <MarkerEditDialog
+      :marker="editingMarker"
+      @close="editingMarker = null"
+      @save="onUpdateMarker"
+      @delete="onDeleteMarkerFromEdit"
+    />
   </div>
 </template>
 
@@ -194,12 +205,13 @@ import POIPanel from '~/components/POIPanel.vue'
 import POIConfig from '~/components/POIConfig.vue'
 import ItemManager from '~/components/ItemManager.vue'
 import MarkerDialog from '~/components/MarkerDialog.vue'
+import MarkerEditDialog from '~/components/MarkerEditDialog.vue'
 import RunSelector from '~/components/RunSelector.vue'
 import RecentMapsSidebar from '~/components/RecentMapsSidebar.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 
-const { currentMap, currentRun, addMarker, getItemById, travelMode, toggleTravelMode } = useGameData()
+const { currentMap, currentRun, addMarker, updateMarker, deleteMarker, getItemById, travelMode, toggleTravelMode } = useGameData()
 
 const mapRef = ref<InstanceType<typeof InteractiveMap> | null>(null)
 const showMapSelector = ref(false)
@@ -210,6 +222,7 @@ const showMarkerDialog = ref(false)
 const showRunSelector = ref(false)
 const showPOIConfig = ref(false)
 const pendingMarkerPosition = ref<{ x: number; y: number } | null>(null)
+const editingMarker = ref<Marker | null>(null)
 
 // Check once on mount — if no run exists, show selector
 onMounted(() => {
@@ -281,6 +294,26 @@ function onSaveMarker(data: { items: Array<{ itemId: string; name: string }>; qu
 
   showMarkerDialog.value = false
   pendingMarkerPosition.value = null
+}
+
+function onRequestEditMarker(marker: Marker) {
+  editingMarker.value = marker
+}
+
+function onRequestDeleteMarker(markerId: string) {
+  if (confirm('Delete this marker?')) {
+    deleteMarker(markerId)
+  }
+}
+
+function onUpdateMarker(data: { id: string; name: string; quantity: number; note: string }) {
+  updateMarker(data.id, { name: data.name, quantity: data.quantity, note: data.note })
+  editingMarker.value = null
+}
+
+function onDeleteMarkerFromEdit(markerId: string) {
+  deleteMarker(markerId)
+  editingMarker.value = null
 }
 
 function onFlyToMarker(marker: Marker) {

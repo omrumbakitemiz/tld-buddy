@@ -64,6 +64,8 @@ import type { Marker } from '~/types'
 
 const emit = defineEmits<{
   'request-add-marker': [position: { x: number; y: number }]
+  'request-edit-marker': [marker: Marker]
+  'request-delete-marker': [markerId: string]
 }>()
 
 const {
@@ -189,17 +191,46 @@ function renderMarkers() {
       : ''
 
     const popupContent = `
-      <div style="min-width:140px">
+      <div style="min-width:160px">
         <div style="display:flex;align-items:center;margin-bottom:4px">
           ${popupIcon}
           <div style="font-weight:700;font-size:13px">${escapeHtml(marker.name)}</div>
         </div>
         ${item ? `<div style="font-size:12px;opacity:0.75">${escapeHtml(item.name)} &times; ${marker.quantity}</div>` : ''}
         ${marker.note ? `<div style="font-size:11px;opacity:0.6;margin-top:4px">${escapeHtml(marker.note)}</div>` : ''}
+        <div style="display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1)">
+          <button data-marker-edit="${marker.id}" style="flex:1;padding:4px 8px;font-size:11px;font-weight:600;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:inherit;cursor:pointer;transition:background 0.15s">Edit</button>
+          <button data-marker-delete="${marker.id}" style="padding:4px 8px;font-size:11px;font-weight:600;border-radius:6px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.1);color:#f87171;cursor:pointer;transition:background 0.15s">Delete</button>
+        </div>
       </div>
     `
 
-    lMarker.bindPopup(popupContent, { closeButton: true, maxWidth: 220 })
+    const popup = L.popup({ closeButton: true, maxWidth: 240 }).setContent(popupContent)
+    lMarker.bindPopup(popup)
+
+    // Listen for popup open to attach event handlers
+    lMarker.on('popupopen', () => {
+      const container = popup.getElement()
+      if (!container) return
+
+      const editBtn = container.querySelector(`[data-marker-edit="${marker.id}"]`) as HTMLButtonElement | null
+      const deleteBtn = container.querySelector(`[data-marker-delete="${marker.id}"]`) as HTMLButtonElement | null
+
+      if (editBtn) {
+        editBtn.onclick = (e) => {
+          e.stopPropagation()
+          lMarker.closePopup()
+          emit('request-edit-marker', marker)
+        }
+      }
+      if (deleteBtn) {
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation()
+          lMarker.closePopup()
+          emit('request-delete-marker', marker.id)
+        }
+      }
+    })
   })
 }
 
