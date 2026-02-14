@@ -215,17 +215,33 @@ function onRequestAddMarker(position: { x: number; y: number }) {
 function onSaveMarker(data: { items: Array<{ itemId: string; name: string }>; quantity: number; note: string }) {
   if (!pendingMarkerPosition.value || !currentMap.value || !currentRun.value) return
 
-  for (const entry of data.items) {
+  const pos = { x: pendingMarkerPosition.value.x, y: pendingMarkerPosition.value.y }
+  const count = data.items.length
+  // When placing multiple markers at once, spread them in a small circle
+  // so they don't stack on top of each other and are all visible.
+  const SPREAD_RADIUS = 25
+
+  for (let i = 0; i < count; i++) {
+    const entry = data.items[i]
     const item = getItemById(entry.itemId)
     const markerName = entry.name || item?.name || 'Marker'
+
+    let x = pos.x
+    let y = pos.y
+
+    if (count > 1) {
+      const angle = (2 * Math.PI * i) / count - Math.PI / 2
+      x += Math.cos(angle) * SPREAD_RADIUS
+      y += Math.sin(angle) * SPREAD_RADIUS
+    }
 
     addMarker({
       runId: currentRun.value.id,
       mapId: currentMap.value.id,
       itemId: entry.itemId,
       name: markerName,
-      x: pendingMarkerPosition.value.x,
-      y: pendingMarkerPosition.value.y,
+      x,
+      y,
       quantity: data.quantity,
       note: data.note,
     })
