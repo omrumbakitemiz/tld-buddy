@@ -19,7 +19,7 @@
           v-if="expanded"
           class="recent-sidebar__clear"
           title="Clear recent maps"
-          @click.stop="clearRecentMaps()"
+          @click.stop="handleClearRecentMaps()"
         >
           <XIcon class="h-3.5 w-3.5" />
         </button>
@@ -87,6 +87,11 @@ function getMapThumbnail(map: GameMap): string {
   if (!run) return map.default.imageUrl
   const key = getVariantKey(run.difficulty)
   return map[key].imageUrl
+}
+
+function handleClearRecentMaps() {
+  expanded.value = false
+  clearRecentMaps()
 }
 
 function handleSelectMap(mapId: string) {
