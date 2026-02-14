@@ -4,14 +4,19 @@
       <DialogHeader>
         <DialogTitle>Add Marker</DialogTitle>
         <DialogDescription>
-          Select an item and add details for this map location
+          Select one or more items to mark at this map location
         </DialogDescription>
       </DialogHeader>
 
       <div class="space-y-3 py-3">
         <!-- Item selection -->
         <div class="space-y-1.5">
-          <Label class="text-sm font-semibold">Select Item *</Label>
+          <div class="flex items-center justify-between">
+            <Label class="text-sm font-semibold">Select Items *</Label>
+            <span v-if="selectedItemIds.size > 0" class="text-xs text-muted-foreground">
+              {{ selectedItemIds.size }} selected
+            </span>
+          </div>
 
           <!-- Frequently Used icon grid -->
           <div v-if="showFrequentSection" class="space-y-1.5">
@@ -32,10 +37,10 @@
                 <Tooltip v-for="freqItem in visibleFrequentItems" :key="freqItem.id">
                   <TooltipTrigger as-child>
                     <button
-                      @click="selectedItemId = freqItem.id"
+                      @click="toggleItemSelection(freqItem.id)"
                       :class="cn(
-                        'h-10 w-full rounded-md border transition-all cursor-pointer flex items-center justify-center',
-                        selectedItemId === freqItem.id
+                        'relative h-10 w-full rounded-md border transition-all cursor-pointer flex items-center justify-center',
+                        selectedItemIds.has(freqItem.id)
                           ? 'border-primary ring-1 ring-primary bg-primary/10'
                           : 'border-border bg-muted/30 hover:border-primary/40 hover:bg-muted/60'
                       )"
@@ -47,6 +52,7 @@
                         class="h-7 w-7 object-contain"
                       />
                       <div v-else class="h-7 w-7 rounded bg-muted/50" />
+                      <CheckIcon v-if="selectedItemIds.has(freqItem.id)" class="absolute -top-1 -right-1 h-3.5 w-3.5 text-primary bg-background rounded-full" />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" class="text-xs">
@@ -91,10 +97,10 @@
                   <Tooltip v-for="item in filteredItems" :key="item.id">
                     <TooltipTrigger as-child>
                       <button
-                        @click="selectedItemId = item.id"
+                        @click="toggleItemSelection(item.id)"
                         :class="cn(
                           'relative h-10 w-full rounded-md border transition-all cursor-pointer flex items-center justify-center',
-                          selectedItemId === item.id
+                          selectedItemIds.has(item.id)
                             ? 'border-primary ring-1 ring-primary bg-primary/10'
                             : 'border-border bg-muted/30 hover:border-primary/40 hover:bg-muted/60'
                         )"
@@ -108,7 +114,7 @@
                         <div v-else class="h-7 w-7 rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground font-medium leading-tight text-center overflow-hidden px-0.5">
                           {{ item.name.substring(0, 3) }}
                         </div>
-                        <CheckIcon v-if="selectedItemId === item.id" class="absolute -top-1 -right-1 h-3.5 w-3.5 text-primary bg-background rounded-full" />
+                        <CheckIcon v-if="selectedItemIds.has(item.id)" class="absolute -top-1 -right-1 h-3.5 w-3.5 text-primary bg-background rounded-full" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" class="text-xs">
@@ -125,17 +131,38 @@
             </div>
           </div>
 
-          <!-- Selected item preview -->
-          <div v-if="selectedItem" class="flex items-center gap-2.5 p-2 rounded-md bg-primary/10 border border-primary/30">
-            <img
-              v-if="selectedItem.icon"
-              :src="selectedItem.icon"
-              :alt="selectedItem.name"
-              class="h-7 w-7 rounded object-contain shrink-0"
-            />
-            <div class="flex-1 min-w-0">
-              <span class="text-sm font-medium">{{ selectedItem.name }}</span>
-              <span v-if="selectedItem.category" class="text-xs text-muted-foreground ml-2">{{ selectedItem.category }}</span>
+          <!-- Selected items preview -->
+          <div v-if="selectedItems.length > 0" class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-muted-foreground">Selected ({{ selectedItems.length }})</span>
+              <button
+                v-if="selectedItems.length > 1"
+                @click="selectedItemIds.clear()"
+                class="text-[11px] text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+              >
+                Clear all
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <div
+                v-for="selItem in selectedItems"
+                :key="selItem.id"
+                class="inline-flex items-center gap-1.5 pl-1 pr-1 py-0.5 rounded-md bg-primary/10 border border-primary/30 text-xs"
+              >
+                <img
+                  v-if="selItem.icon"
+                  :src="selItem.icon"
+                  :alt="selItem.name"
+                  class="h-5 w-5 rounded object-contain shrink-0"
+                />
+                <span class="font-medium truncate max-w-[100px]">{{ selItem.name }}</span>
+                <button
+                  @click="toggleItemSelection(selItem.id)"
+                  class="h-4 w-4 rounded-full hover:bg-destructive/20 hover:text-destructive flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                >
+                  <XIcon class="h-3 w-3" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -147,9 +174,13 @@
             <Input
               id="marker-name"
               v-model="markerName"
-              placeholder="Use item name"
+              :placeholder="selectedItems.length > 1 ? 'Use item names' : 'Use item name'"
               class="h-8 text-sm"
+              :disabled="selectedItems.length > 1"
             />
+            <span v-if="selectedItems.length > 1" class="text-[10px] text-muted-foreground">
+              Each marker will use its item name
+            </span>
           </div>
           <div class="space-y-1">
             <Label class="text-xs">Quantity</Label>
@@ -205,8 +236,8 @@
 
       <DialogFooter>
         <Button variant="outline" size="sm" @click="$emit('close')">Cancel</Button>
-        <Button size="sm" @click="handleSave" :disabled="!selectedItemId">
-          Add Marker
+        <Button size="sm" @click="handleSave" :disabled="selectedItemIds.size === 0">
+          {{ selectedItemIds.size > 1 ? `Add ${selectedItemIds.size} Markers` : 'Add Marker' }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>
@@ -214,8 +245,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-vue-next'
+import { ref, reactive, computed, watch } from 'vue'
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-vue-next'
 import { Dialog, DialogScrollContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { Button } from '~/components/ui/button'
@@ -232,7 +263,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   close: []
-  save: [data: { itemId: string; quantity: number; note: string; name: string }]
+  save: [data: { items: Array<{ itemId: string; name: string }>; quantity: number; note: string }]
 }>()
 
 const { items, markers, currentRun } = useGameData()
@@ -270,14 +301,24 @@ const visibleFrequentItems = computed(() => {
 const hasMoreFrequent = computed(() => frequentItems.value.length > FREQ_COLS * FREQ_VISIBLE_ROWS)
 const showFrequentSection = computed(() => frequentItems.value.length > 0 && !searchQuery.value.trim())
 
-const selectedItemId = ref('')
-const selectedItem = computed(() => items.value.find((i) => i.id === selectedItemId.value) ?? null)
+const selectedItemIds = reactive(new Set<string>())
+const selectedItems = computed(() =>
+  items.value.filter((i) => selectedItemIds.has(i.id))
+)
 const markerName = ref('')
 const quantity = ref(1)
 const customQty = ref(false)
 const note = ref('')
 const searchQuery = ref('')
 const activeCategories = ref<string[]>([])
+
+function toggleItemSelection(itemId: string) {
+  if (selectedItemIds.has(itemId)) {
+    selectedItemIds.delete(itemId)
+  } else {
+    selectedItemIds.add(itemId)
+  }
+}
 
 // Derive available categories from items
 const availableCategories = computed(() => {
@@ -338,7 +379,7 @@ const filteredItems = computed(() => {
 // Reset form when dialog opens
 watch(() => props.show, (isOpen) => {
   if (isOpen) {
-    selectedItemId.value = ''
+    selectedItemIds.clear()
     markerName.value = ''
     quantity.value = 1
     customQty.value = false
@@ -349,12 +390,17 @@ watch(() => props.show, (isOpen) => {
 })
 
 function handleSave() {
-  if (!selectedItemId.value) return
+  if (selectedItemIds.size === 0) return
+
+  const selectedList = selectedItems.value.map((item) => ({
+    itemId: item.id,
+    name: selectedItemIds.size === 1 ? (markerName.value || item.name) : item.name,
+  }))
+
   emit('save', {
-    itemId: selectedItemId.value,
+    items: selectedList,
     quantity: quantity.value || 1,
     note: note.value,
-    name: markerName.value,
   })
 }
 </script>

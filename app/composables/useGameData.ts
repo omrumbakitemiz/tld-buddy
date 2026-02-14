@@ -25,6 +25,7 @@ const staticPOIs = ref<POI[]>([])
 let loaded = false
 let staticDataLoaded = false
 let saveTimer: ReturnType<typeof setTimeout> | null = null
+let markerIdCounter = 0
 
 // ── Load static data from JSON files ────────────────────────────────────────
 
@@ -313,7 +314,7 @@ export function useGameData() {
   // ── Markers ─────────────────────────────────────────────────────────────
 
   function addMarker(marker: Omit<Marker, 'id'>) {
-    const newMarker: Marker = { ...marker, id: `marker-${Date.now()}` }
+    const newMarker: Marker = { ...marker, id: `marker-${Date.now()}-${markerIdCounter++}` }
     appData.value.markers.push(newMarker)
     save()
     return newMarker
