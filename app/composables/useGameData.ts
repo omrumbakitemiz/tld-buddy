@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant, POI, POIPin, StashedItem } from '~/types'
+import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant, POI, POIPin, StashedItem, MapConnection } from '~/types'
 import { getVariantKey } from '~/types'
 
 const LOCAL_CACHE_KEY = 'tld-buddy-v1'
@@ -16,12 +16,16 @@ const defaultData: AppData = {
   poiPins: [],
   stashedItems: [],
   recentMapIds: [],
+  travelMode: false,
+  travelLeftMapId: null,
+  travelRightMapId: null,
 }
 
 const appData = ref<AppData>({ ...defaultData })
 const staticMaps = ref<GameMap[]>([])
 const staticItems = ref<Item[]>([])
 const staticPOIs = ref<POI[]>([])
+const staticConnections = ref<MapConnection[]>([])
 let loaded = false
 let staticDataLoaded = false
 let saveTimer: ReturnType<typeof setTimeout> | null = null
@@ -68,6 +72,19 @@ async function loadPOIs(): Promise<POI[]> {
   }
 }
 
+async function loadConnections(): Promise<MapConnection[]> {
+  try {
+    const res = await fetch('/data/map-connections.json')
+    if (!res.ok) return []
+    const data = await res.json()
+    if (!Array.isArray(data)) return []
+    return data as MapConnection[]
+  } catch {
+    console.warn('Could not load map connections from /data/map-connections.json')
+    return []
+  }
+}
+
 // ── Persistence ─────────────────────────────────────────────────────────────
 
 function parseAppData(parsed: Partial<AppData>): AppData {
@@ -80,6 +97,9 @@ function parseAppData(parsed: Partial<AppData>): AppData {
     poiPins: Array.isArray(parsed.poiPins) ? parsed.poiPins : [],
     stashedItems: Array.isArray(parsed.stashedItems) ? parsed.stashedItems : [],
     recentMapIds: Array.isArray(parsed.recentMapIds) ? parsed.recentMapIds : [],
+    travelMode: parsed.travelMode ?? false,
+    travelLeftMapId: parsed.travelLeftMapId ?? null,
+    travelRightMapId: parsed.travelRightMapId ?? null,
   }
 }
 
@@ -164,10 +184,11 @@ export function useGameData() {
   if (typeof window !== 'undefined' && !staticDataLoaded) {
     staticDataLoaded = true
 
-    Promise.all([loadItems(), loadMaps(), loadPOIs()]).then(([items, maps, pois]) => {
+    Promise.all([loadItems(), loadMaps(), loadPOIs(), loadConnections()]).then(([items, maps, pois, connections]) => {
       if (items.length > 0) staticItems.value = items
       if (maps.length > 0) staticMaps.value = maps
       if (pois.length > 0) staticPOIs.value = pois
+      if (connections.length > 0) staticConnections.value = connections
 
       // Auto-select first map if none selected
       if (!appData.value.currentMapId && maps.length > 0) {
@@ -305,6 +326,63 @@ export function useGameData() {
     save()
   }
 
+  // ── Travel mode ────────────────────────────────────────────────────────
+
+  const travelMode = computed(() => appData.value.travelMode)
+  const travelLeftMapId = computed(() => appData.value.travelLeftMapId)
+  const travelRightMapId = computed(() => appData.value.travelRightMapId)
+  const mapConnections = computed(() => staticConnections.value)
+
+  const travelLeftMap = computed(() =>
+    staticMaps.value.find((m) => m.id === appData.value.travelLeftMapId) ?? null,
+  )
+
+  const travelRightMap = computed(() =>
+    staticMaps.value.find((m) => m.id === appData.value.travelRightMapId) ?? null,
+  )
+
+  /** Get the map variant for a given map based on current run difficulty */
+  function getMapVariant(map: GameMap): MapVariant {
+    const run = currentRun.value
+    if (!run) return map.default
+    const key = getVariantKey(run.difficulty)
+    return map[key]
+  }
+
+  /** Get all maps connected to a given map */
+  function getConnectedMaps(mapId: string): { map: GameMap; label?: string }[] {
+    const results: { map: GameMap; label?: string }[] = []
+    for (const conn of staticConnections.value) {
+      let neighborId: string | null = null
+      if (conn.maps[0] === mapId) neighborId = conn.maps[1]
+      else if (conn.maps[1] === mapId) neighborId = conn.maps[0]
+      if (neighborId) {
+        const neighborMap = staticMaps.value.find((m) => m.id === neighborId)
+        if (neighborMap) results.push({ map: neighborMap, label: conn.label })
+      }
+    }
+    return results
+  }
+
+  function toggleTravelMode() {
+    appData.value.travelMode = !appData.value.travelMode
+    // When entering travel mode, pre-fill left map with current map
+    if (appData.value.travelMode && !appData.value.travelLeftMapId && appData.value.currentMapId) {
+      appData.value.travelLeftMapId = appData.value.currentMapId
+    }
+    save()
+  }
+
+  function setTravelLeftMap(mapId: string) {
+    appData.value.travelLeftMapId = mapId
+    save()
+  }
+
+  function setTravelRightMap(mapId: string) {
+    appData.value.travelRightMapId = mapId
+    save()
+  }
+
   // ── Items ───────────────────────────────────────────────────────────────
 
   function getItemById(itemId: string) {
@@ -425,6 +503,7 @@ export function useGameData() {
     setCurrentMap,
     clearRecentMaps,
     getMapThumbnail,
+    getMapVariant,
     // Markers (scoped to current map + run)
     currentMapMarkers,
     addMarker,
@@ -448,5 +527,16 @@ export function useGameData() {
     removeStashedItem,
     getStashedItems,
     getStashedItemCount,
+    // Travel mode
+    travelMode,
+    travelLeftMapId,
+    travelRightMapId,
+    travelLeftMap,
+    travelRightMap,
+    mapConnections,
+    getConnectedMaps,
+    toggleTravelMode,
+    setTravelLeftMap,
+    setTravelRightMap,
   }
 }

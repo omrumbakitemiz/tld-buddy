@@ -74,6 +74,13 @@ export interface StashedItem {
   note?: string
 }
 
+// ── Map Connections ──────────────────────────────────────────────────────────
+
+export interface MapConnection {
+  maps: [string, string]
+  label?: string
+}
+
 // ── App persistence ─────────────────────────────────────────────────────────
 
 export interface AppData {
@@ -85,6 +92,9 @@ export interface AppData {
   poiPins: POIPin[]           // per-run pin positions
   stashedItems: StashedItem[] // per-run item stashes at POIs
   recentMapIds: string[]      // ordered list of recently visited map ids (most recent first)
+  travelMode: boolean         // whether travel mode is active
+  travelLeftMapId: string | null   // left map in travel mode
+  travelRightMapId: string | null  // right map in travel mode
 }
 
 /**

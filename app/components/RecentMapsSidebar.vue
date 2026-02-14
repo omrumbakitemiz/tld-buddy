@@ -28,7 +28,7 @@
 
     <!-- Map list -->
     <ScrollArea class="recent-sidebar__list">
-      <div class="flex flex-col gap-1.5 p-1.5">
+      <div class="flex flex-col gap-1.5 px-1 py-1.5">
         <TooltipProvider :delay-duration="300">
           <Tooltip v-for="mapItem in recentMaps" :key="mapItem.id">
             <TooltipTrigger as-child>
@@ -44,7 +44,7 @@
                   <img
                     :src="getMapThumbnail(mapItem)"
                     :alt="mapItem.name"
-                    class="w-full h-full object-cover"
+                    class="recent-sidebar__thumb-img"
                     loading="lazy"
                   />
                 </div>
@@ -153,7 +153,7 @@ function handleSelectMap(mapId: string) {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 4px;
+  padding: 3px;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -166,10 +166,11 @@ function handleSelectMap(mapId: string) {
 
 .recent-sidebar__item--active {
   background: oklch(0.70 0.14 75 / 0.15);
-  outline: 1.5px solid oklch(0.70 0.14 75 / 0.4);
+  box-shadow: inset 0 0 0 1.5px oklch(0.70 0.14 75 / 0.4);
 }
 
 .recent-sidebar__thumb {
+  position: relative;
   width: 36px;
   height: 36px;
   min-width: 36px;
@@ -177,6 +178,14 @@ function handleSelectMap(mapId: string) {
   overflow: hidden;
   background: oklch(0.22 0.015 60);
   border: 1px solid oklch(0.30 0.02 60 / 0.5);
+}
+
+.recent-sidebar__thumb-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .recent-sidebar__info {
