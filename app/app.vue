@@ -212,22 +212,24 @@ function onRequestAddMarker(position: { x: number; y: number }) {
   showMarkerDialog.value = true
 }
 
-function onSaveMarker(data: { itemId: string; quantity: number; note: string; name: string }) {
+function onSaveMarker(data: { items: Array<{ itemId: string; name: string }>; quantity: number; note: string }) {
   if (!pendingMarkerPosition.value || !currentMap.value || !currentRun.value) return
 
-  const item = getItemById(data.itemId)
-  const markerName = data.name || item?.name || 'Marker'
+  for (const entry of data.items) {
+    const item = getItemById(entry.itemId)
+    const markerName = entry.name || item?.name || 'Marker'
 
-  addMarker({
-    runId: currentRun.value.id,
-    mapId: currentMap.value.id,
-    itemId: data.itemId,
-    name: markerName,
-    x: pendingMarkerPosition.value.x,
-    y: pendingMarkerPosition.value.y,
-    quantity: data.quantity,
-    note: data.note,
-  })
+    addMarker({
+      runId: currentRun.value.id,
+      mapId: currentMap.value.id,
+      itemId: entry.itemId,
+      name: markerName,
+      x: pendingMarkerPosition.value.x,
+      y: pendingMarkerPosition.value.y,
+      quantity: data.quantity,
+      note: data.note,
+    })
+  }
 
   showMarkerDialog.value = false
   pendingMarkerPosition.value = null

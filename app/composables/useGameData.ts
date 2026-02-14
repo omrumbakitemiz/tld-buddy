@@ -312,8 +312,9 @@ export function useGameData() {
 
   // ── Markers ─────────────────────────────────────────────────────────────
 
+  let markerIdCounter = 0
   function addMarker(marker: Omit<Marker, 'id'>) {
-    const newMarker: Marker = { ...marker, id: `marker-${Date.now()}` }
+    const newMarker: Marker = { ...marker, id: `marker-${Date.now()}-${markerIdCounter++}` }
     appData.value.markers.push(newMarker)
     save()
     return newMarker
