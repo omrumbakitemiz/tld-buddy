@@ -4,6 +4,7 @@
 
   <div v-else class="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
     <Analytics />
+    <SpeedInsights />
     <NuxtRouteAnnouncer />
 
     <!-- Top Bar -->
@@ -210,6 +211,7 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted, watch } from 'vue'
 import { Analytics } from '@vercel/analytics/nuxt'
+import { SpeedInsights } from '@vercel/speed-insights/vue'
 import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon, CompassIcon, LogOutIcon } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
