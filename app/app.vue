@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
+  <!-- Login Gate -->
+  <LoginScreen v-if="!authenticated" @authenticated="onAuthenticated" />
+
+  <div v-else class="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
     <Analytics />
     <NuxtRouteAnnouncer />
 
@@ -125,6 +128,20 @@
               </TooltipContent>
             </Tooltip>
           </template>
+
+          <!-- Separator before logout -->
+          <div class="w-px h-4 bg-border mx-0.5" />
+
+          <Tooltip>
+            <TooltipTrigger as-child>
+              <Button variant="ghost" size="icon" class="h-7 w-7 text-muted-foreground hover:text-destructive" @click="logout">
+                <LogOutIcon class="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Logout</p>
+            </TooltipContent>
+          </Tooltip>
         </TooltipProvider>
       </div>
     </header>
@@ -191,9 +208,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, nextTick, onMounted, watch } from 'vue'
 import { Analytics } from '@vercel/analytics/nuxt'
-import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon, CompassIcon } from 'lucide-vue-next'
+import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon, CompassIcon, LogOutIcon } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
@@ -208,10 +225,45 @@ import MarkerDialog from '~/components/MarkerDialog.vue'
 import MarkerEditDialog from '~/components/MarkerEditDialog.vue'
 import RunSelector from '~/components/RunSelector.vue'
 import RecentMapsSidebar from '~/components/RecentMapsSidebar.vue'
+import LoginScreen from '~/components/LoginScreen.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 
-const { currentMap, currentRun, addMarker, updateMarker, deleteMarker, getItemById, travelMode, toggleTravelMode } = useGameData()
+const authenticated = ref(false)
+
+// Check auth on mount
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/auth/check')
+    const data = await res.json()
+    authenticated.value = data.authenticated === true
+  } catch {
+    authenticated.value = false
+  }
+})
+
+function onAuthenticated() {
+  authenticated.value = true
+}
+
+async function logout() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' })
+  } catch {
+    // ignore
+  }
+  authenticated.value = false
+}
+
+const { currentMap, currentRun, addMarker, updateMarker, deleteMarker, getItemById, travelMode, toggleTravelMode, authExpired } = useGameData()
+
+// If API returns 401, drop back to login
+watch(authExpired, (expired) => {
+  if (expired) {
+    authenticated.value = false
+    authExpired.value = false
+  }
+})
 
 const mapRef = ref<InstanceType<typeof InteractiveMap> | null>(null)
 const showMapSelector = ref(false)
@@ -224,9 +276,9 @@ const showPOIConfig = ref(false)
 const pendingMarkerPosition = ref<{ x: number; y: number } | null>(null)
 const editingMarker = ref<Marker | null>(null)
 
-// Check once on mount — if no run exists, show selector
-onMounted(() => {
-  if (!currentRun.value) {
+// When authenticated, prompt run selection if none exists
+watch(authenticated, (isAuth) => {
+  if (isAuth && !currentRun.value) {
     showRunSelector.value = true
   }
 })

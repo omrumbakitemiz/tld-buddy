@@ -26,6 +26,7 @@ const staticMaps = ref<GameMap[]>([])
 const staticItems = ref<Item[]>([])
 const staticPOIs = ref<POI[]>([])
 const staticConnections = ref<MapConnection[]>([])
+const authExpired = ref(false)
 let loaded = false
 let staticDataLoaded = false
 let saveTimer: ReturnType<typeof setTimeout> | null = null
@@ -126,6 +127,10 @@ function load() {
 async function loadFromAPI() {
   try {
     const res = await fetch('/api/data')
+    if (res.status === 401) {
+      authExpired.value = true
+      return
+    }
     if (!res.ok) return
     const data = await res.json()
     if (data && typeof data === 'object') {
@@ -155,6 +160,10 @@ function saveToAPI() {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(appData.value),
+  }).then((res) => {
+    if (res.status === 401) {
+      authExpired.value = true
+    }
   }).catch(() => {
     console.warn('Failed to save to API')
   })
@@ -548,5 +557,7 @@ export function useGameData() {
     toggleTravelMode,
     setTravelLeftMap,
     setTravelRightMap,
+    // Auth
+    authExpired,
   }
 }
