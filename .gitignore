@@ -20,11 +20,10 @@ logs
 
 # Local env files
 .env
-.env.*
+.env.local
+.env.*.local
 !.env.example
 
-# Static assets are committed for Vercel CDN deployment
+# Static assets are committed for CDN serving
 # Regenerate with scripts/import-*.ts if needed
 .vercel
-.env*.local
-.env*
