@@ -7,8 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "release": "docker buildx build --platform linux/arm64 -t ghcr.io/omrumbakitemiz/tld-buddy:latest --push ."
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",

@@ -32,36 +32,39 @@ To stop and wipe data: `docker compose down -v`
 
 ## Deploy with Portainer (Raspberry Pi homelab)
 
-Raspberry Pis are ARM64 and don't have the RAM to comfortably build a Nuxt app,
-and Portainer can't reliably build through agent nodes. So the image is built
-**once on your dev machine** (Apple Silicon = same ARM64 arch) and pushed to a
-registry. Portainer only pulls it.
+The stack builds directly from this repo on the target Pi — no registry, no CI.
 
-### One-time setup
+### One-time: let the agent Pi build over the tunnel
 
-1. Create a GitHub Personal Access Token with `write:packages`.
-2. Log in to GHCR on your dev machine:
+When the target node is a **Portainer agent** (a different Pi than the one running
+Portainer), builds are proxied through the agent tunnel, which breaks BuildKit's
+HTTP/2 stream:
 
-```bash
-echo <YOUR_PAT> | docker login ghcr.io -u omrumbakitemiz --password-stdin
+```
+error reading server preface: http2: frame too large
 ```
 
-### Build & push the image (run whenever you change code)
+This is a transport limitation, not a hardware or Dockerfile issue. Make that
+Pi's Docker use the classic build protocol (tunnels fine). On the **agent Pi**,
+set the env var on its portainer-agent container, e.g. in the agent's compose:
 
-```bash
-pnpm release
+```yaml
+services:
+  agent:
+    image: portainer/agent:lts
+    environment:
+      DOCKER_BUILDKIT: "0"
 ```
 
-This builds `linux/arm64` and pushes `ghcr.io/omrumbakitemiz/tld-buddy:latest`.
-Make the GHCR package **public** once (GitHub → Packages → tld-buddy → Package
-settings → Change visibility) so Portainer can pull without credentials.
+Recreate the agent container. (If you ever deploy onto the Pi that runs Portainer
+itself — the "local" environment — this isn't needed; local builds work as-is.)
 
-### Deploy the stack in Portainer
+### Deploy the stack
 
 1. **Stacks → Add stack → Git repository**
 2. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
 3. Reference: `refs/heads/main`, Compose path: `docker-compose.yml`
-4. Pick the **Pi node/environment** you want it on
+4. Pick the target **Pi environment**
 5. Set **stack environment variables**:
 
 | Variable | Required | Example | Notes |
@@ -69,11 +72,15 @@ settings → Change visibility) so Portainer can pull without credentials.
 | `APP_PASSWORD` | yes | `my-secret` | Login password |
 | `PORT` | no | `3000` | Host port (default 3000) |
 | `COOKIE_SECURE` | no | `false` | Set `false` for plain HTTP access |
-| `TLD_BUDDY_IMAGE` | no | `ghcr.io/omrumbakitemiz/tld-buddy:latest` | Override image/tag |
 
-6. **Deploy** — Portainer pulls the image + starts app + Redis. No build step.
+6. **Deploy** — Portainer clones the repo, builds on the Pi, and starts app + Redis.
 
-To update: `pnpm release` on your Mac, then **Pull and redeploy** the stack in Portainer.
+To update after pushing to `main`: open the stack → **Pull and redeploy**.
+
+> **Note:** `DOCKER_BUILDKIT=0` is deprecated in Docker CE v28+. If your Pi runs a
+> newer Docker that ignores it and the build still fails, build the image once on
+> your Mac (`docker buildx build --platform linux/arm64 --push -t <registry>/tld-buddy .`)
+> and change `build: .` to `image: <registry>/tld-buddy` so Portainer just pulls.
 
 **HTTPS:** Behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy)
 leave `COOKIE_SECURE` at the default `true`. Set `COOKIE_SECURE=false` only when

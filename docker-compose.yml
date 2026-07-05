@@ -1,9 +1,6 @@
 services:
   app:
-    # Pre-built ARM64 image pushed from your dev machine (see `pnpm release`).
-    # Portainer only pulls — it never builds.
-    image: ${TLD_BUDDY_IMAGE:-ghcr.io/omrumbakitemiz/tld-buddy:latest}
-    pull_policy: always
+    build: .
     ports:
       - "${PORT:-3000}:3000"
     environment:
