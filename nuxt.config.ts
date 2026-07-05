@@ -1,4 +1,8 @@
 import tailwindcss from '@tailwindcss/vite'
+import { loadEnv } from 'vite'
+
+// Load .env / .env.local before reading secrets into runtimeConfig
+const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '')
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -28,6 +32,13 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'vercel',
+  },
+
+  // Server-only secrets — mapped from Vercel/Upstash env var names
+  runtimeConfig: {
+    appPassword: env.APP_PASSWORD || process.env.APP_PASSWORD || '',
+    kvRestApiUrl: env.KV_REST_API_URL || process.env.KV_REST_API_URL || '',
+    kvRestApiToken: env.KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || '',
   },
 
   vite: {

@@ -3,7 +3,8 @@ import { createSessionToken } from '../../utils/auth'
 export default defineEventHandler(async (event) => {
   const { password } = await readBody<{ password: string }>(event)
 
-  const appPassword = process.env.APP_PASSWORD
+  const config = useRuntimeConfig()
+  const appPassword = config.appPassword
   if (!appPassword) {
     throw createError({ statusCode: 500, statusMessage: 'APP_PASSWORD not configured' })
   }

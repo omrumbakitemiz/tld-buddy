@@ -1,9 +1,4 @@
-import { Redis } from '@upstash/redis'
-
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
-})
+import { getRedis } from '../utils/redis'
 
 const DEFAULT_DATA = {
   runs: [],
@@ -17,7 +12,7 @@ const DEFAULT_DATA = {
 
 export default defineEventHandler(async () => {
   try {
-    const data = await redis.get('app-data')
+    const data = await getRedis().get('app-data')
     return data ?? DEFAULT_DATA
   } catch (err) {
     console.error('Failed to read from Upstash:', err)
