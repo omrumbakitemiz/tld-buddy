@@ -27,3 +27,4 @@ logs
 # Regenerate with scripts/import-*.ts if needed
 .vercel
 .env*.local
+.env*

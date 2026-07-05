@@ -8,14 +8,20 @@ const DEFAULT_DATA = {
   enabledPOIs: [],
   poiPins: [],
   stashedItems: [],
+  recentMapIds: [],
+  travelMode: false,
+  travelLeftMapId: null,
+  travelRightMapId: null,
 }
 
 export default defineEventHandler(async () => {
   try {
-    const data = await getRedis().get('app-data')
-    return data ?? DEFAULT_DATA
+    const redis = await getRedis()
+    const raw = await redis.get('app-data')
+    if (!raw) return DEFAULT_DATA
+    return JSON.parse(raw)
   } catch (err) {
-    console.error('Failed to read from Upstash:', err)
+    console.error('Failed to read from Redis:', err)
     return DEFAULT_DATA
   }
 })

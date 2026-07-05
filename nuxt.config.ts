@@ -19,11 +19,7 @@ export default defineNuxtConfig({
     '/**': { ssr: false },
   },
 
-  modules: [
-    'shadcn-nuxt',
-    '@vercel/analytics/nuxt',
-    '@vercel/speed-insights/nuxt',
-  ],
+  modules: ['shadcn-nuxt'],
 
   shadcn: {
     prefix: '',
@@ -31,14 +27,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'vercel',
+    preset: 'node-server',
   },
 
-  // Server-only secrets — mapped from Vercel/Upstash env var names
   runtimeConfig: {
     appPassword: env.APP_PASSWORD || process.env.APP_PASSWORD || '',
-    kvRestApiUrl: env.KV_REST_API_URL || process.env.KV_REST_API_URL || '',
-    kvRestApiToken: env.KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || '',
+    redisUrl: env.REDIS_URL || process.env.REDIS_URL || 'redis://localhost:6379',
   },
 
   vite: {

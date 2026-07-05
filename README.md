@@ -7,41 +7,50 @@ An interactive map companion app for **The Long Dark**. Browse regions, track lo
 - **Nuxt 4** / Vue 3 / TypeScript
 - **Leaflet.js** for interactive map rendering
 - **shadcn-vue** + Tailwind CSS 4 for UI
-- **Upstash Redis** (via Vercel Marketplace) for persistent data storage
-- Static game data (items, maps, POIs) served from Vercel CDN
+- **Redis** for persistent user data storage
+- Static game data (items, maps, POIs) bundled in the app
 
-## Setup
+## Quick Start (Docker)
 
 ```bash
-npm install
+# 1. Set your login password
+cp .env.example .env
+# edit .env and set APP_PASSWORD
+
+# 2. Build and run
+docker compose up -d --build
+
+# 3. Open http://localhost:3000
 ```
 
-## Development
+This starts two containers:
+- **app** — the Nuxt server (port 3000)
+- **redis** — Redis 7 with a persistent volume for your save data
+
+To stop: `docker compose down`
+To stop and wipe data: `docker compose down -v`
+
+## Local Development
+
+Requires a running Redis instance (or use Docker Compose for just Redis):
 
 ```bash
-npm run dev
-```
+# Start Redis only
+docker compose up redis -d
 
-For API routes to work locally, pull Vercel env vars:
-
-```bash
-vercel env pull .env.local
-```
-
-## Build & Deploy
-
-The app deploys to Vercel with the `vercel` Nitro preset. Push to the connected Git repo and Vercel handles the rest.
-
-```bash
-npm run build
+# Install deps and run dev server
+pnpm install
+cp .env.example .env.local
+# set APP_PASSWORD and REDIS_URL=redis://localhost:6379
+pnpm dev
 ```
 
 ## Data Import Scripts
 
-Game data is imported from The Long Dark wiki and Steam community guides. These only need to be re-run if game content changes significantly:
+Game data is imported from The Long Dark wiki and Steam community guides. Re-run only when game content changes:
 
 ```bash
-npx tsx scripts/import-wiki-items.ts   # Items + icons
-npx tsx scripts/import-wiki-pois.ts    # Points of Interest
-npx tsx scripts/import-steam-maps.ts   # Region map images
+pnpm exec tsx scripts/import-wiki-items.ts   # Items + icons
+pnpm exec tsx scripts/import-wiki-pois.ts    # Points of Interest
+pnpm exec tsx scripts/import-steam-maps.ts   # Region map images
 ```
