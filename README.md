@@ -18,7 +18,7 @@ cp .env.example .env
 # edit .env and set APP_PASSWORD
 
 # 2. Build and run
-docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+docker compose up -d --build
 
 # 3. Open http://localhost:3000
 ```
@@ -30,31 +30,13 @@ This starts two containers:
 To stop: `docker compose down`
 To stop and wipe data: `docker compose down -v`
 
-## Deploy with Portainer (GitHub)
+## Deploy with Portainer (Git repository)
 
-Portainer **cannot run `build:` in compose files** (BuildKit errors through the agent). Build the image on the Docker host first, then deploy the stack from Git.
-
-### 1. Build the image on the Docker host (SSH)
-
-```bash
-git clone https://github.com/omrumbakitemiz/tld-buddy.git
-cd tld-buddy
-./scripts/docker-build.sh
-```
-
-Or without cloning again on updates:
-
-```bash
-cd tld-buddy && git pull && ./scripts/docker-build.sh
-```
-
-This tags the image as `tld-buddy:local`.
-
-### 2. Deploy the stack in Portainer
+The stack builds directly from this repo — no SSH, no external registry.
 
 1. **Stacks → Add stack → Git repository**
 2. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
-3. Compose path: `docker-compose.yml`, branch: `main`
+3. Reference: `refs/heads/main`, Compose path: `docker-compose.yml`
 4. Add a GitHub PAT if the repo is private
 5. Set **stack environment variables**:
 
@@ -64,9 +46,23 @@ This tags the image as `tld-buddy:local`.
 | `PORT` | no | `3000` | Host port (default 3000) |
 | `COOKIE_SECURE` | no | `false` | Set `false` for plain HTTP access |
 
-6. Deploy — Portainer starts containers using the **already-built** `tld-buddy:local` image (no build step).
+6. **Deploy the stack** — Portainer clones the repo, builds the app image, and starts app + Redis.
 
-To update: rebuild on the host (`git pull && ./scripts/docker-build.sh`), then **Pull and redeploy** the stack in Portainer.
+To update after pushing to `main`: open the stack → **Pull and redeploy**.
+
+### If the build fails with `http2: frame too large`
+
+This is a Portainer/BuildKit bug (BuildKit talks HTTP/2 to the daemon; some setups can't). Disable BuildKit on the **Portainer container itself** so it uses the legacy builder over HTTP/1.1:
+
+```yaml
+services:
+  portainer:
+    image: portainer/portainer-ce:lts
+    environment:
+      DOCKER_BUILDKIT: 0
+```
+
+Recreate the Portainer container, then redeploy the stack. This Dockerfile uses no BuildKit-only features, so the legacy builder handles it fine. (If you run a Portainer **agent**, set `DOCKER_BUILDKIT: 0` on the agent container instead.)
 
 **HTTPS:** If you put the app behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy), leave `COOKIE_SECURE` at the default `true`. Only set `COOKIE_SECURE=false` when accessing directly over `http://`.
 

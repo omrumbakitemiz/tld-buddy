@@ -1,8 +1,6 @@
 services:
   app:
-    # Built on the host — see docker-compose.build.yml and README (Portainer section)
-    image: ${TLD_BUDDY_IMAGE:-tld-buddy:local}
-    pull_policy: never
+    build: .
     ports:
       - "${PORT:-3000}:3000"
     environment:
