@@ -263,10 +263,12 @@ export function useGameData() {
     currentMapAllPOIs.value.filter((p) => appData.value.enabledPOIs.includes(p.id)),
   )
 
-  /** Pinned POIs for the current map + current run */
+  /**
+   * Pinned POIs for the current map. Pin positions are global (a POI's
+   * physical location is the same across all runs); only stashed items
+   * are scoped per run.
+   */
   const currentMapPOIPins = computed(() => {
-    const runId = appData.value.currentRunId
-    if (!runId) return []
     const enabledIds = new Set(appData.value.enabledPOIs)
     return appData.value.poiPins.filter((pin) => {
       if (!enabledIds.has(pin.poiId)) return false

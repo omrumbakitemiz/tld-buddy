@@ -57,7 +57,7 @@ export interface POI {
   wikiUrl?: string
 }
 
-/** User-placed coordinates for a POI on the map (persisted per run) */
+/** User-placed coordinates for a POI on the map (global, shared across all runs) */
 export interface POIPin {
   poiId: string
   x: number
@@ -89,7 +89,7 @@ export interface AppData {
   currentMapId: string | null
   markers: Marker[]
   enabledPOIs: string[]       // global list of enabled POI ids
-  poiPins: POIPin[]           // per-run pin positions
+  poiPins: POIPin[]           // global pin positions (shared across runs)
   stashedItems: StashedItem[] // per-run item stashes at POIs
   recentMapIds: string[]      // ordered list of recently visited map ids (most recent first)
   travelMode: boolean         // whether travel mode is active
