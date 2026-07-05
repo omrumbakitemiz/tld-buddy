@@ -1,12 +1,13 @@
 /** Resolve server secrets at runtime (Docker injects env after build). */
 export function getAppPassword(): string {
   const config = useRuntimeConfig()
-  return (
+  const raw =
     config.appPassword
     || process.env.NUXT_APP_PASSWORD
     || process.env.APP_PASSWORD
     || ''
-  )
+  // Nitro applyEnv uses destr(), so numeric-looking passwords become numbers
+  return String(raw)
 }
 
 export function getRedisUrl(): string {

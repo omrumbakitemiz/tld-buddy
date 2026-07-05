@@ -10,7 +10,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 500, statusMessage: 'APP_PASSWORD not configured' })
   }
 
-  if (!password || password !== appPassword) {
+  const submitted = String(password ?? '')
+  if (!submitted || submitted !== appPassword) {
     throw createError({ statusCode: 401, statusMessage: 'Invalid password' })
   }
 
