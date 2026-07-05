@@ -1,6 +1,6 @@
 import { createSessionToken } from '../../utils/auth'
 
-import { getAppPassword } from '../../utils/config'
+import { getAppPassword, getCookieSecure } from '../../utils/config'
 
 export default defineEventHandler(async (event) => {
   const { password } = await readBody<{ password: string }>(event)
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
   setCookie(event, 'tld-buddy-session', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: getCookieSecure(),
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 30, // 30 days

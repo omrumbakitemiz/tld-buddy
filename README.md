@@ -30,6 +30,26 @@ This starts two containers:
 To stop: `docker compose down`
 To stop and wipe data: `docker compose down -v`
 
+## Deploy with Portainer (GitHub)
+
+1. **Stacks → Add stack → Git repository**
+2. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
+3. Compose path: `docker-compose.yml`, branch: `main`
+4. Add a GitHub PAT if the repo is private (Portainer → Settings)
+5. Set **stack environment variables**:
+
+| Variable | Required | Example | Notes |
+|----------|----------|---------|-------|
+| `APP_PASSWORD` | yes | `my-secret` | Login password |
+| `PORT` | no | `3000` | Host port (default 3000) |
+| `COOKIE_SECURE` | no | `false` | Set `false` for plain HTTP access |
+
+6. Deploy the stack — Portainer clones the repo and builds the image on first deploy.
+
+To update after a push to `main`: open the stack → **Pull and redeploy**.
+
+**HTTPS:** If you put the app behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy), leave `COOKIE_SECURE` at the default `true`. Only set `COOKIE_SECURE=false` when accessing directly over `http://`.
+
 ## Local Development
 
 Requires a running Redis instance (or use Docker Compose for just Redis):

@@ -10,6 +10,15 @@ export function getAppPassword(): string {
   return String(raw)
 }
 
+/** Session cookie Secure flag. Set COOKIE_SECURE=false for HTTP-only homelab access. */
+export function getCookieSecure(): boolean {
+  const raw = process.env.COOKIE_SECURE ?? process.env.NUXT_COOKIE_SECURE
+  if (raw !== undefined && raw !== '') {
+    return raw === 'true' || raw === '1'
+  }
+  return process.env.NODE_ENV === 'production'
+}
+
 export function getRedisUrl(): string {
   const config = useRuntimeConfig()
   return (
