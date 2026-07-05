@@ -1,6 +1,7 @@
 services:
   app:
-    build: .
+    image: ${TLD_BUDDY_IMAGE:-ghcr.io/omrumbakitemiz/tld-buddy:latest}
+    pull_policy: always
     ports:
       - "${PORT:-3000}:3000"
     environment:

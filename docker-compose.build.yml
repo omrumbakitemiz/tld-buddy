@@ -1,0 +1,6 @@
+# Local overlay: build the app image instead of pulling from GHCR.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+services:
+  app:
+    build: .
+    image: tld-buddy:local
