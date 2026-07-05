@@ -30,14 +30,38 @@ This starts two containers:
 To stop: `docker compose down`
 To stop and wipe data: `docker compose down -v`
 
-## Deploy with Portainer (Git repository)
+## Deploy with Portainer (Raspberry Pi homelab)
 
-The stack builds directly from this repo — no SSH, no external registry.
+Raspberry Pis are ARM64 and don't have the RAM to comfortably build a Nuxt app,
+and Portainer can't reliably build through agent nodes. So the image is built
+**once on your dev machine** (Apple Silicon = same ARM64 arch) and pushed to a
+registry. Portainer only pulls it.
+
+### One-time setup
+
+1. Create a GitHub Personal Access Token with `write:packages`.
+2. Log in to GHCR on your dev machine:
+
+```bash
+echo <YOUR_PAT> | docker login ghcr.io -u omrumbakitemiz --password-stdin
+```
+
+### Build & push the image (run whenever you change code)
+
+```bash
+pnpm release
+```
+
+This builds `linux/arm64` and pushes `ghcr.io/omrumbakitemiz/tld-buddy:latest`.
+Make the GHCR package **public** once (GitHub → Packages → tld-buddy → Package
+settings → Change visibility) so Portainer can pull without credentials.
+
+### Deploy the stack in Portainer
 
 1. **Stacks → Add stack → Git repository**
 2. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
 3. Reference: `refs/heads/main`, Compose path: `docker-compose.yml`
-4. Add a GitHub PAT if the repo is private
+4. Pick the **Pi node/environment** you want it on
 5. Set **stack environment variables**:
 
 | Variable | Required | Example | Notes |
@@ -45,26 +69,15 @@ The stack builds directly from this repo — no SSH, no external registry.
 | `APP_PASSWORD` | yes | `my-secret` | Login password |
 | `PORT` | no | `3000` | Host port (default 3000) |
 | `COOKIE_SECURE` | no | `false` | Set `false` for plain HTTP access |
+| `TLD_BUDDY_IMAGE` | no | `ghcr.io/omrumbakitemiz/tld-buddy:latest` | Override image/tag |
 
-6. **Deploy the stack** — Portainer clones the repo, builds the app image, and starts app + Redis.
+6. **Deploy** — Portainer pulls the image + starts app + Redis. No build step.
 
-To update after pushing to `main`: open the stack → **Pull and redeploy**.
+To update: `pnpm release` on your Mac, then **Pull and redeploy** the stack in Portainer.
 
-### If the build fails with `http2: frame too large`
-
-This is a Portainer/BuildKit bug (BuildKit talks HTTP/2 to the daemon; some setups can't). Disable BuildKit on the **Portainer container itself** so it uses the legacy builder over HTTP/1.1:
-
-```yaml
-services:
-  portainer:
-    image: portainer/portainer-ce:lts
-    environment:
-      DOCKER_BUILDKIT: 0
-```
-
-Recreate the Portainer container, then redeploy the stack. This Dockerfile uses no BuildKit-only features, so the legacy builder handles it fine. (If you run a Portainer **agent**, set `DOCKER_BUILDKIT: 0` on the agent container instead.)
-
-**HTTPS:** If you put the app behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy), leave `COOKIE_SECURE` at the default `true`. Only set `COOKIE_SECURE=false` when accessing directly over `http://`.
+**HTTPS:** Behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy)
+leave `COOKIE_SECURE` at the default `true`. Set `COOKIE_SECURE=false` only when
+accessing directly over `http://`.
 
 ## Local Development
 
