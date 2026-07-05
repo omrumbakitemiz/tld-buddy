@@ -200,7 +200,7 @@ export function useGameData() {
       if (connections.length > 0) staticConnections.value = connections
 
       // Auto-select first map if none selected
-      if (!appData.value.currentMapId && maps.length > 0) {
+      if (!appData.value.currentMapId && maps[0]) {
         appData.value.currentMapId = maps[0].id
       }
     })

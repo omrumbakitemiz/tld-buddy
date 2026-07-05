@@ -15,7 +15,11 @@ export default defineNuxtConfig({
     '/**': { ssr: false },
   },
 
-  modules: ['shadcn-nuxt'],
+  modules: [
+    'shadcn-nuxt',
+    '@vercel/analytics/nuxt',
+    '@vercel/speed-insights/nuxt',
+  ],
 
   shadcn: {
     prefix: '',
