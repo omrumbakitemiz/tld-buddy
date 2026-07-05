@@ -1,7 +1,8 @@
 services:
   app:
-    image: ${TLD_BUDDY_IMAGE:-ghcr.io/omrumbakitemiz/tld-buddy:latest}
-    pull_policy: always
+    # Built on the host — see docker-compose.build.yml and README (Portainer section)
+    image: ${TLD_BUDDY_IMAGE:-tld-buddy:local}
+    pull_policy: never
     ports:
       - "${PORT:-3000}:3000"
     environment:

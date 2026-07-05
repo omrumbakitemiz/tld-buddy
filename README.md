@@ -17,11 +17,8 @@ An interactive map companion app for **The Long Dark**. Browse regions, track lo
 cp .env.example .env
 # edit .env and set APP_PASSWORD
 
-# 2. Build and run (builds locally)
+# 2. Build and run
 docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
-
-# Or pull the pre-built image from GitHub (after CI has run on main):
-# docker compose up -d
 
 # 3. Open http://localhost:3000
 ```
@@ -35,28 +32,41 @@ To stop and wipe data: `docker compose down -v`
 
 ## Deploy with Portainer (GitHub)
 
-Portainer **cannot build images** from compose files reliably (BuildKit / agent proxy errors). This repo publishes a pre-built image via GitHub Actions instead.
+Portainer **cannot run `build:` in compose files** (BuildKit errors through the agent). Build the image on the Docker host first, then deploy the stack from Git.
 
-1. Wait for the **Publish Docker image** workflow to finish on `main` (Actions tab on GitHub).
-2. **Stacks → Add stack → Git repository**
-3. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
-4. Compose path: `docker-compose.yml`, branch: `main`
-5. Add a GitHub PAT if the repo is private (Portainer → Settings)
-6. If the GHCR package is private, add registry **ghcr.io** in Portainer (username + GitHub PAT with `read:packages`).
-7. Set **stack environment variables**:
+### 1. Build the image on the Docker host (SSH)
+
+```bash
+git clone https://github.com/omrumbakitemiz/tld-buddy.git
+cd tld-buddy
+./scripts/docker-build.sh
+```
+
+Or without cloning again on updates:
+
+```bash
+cd tld-buddy && git pull && ./scripts/docker-build.sh
+```
+
+This tags the image as `tld-buddy:local`.
+
+### 2. Deploy the stack in Portainer
+
+1. **Stacks → Add stack → Git repository**
+2. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
+3. Compose path: `docker-compose.yml`, branch: `main`
+4. Add a GitHub PAT if the repo is private
+5. Set **stack environment variables**:
 
 | Variable | Required | Example | Notes |
 |----------|----------|---------|-------|
 | `APP_PASSWORD` | yes | `my-secret` | Login password |
 | `PORT` | no | `3000` | Host port (default 3000) |
 | `COOKIE_SECURE` | no | `false` | Set `false` for plain HTTP access |
-| `TLD_BUDDY_IMAGE` | no | `ghcr.io/omrumbakitemiz/tld-buddy:latest` | Override image tag |
 
-8. Deploy the stack — Portainer **pulls** the image (no build step).
+6. Deploy — Portainer starts containers using the **already-built** `tld-buddy:local` image (no build step).
 
-To update after a push to `main`: wait for the GitHub Action, then **Pull and redeploy** the stack.
-
-**Make GHCR public (optional):** GitHub → Packages → `tld-buddy` → Package settings → Change visibility to public, so Portainer can pull without registry credentials.
+To update: rebuild on the host (`git pull && ./scripts/docker-build.sh`), then **Pull and redeploy** the stack in Portainer.
 
 **HTTPS:** If you put the app behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy), leave `COOKIE_SECURE` at the default `true`. Only set `COOKIE_SECURE=false` when accessing directly over `http://`.
 
