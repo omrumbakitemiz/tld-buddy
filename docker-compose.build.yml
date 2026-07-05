@@ -1,4 +1,5 @@
-# Local overlay: build the app image instead of pulling from GHCR.
+# Build overlay: builds the app image locally as tld-buddy:local.
+# Run this on the Docker host BEFORE deploying the Portainer Git stack.
 # Usage: docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
 services:
   app:
