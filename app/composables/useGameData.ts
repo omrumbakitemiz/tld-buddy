@@ -27,6 +27,7 @@ const staticItems = ref<Item[]>([])
 const staticPOIs = ref<POI[]>([])
 const staticConnections = ref<MapConnection[]>([])
 const authExpired = ref(false)
+const staticDataReady = ref(false)
 let loaded = false
 let staticDataLoaded = false
 let saveTimer: ReturnType<typeof setTimeout> | null = null
@@ -203,6 +204,8 @@ export function useGameData() {
       if (!appData.value.currentMapId && maps[0]) {
         appData.value.currentMapId = maps[0].id
       }
+    }).finally(() => {
+      staticDataReady.value = true
     })
   }
 
@@ -559,5 +562,7 @@ export function useGameData() {
     setTravelRightMap,
     // Auth
     authExpired,
+    // Loading
+    staticDataReady,
   }
 }

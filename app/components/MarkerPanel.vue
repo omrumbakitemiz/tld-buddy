@@ -29,7 +29,7 @@
             @click="$emit('fly-to', marker)"
           >
             <div class="flex items-center justify-center h-7 w-7 rounded-full bg-primary text-primary-foreground text-xs font-bold shrink-0 mt-0.5">
-              {{ marker.quantity > 1 ? marker.quantity : '&bull;' }}
+              {{ marker.quantity > 1 ? marker.quantity : '\u2022' }}
             </div>
 
             <div class="flex-1 min-w-0">
@@ -76,6 +76,15 @@
       </ScrollArea>
     </SheetContent>
   </Sheet>
+
+  <ConfirmDialog
+    :open="!!pendingDeleteId"
+    title="Delete marker?"
+    description="This marker will be permanently removed from the map."
+    confirm-label="Delete"
+    @update:open="(v) => { if (!v) pendingDeleteId = null }"
+    @confirm="confirmDelete"
+  />
 </template>
 
 <script setup lang="ts">
@@ -87,6 +96,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { Separator } from '~/components/ui/separator'
+import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 
@@ -100,6 +110,7 @@ defineEmits<{
 const { currentMap, currentRun, currentMapMarkers, getItemById, deleteMarker } = useGameData()
 
 const searchQuery = ref('')
+const pendingDeleteId = ref<string | null>(null)
 
 const fuse = computed(() => {
   const items = currentMapMarkers.value.map((marker) => {
@@ -118,8 +129,13 @@ const filteredMarkers = computed(() => {
 })
 
 function handleDeleteMarker(markerId: string) {
-  if (confirm('Delete this marker?')) {
-    deleteMarker(markerId)
+  pendingDeleteId.value = markerId
+}
+
+function confirmDelete() {
+  if (pendingDeleteId.value) {
+    deleteMarker(pendingDeleteId.value)
+    pendingDeleteId.value = null
   }
 }
 </script>

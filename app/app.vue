@@ -203,6 +203,16 @@
       @save="onUpdateMarker"
       @delete="onDeleteMarkerFromEdit"
     />
+
+    <!-- Confirm: Delete Marker -->
+    <ConfirmDialog
+      :open="!!pendingDeleteMarkerId"
+      title="Delete marker?"
+      description="This marker will be permanently removed from the map."
+      confirm-label="Delete"
+      @update:open="(v) => { if (!v) pendingDeleteMarkerId = null }"
+      @confirm="confirmDeleteMarker"
+    />
   </div>
 </template>
 
@@ -224,6 +234,7 @@ import MarkerEditDialog from '~/components/MarkerEditDialog.vue'
 import RunSelector from '~/components/RunSelector.vue'
 import RecentMapsSidebar from '~/components/RecentMapsSidebar.vue'
 import LoginScreen from '~/components/LoginScreen.vue'
+import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import { useGameData } from '~/composables/useGameData'
 import type { Marker } from '~/types'
 
@@ -273,6 +284,7 @@ const showRunSelector = ref(false)
 const showPOIConfig = ref(false)
 const pendingMarkerPosition = ref<{ x: number; y: number } | null>(null)
 const editingMarker = ref<Marker | null>(null)
+const pendingDeleteMarkerId = ref<string | null>(null)
 
 // When authenticated, prompt run selection if none exists
 watch(authenticated, (isAuth) => {
@@ -351,8 +363,13 @@ function onRequestEditMarker(marker: Marker) {
 }
 
 function onRequestDeleteMarker(markerId: string) {
-  if (confirm('Delete this marker?')) {
-    deleteMarker(markerId)
+  pendingDeleteMarkerId.value = markerId
+}
+
+function confirmDeleteMarker() {
+  if (pendingDeleteMarkerId.value) {
+    deleteMarker(pendingDeleteMarkerId.value)
+    pendingDeleteMarkerId.value = null
   }
 }
 
@@ -362,8 +379,8 @@ function onUpdateMarker(data: { id: string; name: string; quantity: number; note
 }
 
 function onDeleteMarkerFromEdit(markerId: string) {
-  deleteMarker(markerId)
   editingMarker.value = null
+  pendingDeleteMarkerId.value = markerId
 }
 
 function onFlyToMarker(marker: Marker) {

@@ -95,7 +95,7 @@ import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
 
 defineProps<{ open: boolean }>()
-defineEmits<{ 'update:open': [value: boolean] }>()
+const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
 const { maps, markers, currentMapId, currentRun, setCurrentMap, getMapThumbnail } = useGameData()
 
@@ -135,5 +135,6 @@ function getMapMarkerCount(mapId: string) {
 
 function handleSelectMap(mapId: string) {
   setCurrentMap(mapId)
+  emit('update:open', false)
 }
 </script>

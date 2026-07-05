@@ -1,8 +1,17 @@
 <template>
   <div class="relative w-full h-full">
+    <!-- Loading state -->
+    <div
+      v-if="!staticDataReady"
+      class="flex flex-col items-center justify-center w-full h-full gap-3 text-muted-foreground"
+    >
+      <LoaderIcon class="h-10 w-10 animate-spin opacity-50" />
+      <p class="text-sm">Loading maps...</p>
+    </div>
+
     <!-- Empty state -->
     <div
-      v-if="!currentMap"
+      v-else-if="!currentMap"
       class="flex flex-col items-center justify-center w-full h-full gap-3 text-muted-foreground"
     >
       <MapPinOffIcon class="h-12 w-12 opacity-40" />
@@ -16,6 +25,22 @@
       ref="mapContainer"
       class="w-full h-full"
     />
+
+    <!-- Zoom / reset controls (bottom-right) -->
+    <div
+      v-if="currentMap"
+      class="absolute bottom-6 right-4 z-[999] flex flex-col gap-1.5"
+    >
+      <Button variant="secondary" size="icon" class="h-8 w-8 shadow-lg" title="Zoom in" @click="zoomIn">
+        <PlusIcon class="h-4 w-4" />
+      </Button>
+      <Button variant="secondary" size="icon" class="h-8 w-8 shadow-lg" title="Zoom out" @click="zoomOut">
+        <MinusIcon class="h-4 w-4" />
+      </Button>
+      <Button variant="secondary" size="icon" class="h-8 w-8 shadow-lg" title="Reset view" @click="resetView">
+        <MaximizeIcon class="h-4 w-4" />
+      </Button>
+    </div>
 
     <!-- Bottom controls -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-[999] flex items-center gap-3">
@@ -56,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { MapPinOffIcon, PlusIcon } from 'lucide-vue-next'
+import { MapPinOffIcon, PlusIcon, MinusIcon, MaximizeIcon, LoaderIcon } from 'lucide-vue-next'
 import L from 'leaflet'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
@@ -70,7 +95,7 @@ const emit = defineEmits<{
 
 const {
   currentMap, currentMapVariant, currentMapMarkers, currentMapPOIPins,
-  pois, getItemById, getStashedItems, pinPOI,
+  pois, getItemById, getStashedItems, pinPOI, staticDataReady,
 } = useGameData()
 
 const mapContainer = ref<HTMLElement | null>(null)
@@ -85,6 +110,7 @@ let map: L.Map | null = null
 let imageOverlay: L.ImageOverlay | null = null
 let markerLayer: L.LayerGroup | null = null
 let poiLayer: L.LayerGroup | null = null
+let currentBounds: L.LatLngBoundsExpression | null = null
 
 function initMap() {
   if (!mapContainer.value || !currentMapVariant.value) return
@@ -105,6 +131,7 @@ function initMap() {
     [0, 0],
     [imageHeight, imageWidth],
   ]
+  currentBounds = bounds
 
   imageOverlay = L.imageOverlay(imageUrl, bounds).addTo(map)
   map.fitBounds(bounds)
@@ -296,6 +323,18 @@ function renderPOIs() {
 
     lMarker.bindPopup(popupContent, { closeButton: true, maxWidth: 250 })
   })
+}
+
+function zoomIn() {
+  map?.zoomIn()
+}
+
+function zoomOut() {
+  map?.zoomOut()
+}
+
+function resetView() {
+  if (map && currentBounds) map.fitBounds(currentBounds)
 }
 
 function flyToMarker(marker: Marker) {

@@ -109,6 +109,15 @@
       </div>
     </DialogScrollContent>
   </Dialog>
+
+  <ConfirmDialog
+    :open="!!pendingDeleteRunId"
+    title="Delete run?"
+    description="This run and all of its markers and stashed items will be permanently deleted."
+    confirm-label="Delete run"
+    @update:open="(v) => { if (!v) pendingDeleteRunId = null }"
+    @confirm="confirmDeleteRun"
+  />
 </template>
 
 <script setup lang="ts">
@@ -120,6 +129,7 @@ import { Badge } from '~/components/ui/badge'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Separator } from '~/components/ui/separator'
+import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
 import type { Difficulty } from '~/types'
@@ -132,6 +142,7 @@ const { runs, currentRun, markers, addRun, deleteRun, setCurrentRun } = useGameD
 const difficulties: Difficulty[] = ['pilgrim', 'voyageur', 'stalker', 'interloper', 'misery']
 const newRunName = ref('')
 const selectedDifficulty = ref<Difficulty | null>(null)
+const pendingDeleteRunId = ref<string | null>(null)
 
 function getRunMarkerCount(runId: string) {
   return markers.value.filter((m) => m.runId === runId).length
@@ -175,8 +186,13 @@ function handleSelectRun(runId: string) {
 }
 
 function handleDeleteRun(runId: string) {
-  if (confirm(`Delete this run and all its markers?`)) {
-    deleteRun(runId)
+  pendingDeleteRunId.value = runId
+}
+
+function confirmDeleteRun() {
+  if (pendingDeleteRunId.value) {
+    deleteRun(pendingDeleteRunId.value)
+    pendingDeleteRunId.value = null
   }
 }
 
