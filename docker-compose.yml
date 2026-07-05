@@ -4,8 +4,9 @@ services:
     ports:
       - "${PORT:-3000}:3000"
     environment:
-      APP_PASSWORD: ${APP_PASSWORD}
-      REDIS_URL: redis://redis:6379
+      # NUXT_* vars override runtimeConfig at container startup (not build time)
+      NUXT_APP_PASSWORD: ${APP_PASSWORD}
+      NUXT_REDIS_URL: redis://redis:6379
     depends_on:
       redis:
         condition: service_healthy

@@ -1,4 +1,5 @@
 import { createClient, type RedisClientType } from 'redis'
+import { getRedisUrl } from './config'
 
 let client: RedisClientType | null = null
 let connecting: Promise<RedisClientType> | null = null
@@ -8,8 +9,7 @@ export async function getRedis(): Promise<RedisClientType> {
 
   if (!connecting) {
     connecting = (async () => {
-      const config = useRuntimeConfig()
-      const url = config.redisUrl || 'redis://localhost:6379'
+      const url = getRedisUrl()
 
       const redis = createClient({ url })
       redis.on('error', (err) => console.error('Redis error:', err))

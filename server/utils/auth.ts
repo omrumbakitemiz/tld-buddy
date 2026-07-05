@@ -1,13 +1,7 @@
 import crypto from 'node:crypto'
+import { getAppPassword } from './config'
 
 const TOKEN_PREFIX = 'tld-buddy:'
-
-function getAppPassword(): string {
-  const config = useRuntimeConfig()
-  const password = config.appPassword
-  if (!password) throw new Error('APP_PASSWORD not set')
-  return password
-}
 
 /**
  * Create a signed session token from the app password.
@@ -15,6 +9,7 @@ function getAppPassword(): string {
  */
 export function createSessionToken(): string {
   const password = getAppPassword()
+  if (!password) throw new Error('APP_PASSWORD not set')
   const hmac = crypto.createHmac('sha256', password)
   hmac.update(TOKEN_PREFIX + password)
   return hmac.digest('hex')

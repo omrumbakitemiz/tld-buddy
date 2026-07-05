@@ -31,8 +31,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    appPassword: env.APP_PASSWORD || process.env.APP_PASSWORD || '',
-    redisUrl: env.REDIS_URL || process.env.REDIS_URL || 'redis://localhost:6379',
+    // Defaults only — Docker/production overrides via NUXT_* env vars at runtime
+    appPassword: env.APP_PASSWORD || '',
+    redisUrl: env.REDIS_URL || 'redis://localhost:6379',
   },
 
   vite: {
