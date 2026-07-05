@@ -314,6 +314,14 @@ export function useGameData() {
     save()
   }
 
+  function updateRun(runId: string, updates: Partial<Pick<Run, 'name' | 'difficulty'>>) {
+    const run = appData.value.runs.find((r) => r.id === runId)
+    if (!run) return
+    if (updates.name !== undefined) run.name = updates.name
+    if (updates.difficulty !== undefined) run.difficulty = updates.difficulty
+    save()
+  }
+
   // ── Map selection ───────────────────────────────────────────────────────
 
   /** Ordered list of recently visited maps (most recent first), resolved to GameMap objects */
@@ -518,6 +526,7 @@ export function useGameData() {
     addRun,
     deleteRun,
     setCurrentRun,
+    updateRun,
     // Maps
     currentMap,
     currentMapId,
