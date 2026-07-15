@@ -10,81 +10,52 @@ An interactive map companion app for **The Long Dark**. Browse regions, track lo
 - **Redis** for persistent user data storage
 - Static game data (items, maps, POIs) bundled in the app
 
-## Quick Start (Docker)
+## Deploy on Raspberry Pi (recommended)
+
+Runs app + Redis on the Pi with a single compose file. Portainer can still
+monitor the containers on that node.
+
+### First-time setup (on the Pi)
 
 ```bash
-# 1. Set your login password
+git clone https://github.com/omrumbakitemiz/tld-buddy.git
+cd tld-buddy
 cp .env.example .env
-# edit .env and set APP_PASSWORD
-
-# 2. Build and run
-docker compose up -d --build
-
-# 3. Open http://localhost:3000
+# edit .env — set APP_PASSWORD (COOKIE_SECURE=false is already set for HTTP)
+chmod +x deploy.sh
+./deploy.sh
 ```
 
-This starts two containers:
-- **app** — the Nuxt server (port 3000)
-- **redis** — Redis 7 with a persistent volume for your save data
+Open `http://<pi-ip>:3000`.
 
-To stop: `docker compose down`
-To stop and wipe data: `docker compose down -v`
+### Update with new code
 
-## Deploy with Portainer (Raspberry Pi homelab)
+After you push to `main` on GitHub, SSH to the Pi and run:
 
-The stack builds directly from this repo on the target Pi — no registry, no CI.
-
-### One-time: let the agent Pi build over the tunnel
-
-When the target node is a **Portainer agent** (a different Pi than the one running
-Portainer), builds are proxied through the agent tunnel, which breaks BuildKit's
-HTTP/2 stream:
-
-```
-error reading server preface: http2: frame too large
+```bash
+cd tld-buddy
+./deploy.sh
 ```
 
-This is a transport limitation, not a hardware or Dockerfile issue. Make that
-Pi's Docker use the classic build protocol (tunnels fine). On the **agent Pi**,
-set the env var on its portainer-agent container, e.g. in the agent's compose:
+That script:
+1. `git fetch` + `git pull --ff-only` from `main`
+2. `docker compose up -d --build`
+3. Prunes unused images
 
-```yaml
-services:
-  agent:
-    image: portainer/agent:lts
-    environment:
-      DOCKER_BUILDKIT: "0"
+To use another branch: `DEPLOY_BRANCH=my-branch ./deploy.sh`
+
+### Manual docker compose
+
+```bash
+docker compose up -d --build   # start / rebuild
+docker compose ps              # status
+docker compose logs -f app     # logs
+docker compose down            # stop (keeps Redis data)
+docker compose down -v         # stop and wipe Redis data
 ```
 
-Recreate the agent container. (If you ever deploy onto the Pi that runs Portainer
-itself — the "local" environment — this isn't needed; local builds work as-is.)
-
-### Deploy the stack
-
-1. **Stacks → Add stack → Git repository**
-2. Repository: `https://github.com/omrumbakitemiz/tld-buddy`
-3. Reference: `refs/heads/main`, Compose path: `docker-compose.yml`
-4. Pick the target **Pi environment**
-5. Set **stack environment variables**:
-
-| Variable | Required | Example | Notes |
-|----------|----------|---------|-------|
-| `APP_PASSWORD` | yes | `my-secret` | Login password |
-| `PORT` | no | `3000` | Host port (default 3000) |
-| `COOKIE_SECURE` | no | `false` | Set `false` for plain HTTP access |
-
-6. **Deploy** — Portainer clones the repo, builds on the Pi, and starts app + Redis.
-
-To update after pushing to `main`: open the stack → **Pull and redeploy**.
-
-> **Note:** `DOCKER_BUILDKIT=0` is deprecated in Docker CE v28+. If your Pi runs a
-> newer Docker that ignores it and the build still fails, build the image once on
-> your Mac (`docker buildx build --platform linux/arm64 --push -t <registry>/tld-buddy .`)
-> and change `build: .` to `image: <registry>/tld-buddy` so Portainer just pulls.
-
-**HTTPS:** Behind a reverse proxy with TLS (Nginx Proxy Manager, Traefik, Caddy)
-leave `COOKIE_SECURE` at the default `true`. Set `COOKIE_SECURE=false` only when
-accessing directly over `http://`.
+**HTTPS:** Behind a reverse proxy with TLS, set `COOKIE_SECURE=true` in `.env`.
+For plain `http://` homelab access, keep `COOKIE_SECURE=false`.
 
 ## Local Development
 
