@@ -4,7 +4,7 @@ services:
     image: tld-buddy:local
     container_name: tld-buddy-app
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-4000}:3000"
     environment:
       NUXT_APP_PASSWORD: ${APP_PASSWORD}
       NUXT_REDIS_URL: redis://redis:6379

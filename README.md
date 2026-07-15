@@ -26,7 +26,7 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-Open `http://<pi-ip>:3000`.
+Open `http://<pi-ip>:4000`.
 
 ### Update with new code
 
