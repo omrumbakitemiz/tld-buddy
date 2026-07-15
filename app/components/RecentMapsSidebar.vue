@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { HistoryIcon, XIcon } from 'lucide-vue-next'
+import { HistoryIcon, XIcon } from '@lucide/vue'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { useGameData } from '~/composables/useGameData'

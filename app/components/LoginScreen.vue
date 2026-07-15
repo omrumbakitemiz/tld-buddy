@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
-import { LockKeyholeIcon, LoaderIcon } from 'lucide-vue-next'
+import { LockKeyholeIcon, LoaderIcon } from '@lucide/vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'

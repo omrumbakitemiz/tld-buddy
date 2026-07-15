@@ -221,7 +221,7 @@
 import { ref, computed } from 'vue'
 import {
   LandmarkIcon, MapPinIcon, NavigationIcon, XIcon, ChevronDownIcon,
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '~/components/ui/sheet'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'

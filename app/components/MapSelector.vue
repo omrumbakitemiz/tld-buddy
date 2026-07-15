@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { MapIcon } from 'lucide-vue-next'
+import { MapIcon } from '@lucide/vue'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '~/components/ui/sheet'
 import { Badge } from '~/components/ui/badge'
 import { Input } from '~/components/ui/input'

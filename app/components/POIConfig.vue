@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CheckIcon } from 'lucide-vue-next'
+import { CheckIcon } from '@lucide/vue'
 import { Dialog, DialogScrollContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'

@@ -251,7 +251,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
-import { CheckIcon, ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, MinusIcon, PlusIcon, XIcon } from 'lucide-vue-next'
+import { CheckIcon, ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, MinusIcon, PlusIcon, XIcon } from '@lucide/vue'
 import { Dialog, DialogScrollContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import { Button } from '~/components/ui/button'

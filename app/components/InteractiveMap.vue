@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { MapPinOffIcon, PlusIcon, MinusIcon, MaximizeIcon, LoaderIcon } from 'lucide-vue-next'
+import { MapPinOffIcon, PlusIcon, MinusIcon, MaximizeIcon, LoaderIcon } from '@lucide/vue'
 import L from 'leaflet'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'

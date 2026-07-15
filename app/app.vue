@@ -218,7 +218,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted, watch } from 'vue'
-import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon, CompassIcon, LogOutIcon } from 'lucide-vue-next'
+import { MapIcon, CrosshairIcon, PackageIcon, SwordsIcon, LandmarkIcon, SlidersHorizontalIcon, CompassIcon, LogOutIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
@@ -240,19 +240,27 @@ import type { Marker } from '~/types'
 
 const authenticated = ref(false)
 
-// Check auth on mount
+const { currentMap, currentRun, addMarker, updateMarker, deleteMarker, getItemById, travelMode, toggleTravelMode, authExpired, reloadFromAPI } = useGameData()
+
+// Check auth on mount; if already logged in, load Redis data before any saves
 onMounted(async () => {
   try {
     const res = await fetch('/api/auth/check')
     const data = await res.json()
-    authenticated.value = data.authenticated === true
+    if (data.authenticated === true) {
+      authenticated.value = true
+      await reloadFromAPI()
+    } else {
+      authenticated.value = false
+    }
   } catch {
     authenticated.value = false
   }
 })
 
-function onAuthenticated() {
+async function onAuthenticated() {
   authenticated.value = true
+  await reloadFromAPI()
 }
 
 async function logout() {
@@ -263,8 +271,6 @@ async function logout() {
   }
   authenticated.value = false
 }
-
-const { currentMap, currentRun, addMarker, updateMarker, deleteMarker, getItemById, travelMode, toggleTravelMode, authExpired } = useGameData()
 
 // If API returns 401, drop back to login
 watch(authExpired, (expired) => {

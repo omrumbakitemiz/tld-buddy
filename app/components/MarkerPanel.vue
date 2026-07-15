@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CrosshairIcon, PencilIcon, TrashIcon } from 'lucide-vue-next'
+import { CrosshairIcon, PencilIcon, TrashIcon } from '@lucide/vue'
 import Fuse from 'fuse.js'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '~/components/ui/sheet'
 import { Button } from '~/components/ui/button'

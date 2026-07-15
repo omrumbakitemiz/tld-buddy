@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { PackageIcon } from 'lucide-vue-next'
+import { PackageIcon } from '@lucide/vue'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Badge } from '~/components/ui/badge'
 import { Input } from '~/components/ui/input'

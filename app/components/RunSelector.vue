@@ -184,7 +184,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { PlusIcon, SwordsIcon, TrashIcon, PencilIcon } from 'lucide-vue-next'
+import { PlusIcon, SwordsIcon, TrashIcon, PencilIcon } from '@lucide/vue'
 import { Dialog, DialogScrollContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Button } from '~/components/ui/button'
 import { Badge } from '~/components/ui/badge'

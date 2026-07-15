@@ -22,6 +22,10 @@ export default defineEventHandler(async () => {
     return JSON.parse(raw)
   } catch (err) {
     console.error('Failed to read from Redis:', err)
-    return DEFAULT_DATA
+    // Do NOT return empty defaults as 200 — client would treat that as truth and may overwrite Redis
+    throw createError({
+      statusCode: 503,
+      statusMessage: 'Storage unavailable',
+    })
   }
 })

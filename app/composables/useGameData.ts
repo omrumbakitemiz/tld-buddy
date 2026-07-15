@@ -28,6 +28,8 @@ const staticPOIs = ref<POI[]>([])
 const staticConnections = ref<MapConnection[]>([])
 const authExpired = ref(false)
 const staticDataReady = ref(false)
+/** True only after a successful authenticated /api/data load — blocks API saves until then. */
+const apiSynced = ref(false)
 let loaded = false
 let staticDataLoaded = false
 let saveTimer: ReturnType<typeof setTimeout> | null = null
@@ -35,56 +37,33 @@ let markerIdCounter = 0
 
 // ── Load static data from JSON files ────────────────────────────────────────
 
-async function loadItems(): Promise<Item[]> {
+async function loadJson<T>(url: string): Promise<T[]> {
   try {
-    const res = await fetch('/data/items.json')
+    const res = await fetch(url)
     if (!res.ok) return []
     const data = await res.json()
     if (!Array.isArray(data)) return []
-    return data as Item[]
+    return data as T[]
   } catch {
-    console.warn('Could not load items from /data/items.json')
+    console.warn(`Could not load ${url}`)
     return []
   }
 }
 
-async function loadMaps(): Promise<GameMap[]> {
-  try {
-    const res = await fetch('/data/maps.json')
-    if (!res.ok) return []
-    const data = await res.json()
-    if (!Array.isArray(data)) return []
-    return data as GameMap[]
-  } catch {
-    console.warn('Could not load maps from /data/maps.json')
-    return []
-  }
+function loadItems() {
+  return loadJson<Item>('/data/items.json')
 }
 
-async function loadPOIs(): Promise<POI[]> {
-  try {
-    const res = await fetch('/data/pois.json')
-    if (!res.ok) return []
-    const data = await res.json()
-    if (!Array.isArray(data)) return []
-    return data as POI[]
-  } catch {
-    console.warn('Could not load POIs from /data/pois.json')
-    return []
-  }
+function loadMaps() {
+  return loadJson<GameMap>('/data/maps.json')
 }
 
-async function loadConnections(): Promise<MapConnection[]> {
-  try {
-    const res = await fetch('/data/map-connections.json')
-    if (!res.ok) return []
-    const data = await res.json()
-    if (!Array.isArray(data)) return []
-    return data as MapConnection[]
-  } catch {
-    console.warn('Could not load map connections from /data/map-connections.json')
-    return []
-  }
+function loadPOIs() {
+  return loadJson<POI>('/data/pois.json')
+}
+
+function loadConnections() {
+  return loadJson<MapConnection>('/data/map-connections.json')
 }
 
 // ── Persistence ─────────────────────────────────────────────────────────────
@@ -125,23 +104,39 @@ function load() {
   loadFromAPI()
 }
 
-async function loadFromAPI() {
+async function loadFromAPI(): Promise<boolean> {
   try {
     const res = await fetch('/api/data')
     if (res.status === 401) {
       authExpired.value = true
-      return
+      apiSynced.value = false
+      return false
     }
-    if (!res.ok) return
+    // Redis down / server error — keep local cache, do not mark synced (blocks PUT wipe)
+    if (!res.ok) {
+      console.warn(`Could not fetch from API (${res.status}), using local cache`)
+      return false
+    }
     const data = await res.json()
     if (data && typeof data === 'object') {
       appData.value = parseAppData(data)
-      // Update local cache with API data
       saveToLocalStorage()
+      apiSynced.value = true
+      return true
     }
+    return false
   } catch {
     console.warn('Could not fetch from API, using local cache')
+    return false
   }
+}
+
+/**
+ * Re-fetch user data after login / successful auth check.
+ * Must run before any API save so we never overwrite Redis with stale localStorage.
+ */
+async function reloadFromAPI(): Promise<boolean> {
+  return loadFromAPI()
 }
 
 /** Write to localStorage (instant, synchronous). */
@@ -154,9 +149,13 @@ function saveToLocalStorage() {
   }
 }
 
-/** Write to API (debounced, async). */
+/** Write to API (debounced, async). Skipped until a successful authenticated load. */
 function saveToAPI() {
   if (typeof window === 'undefined') return
+  if (!apiSynced.value) {
+    console.warn('Skipping API save — not synced with server yet')
+    return
+  }
   fetch('/api/data', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -164,18 +163,19 @@ function saveToAPI() {
   }).then((res) => {
     if (res.status === 401) {
       authExpired.value = true
+      apiSynced.value = false
     }
   }).catch(() => {
     console.warn('Failed to save to API')
   })
 }
 
-/** Save to both localStorage (instant) and API (debounced). */
+/** Save to both localStorage (instant) and API (debounced, if synced). */
 function save() {
-  // Instant write to localStorage cache
   saveToLocalStorage()
 
-  // Debounced write to API
+  if (!apiSynced.value) return
+
   if (saveTimer) clearTimeout(saveTimer)
   saveTimer = setTimeout(saveToAPI, SAVE_DEBOUNCE_MS)
 }
@@ -571,8 +571,10 @@ export function useGameData() {
     toggleTravelMode,
     setTravelLeftMap,
     setTravelRightMap,
-    // Auth
+    // Auth / sync
     authExpired,
+    apiSynced,
+    reloadFromAPI,
     // Loading
     staticDataReady,
   }

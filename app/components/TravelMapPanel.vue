@@ -116,7 +116,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { MapIcon, MapPinOffIcon, ChevronDownIcon, LinkIcon } from 'lucide-vue-next'
+import { MapIcon, MapPinOffIcon, ChevronDownIcon, LinkIcon } from '@lucide/vue'
 import L from 'leaflet'
 import { Badge } from '~/components/ui/badge'
 import { Input } from '~/components/ui/input'

@@ -105,7 +105,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import { TrashIcon, PackageIcon } from 'lucide-vue-next'
+import { TrashIcon, PackageIcon } from '@lucide/vue'
 import { Dialog, DialogScrollContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
