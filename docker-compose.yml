@@ -5,6 +5,9 @@ services:
     container_name: tld-buddy-app
     ports:
       - "${PORT:-4000}:3000"
+    labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "tld-buddy"
     environment:
       NUXT_APP_PASSWORD: ${APP_PASSWORD}
       NUXT_REDIS_URL: redis://redis:6379
