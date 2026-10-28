@@ -17,6 +17,7 @@ import { useStaticData } from './useStaticData'
 
 const STALE_MS = 10_000
 const RECONNECT_MS = 10_000
+const HIDDEN_GRACE_MS = 5_000
 /** Event ids this browser already turned into markers, shared by its tabs. */
 const HANDLED_KEY = 'tld-buddy-handled-marks'
 const MAX_HANDLED = 200
@@ -98,12 +99,27 @@ function start() {
   if (started || typeof window === 'undefined') return
   started = true
   const auth = useAuth()
-  watch(auth.state, (s) => {
-    if (s === 'signed-in') connect()
-    else {
+  // Browsers allow only 6 connections per site over plain http, shared by all tabs, and each
+  // stream holds one for good: with a few tabs open, new pages would wait forever. So only
+  // visible tabs stream; a hidden tab lets go after a short grace and catches up on return
+  // (the server sends the current state and unacked marks on connect).
+  const visible = ref(document.visibilityState === 'visible')
+  let hideTimer: ReturnType<typeof setTimeout> | null = null
+  document.addEventListener('visibilitychange', () => {
+    if (hideTimer) clearTimeout(hideTimer)
+    hideTimer = null
+    if (document.visibilityState === 'visible') visible.value = true
+    else hideTimer = setTimeout(() => (visible.value = false), HIDDEN_GRACE_MS)
+  })
+  watch([auth.state, visible], ([s, v]) => {
+    if (s !== 'signed-in') {
       disconnect()
       state.value = null
       pendingMarks.value = []
+    } else if (v) {
+      if (!source) connect()
+    } else {
+      disconnect()
     }
   }, { immediate: true })
   setInterval(() => (now.value = Date.now()), 1000)
