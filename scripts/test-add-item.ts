@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import {
-  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems,
+  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems, ringSlot,
 } from '../app/lib/addItem'
 import type { Item } from '../shared/types/game'
 
@@ -46,6 +46,21 @@ test('rankItems puts whole-name prefix first and shorter names before longer', (
 test('rankItems matches word prefixes across words ("rif am")', () => {
   assert.equal(rankItems(items, 'rif am', { limit: 1 })[0]?.name, 'Rifle Ammunition')
   assert.equal(rankItems(items, 'wood mat', { limit: 1 })[0]?.name, 'Wood Matches')
+})
+
+test('rankItems prefers loggable loot and history over a mere name prefix ("pea")', () => {
+  assert.notEqual(rankItems(items, 'pea', { limit: 1 })[0]?.name, 'Peach Pie')
+  const fre = new Map([['pinnacle-peaches', 2]])
+  assert.equal(rankItems(items, 'pea', { limit: 1, frecency: fre })[0]?.name, 'Pinnacle Peaches')
+  assert.equal(rankItems(items, 'hacks', { limit: 1 })[0]?.name, 'Hacksaw')
+  assert.equal(rankItems(items, 'firew', { limit: 1 })[0]?.name, 'Fir Firewood')
+})
+
+test('ringSlot keeps 30 one-by-one adds apart on concentric rings', () => {
+  const pts = Array.from({ length: 30 }, (_, i) => ringSlot({ x: 0, y: 0 }, i))
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = 0; j < i; j++) assert.ok(Math.hypot(pts[i]!.x - pts[j]!.x, pts[i]!.y - pts[j]!.y) > 5, `${i} vs ${j}`)
+  }
 })
 
 test('rankItems lets frecency break ties inside a tier', () => {
@@ -120,15 +135,15 @@ test('planBatch puts a lone item exactly on an empty spot', () => {
   assert.deepEqual(ops, [{ kind: 'add', itemId: 'hacksaw', quantity: 1, note: undefined, x: 50, y: 60 }])
 })
 
-test('successive additions use distinct stable slots for a nine-item pile', () => {
-  const existing: Array<{ id: string; itemId: string; x: number; y: number; lootedAt: null }> = []
+test('incremental entries keep distinct positions on the shared ring', () => {
+  const existing: { id: string; itemId: string; x: number; y: number }[] = []
   for (let i = 0; i < 9; i++) {
-    const op = planBatch({ x: 100, y: 100 }, [{ itemId: `item-${i}`, quantity: 1 }], existing)[0]!
-    assert.equal(op.kind, 'add')
-    if (op.kind === 'add') existing.push({ id: `m${i}`, itemId: op.itemId, x: op.x, y: op.y, lootedAt: null })
+    const [op] = planBatch({ x: 100, y: 100 }, [{ itemId: `item-${i}`, quantity: 1 }], existing)
+    assert.ok(op && op.kind === 'add')
+    if (op.kind !== 'add') return
+    for (const prev of existing) assert.ok(Math.hypot(prev.x - op.x, prev.y - op.y) > 5)
+    existing.push({ ...op, id: `marker-${i}` })
   }
-  assert.equal(new Set(existing.map(m => `${m.x},${m.y}`)).size, 9)
-  assert.ok(existing.every(m => Math.hypot(m.x - 100, m.y - 100) <= 24.01))
 })
 
 console.log(`\n${passed} add-item tests passed`)

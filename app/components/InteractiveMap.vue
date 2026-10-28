@@ -76,7 +76,7 @@ import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useImageMap } from '~/composables/useImageMap'
 import { useUiState } from '~/composables/useUiState'
-import { useAddUi, type AddRequest } from '~/composables/useAddUi'
+import { useAddUi, type AddRequest, type MapTile } from '~/composables/useAddUi'
 import type { Marker } from '~/types'
 
 const emit = defineEmits<{
@@ -172,6 +172,8 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
       const dy = pt.y < margin ? pt.y - margin : pt.y > size.y - margin ? pt.y - (size.y - margin) : 0
       if (dx || dy) map.panBy([dx, dy], { animate: !reducedMotion() })
     },
+    // CRS.Simple: one map pixel per screen pixel at zoom 0
+    scale: () => Math.pow(2, -map.getZoom()),
   }
 
   // Grouping depends on zoom: regroup after every zoom change
@@ -274,10 +276,11 @@ function renderMarkers() {
       if (group.length === 1) ui.selectMarker(selectedMarkerId.value === group[0]!.id ? null : group[0]!.id)
       else ui.selectGroup(ids)
     }
-    layer.on('click', (e) => {
+    layer.on('click', (e: L.LeafletMouseEvent) => {
       L.DomEvent.stopPropagation(e)
-      if (!variantTileClick(e)) choose()
+      if (!variantTileClick({ kind: 'loot', markerIds: ids }, { x: lng, y: lat }, e)) choose()
     })
+    layer.on('contextmenu', (e: L.LeafletMouseEvent) => tileContextMenu({ x: lng, y: lat }, e))
     layer.on('keypress', (e: L.LeafletKeyboardEvent) => {
       if (e.originalEvent.key === 'Enter') choose()
     })
@@ -291,13 +294,19 @@ function renderMarkers() {
   }
 }
 
-// Give registered variants the same map-click seam on marker and place tiles.
-function variantTileClick(e: L.LeafletMouseEvent): boolean {
-  const handlers = addUi.handlers()
-  if (!handlers) return false
-  const req: AddRequest = { pos: { x: e.latlng.lng, y: e.latlng.lat }, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, source: e.originalEvent.shiftKey ? 'shift-click' : 'placing' }
-  if (e.originalEvent.shiftKey && handlers.request) { handlers.request(req); return true }
-  return handlers.interceptClick?.(req, e.originalEvent) ?? false
+/** A click on a tile goes to the add-item variant first (useAddUi `interceptTileClick`). */
+function variantTileClick(tile: MapTile, pos: { x: number; y: number }, e: L.LeafletMouseEvent): boolean {
+  const req: AddRequest = { pos, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, source: 'placing' }
+  return addUi.handlers()?.interceptTileClick?.(tile, req, e.originalEvent) ?? false
+}
+
+/** Right-click on a tile adds to that tile's spot, like right-clicking the map beside it. */
+function tileContextMenu(pos: { x: number; y: number }, e: L.LeafletMouseEvent) {
+  L.DomEvent.stopPropagation(e)
+  L.DomEvent.preventDefault(e.originalEvent)
+  if (pinningPOIId.value) return
+  placingLoot.value = false
+  emit('request-add-marker', { pos, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, source: 'context' })
 }
 
 // ── POIs ────────────────────────────────────────────────────────────────────
@@ -327,10 +336,11 @@ function renderPOIs() {
       title: poi.name,
       keyboard: true,
     })
-    layer.on('click', (e) => {
+    layer.on('click', (e: L.LeafletMouseEvent) => {
       L.DomEvent.stopPropagation(e)
-      if (!variantTileClick(e)) ui.selectPOI(pin.poiId)
+      if (!variantTileClick({ kind: 'place', poiId: pin.poiId }, { x: pin.x, y: pin.y }, e)) ui.selectPOI(pin.poiId)
     })
+    layer.on('contextmenu', (e: L.LeafletMouseEvent) => tileContextMenu({ x: pin.x, y: pin.y }, e))
     layer.addTo(poiLayer)
     poiViews.set(pin.poiId, { key, layer })
   }

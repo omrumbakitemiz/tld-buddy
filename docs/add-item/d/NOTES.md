@@ -1,31 +1,33 @@
-# Satchel
+# Satchel — round 1
 
-The bottom tray holds up to ten per-device pinned favourites followed by this run's frecent items. Click a tile to arm it; Pin/Unpin and the left/right controls manage favourite order. Drag a tile onto the map for a one-off placement. Shift-click the map, a marker, or a place to hold a spot: select an item and press Enter to add it; the spot stays held and the next selection is ready. Search uses the shared prefix/frecency ranking. Adds at a held spot share one undo batch; stamps and drops are individual batches. Notes attach to the next placement. The ring at the held spot remains visible on the map.
+Satchel is a device-local favourites tray followed by this run's frecent items. Right-click an empty map spot or tile to hold it, then type entries such as `12 wood mat` or `hack - car trunk` and press Enter to add the highlighted result immediately. The held marker remains visible and the tray lists additions. Search ranks through the shared seam; Up/Down choose another match. Right-click while armed stamps at that location; ordinary map and tile clicks also stamp while armed. Each route stamp and drag is its own undo batch; additions in one held session share a batch. Dragging a slot uses the drop point even while a spot is held.
+
+Slots are pinned first, then frecent. Arm a slot to pin/unpin it or move a favourite with the chevrons; a selected individual map marker can also be pinned. These preferences remain localStorage UI state. The tray displays the armed item, quantity and note; a translucent 34 px marker follows the map pointer. Armed state survives blur/focus, and clears explicitly on Esc, Stop, clicking the armed slot, or a map/run change. A held-spot Enter clears the arm after placement so the next item can be entered. There is no inactivity timer.
 
 ## Keyboard
 
-- With no item armed, 1–9 and 0 arm tray slots. These keys take precedence over the shell's 1/2/3 panel tabs whenever Satchel is selected; the tabs remain clickable, and P still toggles the panel. They are not intercepted in text fields or with modifiers.
-- Once armed, digits set the quantity for the next stamp or Enter (e.g. 1 then 2 means 12); the quantity resets to 1 after placement. To choose another slot, stop the current arm first; held-spot Enter automatically disarms after each item.
-- At a held spot, type a letter to search; Up/Down select a result and Enter arms it, then digits and Enter place it. S opens search when no spot is held. Search fields accept ordinary typing and Enter selects the highlighted result.
-- Esc or right-click stops the session. Window blur and 30 seconds without an armed action disarm the stamp; the held spot survives blur. Changing map or run stops the entire session. The armed banner names the item and quantity. Ctrl+Z and the toast undo use the shared undo stack.
-- Other shell shortcuts (A, L, H, N, /, ?, P, [, F, +, -, T, R, E, Delete) remain shell-owned when the Satchel is not active. When a session owns the keyboard, shell single-key shortcuts are paused; text inputs keep their normal editing keys. Tab navigates controls.
+- At idle the shell owns 1/2/3 and S; Q focuses the tray. Dialogs and editable fields retain their keys. When the tray is focused, a spot is held, or an item is armed, Satchel owns its applicable keys and the shell pauses single-key shortcuts.
+- With tray focus and nothing armed, 1–9/0 select a slot; with an item armed, digits set its next quantity (1 then 2 means 12). Enter places an armed item at a held spot. Click the same slot to disarm it.
+- At a held spot, the entry field takes text, quantity, and optional ` - note` or ` # note`; Enter adds the selected result directly. Up/Down select a result. Enter in the separate note field places an armed item at the held spot. When unheld, Q then S opens search to arm an item.
+- Esc stops the session. Ctrl+Z / Cmd+Z and the shared toast undo a batch. Other shell shortcuts work when the Satchel is idle; editable fields and dialogs are not intercepted.
 
-## Measured scenarios
+## Measured browser runs
 
-Driven with Playwright through `lab.mjs` at 1600 × 1000, against freshly seeded DB 4. Counts include Shift as one key per held-spot click, Enter and Escape, and all typed search/note characters; mouse clicks include focusing and leaving the note field. These are actual search-based runs, not estimates for a pre-pinned tray.
+Driven with `lab.mjs` at 1600 × 1000 on freshly seeded DB 4. Counts include typed characters, Enter and Escape; clicks are mouse presses. Search strings are recorded below, so these are measured rather than estimates. S4 used Q, S and search rather than a pinned slot; a known slot needs fewer keys.
 
-| Scenario | Clicks | Keys | Tested path |
+| Scenario | Clicks | Keys | Path |
 | --- | ---: | ---: | --- |
-| S1 | 1 | 71 | Hold; search nine items, enter quantities and place; close. |
-| S2 | 1 | 45 | Hold; search four items, enter quantities and place; close. |
-| S3 | 3 | 24 | Hold; search hacksaw, type “in the car trunk” in the note, place and close. |
-| S4 | 5 | 8 | S, search “fir f”, Enter, stamp five positions, Esc. |
-| S5 | 2 | 41 | Hold and add three; close, hold the same pile and add two; close. |
+| S1 | 1 | 66 | Right-click, nine entries including quantities, Escape. |
+| S3 | 1 | 25 | Right-click, `hack - in the car trunk`, Enter, Escape. |
+| S4 | 5 | 9 | Q, S, `fir f`, Enter, five stamps, Escape. |
+| S5 | 2 | 36 | Right-click, three entries, close; right-click the same pile, two entries, close. |
 
-The API data was checked for nine distinct S1 ring positions and quantities, S2 quantities, S3 note, five S4 locations, S5 stacking (3→5), and undo restoring 3 and removing the other S5 addition. The full scenario uses a cold seeded catalogue; pinned slots can reduce typing.
+API data assertions checked the S1 item names, quantities and nine distinct ring slots; S3's exact note; five distinct S4 locations; S5 stacking from 3 to 5; and undo restoring 3 and removing the other S5 entry. A blur/focus test retained an armed ×5 and right-click placed that quantity. Separate browser checks covered idle 1/2/3, dialog key isolation, drag while holding a spot, and Enter in the note input.
 
-## Shared changes and gaps
+## Seam and objections
 
-`InteractiveMap.vue` forwards registered variants' Shift-click and intercepted plain clicks on marker and POI tiles through the existing seam; legacy selection remains unchanged. `planBatch` uses stable concentric slots for incremental additions rather than recalculating angles, preventing overlapping placements in a nine-item batch; its test covers nine additions. No stored data shape changed.
+Merged the updated lab seam: its unbounded concentric ring planner, screen-aware snapping and tile interception replace the previous D-specific changes. D uses `interceptTileClick` for Shift-click holding and armed stamping on tiles. No Redis shape changes.
 
-The tray exposes ten slots; select an individual marker to pin its item, and arm a favourite to reorder or unpin it. Very large piles beyond the first 19 slots can reuse ring positions. Search does not offer category filters. The map's existing clustering still combines nearby tiles at low zoom. A next iteration should expand the ring layout for very large piles and add direct pinning from a marker.
+The critique asks both for right-click on an empty map to disarm and for an armed right-click to place there. Those actions conflict at the same location. This implementation follows the explicit right-click placement requirement; Esc, Stop and clicking the armed slot disarm instead. The visible status and cursor ghost stay on through alt-tab.
+
+At low zoom Leaflet groups nearby markers, so ring members display as one pile until zoomed in. Search is text-based without category filters. An open held session groups its additions into one undo step; the next improvement would be an individual-item correction control in the held list.

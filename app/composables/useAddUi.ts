@@ -37,7 +37,16 @@ export interface AddVariantHandlers {
   request?: (req: AddRequest) => void
   /** Called on every plain map click first; return true to swallow it (stamp modes). */
   interceptClick?: (req: AddRequest, e: MouseEvent) => boolean
+  /**
+   * Called first when a loot tile or a place plate is clicked (`req.pos` is the tile's spot);
+   * return true to swallow it, otherwise the tile is selected as usual. Right-click on a tile
+   * always goes to `request` at the tile's spot.
+   */
+  interceptTileClick?: (tile: MapTile, req: AddRequest, e: MouseEvent) => boolean
 }
+
+/** What was clicked on the map: a loot tile (one marker or a grouped pile) or a place plate. */
+export type MapTile = { kind: 'loot'; markerIds: string[] } | { kind: 'place'; poiId: string }
 
 /** Projection helpers published by the main map once it exists. */
 export interface MapView {
@@ -49,6 +58,8 @@ export interface MapView {
   container: HTMLElement
   /** Pan so a position is visible, keeping `margin` px clear */
   reveal: (pos: MapPos, margin?: number) => void
+  /** Map pixels per screen pixel at the current zoom (> 1 when zoomed out) */
+  scale: () => number
 }
 
 const stored = useLocalStorage<AddVariant>('tld-buddy-add-ui', 'legacy')
