@@ -11,6 +11,7 @@ Status column: **Fixed** = fixed on this branch, **Open** = still to do, with a 
 | 1 | Data sync | Last-write-wins whole-document PUT: two devices silently overwrite each other | High | Fixed |
 | 2 | Data sync | Edits made in the 500 ms debounce window are lost when the tab closes; unsynced local edits are discarded on next load | High | Fixed |
 | 3 | Data safety | No server-side validation and no backups: one bad PUT replaces everything | High | Fixed |
+| 3b | Availability | With Redis down, every API request hung (node-redis retries forever and queues commands); a cold start with Redis down would also have signed users out | High | Fixed |
 | 4 | Data safety | Redis runs with default RDB snapshots only: a Pi power cut can lose up to an hour | Medium | Open |
 | 5 | Security | Session token is deterministic HMAC(password, password): never expires, cannot be revoked, and allows offline password guessing | High | Fixed |
 | 6 | Security | No login rate limit; password comparison not constant-time | Medium | Fixed |
@@ -44,6 +45,8 @@ Verified locally: another client added a marker and edited a note, this tab then
 **3. No validation, no backups (fixed).** Any JSON body was written as-is, including `null` or `{}`. PUT now rejects anything that is not an AppData document (`400`) and caps the size at 5 MB. Each write first copies the previous document to `app-data:backups` (at most every 10 minutes, newest 50 kept, format `"<epoch-ms>:<rev>\n<json>"`).
 
 To roll back: `docker compose exec redis redis-cli LRANGE app-data:backups 0 5`, pick an entry, then `SET app-data '<json part>'` and `INCR app-data:rev`.
+
+**3b. Redis outage behaviour (fixed).** `getRedis()` awaited `connect()`, which node-redis retries forever. Commands issued while disconnected were queued rather than rejected. With Redis down, requests hung until the browser gave up. Now the client has `disableOfflineQueue` and requests wait at most 3 s, then get `503`. The UI shows "Offline" and keeps working on the cached copy, retrying in the background. Session checks that cannot read the secret return `503`, not `401`, so an outage never looks like a logout. Verified against a dead Redis port: `/api/data`, `/api/auth/check` and `/api/auth/login` all return 503 in about 3 s.
 
 **4. Redis durability (open).** `redis:8-alpine` in compose uses the default RDB snapshot policy (the first save comes up to an hour after a single change). On a Raspberry Pi a power cut is the realistic failure. Recommendation: turn on AOF. **Do this at runtime first**, so Redis rewrites the AOF from the live dataset. Starting a container with `--appendonly yes` against an existing RDB-only volume risks loading an empty dataset on some versions:
 ```bash
