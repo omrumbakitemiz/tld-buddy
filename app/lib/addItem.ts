@@ -79,24 +79,47 @@ export function rankItems(items: Item[], query: string, opts: RankOptions = {}):
   }
 
   const qWords = q.split(' ')
-  const scored: { item: Item; tier: number }[] = []
+  const prior = lootPrior()
+  const scored: { item: Item; tier: number; score: number }[] = []
   for (const item of pool) {
     const name = foldText(item.name)
     const words = name.split(' ')
     let tier = -1
-    if (name.startsWith(q)) tier = 5
-    else if (words.some((w) => w.startsWith(q))) tier = 4
+    // Name prefix and word prefix share a tier: "pea" should find the Pinnacle Peaches you
+    // keep logging, not Peach Pie. Within it, history and the loot prior decide, and a
+    // whole-name prefix only breaks near-ties.
+    if (words.some((w) => w.startsWith(q))) tier = 4
     else if (qWords.length > 1 && qWords.every((qw) => words.some((w) => w.startsWith(qw)))) tier = 3
     else if (name.includes(q)) tier = 2
     else if (isSubsequence(q.replace(/ /g, ''), name.replace(/ /g, ''))) tier = 1
-    if (tier >= 0) scored.push({ item, tier })
+    if (tier < 0) continue
+    const score = fre(item.id) + (prior.get(item.id) ?? 0) + (name.startsWith(q) ? 0.25 : 0)
+    scored.push({ item, tier, score })
   }
   scored.sort((a, b) =>
     b.tier - a.tier
-    || fre(b.item.id) - fre(a.item.id)
+    || b.score - a.score
     || a.item.name.length - b.item.name.length
     || a.item.name.localeCompare(b.item.name))
   return scored.slice(0, limit).map((s) => s.item)
+}
+
+let priorCache: Map<string, number> | null = null
+/**
+ * A small head start for items players actually log (the curated loot groups, earlier in a
+ * group = more common) over cooked recipes, notes and other catalogue entries. Always
+ * below one logged marker's frecency (≥ 1), so the run's history still wins.
+ */
+function lootPrior(): Map<string, number> {
+  if (priorCache) return priorCache
+  priorCache = new Map()
+  for (const g of LOOT_GROUPS) {
+    g.items.forEach((id, i) => {
+      const v = 0.5 + 0.3 * (1 - i / g.items.length)
+      priorCache!.set(id, Math.max(priorCache!.get(id) ?? 0, v))
+    })
+  }
+  return priorCache
 }
 
 function isSubsequence(needle: string, hay: string): boolean {
@@ -272,19 +295,25 @@ export function planBatch(
 
   const total = here.length + adds.length
   adds.forEach((e, i) => {
-    const slot = here.length + i
-    const single = total === 1
-    // A fixed angular step keeps incremental additions apart. Dividing by the
-    // growing total makes the seventh and later live entries converge on one point.
-    const angle = slot * Math.PI * (3 - Math.sqrt(5)) - Math.PI / 2
-    ops.push({
-      kind: 'add',
-      itemId: e.itemId,
-      quantity: e.quantity,
-      note: e.note || undefined,
-      x: single ? spot.x : spot.x + Math.cos(angle) * SPREAD_RADIUS,
-      y: single ? spot.y : spot.y + Math.sin(angle) * SPREAD_RADIUS,
-    })
+    const at = total === 1 ? { x: spot.x, y: spot.y } : ringSlot(spot, here.length + i)
+    ops.push({ kind: 'add', itemId: e.itemId, quantity: e.quantity, note: e.note || undefined, ...at })
   })
   return ops
+}
+
+/**
+ * Position of the n-th marker around a spot. Slots don't depend on how many there will be,
+ * so items added one at a time land apart just like a batch: 6 on the first ring, 12 on
+ * the second (offset half a step), and so on outwards. (From the variant A builder.)
+ */
+export function ringSlot(spot: { x: number; y: number }, slot: number): { x: number; y: number } {
+  let ring = 1
+  let first = 0
+  while (slot >= first + 6 * ring) {
+    first += 6 * ring
+    ring++
+  }
+  const size = 6 * ring
+  const angle = (2 * Math.PI * (slot - first + (ring > 1 ? 0.5 : 0))) / size - Math.PI / 2
+  return { x: spot.x + Math.cos(angle) * SPREAD_RADIUS * ring, y: spot.y + Math.sin(angle) * SPREAD_RADIUS * ring }
 }

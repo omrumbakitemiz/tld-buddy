@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import {
-  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems,
+  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems, ringSlot,
 } from '../app/lib/addItem'
 import { parseFieldNote, placeFieldNote } from '../app/components/add/b/fieldNote'
 import type { Item } from '../shared/types/game'
@@ -47,6 +47,21 @@ test('rankItems puts whole-name prefix first and shorter names before longer', (
 test('rankItems matches word prefixes across words ("rif am")', () => {
   assert.equal(rankItems(items, 'rif am', { limit: 1 })[0]?.name, 'Rifle Ammunition')
   assert.equal(rankItems(items, 'wood mat', { limit: 1 })[0]?.name, 'Wood Matches')
+})
+
+test('rankItems prefers loggable loot and history over a mere name prefix ("pea")', () => {
+  assert.notEqual(rankItems(items, 'pea', { limit: 1 })[0]?.name, 'Peach Pie')
+  const fre = new Map([['pinnacle-peaches', 2]])
+  assert.equal(rankItems(items, 'pea', { limit: 1, frecency: fre })[0]?.name, 'Pinnacle Peaches')
+  assert.equal(rankItems(items, 'hacks', { limit: 1 })[0]?.name, 'Hacksaw')
+  assert.equal(rankItems(items, 'firew', { limit: 1 })[0]?.name, 'Fir Firewood')
+})
+
+test('ringSlot keeps 30 one-by-one adds apart on concentric rings', () => {
+  const pts = Array.from({ length: 30 }, (_, i) => ringSlot({ x: 0, y: 0 }, i))
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = 0; j < i; j++) assert.ok(Math.hypot(pts[i]!.x - pts[j]!.x, pts[i]!.y - pts[j]!.y) > 5, `${i} vs ${j}`)
+  }
 })
 
 test('rankItems lets frecency break ties inside a tier', () => {
@@ -141,4 +156,5 @@ test('incremental entries keep distinct positions on the shared ring', () => {
     existing.push({ ...op, id: `marker-${i}` })
   }
 })
+
 console.log(`\n${passed} add-item tests passed`)
