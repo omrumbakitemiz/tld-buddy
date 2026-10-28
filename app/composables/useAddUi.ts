@@ -2,17 +2,14 @@ import { ref, shallowRef } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
 /**
- * Seam between the app shell / map and the add-item variant being tried
- * (docs/add-item/CONCEPTS.md). Pick one with `?addui=legacy|a|b|c|d` or the menu;
- * the choice is kept per device.
+ * Seam between the app shell / map and the add-item flow (docs/add-item). The wheel is the
+ * default; the classic dialog stays available from the menu or `?addui=legacy`, per device.
+ * The other lab concepts live on their own branches (feat/add-item-b|c|d).
  */
 
 export const ADD_VARIANTS = [
-  { id: 'legacy', label: 'Current dialog' },
-  { id: 'a', label: 'A · Wheel' },
-  { id: 'b', label: 'B · Field note' },
-  { id: 'c', label: 'C · Rummage' },
-  { id: 'd', label: 'D · Satchel' },
+  { id: 'a', label: 'Wheel' },
+  { id: 'legacy', label: 'Classic dialog' },
 ] as const
 
 export type AddVariant = (typeof ADD_VARIANTS)[number]['id']
@@ -62,8 +59,8 @@ export interface MapView {
   scale: () => number
 }
 
-const stored = useLocalStorage<AddVariant>('tld-buddy-add-ui', 'legacy')
-const variant = ref<AddVariant>('legacy')
+const stored = useLocalStorage<AddVariant>('tld-buddy-add-ui', 'a')
+const variant = ref<AddVariant>('a')
 let initialised = false
 
 /** Last pointer position over the map, or null when the pointer left it. */
@@ -104,7 +101,7 @@ export function useAddUi() {
   if (!initialised && typeof window !== 'undefined') {
     initialised = true
     const fromQuery = new URLSearchParams(window.location.search).get('addui')
-    variant.value = isVariant(fromQuery) ? fromQuery : isVariant(stored.value) ? stored.value : 'legacy'
+    variant.value = isVariant(fromQuery) ? fromQuery : isVariant(stored.value) ? stored.value : 'a'
     if (isVariant(fromQuery)) stored.value = fromQuery
   }
   return {

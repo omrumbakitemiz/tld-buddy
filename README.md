@@ -77,7 +77,7 @@ pnpm dev
 
 ## Using it
 
-- **Add loot:** press `A` and click the map, or Shift-click / right-click (long-press on touch).
+- **Add loot:** point at the spot and press `A` (or right-click it) to open the loot wheel: `1`–`8` pick a group and an item, `Shift`+digits (or `x 12 ⏎`) set the quantity, `Space` adds the last item again, `Backspace` takes the last pick back, `Tab` adds a note, `Enter` closes, `Ctrl+Z` undoes the whole wheel. Right-click an existing pile to add to it. The classic dialog is still in the ⋮ menu → Add flow.
 - **Mark looted:** the ✓ next to an item in the Loot tab, or select a marker and press `L`. Looted
   items fade out on the map; `H` hides them. Items at the same spot share one tile with a count;
   click it for the list.
