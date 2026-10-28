@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- MelonLoader 0.7.x runs Il2Cpp games on .NET 6 (MelonLoader/net6). -->
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>TldBuddy</AssemblyName>
+    <RootNamespace>TldBuddy.Mod</RootNamespace>
+    <Version>0.1.0</Version>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- net6.0 is out of support; it is still what MelonLoader loads. -->
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <!--
+    TldDir points at the game install. Override per machine with
+    `dotnet build -p:TldDir=...`, the TLD_DIR environment variable, or a
+    git-ignored mod/TldDir.props.user file.
+  -->
+  <Import Project="..\TldDir.props.user" Condition="Exists('..\TldDir.props.user')" />
+  <PropertyGroup>
+    <TldDir Condition="'$(TldDir)' == '' and '$(TLD_DIR)' != ''">$(TLD_DIR)</TldDir>
+    <TldDir Condition="'$(TldDir)' == ''">D:\SteamLibrary\steamapps\common\TheLongDark</TldDir>
+    <MelonDir>$(TldDir)\MelonLoader</MelonDir>
+    <Il2CppDir>$(MelonDir)\Il2CppAssemblies</Il2CppDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MelonLoader" HintPath="$(MelonDir)\net6\MelonLoader.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(MelonDir)\net6\0Harmony.dll" Private="false" />
+    <Reference Include="Il2CppInterop.Runtime" HintPath="$(MelonDir)\net6\Il2CppInterop.Runtime.dll" Private="false" />
+    <Reference Include="Assembly-CSharp" HintPath="$(Il2CppDir)\Assembly-CSharp.dll" Private="false" />
+    <Reference Include="Il2Cppmscorlib" HintPath="$(Il2CppDir)\Il2Cppmscorlib.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(Il2CppDir)\UnityEngine.CoreModule.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="CheckTldDir" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(MelonDir)\net6\MelonLoader.dll')"
+           Text="MelonLoader not found under TldDir='$(TldDir)'. Set TldDir (see mod/README.md)." />
+    <Error Condition="!Exists('$(Il2CppDir)\Assembly-CSharp.dll')"
+           Text="Il2Cpp assemblies missing in '$(Il2CppDir)'. Launch the game once with MelonLoader to generate them." />
+  </Target>
+
+  <Target Name="CopyToMods" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TldDir)\Mods" />
+    <Message Importance="high" Text="Copied $(TargetFileName) to $(TldDir)\Mods" />
+  </Target>
+
+</Project>
