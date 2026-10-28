@@ -1,4 +1,85 @@
 {
+  "DamRiverTransitionZoneB": {
+    "mapId": "winding-river",
+    "default": {
+      "matrix": [
+        2.328932177,
+        0.03008529617,
+        1404.093545,
+        -0.03008529617,
+        2.328932177,
+        1153.152954
+      ],
+      "rmsPx": 0,
+      "imageWidth": 3826,
+      "imageHeight": 3375,
+      "points": [
+        {
+          "target": "DamCaveTransitionZone",
+          "exitPoint": "DamCaveEnterPoint2",
+          "world": [
+            777.14,
+            664.78
+          ],
+          "map": [
+            3234,
+            2678
+          ]
+        },
+        {
+          "target": "DamTransitionZone",
+          "exitPoint": "DamWindowEnterPoint",
+          "world": [
+            507.89,
+            233.44
+          ],
+          "map": [
+            2594,
+            1681.5
+          ]
+        }
+      ]
+    },
+    "interloper": {
+      "matrix": [
+        2.301584554,
+        0.05478435895,
+        1411.927033,
+        -0.05478435895,
+        2.301584554,
+        1180.527737
+      ],
+      "rmsPx": 0,
+      "imageWidth": 3826,
+      "imageHeight": 3375,
+      "points": [
+        {
+          "target": "DamCaveTransitionZone",
+          "exitPoint": "DamCaveEnterPoint2",
+          "world": [
+            777.14,
+            664.78
+          ],
+          "map": [
+            3237,
+            2668
+          ]
+        },
+        {
+          "target": "DamTransitionZone",
+          "exitPoint": "DamWindowEnterPoint",
+          "world": [
+            507.89,
+            233.44
+          ],
+          "map": [
+            2593.7,
+            1690
+          ]
+        }
+      ]
+    }
+  },
   "LakeRegion": {
     "mapId": "mystery-lake",
     "default": {
@@ -171,6 +252,84 @@
           "map": [
             4043,
             3139.9
+          ]
+        }
+      ]
+    }
+  },
+  "RuralRegion": {
+    "mapId": "pleasant-valley",
+    "interloper": {
+      "matrix": [
+        -0.005560864826,
+        1.511634178,
+        200.1719369,
+        -1.501190119,
+        0.001306398923,
+        5039.437169
+      ],
+      "rmsPx": 18.44,
+      "imageWidth": 4936,
+      "imageHeight": 4864,
+      "points": [
+        {
+          "target": "ChurchC",
+          "exitPoint": "ChurchCEnterPoint",
+          "world": [
+            2271.41,
+            2287.86
+          ],
+          "map": [
+            3628,
+            1660
+          ]
+        },
+        {
+          "target": "DamCaveTransitionZone",
+          "exitPoint": "DamCaveEnterPoint1",
+          "world": [
+            2684.09,
+            693.03
+          ],
+          "map": [
+            1234,
+            1013.4
+          ]
+        },
+        {
+          "target": "HouseBasementPV",
+          "exitPoint": "HouseBasementPVEnterPoint",
+          "world": [
+            690.09,
+            1655.59
+          ],
+          "map": [
+            2701.9,
+            4003.1
+          ]
+        },
+        {
+          "target": "MineTransitionZone",
+          "exitPoint": "RuralExitPoint",
+          "world": [
+            2649.91,
+            2767.94
+          ],
+          "map": [
+            4382,
+            1045
+          ]
+        },
+        {
+          "target": "RadioControlHut",
+          "exitPoint": "RadioControlHutEnterPoint",
+          "world": [
+            1917.66,
+            632.52
+          ],
+          "map": [
+            1147.1,
+            2154.4
           ]
         }
       ]
