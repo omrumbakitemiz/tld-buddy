@@ -6,7 +6,7 @@ import path from 'node:path'
 import {
   LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems, ringSlot,
 } from '../app/lib/addItem'
-import { parseFieldNote, placeFieldNote } from '../app/components/add/b/fieldNote'
+import { parseFieldNote, placeFieldNote, entryContribution } from '../app/components/add/b/fieldNote'
 import type { Item } from '../shared/types/game'
 
 let passed = 0
@@ -157,4 +157,10 @@ test('incremental entries keep distinct positions on the shared ring', () => {
   }
 })
 
+test('field note rejects a note-only item query and amends only the selected contribution', () => {
+  assert.deepEqual(parseFieldNote('# drawer'), { quantity: 1, query: '', note: 'drawer' })
+  const entries = [{ markerId: 'a', quantity: 2 }, { markerId: 'b', quantity: 10 }, { markerId: 'a', quantity: 4 }]
+  assert.equal(entryContribution(entries, 'a', 2, 3), 5)
+  assert.equal(entryContribution(entries, 'a', 2, 0), 2)
+})
 console.log(`\n${passed} add-item tests passed`)

@@ -1,73 +1,76 @@
-# B · Field note
+# B · Field note — fix round 1
 
-Implemented on `feat/add-item-b`, stacked on lab commit `fc8fc6d8c5e4bc7ca0ac1617125508f0bf51de3e`. Select `?addui=b` or overflow → Add flow → B · Field note.
+Branch `feat/add-item-b`. Merged `origin/feat/add-item-lab` at `8c2fb43`, retaining lab's concentric `ringSlot` implementation instead of B's golden-angle version. Select `?addui=b` or overflow → Add flow → B · Field note.
 
-## How it works
+## Changes against the eight consolidated findings
 
-A 360px ink note sits 24px beside the selected map spot, flips left near the right edge, and clamps inside the map viewport. A crosshair keeps the spot visible. Its height follows its actual content. It uses existing rail, border, bone, apricot, muted, HUD and tabular tokens; no fonts, glow, new theme, or touch-specific UI.
+1. **Speed:** empty input shows six compact icon/name quick picks with Alt+1–6 hints; each is one click or one chord. Space on an empty line repeats the last item and finishes the visit. S4 is now five right-clicks + five Space presses. Leading digits remain quantity text. The merged ranking was verified in Chrome: `pea` selects Pinnacle Peaches, `fir` selects Fir Firewood.
+2. **Existing loot:** a separate Before this visit section shows original item icons, names, quantities, and looted state (muted/desaturated icon, mint quantity and visible Looted label). Remaining items retain apricot quantities and a screen-reader Still here label. This visit has its own chips, quantities and note indicators. These are baseline quantities, not a second tally of the growing live pile.
+3. **Toasts:** commits update chips and the map with no announcement toast. Finishing a nonempty visit emits one shared summary with Undo. Undo/error feedback is separate. An automated assertion checked no Undo toast appeared during S1 before closing.
+4. **Enter:** empty Enter always finishes without adding anything. Nonempty Enter adds the visibly selected match; while editing, it updates the entry. Space, not Enter, is repeat-and-finish. Empty picks display Alt-number hints and never imply Enter adds them. Footer hints describe the current state.
+5. **Editing/Undo:** empty Backspace opens the last entry in place. Its existing marker remains until the edit commits. Quantity correction calls `amend()` with the total contribution this visit made to that marker, including earlier repeated lines. It preserves marker IDs and earlier entries. Changing item/note removes only that line's contribution and adds its replacement. Remove entry calls `amend(..., 0)` when it was the sole contribution. Cancel edit leaves the saved entry intact. Ctrl+Z on a fresh visit calls ordinary latest-batch Undo; zero changes reports Nothing to undo, never Undone.
+6. **Input retention:** Escape, Done, background click, right-click elsewhere and tile click retain unfinished text, refocus the line and explain how to finish/discard. Discard draft is explicit; Cancel edit keeps the original saved entry. Printable keys after a map drag are routed back to the line, including the first character. Window focus return restores input focus. Unfinished map/run drafts are retained in memory with their original spot and edit batch for restoration when that context is opened again.
+7. **Bugs:** empty Tab without a committed entry asks for an item first; it never invents a ` # ` query. Hash parsing handles note-only input as an empty query and commit refuses it. While open, a loot tile/place-plate click moves the note to that spot and swallows normal selection; with a draft it keeps the original spot instead. Right-click uses the new tile-aware request. Combobox `aria-expanded`, `aria-controls`, and `aria-activedescendant` follow actual suggestion visibility. Mouse presses on note controls preserve input focus so blur cannot shift the footer out from under a click.
+8. **Craft/code:** added the specified floating-card shadow (`0 8px 28px oklch(0.1 0.02 258 / 0.6)`) and a short leader from crosshair to the nearest plate edge. Empty suggestions occupy two columns instead of six full rows. Functions, transaction state and handlers are expanded into readable blocks. Tokens, system fonts, HUD labels, motion and reduced-motion rules remain inherited.
 
-The line searches all items through the shared prefix/fuzzy/frecency search. Six visible suggestions show the selected item and parsed quantity before Enter. Empty suggestions start with the last item, then frequent items in this run. Each committed entry appears as an icon/name/quantity chip; noted entries carry a note icon and tooltip. Chips scroll after three rows. The map updates immediately. Closing keeps committed items and discards only unfinished text.
-
-The note stays open while focus leaves the window and refocuses the line when the window returns. It closes on map/run changes so a stale spot cannot write into another map. Clicking ordinary map background finishes the visit. Existing marker and POI selection still works. While open, the floating Add loot button is hidden.
+**Objections:** none to the requested fixes. Alt+number is a deliberate choice within item 1's suggested approaches: bare digits would conflict with leading quantities such as `12 mat`. On macOS Option-number is handled by physical `Digit1`–`Digit6`, independent of the resulting character.
 
 ## Full keyboard model
 
-- `A` while the pointer is on the map: open at the pointer. Outside the map, the normal placement hint asks for a map click. The floating button, palette, panel, Shift-click, right-click and existing long-press use the same handlers.
-- `Enter` on a selected marker or pile, outside other controls/dialogs: open at that pile. The capture handler prevents the shell from handling that event.
-- Letters/digits: ordinary editable text. `12 matches`, `matches 12`, `matches x12`, `12x mat` parse through the shared grammar. Quantities clamp to 1–999.
-- `Enter` or comma: commit the selected match. Comma inside a note stays literal punctuation. Repeated held Enter does not commit repeatedly.
-- Empty `Enter` after a commit: finish. Empty `Enter` at a newly opened spot: repeat the suggested last item; the next empty Enter finishes. On a device without a last item, the first run suggestion is selectable instead.
-- `Up`/`Down`: wrap through suggestions. Clicking a suggestion commits it too.
-- `Tab` with text: complete selected item, preserving quantity/note. `Tab` on an empty line after a commit: reopen that entry with a note delimiter. On a new empty visit it starts a note for the repeat item. `Shift+Tab` follows normal focus navigation.
-- `#` (spaces optional) or ` - ` introduces an item note. Note text is visible before commit; for example `hacksaw # in the car trunk`.
-- Empty `Backspace`: pull back the last committed entry, including its quantity/note, for editing.
-- `Esc` or Done: finish, keeping committed entries. Unfinished text is discarded.
-- `Ctrl+Z` / `Cmd+Z` while open: undo this visit, clear its chips, retain the spot. Shared toast Undo does the same data undo. After closing, the shell's ordinary batch Undo applies.
-- All shell single-key shortcuts (`A L H N / ? P [ 1 2 3 F + - T R E Del Esc`) pause via `active` while the note owns the keyboard. They are text when typed in the line; Escape deliberately finishes. No global numeric shortcuts are replaced. Modifier shortcuts other than Undo remain with the shell/browser.
+- `A` with pointer over map opens there. Outside map, A/button/palette/panel asks for a map click. Right-click, Shift-click and existing long-press still open at their spot. Enter on an already selected marker/pile opens there.
+- Type item names, optional quantity and note. Supported forms: `12 matches`, `matches 12`, `matches x12`, `12x mat`, `hack #car trunk`, `hacksaw - car trunk`. Quantity clamps to 1–999. Hash needs no spaces.
+- Nonempty `Enter` or comma commits the highlighted result and keeps the line ready. Commas within a note remain punctuation. Held Enter does not repeatedly commit.
+- Empty `Enter` finishes, always. It never selects Again or a frequent item.
+- Empty `Space` repeats the last item at quantity 1, then finishes. Without a last item it explains that an item must be added first.
+- Empty `Alt+1`–`Alt+6` picks the corresponding quick suggestion and stays open. Clicks on quick picks do the same. These slots follow this run's frecency, with Again first when available; they are labelled shortcuts, not permanent item positions.
+- `Up`/`Down` choose a search match. `Tab` completes its name, preserving quantity/note. `Tab` after a commit on an empty line opens that entry with a note delimiter. Empty Tab with no entry explains the grammar. `Shift+Tab` follows normal focus navigation.
+- Empty `Backspace` edits the last entry. Enter updates; Cancel edit or clearing the line keeps the original. Remove entry removes that entry's contribution, preserving all other quantities.
+- `Esc` or Done finishes if the line is empty. With a draft it stays open with guidance. Click Discard draft explicitly before leaving without saving it. Unfinished typing is not automatically committed to a guessed match.
+- `Ctrl+Z` / `Cmd+Z` undoes this visit, or the latest saved batch on a fresh visit. The shared toast also undoes a closed visit. A draft is retained through Undo and can be edited or discarded.
+- The shell's single-key shortcuts (`A L H N / ? P [ 1 2 3 F + - T R E Del Esc`) pause through `active`. They type normally in the line; Escape deliberately requests dismissal. No idle shell shortcuts are replaced. Alt+1–6 is local to an empty open line.
+- Clicking ordinary background finishes an empty visit. Clicking a tile/plate while open moves the note; with text it preserves the old spot. Map drags keep the visit; later letters return to the line.
 
-Each visit is one shared batch. Re-editing the last entry uses the existing seam: undo the visit, replay earlier entries as a fresh batch, and return the removed entry to the line. This avoids direct marker writes, but creates new IDs for that visit's newly added markers. Previously existing stacked markers keep their IDs.
+## Measured counts
 
-## Measured desktop scenarios
+Actual Chrome run through `/tmp/tld-lab-tools/lab.mjs`, 1600×1000, localhost:3102, lab Redis DB 2 reseeded first. Each typed character (including spaces/delimiters) and each named key press is one key action; a modifier chord counts as one. Opening and finishing count. Setup zoom, pointer motion, verification and OS-switch keys do not count. No learned history was artificially injected.
 
-Chrome through `/tmp/tld-lab-tools/lab.mjs`, 1600×1000, localhost:3102, Redis DB 2, fresh lab seed. Counted each typed character and each named key press as one key; spaces and delimiters count. Pointer motion/zoom setup and verification do not count. A chord counts as one key action. Counts include opening and finishing. These are actual conservative queries, not the concept document's estimates or a lower-bound claim.
-
-| Scenario | Clicks | Keys | Typed sequence (`↵` = Enter) |
+| Scenario | Clicks | Keys | Measured sequence (`↵` = Enter) |
 |---|---:|---:|---|
-| S1 · nine-item farmhouse | 0 | 71 | `A`, `12 wood mat↵3 peaches↵2 rif↵hat↵sew↵wool to↵2 cloth↵5 fir fire↵antis↵↵` |
-| S2 · base stash | 1 | 47 | right-click, `20 rif↵hunting rif↵6 recycled can↵10 fir fire↵↵` |
-| S3 · rare item + note | 1 | 28 | right-click, `hacksaw # in the car trunk↵↵` |
-| S4 · firewood at five spots | 5 | 10 | after priming Fir Firewood outside the measurement, five × right-click, `↵↵` |
-| S5 · drawers, return later | 1 | 36 | right-click, `3 wood mat↵2 cloth↵sew↵`, leave/return focus, `4 cloth↵hat↵↵` |
+| S1 · nine-item farmhouse | 0 | 49 | `A`, `12 mat↵3 pea↵2 rif↵hat↵sew↵toq↵2 clo↵5 fir↵ant↵↵` |
+| S2 · base stash | 1 | 29 | right-click, `20 rif↵hun rif↵6 can↵10 fir↵↵` (Recycled Can verified) |
+| S3 · rare item + note | 1 | 17 | right-click, `hack #car trunk↵↵` |
+| S4 · five firewood spots | 5 | 5 | after priming Fir Firewood outside measurement: five × right-click, Space |
+| S5 · drawers, return later | 1 | 27 | right-click, `3 mat↵2 clo↵sew↵`, blur/return focus, `4 clo↵hat↵↵` |
 
-S5 focus loss/return was driven with window blur/focus events and real input blur; this checks the application lifecycle but does not claim an OS-level alt-tab or a running game. App-switch key presses are excluded. The spot remained open and cloth stacked from 2 to 6. A separate selected-pile Enter test reopened an existing spot after closing.
+S5 uses actual input blur + window focus events, not OS-level alt-tab or a running game. No time delay is required by the implementation; the session stays open until finished. The measurements are interaction counts, not elapsed-time benchmarks.
 
-## Verification
+## Verification and evidence
 
-- S1: API readback verified nine actual markers, quantities `[12,3,2,1,1,1,2,5,1]`, one local ring; map group showed 9 and the sidebar showed quantities.
-- S3: API readback verified Hacksaw with exact note `in the car trunk`.
-- S4: each new spot showed `Again: Fir Firewood`, then received its repeat.
-- S5: API readback verified cloth stacked to 6. Shared toast Undo removed the four unique markers from that visit (including both cloth contributions).
-- Empty Backspace returned `12 Wood Matches` for correction. Ctrl+Z cleared the session's committed chips. Empty Tab reopened Hatchet for a note, then keyboard Undo worked.
-- Legacy query still opened its existing Add loot here dialog with a map right-click.
-- `npx nuxi typecheck`: pass. `pnpm build`: pass (existing Browserslist, sourcemap and VueUse annotation warnings). `pnpm test`: pass, 15 app-data + 14 add-item tests.
-- Impeccable mechanical detector: no findings. Desktop captures visually inspected. Inline finish review used because the implementation-agent brief prohibits further delegation. No phone review was performed (explicitly out of scope).
+- S1 API readback: nine markers, quantities `[12,3,2,1,1,1,2,5,1]`, concentric ring positions; grouped marker count 9 and sidebar quantities verified.
+- S3 API readback: Hacksaw, note `car trunk`.
+- S4 API readback: current-map/run Fir Firewood quantity increased by exactly five, one per Space repeat.
+- S5 API readback: cloth stacked 2 + 4 to 6. Closing-toast Undo removed all four unique markers from that visit.
+- Mistake + edit + Undo: reopen S1 pile via right-click; add matches 2, hatchet 1, matches 4; edit last to 3. Existing matches changed from 12 to 17; every pre-visit marker ID survived. Ctrl+Z restored the entire pre-visit marker array exactly. A separate POI-plate test corrected a newly created marker from 2 to 3, retained its ID, and undid to the exact baseline.
+- Remove entry restored the pre-visit marker array; Ctrl+Z with no remaining batch reported Nothing to undo. A note-only `#drawer` refused to create a marker.
+- Fresh-visit Ctrl+Z reduced the last saved firewood batch by exactly one. Empty Enter closed without adding. Tab and Space with no last item produced guidance and no unintended marker.
+- Draft survived Escape, background click and loot-tile click. Alt+1 added exactly one chip. An actual mouse drag followed by typing retained the full word `hacksaw`, including the first letter. Tile interception moved the note with no normal loot-card selection. No browser page errors.
+- `npx nuxi typecheck`: pass. `pnpm build`: pass (existing Browserslist, sourcemap and VueUse annotation warnings). `pnpm test`: pass, 15 app-data + 17 add-item tests. Mechanical design detector: no findings.
+- New pure-logic checks cover note-only parsing and the per-marker contribution sum used by amendment. Lab's existing ranking and concentric-ring regression checks remain intact.
 
-## Seam change
+## Screenshots
 
-`app/lib/addItem.ts`: the shared batch planner now uses a fixed golden-angle step for each new ring member. Previously the denominator grew on each incremental commit, so the seventh through ninth members converged almost onto the sixth. The fixed step keeps those entries apart without moving saved markers, changing stacking rules, marker radius, Redis shape, or legacy UI. A regression test simulates nine incremental entries and checks pairwise separation above five map pixels. No composable, shell, host or other variant files changed.
+All 1600×1000 PNG, refreshed for this round and visually inspected:
 
-## Captures
+- `01-idle.png`: working desktop map.
+- `02-open.png`: compact empty quick picks, leader and shadow.
+- `03-mid-batch.png`: five committed items, no per-item toast.
+- `04-after.png`: nine-item group, one closing Undo toast.
+- `05-existing.png`: seeded existing loot with quantities and looted state, separately from a new addition in This visit.
 
-All PNG, 1600×1000: `01-idle.png`, `02-open.png`, `03-mid-batch.png` (five committed items), `04-after.png` (nine-item group). Taken on the seeded Mystery Lake map; zoom increased for a useful desktop working view.
+## Seam, boundaries and remaining gaps
 
-## Known gaps and next work
+No new seam edits. The merge accepted lab's `ringSlot`, `amend`, tile-click interception, zoom-aware snapping, `scale()` and ranking changes. No other variant implementation was edited. Marker data shape is unchanged. Legacy UI is untouched by B's changes.
 
-- Search ambiguity remains deliberate: `pea` selects Peach Pie (whole-name prefix), while `peaches` selects Pinnacle Peaches. The selected name is visible. Test shorter learned queries with a player before changing shared search ranking.
-- Empty Enter repeats the last item on a fresh visit but closes after a commit; the footer describes the current action. A second-monitor usability session should validate this distinction.
-- Focus return is tested through browser events, not real OS/game switching. Test that on the player's two-monitor setup next.
-- The existing shared marker renderer groups close ring members at normal zoom. Quantities live in the chips, sidebar, and accessible marker label; the grouped tile itself displays distinct-item count.
-- The shared storage composable owns offline/sync feedback. The note confirms local marker creation, not a completed network save.
-- Re-edit replays the current visit (see above). A future generic amend-last-entry seam could avoid regenerating its new IDs.
-- Fixed-step rings avoid the observed nine-item convergence; very large piles still crowd at the fixed 12px radius.
+Unfinished drafts are component memory, not durable storage; reload/variant replacement does not preserve them. Actual OS/game focus switching still needs a two-monitor player check. The shared renderer groups nearby ring members at normal zoom; the tile shows item count while chips/sidebar/accessible labels show quantities. Existing-loot chips preserve the pre-visit snapshot rather than continuously reflecting remote edits. The storage composable owns sync/offline status; chip confirmation means a local marker edit, not a completed server write.
 
-Design documentation check: existing `DESIGN.md` and tokens remain authoritative and unchanged. Rail palette, system type, HUD labels, hairline plates, apricot quantity/focus and reduced-motion handling match the incumbent system. Pre-existing `.impeccable/design.json` drift was not repaired; `impeccable document` can refresh it separately.
+Next: repeat the critic walkthrough with these keyboard rules, then validate real alt-tab and mouse/keyboard switching with the player. No new web font or touch-specific UI was added. Existing DESIGN.md remains authoritative; no design-system changes were made. Design QA was performed inline without further delegation.
