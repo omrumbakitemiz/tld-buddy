@@ -10,6 +10,12 @@ export function getAppPassword(): string {
   return String(raw)
 }
 
+/** Bearer token the game mod sends to /api/live/v1/state. Empty = live bridge disabled. */
+export function getModToken(): string {
+  const config = useRuntimeConfig()
+  return String(config.modToken || process.env.NUXT_MOD_TOKEN || process.env.MOD_TOKEN || '')
+}
+
 /** Optional fixed session-signing secret; otherwise one is generated and kept in Redis. */
 export function getSessionSecretOverride(): string {
   return process.env.NUXT_SESSION_SECRET || process.env.SESSION_SECRET || ''

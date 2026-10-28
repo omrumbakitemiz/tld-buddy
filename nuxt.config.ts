@@ -49,9 +49,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Empty defaults only — filled at runtime from NUXT_APP_PASSWORD / NUXT_REDIS_URL
+    // Empty defaults only — filled at runtime from NUXT_APP_PASSWORD / NUXT_REDIS_URL / NUXT_MOD_TOKEN
     appPassword: '',
     redisUrl: '',
+    modToken: '',
   },
 
   vite: {

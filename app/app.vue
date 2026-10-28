@@ -88,12 +88,14 @@ import SyncBanner from '~/components/SyncBanner.vue'
 import TravelModeView from '~/components/TravelModeView.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useGameData } from '~/composables/useGameData'
+import { useLiveGame } from '~/composables/useLiveGame'
 import { useShortcuts } from '~/composables/useShortcuts'
 import { useUiState, type PanelTab } from '~/composables/useUiState'
 import type { Marker } from '~/types'
 
 const auth = useAuth()
 const ui = useUiState()
+const live = useLiveGame()
 const {
   maps, markers, currentMap, currentMapId, currentRun, addMarker, updateMarker, setLooted, toggleLooted,
   deleteMarker, setCurrentMap, getItemById, travelMode, toggleTravelMode, authExpired, apiSynced,
@@ -144,6 +146,12 @@ watch([apiSynced, () => maps.value.length], ([synced, mapCount]) => {
   if (!currentMapId.value && maps.value[0]) setCurrentMap(maps.value[0].id)
   if (!currentRun.value) ui.showRuns.value = true
 }, { immediate: true })
+
+// Follow the game into a new region. Only on a change in the game, so browsing other maps
+// while playing is not undone every second.
+watch(() => live.position.value?.mapId, (mapId) => {
+  if (mapId && mapId !== currentMapId.value && !travelMode.value) setCurrentMap(mapId)
+})
 
 // Switching maps or runs drops selections that no longer apply
 watch([currentMapId, () => currentRun.value?.id], () => {

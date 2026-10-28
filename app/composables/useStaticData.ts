@@ -1,5 +1,6 @@
 import { ref, shallowRef, computed } from 'vue'
-import type { GameMap, Item, MapConnection, POI } from '~/types'
+import type { GameMap, GameScene, Item, MapConnection, POI } from '~/types'
+import type { MapCalibration } from '#shared/utils/live'
 
 /** Read-only game data shipped in public/data, loaded once per page. */
 
@@ -7,19 +8,29 @@ const maps = shallowRef<GameMap[]>([])
 const items = shallowRef<Item[]>([])
 const pois = shallowRef<POI[]>([])
 const connections = shallowRef<MapConnection[]>([])
+const gameScenes = shallowRef<GameScene[]>([])
+const calibration = shallowRef<MapCalibration>({})
 const ready = ref(false)
 let started = false
 
-async function loadJson<T>(url: string): Promise<T[]> {
+async function fetchJson(url: string): Promise<unknown> {
   try {
     const res = await fetch(url, { cache: 'no-cache' })
-    if (!res.ok) return []
-    const data = await res.json()
-    return Array.isArray(data) ? (data as T[]) : []
+    return res.ok ? await res.json() : null
   } catch {
     console.warn(`Could not load ${url}`)
-    return []
+    return null
   }
+}
+
+async function loadJson<T>(url: string): Promise<T[]> {
+  const data = await fetchJson(url)
+  return Array.isArray(data) ? (data as T[]) : []
+}
+
+async function loadObject<T>(url: string): Promise<T | null> {
+  const data = await fetchJson(url)
+  return data && typeof data === 'object' && !Array.isArray(data) ? (data as T) : null
 }
 
 function start() {
@@ -30,11 +41,15 @@ function start() {
     loadJson<GameMap>('/data/maps.json'),
     loadJson<POI>('/data/pois.json'),
     loadJson<MapConnection>('/data/map-connections.json'),
-  ]).then(([i, m, p, c]) => {
+    loadJson<GameScene>('/data/game-scenes.json'),
+    loadObject<MapCalibration>('/data/map-calibration.json'),
+  ]).then(([i, m, p, c, s, cal]) => {
     items.value = i
     maps.value = m
     pois.value = p
     connections.value = c
+    gameScenes.value = s
+    calibration.value = cal ?? {}
   }).finally(() => {
     ready.value = true
   })
@@ -63,6 +78,8 @@ export function useStaticData() {
     items,
     pois,
     connections,
+    gameScenes,
+    calibration,
     ready,
     itemsById,
     mapsById,

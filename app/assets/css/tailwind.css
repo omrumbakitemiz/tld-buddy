@@ -366,6 +366,60 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Live player position from the game mod: bone white like the game's HUD, with a heading arrow */
+.tld-live {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+}
+.tld-live__halo {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: oklch(0.945 0.014 85 / 0.35);
+  animation: tld-live-pulse 2.4s ease-out infinite;
+}
+.tld-live__dot {
+  position: absolute;
+  inset: 13px;
+  border-radius: 50%;
+  background: var(--foreground);
+  box-shadow: 0 0 0 2px oklch(0.16 0.03 258), 0 2px 6px oklch(0.1 0.02 258 / 0.6);
+}
+.tld-live__arrow {
+  position: absolute;
+  inset: 0;
+  transition: transform 300ms ease-out;
+}
+.tld-live__arrow::before {
+  /* Wedge just outside the dot, pointing up before rotation */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 1px;
+  translate: -50% 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 11px solid var(--foreground);
+  filter: drop-shadow(0 0 1.5px oklch(0.16 0.03 258)) drop-shadow(0 0 1.5px oklch(0.16 0.03 258));
+}
+/* Indoors: no heading, a dashed ring around the door they went in by */
+.tld-live--indoors .tld-live__dot {
+  inset: 10px;
+  background: oklch(0.22 0.03 258);
+  border: 2px dashed var(--foreground);
+  box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.6);
+}
+.tld-live--indoors .tld-live__halo {
+  animation: none;
+  opacity: 0;
+}
+@keyframes tld-live-pulse {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
 /* Placement cursor while adding loot or pinning a place */
 .map-placing .leaflet-container {
   cursor: crosshair !important;

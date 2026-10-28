@@ -32,6 +32,21 @@ The build copies `TldBuddy.dll` into `<TLD>/Mods/`. Close the game before you bu
   </Project>
   ```
 
+## Live position bridge
+
+About once a second, the mod posts the player's scene and position to `POST <ServerUrl>/api/live/v1/state` with `Authorization: Bearer <Token>`. The app streams it to signed-in browsers (`/api/live/v1/stream`). It shows a "you are here" arrow and switches to the region you are in. Indoors, the marker sits on the door you entered by.
+
+1. On the server, set `MOD_TOKEN` in `.env` (e.g. `openssl rand -hex 32`) and run `./deploy.sh`.
+2. In `<TLD>/UserData/MelonPreferences.cfg`:
+
+   ```toml
+   [TldBuddy]
+   ServerUrl = "http://192.168.1.133:4000"   # LAN address; Cloudflare Access blocks the mod
+   Token = "<same value as MOD_TOKEN>"
+   ```
+
+The position is kept in server memory only, never in the saved data. Requests run off the game thread, at most one at a time, with a 3 s timeout. If the server is unreachable, the mod skips updates and logs a warning at most once a minute.
+
 ## Landmarks and map calibration
 
 Each time a scene loads, the mod writes the scene's doors, cave mouths and region exits to `<TLD>/UserData/TldBuddy/landmarks/<scene>.json`, with their world position and the scene they lead to.

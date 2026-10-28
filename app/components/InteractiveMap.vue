@@ -55,6 +55,15 @@
 
     <!-- Zoom / fit -->
     <div v-if="currentMap" class="absolute bottom-4 right-3 z-[500] flex flex-col overflow-hidden rounded-lg border border-border surface-rail shadow-lg">
+      <button
+        v-if="livePoint"
+        class="map-ctl border-b border-border"
+        :aria-label="live.position.value?.indoors ? 'Show where you went indoors' : 'Show your position'"
+        :title="live.position.value?.indoors ? 'Show where you went indoors' : 'Show your position'"
+        @click="flyTo(livePoint.x, livePoint.y, 0)"
+      >
+        <LocateFixedIcon class="size-4" />
+      </button>
       <button class="map-ctl" aria-label="Zoom in" title="Zoom in (+)" @click="zoomIn">
         <PlusIcon class="size-4" />
       </button>
@@ -71,10 +80,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import L from 'leaflet'
-import { CrosshairIcon, EyeOffIcon, LoaderIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
+import { CrosshairIcon, EyeOffIcon, LoaderIcon, LocateFixedIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useImageMap } from '~/composables/useImageMap'
+import { useLiveGame } from '~/composables/useLiveGame'
 import { useUiState } from '~/composables/useUiState'
 import type { Marker } from '~/types'
 
@@ -103,9 +113,22 @@ let poiLayer: L.LayerGroup | null = null
 const markerViews = new Map<string, { key: string; layer: L.Marker }>()
 const poiViews = new Map<string, { key: string; layer: L.Marker }>()
 
+const live = useLiveGame()
+/** Live position when it is on the map being shown. */
+const livePoint = computed(() => {
+  const pos = live.position.value
+  return pos?.point && pos.mapId === currentMap.value?.id ? pos.point : null
+})
+let liveMarker: L.Marker | null = null
+let liveMarkerIndoors = false
+/** Unwrapped arrow angle, so the CSS transition always turns the short way. */
+let liveRotation = 0
+
 const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMapVariant, (map) => {
   markerViews.clear()
   poiViews.clear()
+  // The old marker belonged to the map that was just replaced
+  liveMarker = null
   poiLayer = L.layerGroup().addTo(map)
   markerLayer = L.layerGroup().addTo(map)
 
@@ -138,6 +161,7 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
 
   renderMarkers()
   renderPOIs()
+  renderLive()
 
   renderedMapId = currentMap.value?.id ?? null
   if (pendingFly) {
@@ -295,6 +319,52 @@ watch([visibleMarkers, selectedMarkerId, selectedGroupIds, () => items.value.len
 watch([currentMapPOIPins, selectedPOIId, () => currentMapMarkers.value.length], renderPOIs, { deep: true })
 // Stash counts change without pins changing
 watch(() => currentMapPOIPins.value.map((p) => getStashedItemCount(p.poiId)).join(','), renderPOIs)
+
+// ── Live position (game mod) ────────────────────────────────────────────────
+
+function liveIcon(indoors: boolean) {
+  const html = indoors
+    ? '<div class="tld-live tld-live--indoors"><span class="tld-live__halo"></span><span class="tld-live__dot"></span></div>'
+    : '<div class="tld-live"><span class="tld-live__halo"></span><span class="tld-live__arrow"></span><span class="tld-live__dot"></span></div>'
+  return L.divIcon({ className: 'tld-icon', html, iconSize: [40, 40], iconAnchor: [20, 20] })
+}
+
+function renderLive() {
+  const map = getMap()
+  const point = livePoint.value
+  if (!map || !point) {
+    liveMarker?.remove()
+    liveMarker = null
+    return
+  }
+  const indoors = !!live.position.value?.indoors
+  if (!liveMarker) {
+    liveMarker = L.marker([point.y, point.x], {
+      icon: liveIcon(indoors),
+      interactive: false,
+      keyboard: false,
+      zIndexOffset: 2000,
+      title: 'You',
+    }).addTo(map)
+    liveMarkerIndoors = indoors
+  } else {
+    liveMarker.setLatLng([point.y, point.x])
+    if (indoors !== liveMarkerIndoors) {
+      liveMarker.setIcon(liveIcon(indoors))
+      liveMarkerIndoors = indoors
+    }
+  }
+  const arrow = liveMarker.getElement()?.querySelector<HTMLElement>('.tld-live__arrow')
+  const rotation = live.position.value?.rotation
+  if (arrow && rotation != null) {
+    // Turn the short way: 350° → 10° should rotate +20°, not −340°
+    liveRotation += ((rotation - liveRotation + 540) % 360) - 180
+    arrow.style.transform = `rotate(${liveRotation}deg)`
+  }
+}
+
+watch(() => live.position.value, renderLive)
+watch(() => currentMap.value?.id, renderLive)
 
 function escapeHtml(text: string) {
   return text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' })[c]!)
