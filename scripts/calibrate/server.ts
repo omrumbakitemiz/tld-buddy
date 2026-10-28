@@ -5,9 +5,10 @@
  *         TLD_DIR="C:\path\to\TheLongDark" node scripts/calibrate/server.ts
  *
  * Serves a page at http://127.0.0.1:5174 that shows a region map next to the landmarks
- * the mod exported (UserData/TldBuddy/landmarks/<scene>.json). Place a few landmarks on
- * the map; the page fits an affine transform (world x/z → map x/y) and "Save" writes it
- * into public/data/map-calibration.json.
+ * the mod exported (UserData/TldBuddy/landmarks/<scene>.json: doors and exits) and the
+ * spots you marked with the mark key (UserData/TldBuddy/marks/<scene>.json). Place a few
+ * on the map; the page fits a transform (world x/z → map x/y) and "Save" writes it into
+ * public/data/map-calibration.json.
  */
 
 import { createServer } from 'node:http'
@@ -21,6 +22,29 @@ const PUBLIC_DIR = path.join(ROOT, 'public')
 const CALIBRATION_PATH = path.join(PUBLIC_DIR, 'data', 'map-calibration.json')
 const TLD_DIR = process.env.TLD_DIR ?? 'D:\\SteamLibrary\\steamapps\\common\\TheLongDark'
 const LANDMARKS_DIR = path.join(TLD_DIR, 'UserData', 'TldBuddy', 'landmarks')
+/** Positions of "mark here" presses, usable as hand-picked reference points. */
+const MARKS_DIR = path.join(TLD_DIR, 'UserData', 'TldBuddy', 'marks')
+
+interface Landmark { target: string; exitPoint?: string; x: number; y: number; z: number }
+
+async function jsonFiles(dir: string): Promise<Map<string, unknown>> {
+  const files = existsSync(dir) ? (await readdir(dir)).filter((f) => f.endsWith('.json')) : []
+  const entries = await Promise.all(files.map(async (f) => [f.slice(0, -5), await readJson(path.join(dir, f), null)] as const))
+  return new Map(entries.filter(([, v]) => v))
+}
+
+/** Door landmarks per scene, plus your marks in that scene as extra points. */
+async function allLandmarks() {
+  const doors = await jsonFiles(LANDMARKS_DIR)
+  const marks = await jsonFiles(MARKS_DIR)
+  const scenes = new Set([...doors.keys(), ...marks.keys()])
+  return [...scenes].sort().map((scene) => {
+    const fromDoors = ((doors.get(scene) as { landmarks?: Landmark[] } | undefined)?.landmarks ?? [])
+    const fromMarks = ((marks.get(scene) as Array<{ label: string; time: string; x: number; y: number; z: number }> | undefined) ?? [])
+      .map((m) => ({ target: `Mark: ${m.label}`, exitPoint: m.time, x: m.x, y: m.y, z: m.z }))
+    return { scene, landmarks: [...fromDoors, ...fromMarks] }
+  })
+}
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -52,11 +76,7 @@ const server = createServer(async (req, res) => {
     }
 
     if (req.method === 'GET' && url.pathname === '/api/landmarks') {
-      const files = existsSync(LANDMARKS_DIR) ? await readdir(LANDMARKS_DIR) : []
-      const all = await Promise.all(
-        files.filter((f) => f.endsWith('.json')).map((f) => readJson(path.join(LANDMARKS_DIR, f), null)),
-      )
-      return send(200, JSON.stringify(all.filter(Boolean)), TYPES['.json'])
+      return send(200, JSON.stringify(await allLandmarks()), TYPES['.json'])
     }
 
     if (req.method === 'POST' && url.pathname === '/api/calibration') {

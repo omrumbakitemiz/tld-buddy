@@ -184,6 +184,31 @@ namespace TldBuddy.Mod
             string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
             bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions), label);
             LoggerInstance.Msg($"Mark: {label} in {scene}");
+            SaveMarkPoint(trail[0], label);
+        }
+
+        /// <summary>
+        /// Appends the mark's exact position to UserData/TldBuddy/marks/&lt;scene&gt;.json. The
+        /// calibration tool lists these next to the doors, so regions with few doors can be
+        /// calibrated from spots you marked yourself (a bridge, a river bend).
+        /// </summary>
+        void SaveMarkPoint(SceneSample at, string label)
+        {
+            try
+            {
+                string dir = Path.Combine(MelonEnvironment.UserDataDirectory, "TldBuddy", "marks");
+                Directory.CreateDirectory(dir);
+                string path = Path.Combine(dir, at.scene + ".json");
+                var points = File.Exists(path)
+                    ? JsonSerializer.Deserialize<List<MarkPoint>>(File.ReadAllText(path), JsonOptions) ?? new List<MarkPoint>()
+                    : new List<MarkPoint>();
+                points.Add(new MarkPoint(label, System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"), at.x, at.y, at.z));
+                File.WriteAllText(path, JsonSerializer.Serialize(points, new JsonSerializerOptions(JsonOptions) { WriteIndented = true }));
+            }
+            catch (System.Exception e)
+            {
+                LoggerInstance.Warning($"Could not save the mark position for calibration: {e.Message}");
+            }
         }
 
         /// <summary>The gear item under the crosshair, or null (nothing, or not an item: a door, a container).</summary>
@@ -298,6 +323,25 @@ namespace TldBuddy.Mod
             public LiveState(List<SceneSample> scenes)
             {
                 this.scenes = scenes;
+            }
+        }
+
+        sealed class MarkPoint
+        {
+            public string label;
+            public string time;
+            public double x, y, z;
+
+            // Needed by the JSON reader
+            public MarkPoint() { }
+
+            public MarkPoint(string label, string time, double x, double y, double z)
+            {
+                this.label = label;
+                this.time = time;
+                this.x = x;
+                this.y = y;
+                this.z = z;
             }
         }
 

@@ -42,10 +42,10 @@
     <h1>Map calibration</h1>
     <label>Scene <select id="scene"></select></label>
     <label>Artwork <select id="variant"><option value="default">default</option><option value="interloper">interloper</option></select></label>
-    <p>Click a landmark below, then click where it is on the map (a door, cave mouth or region exit). Drag placed points to adjust. After 3 points, blue rings show where the fit predicts every other landmark. Check that they land on the right buildings.</p>
+    <p>Click a landmark below, then click where it is on the map: a door, cave mouth or region exit, or a spot you marked in game ("Mark: …"). Drag placed points to adjust. From 2 points on, blue rings show where the fit predicts every other landmark. Check that they land in the right places.</p>
   </header>
   <ul id="list"></ul>
-  <div class="fit" id="fit">Place at least 3 landmarks.</div>
+  <div class="fit" id="fit">Place at least 2 landmarks.</div>
   <footer><button class="primary" id="save" disabled>Save calibration</button> <span id="status"></span></footer>
 </aside>
 <div id="map"></div>
@@ -107,9 +107,27 @@ function buildMap() {
   })
 }
 
-// Least squares affine: [mx, my] = [a b c; d e f] · [wx, wz, 1]
+/**
+ * Two points: scale + rotation + offset, no shear or mirror (complex numbers: m = k·w + t).
+ * Region maps are close to that (Mystery Lake: equal scales, under 2° of rotation), so two
+ * well-spread points are enough when a region has few doors. It goes exactly through both,
+ * so it can't show its own error: add a third point to check.
+ */
+function fitSimilarity([p, q]) {
+  const dwx = q.wx - p.wx, dwz = q.wz - p.wz, dmx = q.mx - p.mx, dmy = q.my - p.my
+  const d = dwx * dwx + dwz * dwz
+  if (d < 1e-9) return null
+  const a = (dmx * dwx + dmy * dwz) / d, b = (dmy * dwx - dmx * dwz) / d
+  return [a, -b, p.mx - (a * p.wx - b * p.wz), b, a, p.my - (b * p.wx + a * p.wz)]
+}
+
+// Least squares affine: [mx, my] = [a b c; d e f] · [wx, wz, 1]; similarity for exactly 2 points
 function fitAffine(pairs) {
-  if (pairs.length < 3) return null
+  if (pairs.length < 2) return null
+  if (pairs.length === 2) {
+    const m = fitSimilarity(pairs)
+    return m && describeFit(m, pairs)
+  }
   const ata = [[0, 0, 0], [0, 0, 0], [0, 0, 0]], atx = [0, 0, 0], aty = [0, 0, 0]
   for (const { wx, wz, mx, my } of pairs) {
     const r = [wx, wz, 1]
@@ -121,7 +139,10 @@ function fitAffine(pairs) {
   }
   const abc = solve3(ata, atx), def = solve3(ata, aty)
   if (!abc || !def) return null
-  const m = [...abc, ...def]
+  return describeFit([...abc, ...def], pairs)
+}
+
+function describeFit(m, pairs) {
   const apply = (wx, wz) => [m[0] * wx + m[1] * wz + m[2], m[3] * wx + m[4] * wz + m[5]]
   const errors = pairs.map((p) => { const [x, y] = apply(p.wx, p.wz); return Math.hypot(x - p.mx, y - p.my) })
   const rms = Math.sqrt(errors.reduce((s, e) => s + e * e, 0) / errors.length)
@@ -194,8 +215,8 @@ function refresh() {
 
   const f = state.fit
   $('fit').innerHTML = f
-    ? `${ps.length} points · RMS error <b>${f.rms.toFixed(1)} px</b><br>scale ${f.scaleX.toFixed(3)} / ${f.scaleZ.toFixed(3)} px per m · rotation ${f.rotation.toFixed(1)}°`
-    : `Place at least 3 landmarks (${ps.length} so far).`
+    ? `${ps.length} points · ${ps.length === 2 ? '<b>exact through 2 points</b>, add a 3rd to see the error' : `RMS error <b>${f.rms.toFixed(1)} px</b>`}<br>scale ${f.scaleX.toFixed(3)} / ${f.scaleZ.toFixed(3)} px per m · rotation ${f.rotation.toFixed(1)}°`
+    : `Place at least 2 landmarks (${ps.length} so far).`
   $('save').disabled = !f
 }
 
