@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T00:00:00Z",
+  "title": "Design System: TLD Buddy",
+  "extensions": {
+    "colorMeta": {
+      "dusk-ink": {
+        "role": "neutral",
+        "displayName": "Dusk Ink",
+        "canonical": "oklch(0.205 0.028 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.028 258)",
+          "oklch(0.26 0.028 258)",
+          "oklch(0.37 0.028 258)",
+          "oklch(0.48 0.028 258)",
+          "oklch(0.60 0.028 258)",
+          "oklch(0.71 0.028 258)",
+          "oklch(0.83 0.028 258)",
+          "oklch(0.95 0.028 258)"
+        ]
+      },
+      "rail-ink": {
+        "role": "neutral",
+        "displayName": "Rail Ink",
+        "canonical": "oklch(0.175 0.026 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.026 258)",
+          "oklch(0.26 0.026 258)",
+          "oklch(0.37 0.026 258)",
+          "oklch(0.48 0.026 258)",
+          "oklch(0.60 0.026 258)",
+          "oklch(0.71 0.026 258)",
+          "oklch(0.83 0.026 258)",
+          "oklch(0.95 0.026 258)"
+        ]
+      },
+      "map-ground": {
+        "role": "neutral",
+        "displayName": "Map Ground",
+        "canonical": "oklch(0.17 0.025 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.025 258)",
+          "oklch(0.26 0.025 258)",
+          "oklch(0.37 0.025 258)",
+          "oklch(0.48 0.025 258)",
+          "oklch(0.60 0.025 258)",
+          "oklch(0.71 0.025 258)",
+          "oklch(0.83 0.025 258)",
+          "oklch(0.95 0.025 258)"
+        ]
+      },
+      "card-ink": {
+        "role": "neutral",
+        "displayName": "Card Ink",
+        "canonical": "oklch(0.245 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "popover-ink": {
+        "role": "neutral",
+        "displayName": "Popover Ink",
+        "canonical": "oklch(0.235 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "marker-ink": {
+        "role": "neutral",
+        "displayName": "Marker Ink",
+        "canonical": "oklch(0.22 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "oklch(0.27 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "accent-ink": {
+        "role": "neutral",
+        "displayName": "Accent Ink",
+        "canonical": "oklch(0.3 0.035 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.035 258)",
+          "oklch(0.26 0.035 258)",
+          "oklch(0.37 0.035 258)",
+          "oklch(0.48 0.035 258)",
+          "oklch(0.60 0.035 258)",
+          "oklch(0.71 0.035 258)",
+          "oklch(0.83 0.035 258)",
+          "oklch(0.95 0.035 258)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(0.33 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "input-stroke": {
+        "role": "neutral",
+        "displayName": "Input Stroke",
+        "canonical": "oklch(0.31 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "bone": {
+        "role": "neutral",
+        "displayName": "Bone",
+        "canonical": "oklch(0.945 0.014 85)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 85)",
+          "oklch(0.26 0.014 85)",
+          "oklch(0.37 0.014 85)",
+          "oklch(0.48 0.014 85)",
+          "oklch(0.60 0.014 85)",
+          "oklch(0.71 0.014 85)",
+          "oklch(0.83 0.014 85)",
+          "oklch(0.95 0.014 85)"
+        ]
+      },
+      "muted-bone": {
+        "role": "neutral",
+        "displayName": "Muted Bone",
+        "canonical": "oklch(0.76 0.03 255)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 255)",
+          "oklch(0.26 0.03 255)",
+          "oklch(0.37 0.03 255)",
+          "oklch(0.48 0.03 255)",
+          "oklch(0.60 0.03 255)",
+          "oklch(0.71 0.03 255)",
+          "oklch(0.83 0.03 255)",
+          "oklch(0.95 0.03 255)"
+        ]
+      },
+      "sunset-apricot": {
+        "role": "primary",
+        "displayName": "Sunset Apricot",
+        "canonical": "oklch(0.82 0.105 58)",
+        "tonalRamp": [
+          "oklch(0.15 0.105 58)",
+          "oklch(0.26 0.105 58)",
+          "oklch(0.37 0.105 58)",
+          "oklch(0.48 0.105 58)",
+          "oklch(0.60 0.105 58)",
+          "oklch(0.71 0.105 58)",
+          "oklch(0.83 0.105 58)",
+          "oklch(0.95 0.105 58)"
+        ]
+      },
+      "apricot-ink": {
+        "role": "primary",
+        "displayName": "Apricot Ink",
+        "canonical": "oklch(0.2 0.03 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 258)",
+          "oklch(0.26 0.03 258)",
+          "oklch(0.37 0.03 258)",
+          "oklch(0.48 0.03 258)",
+          "oklch(0.60 0.03 258)",
+          "oklch(0.71 0.03 258)",
+          "oklch(0.83 0.03 258)",
+          "oklch(0.95 0.03 258)"
+        ]
+      },
+      "aurora-mint": {
+        "role": "secondary",
+        "displayName": "Aurora Mint",
+        "canonical": "oklch(0.84 0.085 170)",
+        "tonalRamp": [
+          "oklch(0.15 0.085 170)",
+          "oklch(0.26 0.085 170)",
+          "oklch(0.37 0.085 170)",
+          "oklch(0.48 0.085 170)",
+          "oklch(0.60 0.085 170)",
+          "oklch(0.71 0.085 170)",
+          "oklch(0.83 0.085 170)",
+          "oklch(0.95 0.085 170)"
+        ]
+      },
+      "glacier-blue": {
+        "role": "secondary",
+        "displayName": "Glacier Blue",
+        "canonical": "oklch(0.83 0.07 230)",
+        "tonalRamp": [
+          "oklch(0.15 0.07 230)",
+          "oklch(0.26 0.07 230)",
+          "oklch(0.37 0.07 230)",
+          "oklch(0.48 0.07 230)",
+          "oklch(0.60 0.07 230)",
+          "oklch(0.71 0.07 230)",
+          "oklch(0.83 0.07 230)",
+          "oklch(0.95 0.07 230)"
+        ]
+      },
+      "dusk-lavender": {
+        "role": "tertiary",
+        "displayName": "Dusk Lavender",
+        "canonical": "oklch(0.3 0.04 285)",
+        "tonalRamp": [
+          "oklch(0.15 0.04 285)",
+          "oklch(0.26 0.04 285)",
+          "oklch(0.37 0.04 285)",
+          "oklch(0.48 0.04 285)",
+          "oklch(0.60 0.04 285)",
+          "oklch(0.71 0.04 285)",
+          "oklch(0.83 0.04 285)",
+          "oklch(0.95 0.04 285)"
+        ]
+      },
+      "lavender-mist": {
+        "role": "tertiary",
+        "displayName": "Lavender Mist",
+        "canonical": "oklch(0.92 0.025 285)",
+        "tonalRamp": [
+          "oklch(0.15 0.025 285)",
+          "oklch(0.26 0.025 285)",
+          "oklch(0.37 0.025 285)",
+          "oklch(0.48 0.025 285)",
+          "oklch(0.60 0.025 285)",
+          "oklch(0.71 0.025 285)",
+          "oklch(0.83 0.025 285)",
+          "oklch(0.95 0.025 285)"
+        ]
+      },
+      "rust-red": {
+        "role": "tertiary",
+        "displayName": "Rust Red",
+        "canonical": "oklch(0.64 0.17 27)",
+        "tonalRamp": [
+          "oklch(0.15 0.17 27)",
+          "oklch(0.26 0.17 27)",
+          "oklch(0.37 0.17 27)",
+          "oklch(0.48 0.17 27)",
+          "oklch(0.60 0.17 27)",
+          "oklch(0.71 0.17 27)",
+          "oklch(0.83 0.17 27)",
+          "oklch(0.95 0.17 27)"
+        ]
+      },
+      "ochre": {
+        "role": "tertiary",
+        "displayName": "Ochre",
+        "canonical": "oklch(0.84 0.13 85)",
+        "tonalRamp": [
+          "oklch(0.15 0.13 85)",
+          "oklch(0.26 0.13 85)",
+          "oklch(0.37 0.13 85)",
+          "oklch(0.48 0.13 85)",
+          "oklch(0.60 0.13 85)",
+          "oklch(0.71 0.13 85)",
+          "oklch(0.83 0.13 85)",
+          "oklch(0.95 0.13 85)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Dialog titles only."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Item names, current map name."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Notes, descriptions, menu items, search."
+      },
+      "label": {
+        "displayName": "HUD Label",
+        "purpose": "Uppercase tracked names for tabs, fields, groups, chip, wordmark. System sans until a condensed HUD face is decided."
+      },
+      "plate": {
+        "displayName": "POI Plate",
+        "purpose": "Place names on the map."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Quantity and count badges, tabular figures."
+      }
+    },
+    "shadows": [
+      {
+        "name": "marker-lift",
+        "value": "0 2px 6px oklch(0.1 0.02 258 / 0.55)",
+        "purpose": "Item tiles on the map (POI plates at 0.45)."
+      },
+      {
+        "name": "badge-lift",
+        "value": "0 1px 3px oklch(0.1 0.02 258 / 0.5)",
+        "purpose": "Quantity badge and looted tick."
+      },
+      {
+        "name": "floating-action",
+        "value": "0 6px 20px oklch(0.1 0.02 258 / 0.55)",
+        "purpose": "Add loot pill."
+      },
+      {
+        "name": "floating-card",
+        "value": "0 8px 28px oklch(0.1 0.02 258 / 0.6)",
+        "purpose": "Selected-marker loot card."
+      },
+      {
+        "name": "sheet",
+        "value": "0 -8px 30px oklch(0.1 0.02 258 / 0.5)",
+        "purpose": "Phone bottom sheet only."
+      },
+      {
+        "name": "selected-ring",
+        "value": "0 0 0 3px oklch(0.945 0.014 85 / 0.9), 0 4px 14px oklch(0.1 0.02 258 / 0.7)",
+        "purpose": "Selected marker (with scale 1.22)."
+      },
+      {
+        "name": "map-vignette",
+        "value": "inset 0 0 80px 10px oklch(0.15 0.03 258 / 0.55)",
+        "purpose": "Blends map edges into the dusk ground."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-marker",
+        "value": "160ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Marker scale on hover/select, border colour."
+      },
+      {
+        "name": "wash",
+        "value": "240ms ease",
+        "purpose": "Looted wash-out (opacity, filter)."
+      },
+      {
+        "name": "plate",
+        "value": "160ms ease",
+        "purpose": "POI plate border/background."
+      },
+      {
+        "name": "dialog",
+        "value": "200ms fade + zoom 95%",
+        "purpose": "Dialog enter/exit."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "All animation and transition under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "Side panel docks; below it becomes a bottom sheet."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Wordmark shows."
+      },
+      {
+        "name": "coarse-pointer",
+        "value": "(pointer: coarse)",
+        "purpose": "Markers grow to 40px."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one apricot action per view (Mark looted, Add loot).",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg>Mark looted<kbd>L</kbd></button>",
+      "css": ".ds-btn-primary { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px; border: 0; border-radius: calc(var(--radius) - 2px); background: var(--primary); color: var(--primary-foreground); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 150ms ease; } .ds-btn-primary kbd { font-size: 10px; opacity: .7; font-family: inherit; } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary) 90%, transparent); } .ds-btn-primary:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Floating Add Loot",
+      "kind": "button",
+      "refersTo": "button-primary-floating",
+      "description": "Bottom-centre pill over the map; replaced by the loot card when a marker is selected.",
+      "html": "<button class=\"ds-fab\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Add loot<kbd>A</kbd></button>",
+      "css": ".ds-fab { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border: 0; border-radius: 9999px; background: var(--primary); color: var(--primary-foreground); font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 6px 20px oklch(0.1 0.02 258 / 0.55); } .ds-fab kbd { font-family: inherit; font-size: 10px; padding: 0 4px; border-radius: 4px; background: color-mix(in oklch, var(--primary-foreground) 15%, transparent); } .ds-fab:hover { background: color-mix(in oklch, var(--primary) 90%, transparent); } .ds-fab:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary / Outline / Ghost Buttons",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Lavender secondary, hairline outline (rust text when destructive), and ghost icon buttons.",
+      "html": "<div class=\"ds-row\"><button class=\"ds-btn ds-btn-secondary\">Not looted</button><button class=\"ds-btn ds-btn-outline\">Take 1</button><button class=\"ds-btn ds-btn-outline ds-danger\" aria-label=\"Delete\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6\"/></svg></button><button class=\"ds-btn ds-btn-ghost\" aria-label=\"More\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><circle cx=\"12\" cy=\"5\" r=\"1.5\"/><circle cx=\"12\" cy=\"12\" r=\"1.5\"/><circle cx=\"12\" cy=\"19\" r=\"1.5\"/></svg></button></div>",
+      "css": ".ds-row { display: flex; gap: 6px; } .ds-btn { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; min-width: 36px; padding: 0 12px; border-radius: calc(var(--radius) - 2px); font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid transparent; background: transparent; color: var(--foreground); transition: background 150ms ease, color 150ms ease; } .ds-btn-secondary { background: var(--secondary); color: var(--secondary-foreground); } .ds-btn-secondary:hover { background: color-mix(in oklch, var(--secondary) 80%, transparent); } .ds-btn-outline { border-color: var(--border); background: var(--background); } .ds-btn-outline:hover, .ds-btn-ghost:hover { background: var(--accent); } .ds-danger { color: var(--destructive); } .ds-danger:hover { background: color-mix(in oklch, var(--destructive) 15%, transparent); color: var(--destructive); } .ds-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Transparent field with input-stroke border, apricot caret and focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Note</span><input class=\"ds-input\" placeholder=\"Behind the stove\"></label>",
+      "css": ".ds-field { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; display: grid; gap: 6px; width: 280px; } .ds-field-label { font-size: 0.6875rem; line-height: 1rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); } .ds-input { font: inherit; font-size: 14px; height: 36px; padding: 4px 12px; border: 1px solid var(--input); border-radius: calc(var(--radius) - 2px); background: transparent; color: var(--foreground); caret-color: var(--primary); outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); }"
+    },
+    {
+      "name": "Top Bar",
+      "kind": "nav",
+      "refersTo": "panel-tab-active",
+      "description": "48px rail-ink bar with wordmark, map switcher, difficulty chip and search trigger.",
+      "html": "<header class=\"ds-bar\"><span class=\"ds-wordmark\">TLD Buddy</span><button class=\"ds-map\">Mystery Lake<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m6 9 6 6 6-6\"/></svg></button><span class=\"ds-chip\">Stalker<i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i></i><i></i></span><span class=\"ds-grow\"></span><button class=\"ds-search\">Search loot, places, maps<kbd>/</kbd></button></header>",
+      "css": ".ds-bar { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; background: var(--rail); border-bottom: 1px solid var(--border); color: var(--foreground); width: 640px; } .ds-wordmark { font-size: 0.75rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; } .ds-map { font: inherit; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border: 0; border-radius: calc(var(--radius) - 2px); background: transparent; color: var(--foreground); cursor: pointer; } .ds-map svg { color: var(--muted-foreground); } .ds-map:hover { background: var(--accent); } .ds-chip { display: inline-flex; align-items: center; gap: 2px; padding: 0 6px; border: 1px solid var(--border); border-radius: 4px; background: color-mix(in oklch, var(--background) 40%, transparent); font-size: 10px; line-height: 1rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; } .ds-chip i { width: 4px; height: 4px; border-radius: 50%; background: color-mix(in oklch, var(--foreground) 20%, transparent); } .ds-chip i:first-of-type { margin-left: 4px; } .ds-chip i.on { background: var(--foreground); } .ds-grow { flex: 1; } .ds-search { font: inherit; font-size: 14px; display: inline-flex; align-items: center; justify-content: space-between; gap: 8px; width: 256px; height: 36px; padding: 0 10px; border: 1px solid var(--border); border-radius: calc(var(--radius) - 2px); background: color-mix(in oklch, var(--background) 50%, transparent); color: var(--muted-foreground); cursor: pointer; } .ds-search kbd { font-family: inherit; font-size: 10px; padding: 0 4px; border: 1px solid var(--border); border-radius: 4px; } .ds-search:hover { border-color: color-mix(in oklch, var(--primary) 40%, transparent); color: var(--foreground); } .ds-map:focus-visible, .ds-search:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Panel Tabs",
+      "kind": "nav",
+      "refersTo": "panel-tab-active",
+      "description": "Loot / Places / Maps tabs in HUD label type.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" aria-selected=\"true\">Loot<span>12</span></button><button class=\"ds-tab\">Places<span>7</span></button><button class=\"ds-tab\">Maps</button></div>",
+      "css": ".ds-tabs { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; display: flex; gap: 4px; width: 336px; padding: 8px; background: var(--rail); } .ds-tab { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 36px; border: 0; border-radius: calc(var(--radius) - 2px); background: transparent; color: var(--muted-foreground); font-family: inherit; font-size: 0.6875rem; line-height: 1rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: color 150ms ease; } .ds-tab span { font-size: 10px; letter-spacing: 0; padding: 0 4px; border-radius: 4px; background: color-mix(in oklch, var(--background) 60%, transparent); font-variant-numeric: tabular-nums; } .ds-tab:hover { color: var(--foreground); } .ds-tab[aria-selected=\"true\"] { background: var(--accent); color: var(--foreground); } .ds-tab:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Loot Marker (remaining / looted / selected)",
+      "kind": "custom",
+      "refersTo": "loot-marker",
+      "description": "Signature: crisp apricot-ringed tile for loot still there; the watercolour wash-out for looted.",
+      "html": "<div class=\"ds-map-bg\"><div class=\"ds-marker\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m7.5 4.27 9 5.15M21 8 12 3 3 8v8l9 5 9-5zM3.3 7 12 12l8.7-5M12 22V12\"/></svg><span class=\"ds-qty\">3</span></div><div class=\"ds-marker ds-looted\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 8 12 3 3 8v8l9 5 9-5zM12 22V12\"/></svg><span class=\"ds-tick\"><svg width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\"><path d=\"M20 6 9 17l-5-5\"/></svg></span></div><div class=\"ds-marker ds-selected\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 8 12 3 3 8v8l9 5 9-5zM12 22V12\"/></svg></div></div>",
+      "css": ".ds-map-bg { display: flex; gap: 28px; padding: 24px 32px; background: oklch(0.93 0.03 85); border-radius: 8px; } .ds-marker { position: relative; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: oklch(0.22 0.03 258); border: 2px solid var(--loot); box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.55); color: var(--foreground); cursor: pointer; transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease, filter 240ms ease, border-color 160ms ease; } .ds-marker:hover { transform: scale(1.15); } .ds-qty { position: absolute; top: -7px; right: -7px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--loot); color: var(--primary-foreground); font: 750 10px/17px system-ui, sans-serif; text-align: center; font-variant-numeric: tabular-nums; box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5); } .ds-looted { background: oklch(0.22 0.03 258 / 0.5); border-color: oklch(0.62 0.03 258 / 0.8); border-style: dashed; box-shadow: none; } .ds-looted > svg { opacity: .5; filter: grayscale(1) contrast(.85); } .ds-tick { position: absolute; bottom: -6px; right: -6px; display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: var(--looted); color: oklch(0.22 0.03 258); box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5); } .ds-selected { transform: scale(1.22); box-shadow: 0 0 0 3px oklch(0.945 0.014 85 / 0.9), 0 4px 14px oklch(0.1 0.02 258 / 0.7); }"
+    },
+    {
+      "name": "POI Plate",
+      "kind": "custom",
+      "refersTo": "poi-plate",
+      "description": "Signature: dark ink name plate with a glacier pin dot and a lavender stash count.",
+      "html": "<div class=\"ds-map-bg2\"><span class=\"ds-poi\">Camp Office<span class=\"ds-poi-count\">4</span></span><span class=\"ds-poi ds-poi-on\">Trapper's Homestead</span></div>",
+      "css": ".ds-map-bg2 { display: flex; gap: 16px; padding: 24px; background: oklch(0.93 0.03 85); border-radius: 8px; } .ds-poi { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 7px; border-radius: 6px; background: oklch(0.2 0.03 258 / 0.92); border: 1px solid oklch(0.83 0.07 230 / 0.55); color: var(--foreground); font: 650 11px system-ui, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; cursor: pointer; box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.45); transition: border-color 160ms ease, background 160ms ease; } .ds-poi::before { content: \"\"; width: 7px; height: 7px; border-radius: 50%; background: var(--place); flex-shrink: 0; } .ds-poi:hover, .ds-poi-on { border-color: var(--place); background: oklch(0.26 0.035 258 / 0.96); } .ds-poi-count { min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--secondary); color: var(--secondary-foreground); font-size: 10px; line-height: 17px; text-align: center; letter-spacing: 0; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Loot Card",
+      "kind": "card",
+      "refersTo": "loot-card",
+      "description": "Floating selected-marker card: preview tile, title, state line, action row.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-top\"><div class=\"ds-thumb\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 8 12 3 3 8v8l9 5 9-5zM12 22V12\"/></svg></div><div><p class=\"ds-title\">Cured Venison <span>×3</span></p><p class=\"ds-state\">Still there</p><p class=\"ds-note\">Fridge in the camp office</p></div></div><div class=\"ds-actions\"><button class=\"ds-act ds-act-primary\">Mark looted</button><button class=\"ds-act\">Take 1</button></div></div>",
+      "css": ".ds-card { font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif; width: 400px; display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px); background: var(--rail); color: var(--foreground); box-shadow: 0 8px 28px oklch(0.1 0.02 258 / 0.6); } .ds-card-top { display: flex; gap: 12px; } .ds-thumb { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border: 2px solid var(--loot); border-radius: var(--radius); background: color-mix(in oklch, var(--background) 60%, transparent); color: var(--muted-foreground); } .ds-card p { margin: 0; } .ds-title { font-weight: 500; font-size: 14px; } .ds-title span { color: var(--muted-foreground); font-variant-numeric: tabular-nums; } .ds-state { margin-top: 2px !important; font-size: 12px; color: var(--loot); } .ds-note { margin-top: 4px !important; font-size: 14px; color: var(--muted-foreground); } .ds-actions { display: flex; gap: 6px; } .ds-act { font: inherit; font-size: 14px; font-weight: 500; height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: calc(var(--radius) - 2px); background: var(--background); color: var(--foreground); cursor: pointer; } .ds-act:hover { background: var(--accent); } .ds-act-primary { flex: 1; border-color: transparent; background: var(--primary); color: var(--primary-foreground); } .ds-act-primary:hover { background: color-mix(in oklch, var(--primary) 90%, transparent); } .ds-act:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Painted Dusk",
+    "overview": "The map is the whole screen, and the interface sits on it the way The Long Dark's HUD sits on its water-colour world: bone-white lettering on deep blue-slate dusk, colour held back until it means something. The ground is a single family of dusk inks (hue 258), stepped a few lightness points apart so the rail, the content, cards and controls separate by tone, not by lines or glare. Against that ground there are exactly four meaningful colours: sunset apricot for loot still out there (and the primary action), aurora mint for looted, glacier blue for places, and the HUD's own red and ochre for danger and warning.\n\nThe surface is dense and quiet. It is an Operate tool used beside a running game in a dim room, so it is always dark, uses the system sans for everything you read, and borrows the game's voice only in its uppercase tracked labels. The painterly material comes from the community maps themselves; the chrome never imitates it with texture (a paper grain was tried and removed).\n\nThe signature move is the wash-out: a looted item's tile fades and desaturates into the painted map behind a dashed border and a small mint tick, while remaining loot keeps a crisp apricot ring. The map reads as a painting where what is left stands out.",
+    "keyCharacteristics": [
+      "Dark-only (`color-scheme: dark`), one dusk-ink hue family for every surface.",
+      "Colour carries state only: apricot = still there, mint = looted, glacier = place, rust = danger, ochre = warning.",
+      "Bone-white uppercase tracked labels as the game's HUD voice; plain system sans for reading.",
+      "Soft corners, hairline borders, dusk-tinted drop shadows, no glows.",
+      "Map overlays are dark ink plates so they stay legible on the cream community maps."
+    ],
+    "rules": [
+      {
+        "name": "The State-Only Colour Rule",
+        "body": "Hue appears only to say something about loot, places or danger. Difficulty, navigation, and decoration stay bone-on-ink; difficulty is shown as 1-5 bone pips, not a colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Hue Ground Rule",
+        "body": "Every surface is hue 258 at chroma 0.025-0.035; depth is a lightness step (0.175 rail, 0.205 ground, 0.245 card), never a new colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The HUD Voice Rule",
+        "body": "Uppercase tracking is reserved for short labels that name a control, field or group, as the game's HUD does. Sentences, item names and notes are never uppercased.",
+        "section": "typography"
+      },
+      {
+        "name": "The Pending Face Rule",
+        "body": "Labels and plates currently render in the system sans. A self-hosted condensed HUD face for the label and plate roles is an open item awaiting the user's decision; until then, do not add a web font.",
+        "section": "typography"
+      },
+      {
+        "name": "The Float-Only Shadow Rule",
+        "body": "Docked chrome (rail, docked panel, list rows) has no shadow; only elements floating above the map cast one.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** build every surface from the dusk-ink family (hue 258) and separate layers by lightness step, not by new hues.",
+      "**Do** reserve sunset apricot for loot still out there, the single primary action, and focus.",
+      "**Do** draw looted things as the wash-out (fade, greyscale, dashed border, mint tick) rather than removing them.",
+      "**Do** keep map overlays as dark ink plates with light borders so they read on the cream community maps.",
+      "**Do** use the label treatment (650, 0.6875rem, +0.08em, uppercase) for control, field and group names, and `tabular-nums` for every count.",
+      "**Do** keep transitions at 150-250ms for state changes only, and honour `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "**Don't** add a light theme or glare-white panels; the app is dark-only.",
+      "**Don't** use colour to encode difficulty, navigation or decoration (The State-Only Colour Rule).",
+      "**Don't** add glows or coloured shadows; shadows are dusk-tinted and only under floating elements.",
+      "**Don't** reintroduce a paper grain or texture on the chrome; the painterly material belongs to the maps.",
+      "**Don't** uppercase sentences, item names or notes.",
+      "**Don't** add a web display face; the condensed HUD face for labels is pending the user's decision."
+    ]
+  }
+}

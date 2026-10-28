@@ -71,10 +71,10 @@
                 @click="selectMap(m.id)"
               >
                 <span class="truncate flex-1">{{ m.name }}</span>
-                <Badge variant="outline" class="text-[9px] px-1 py-0 h-3.5 shrink-0">
+                <Badge variant="outline" class="text-[10px] px-1 py-0 h-4 shrink-0">
                   {{ m.type === 'transition' ? 'T' : 'R' }}
                 </Badge>
-                <Badge v-if="m.isDLC" variant="secondary" class="text-[9px] px-1 py-0 h-3.5 shrink-0">
+                <Badge v-if="m.isDLC" variant="secondary" class="text-[10px] px-1 py-0 h-4 shrink-0">
                   DLC
                 </Badge>
               </button>
