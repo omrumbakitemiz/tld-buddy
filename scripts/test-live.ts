@@ -2,7 +2,11 @@
 // Run: pnpm test
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { applyTransform, cleanLiveState, headingOnMap, resolveLivePosition, validateLiveState, type LiveState, type MapCalibration, type MapTransform } from '../shared/utils/live'
+import {
+  applyTransform, cleanLiveEvent, cleanLiveState, headingOnMap, markerIdForEvent, matchItem, planMark, resolveLivePosition,
+  sceneLabel, UNSORTED_ITEM_ID, validateLiveEvent, validateLiveState,
+  type LiveMarkEvent, type LiveState, type MapCalibration, type MapTransform,
+} from '../shared/utils/live'
 import type { GameScene } from '../shared/types/game'
 
 let passed = 0
@@ -85,6 +89,80 @@ test('interloper falls back to default calibration only for a same-size image', 
   const otherSize = () => ({ imageWidth: 3000, imageHeight: 3000 })
   assert.equal(resolveLivePosition(state, SCENES, CAL, 'interloper', otherSize)?.point, null)
   assert.equal(resolveLivePosition(state, SCENES, CAL, 'interloper')?.point, null)
+})
+
+const ITEMS = [
+  { id: 'hatchet', name: 'Hatchet' },
+  { id: 'peaches', name: 'Tin of Peaches' },
+  { id: 'rifle-ammunition', name: 'Rifle Ammunition' },
+]
+const mark = (extra: Partial<LiveMarkEvent> = {}): LiveMarkEvent => ({
+  id: '3f2c9a1b-0000-4000-8000-000000000000', type: 'mark', createdAt: 1761700000000,
+  scenes: [sample('LakeRegion', 10, 20)], item: { name: 'Hatchet', gearName: 'GEAR_Hatchet', quantity: 1 }, ...extra,
+})
+const ctx = { scenes: SCENES, calibration: CAL, variant: 'default' as const, imageFor: image, items: ITEMS }
+
+test('mark events validate; junk is rejected', () => {
+  const { createdAt: _, ...body } = mark()
+  assert.equal(validateLiveEvent(body), null)
+  assert.equal(validateLiveEvent({ ...body, item: null }), null)
+  assert.notEqual(validateLiveEvent({ ...body, id: 'short' }), null)
+  assert.notEqual(validateLiveEvent({ ...body, type: 'other' }), null)
+  assert.notEqual(validateLiveEvent({ ...body, item: { name: '' } }), null)
+  assert.notEqual(validateLiveEvent({ ...body, item: { name: 'X', gearName: 'GEAR X/../' } }), null)
+  assert.notEqual(validateLiveEvent({ ...body, item: { name: 'X', quantity: 0 } }), null)
+  assert.notEqual(validateLiveEvent({ ...body, item: { name: 'X', quantity: 1.5 } }), null)
+})
+
+test('clean stamps the server time and drops unknown fields', () => {
+  const { createdAt: _, ...body } = mark()
+  const cleaned = cleanLiveEvent({ ...body, extra: 1 } as unknown as Omit<LiveMarkEvent, 'createdAt'>, 42)
+  assert.equal(cleaned.createdAt, 42)
+  assert.equal('extra' in cleaned, false)
+})
+
+test('items match by display name, then by prefab name', () => {
+  assert.equal(matchItem({ name: 'Hatchet' }, ITEMS)?.id, 'hatchet')
+  assert.equal(matchItem({ name: 'tin of peaches' }, ITEMS)?.id, 'peaches')
+  assert.equal(matchItem({ name: 'Rifle Cartridges', gearName: 'GEAR_RifleAmmunition' }, ITEMS)?.id, 'rifle-ammunition')
+  assert.equal(matchItem({ name: 'Mystery Box' }, ITEMS), null)
+  assert.equal(matchItem(null, ITEMS), null)
+})
+
+test('marker ids are stable per event and keep the createId time shape', () => {
+  const id = markerIdForEvent(mark())
+  assert.equal(id, markerIdForEvent(mark()))
+  assert.equal(Number(id.split('-')[1]), 1761700000000)
+  assert.notEqual(id, markerIdForEvent(mark({ id: '9a9a9a9a-0000-4000-8000-000000000000' })))
+})
+
+test('scene labels read like place names', () => {
+  assert.equal(sceneLabel('CampOffice'), 'Camp Office')
+  assert.equal(sceneLabel('LakeCabinA'), 'Lake Cabin A')
+})
+
+test('planned mark outdoors: known item at the player position', () => {
+  const plan = planMark(mark({ item: { name: 'Hatchet', quantity: 2 } }), ctx)
+  assert.deepEqual(plan && { ...plan, id: undefined }, {
+    id: undefined, mapId: 'mystery-lake', x: 120, y: 240, itemId: 'hatchet', name: 'Hatchet', quantity: 2, note: undefined,
+  })
+})
+
+test('planned mark indoors: at the door, noted with the building', () => {
+  const plan = planMark(mark({ scenes: [sample('CampOffice', -1, 3), sample('LakeRegion', 10, 20)] }), ctx)
+  assert.deepEqual(plan && [plan.x, plan.y, plan.note], [120, 240, 'Inside Camp Office'])
+})
+
+test('planned mark for something unknown, or nothing aimed at: unsorted placeholder', () => {
+  const unknown = planMark(mark({ item: { name: 'Mystery Box', quantity: 3 } }), ctx)
+  assert.deepEqual(unknown && [unknown.itemId, unknown.name, unknown.quantity, unknown.note], [UNSORTED_ITEM_ID, 'Unsorted loot', 3, 'Game: Mystery Box'])
+  const nothing = planMark(mark({ item: null }), ctx)
+  assert.deepEqual(nothing && [nothing.itemId, nothing.quantity, nothing.note], [UNSORTED_ITEM_ID, 1, undefined])
+})
+
+test('planned mark without a calibrated position is skipped', () => {
+  assert.equal(planMark(mark({ scenes: [sample('RuralRegion')] }), ctx), null)
+  assert.equal(planMark(mark({ scenes: [sample('CampOffice')] }), ctx), null)
 })
 
 test('committed calibration and scene table are consistent', () => {

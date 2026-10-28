@@ -123,8 +123,9 @@ export function useGameData() {
     return appData.value.markers.find((m) => m.id === markerId)
   }
 
-  function addMarker(marker: Omit<Marker, 'id'>) {
-    const newMarker: Marker = { lootedAt: null, ...marker, id: createId('marker') }
+  /** `id` is only passed for markers from the game mod, whose ids must match across tabs. */
+  function addMarker(marker: Omit<Marker, 'id'> & { id?: string }) {
+    const newMarker: Marker = { lootedAt: null, ...marker, id: marker.id ?? createId('marker') }
     appData.value.markers.push(newMarker)
     commit()
     return newMarker

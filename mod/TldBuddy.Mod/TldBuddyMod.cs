@@ -15,8 +15,8 @@ namespace TldBuddy.Mod
 {
     /// <summary>
     /// Sends the player's scene and position to the TLD Buddy server about once per second,
-    /// logs it every few seconds, and exports each scene's transitions (doors, region exits)
-    /// as calibration landmarks.
+    /// turns the mark key into a marker for the item under the crosshair, logs every few seconds,
+    /// and exports each scene's transitions (doors, region exits) as calibration landmarks.
     /// </summary>
     public sealed class TldBuddyMod : MelonMod
     {
@@ -26,11 +26,16 @@ namespace TldBuddy.Mod
         const float SceneSettleDelay = 2f;
         /// <summary>Scenes kept in the trail, so nested interiors still resolve to their region.</summary>
         const int MaxTrail = 4;
+        /// <summary>How far the crosshair looks for an item to mark, in metres.</summary>
+        const float AimRange = 5f;
+        const string DefaultMarkKey = "F4";
 
         MelonPreferences_Entry<string> serverUrl;
         MelonPreferences_Entry<string> token;
         MelonPreferences_Entry<bool> runInBackground;
+        MelonPreferences_Entry<string> markKeyName;
         LiveBridge bridge;
+        Hotkey markKey;
 
         float nextTick;
         int ticks;
@@ -40,7 +45,12 @@ namespace TldBuddy.Mod
 
         /// <summary>Last sample per scene, current scene first. Sent as LiveState.scenes.</summary>
         readonly List<SceneSample> trail = new List<SceneSample>();
-        static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions { IncludeFields = true };
+        // Omit nulls: the server treats a missing optional field differently from a null one
+        static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+        {
+            IncludeFields = true,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        };
 
         public override void OnInitializeMelon()
         {
@@ -52,13 +62,21 @@ namespace TldBuddy.Mod
                 description: "Same value as MOD_TOKEN in the server's .env. Empty = live bridge off");
             runInBackground = prefs.CreateEntry("RunInBackground", true,
                 description: "Keep the game running while another window (TLD Buddy) has focus, so the live position keeps updating");
+            markKeyName = prefs.CreateEntry("MarkKey", DefaultMarkKey,
+                description: "Key that marks the item under the crosshair (or the spot) on the TLD Buddy map: F1-F12, a letter or a digit");
             prefs.SaveToFile(false);
             ApplyRunInBackground();
             bridge = new LiveBridge(LoggerInstance);
+            markKey = Hotkey.Parse(markKeyName.Value);
+            if (markKey == null)
+            {
+                LoggerInstance.Warning($"MarkKey \"{markKeyName.Value}\" is not F1-F12, a letter or a digit; using {DefaultMarkKey}");
+                markKey = Hotkey.Parse(DefaultMarkKey);
+            }
 
             LoggerInstance.Msg(string.IsNullOrWhiteSpace(token.Value)
                 ? "TLD Buddy loaded. Live bridge off: set Token under [TldBuddy] in UserData/MelonPreferences.cfg"
-                : $"TLD Buddy loaded. Live bridge to {serverUrl.Value}");
+                : $"TLD Buddy loaded. Live bridge to {serverUrl.Value}, mark key {markKey.Name}");
         }
 
         public override void OnSceneWasInitialized(int buildIndex, string sceneName)
@@ -80,13 +98,17 @@ namespace TldBuddy.Mod
 
         public override void OnUpdate()
         {
+            // Every frame: key presses and notices from background requests
+            while (bridge.TryTakeNotice(out string notice)) HUDMessage.AddMessage(notice, false, false);
+            if (markKey.Pressed(Application.isFocused)) MarkHere();
+
             float now = Time.unscaledTime;
             if (now < nextTick) return;
             nextTick = now + TickInterval;
 
             // The main menu has a player transform too; only report real gameplay scenes.
-            string gameScene = GameManager.m_ActiveScene;
-            if (string.IsNullOrEmpty(gameScene) || gameScene == "MainMenu")
+            string gameScene = InGameScene();
+            if (gameScene == null)
             {
                 // A save loaded next may be anywhere: don't place it relative to the last one
                 trail.Clear();
@@ -110,9 +132,9 @@ namespace TldBuddy.Mod
 
             Vector3 pos = player.position;
             float heading = player.eulerAngles.y;
-            UpdateTrail(new SceneSample(gameScene, Round(pos.x), Round(pos.y), Round(pos.z), Round(heading)));
+            UpdateTrail(Sample(gameScene, player));
 
-            if (!string.IsNullOrWhiteSpace(token.Value))
+            if (BridgeOn)
             {
                 bridge.Send(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(new LiveState(trail), JsonOptions));
             }
@@ -124,6 +146,78 @@ namespace TldBuddy.Mod
                     $"scene={gameScene} unity={unityScene} " +
                     $"pos=({pos.x:F1}, {pos.y:F1}, {pos.z:F1}) heading={heading:F0} containers={containerCount}");
             }
+        }
+
+        bool BridgeOn => !string.IsNullOrWhiteSpace(token.Value);
+
+        /// <summary>The game's scene name while playing; null in the main menu or while loading.</summary>
+        static string InGameScene()
+        {
+            string scene = GameManager.m_ActiveScene;
+            return string.IsNullOrEmpty(scene) || scene == "MainMenu" ? null : scene;
+        }
+
+        static SceneSample Sample(string scene, Transform player)
+        {
+            Vector3 p = player.position;
+            return new SceneSample(scene, Round(p.x), Round(p.y), Round(p.z), Round(player.eulerAngles.y));
+        }
+
+        /// <summary>
+        /// Mark key: sends the item under the crosshair (or just the spot) with the scene trail,
+        /// using the position right now rather than the last once-a-second sample.
+        /// </summary>
+        void MarkHere()
+        {
+            string scene = InGameScene();
+            Transform player = scene != null ? GameManager.GetPlayerTransform() : null;
+            if (player == null) return;
+            if (!BridgeOn)
+            {
+                HUDMessage.AddMessage("TLD Buddy: live bridge is off (no Token in MelonPreferences.cfg)", false, false);
+                return;
+            }
+
+            UpdateTrail(Sample(scene, player));
+            MarkItem item = AimedItem();
+            var mark = new MarkEvent(System.Guid.NewGuid().ToString(), new List<SceneSample>(trail), item);
+            string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
+            bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions), label);
+            LoggerInstance.Msg($"Mark: {label} in {scene}");
+        }
+
+        /// <summary>The gear item under the crosshair, or null (nothing, or not an item: a door, a container).</summary>
+        MarkItem AimedItem()
+        {
+            try
+            {
+                PlayerManager pm = GameManager.GetPlayerManagerComponent();
+                GameObject target = pm != null ? pm.GetInteractiveObjectUnderCrosshairs(AimRange) : null;
+                GearItem gear = target != null ? target.GetComponent<GearItem>() : null;
+                if (gear == null) return null;
+                string name = gear.DisplayName;
+                if (string.IsNullOrWhiteSpace(name)) return null;
+                int units = gear.m_StackableItem != null ? gear.m_StackableItem.m_Units : 1;
+                return new MarkItem(name.Trim(), PrefabName(target.name), Mathf.Clamp(units, 1, 9999));
+            }
+            catch (System.Exception e)
+            {
+                // A game update changing these APIs should cost the item name, not the mark
+                LoggerInstance.Warning($"Could not read the item under the crosshair: {e.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>"GEAR_Hatchet(Clone)" → "GEAR_Hatchet"; only characters the server accepts.</summary>
+        static string PrefabName(string objectName)
+        {
+            var chars = new System.Text.StringBuilder();
+            foreach (char c in objectName ?? "")
+            {
+                if (c == '(' || c == ' ') break;
+                if (char.IsLetterOrDigit(c) && c < 128 || c == '_') chars.Append(c);
+            }
+            return chars.Length > 0 && chars.Length <= 80 ? chars.ToString() : null;
         }
 
         /// <summary>
@@ -204,6 +298,36 @@ namespace TldBuddy.Mod
             public LiveState(List<SceneSample> scenes)
             {
                 this.scenes = scenes;
+            }
+        }
+
+        sealed class MarkItem
+        {
+            public string name;
+            public string gearName;
+            public int quantity;
+
+            public MarkItem(string name, string gearName, int quantity)
+            {
+                this.name = name;
+                this.gearName = gearName;
+                this.quantity = quantity;
+            }
+        }
+
+        /// <summary>Body of POST /api/live/v1/events (shared/utils/live.ts LiveMarkEvent).</summary>
+        sealed class MarkEvent
+        {
+            public string id;
+            public string type = "mark";
+            public List<SceneSample> scenes;
+            public MarkItem item;
+
+            public MarkEvent(string id, List<SceneSample> scenes, MarkItem item)
+            {
+                this.id = id;
+                this.scenes = scenes;
+                this.item = item;
             }
         }
 

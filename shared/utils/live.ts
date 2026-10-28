@@ -44,14 +44,32 @@ export interface LivePosition {
   rotation: number | null
 }
 
+/** What the player aimed at when they pressed the mark key. */
+export interface LiveMarkItem {
+  name: string // GearItem.DisplayName, e.g. "Hatchet"
+  gearName?: string // prefab name, e.g. "GEAR_Hatchet"
+  quantity?: number
+}
+
+/** "Mark here" pressed in game. Body of POST /api/live/v1/events (without createdAt). */
+export interface LiveMarkEvent {
+  id: string // made by the mod, so retries and several tabs can't add the marker twice
+  type: 'mark'
+  /** Stamped by the server when it accepts the event (the game PC's clock is not trusted). */
+  createdAt: number
+  scenes: LiveSceneSample[]
+  item?: LiveMarkItem | null
+}
+
 export const MAX_LIVE_SCENES = 8
 const SCENE_NAME = /^[A-Za-z0-9_]{1,64}$/
+const EVENT_ID = /^[A-Za-z0-9-]{8,64}$/
+const GEAR_NAME = /^[A-Za-z0-9_]{1,80}$/
 const MAX_COORD = 100_000
+const MAX_ITEM_NAME = 100
+const MAX_QUANTITY = 9999
 
-/** Problem with a POST body, or null when it is a valid LiveState. */
-export function validateLiveState(body: unknown): string | null {
-  if (!body || typeof body !== 'object') return 'body must be an object'
-  const scenes = (body as { scenes?: unknown }).scenes
+function validateScenes(scenes: unknown): string | null {
   if (!Array.isArray(scenes) || scenes.length < 1 || scenes.length > MAX_LIVE_SCENES) {
     return `scenes must be an array of 1–${MAX_LIVE_SCENES} entries`
   }
@@ -66,9 +84,119 @@ export function validateLiveState(body: unknown): string | null {
   return null
 }
 
+const cleanScenes = (scenes: LiveSceneSample[]) => scenes.map(({ scene, x, y, z, heading }) => ({ scene, x, y, z, heading }))
+
+/** Problem with a POST body, or null when it is a valid LiveState. */
+export function validateLiveState(body: unknown): string | null {
+  if (!body || typeof body !== 'object') return 'body must be an object'
+  return validateScenes((body as { scenes?: unknown }).scenes)
+}
+
 /** Keeps only the known fields, so nothing else from the request is stored or broadcast. */
 export function cleanLiveState(body: LiveState): LiveState {
-  return { scenes: body.scenes.map(({ scene, x, y, z, heading }) => ({ scene, x, y, z, heading })) }
+  return { scenes: cleanScenes(body.scenes) }
+}
+
+/** Problem with a POST /api/live/v1/events body, or null when it is a valid mark event. */
+export function validateLiveEvent(body: unknown): string | null {
+  if (!body || typeof body !== 'object') return 'body must be an object'
+  const { id, type, scenes, item } = body as Record<string, unknown>
+  if (typeof id !== 'string' || !EVENT_ID.test(id)) return 'id must be 8–64 letters, digits or dashes'
+  if (type !== 'mark') return 'type must be "mark"'
+  const problem = validateScenes(scenes)
+  if (problem) return problem
+  if (item === undefined || item === null) return null
+  if (typeof item !== 'object') return 'item must be an object'
+  const { name, gearName, quantity } = item as Record<string, unknown>
+  if (typeof name !== 'string' || !name.trim() || name.length > MAX_ITEM_NAME) return 'item.name must be a short string'
+  if (gearName !== undefined && (typeof gearName !== 'string' || !GEAR_NAME.test(gearName))) return 'item.gearName is not a prefab name'
+  if (quantity !== undefined && (!Number.isInteger(quantity) || (quantity as number) < 1 || (quantity as number) > MAX_QUANTITY)) {
+    return `item.quantity must be a whole number 1–${MAX_QUANTITY}`
+  }
+  return null
+}
+
+export function cleanLiveEvent(body: Omit<LiveMarkEvent, 'createdAt'>, createdAt: number): LiveMarkEvent {
+  const item = body.item
+    ? { name: body.item.name.trim(), gearName: body.item.gearName, quantity: body.item.quantity }
+    : null
+  return { id: body.id, type: 'mark', createdAt, scenes: cleanScenes(body.scenes), item }
+}
+
+// ── Turning a mark event into a marker ──────────────────────────────────────
+
+/** Item id of the placeholder marker when the player aimed at nothing the app knows. */
+export const UNSORTED_ITEM_ID = 'unsorted-loot'
+export const UNSORTED_ITEM_NAME = 'Unsorted loot'
+
+const fold = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+/** App item for what the game showed: display name first, then the prefab name without GEAR_. */
+export function matchItem<I extends { id: string; name: string }>(item: LiveMarkItem | null | undefined, items: I[]): I | null {
+  if (!item) return null
+  const name = fold(item.name)
+  const byName = items.find((i) => fold(i.name) === name)
+  if (byName) return byName
+  if (!item.gearName) return null
+  const gear = fold(item.gearName.replace(/^GEAR_/i, ''))
+  return items.find((i) => fold(i.id) === gear || fold(i.name) === gear) ?? null
+}
+
+/**
+ * Same id for the same event in every tab and on every retry. Keeps the `marker-<ms>-<rand>`
+ * shape of createId, so code that reads the time from marker ids (frecency) still works.
+ */
+export function markerIdForEvent(event: Pick<LiveMarkEvent, 'id' | 'createdAt'>): string {
+  return `marker-${event.createdAt}-${event.id.replace(/-/g, '').slice(0, 10).toLowerCase()}`
+}
+
+/** "CampOffice" → "Camp Office", "LakeCabinA" → "Lake Cabin A" (for notes on indoor marks). */
+export function sceneLabel(scene: string): string {
+  return scene.replace(/_/g, ' ').replace(/([a-z])([A-Z0-9])/g, '$1 $2').replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+}
+
+export interface PlannedMark {
+  id: string
+  mapId: string
+  x: number
+  y: number
+  itemId: string
+  name: string
+  quantity: number
+  note?: string
+}
+
+/**
+ * Marker for a mark event, or null when the position can't be placed on a calibrated map
+ * (e.g. the save was loaded inside a building, or the region isn't calibrated yet).
+ */
+export function planMark<I extends { id: string; name: string }>(
+  event: LiveMarkEvent,
+  ctx: {
+    scenes: GameScene[]
+    calibration: MapCalibration
+    variant: 'default' | 'interloper'
+    imageFor?: (mapId: string) => { imageWidth: number; imageHeight: number } | undefined
+    items: I[]
+  },
+): PlannedMark | null {
+  const pos = resolveLivePosition({ scenes: event.scenes }, ctx.scenes, ctx.calibration, ctx.variant, ctx.imageFor)
+  if (!pos?.point) return null
+  const item = matchItem(event.item, ctx.items)
+  const notes: string[] = []
+  if (pos.indoors) notes.push(`Inside ${sceneLabel(event.scenes[0]!.scene)}`)
+  // Keep what the game called it when the app has no such item, so it can be sorted later
+  if (!item && event.item) notes.push(`Game: ${event.item.name}`)
+  return {
+    id: markerIdForEvent(event),
+    mapId: pos.mapId,
+    x: pos.point.x,
+    y: pos.point.y,
+    itemId: item?.id ?? UNSORTED_ITEM_ID,
+    name: item?.name ?? UNSORTED_ITEM_NAME,
+    quantity: event.item?.quantity ?? 1,
+    note: notes.length ? notes.join(' · ') : undefined,
+  }
 }
 
 export function applyTransform(t: MapTransform, x: number, z: number): { x: number; y: number } {
