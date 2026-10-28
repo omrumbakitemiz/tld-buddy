@@ -1,16 +1,12 @@
-import { validateSessionToken } from '../utils/auth'
+import { isAuthenticated } from '../utils/auth'
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
 
-  // Only protect /api/data routes -- skip auth routes and everything else
-  if (!path.startsWith('/api/data')) {
-    return
-  }
+  // Only user data needs a session; auth routes and static assets stay public
+  if (!path.startsWith('/api/data')) return
 
-  const token = getCookie(event, 'tld-buddy-session')
-
-  if (!token || !validateSessionToken(token)) {
+  if (!(await isAuthenticated(event).catch(() => false))) {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 })

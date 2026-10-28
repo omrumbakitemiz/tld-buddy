@@ -1,11 +1,5 @@
-import { validateSessionToken } from '../../utils/auth'
+import { isAuthenticated } from '../../utils/auth'
 
-export default defineEventHandler((event) => {
-  const token = getCookie(event, 'tld-buddy-session')
-
-  if (!token || !validateSessionToken(token)) {
-    return { authenticated: false }
-  }
-
-  return { authenticated: true }
+export default defineEventHandler(async (event) => {
+  return { authenticated: await isAuthenticated(event).catch(() => false) }
 })

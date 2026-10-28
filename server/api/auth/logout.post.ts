@@ -1,10 +1,6 @@
-import { getCookieSecure } from '../../utils/config'
+import { clearSessionCookie } from '../../utils/auth'
 
 export default defineEventHandler((event) => {
-  deleteCookie(event, 'tld-buddy-session', {
-    path: '/',
-    secure: getCookieSecure(),
-  })
-
+  clearSessionCookie(event)
   return { ok: true }
 })

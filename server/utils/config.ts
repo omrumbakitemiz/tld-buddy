@@ -10,6 +10,11 @@ export function getAppPassword(): string {
   return String(raw)
 }
 
+/** Optional fixed session-signing secret; otherwise one is generated and kept in Redis. */
+export function getSessionSecretOverride(): string {
+  return process.env.NUXT_SESSION_SECRET || process.env.SESSION_SECRET || ''
+}
+
 /** Session cookie Secure flag. Set COOKIE_SECURE=false for HTTP-only homelab access. */
 export function getCookieSecure(): boolean {
   const raw = process.env.COOKIE_SECURE ?? process.env.NUXT_COOKIE_SECURE
