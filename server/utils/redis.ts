@@ -54,12 +54,25 @@ export async function getRedis(): Promise<RedisClientType> {
   return client
 }
 
-/** Run a storage operation; any Redis failure (down, timeout, disconnect) becomes StorageUnavailableError. */
+/**
+ * Run a storage operation under a hard deadline; any Redis failure (down, slow, frozen,
+ * disconnect) becomes StorageUnavailableError. The deadline is needed on top of the
+ * client's command timeout, which only covers commands not yet written to the socket:
+ * a server that accepts the bytes but never answers would otherwise hang the request.
+ */
 export async function withStorage<T>(fn: (redis: RedisClientType) => Promise<T>): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const deadline = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new StorageUnavailableError('deadline exceeded')), REDIS_DEADLINE_MS * 2)
+  })
+  const work = getRedis().then(fn)
+  work.catch(() => {}) // if the deadline wins, a late failure must not become an unhandled rejection
   try {
-    return await fn(await getRedis())
+    return await Promise.race([work, deadline])
   } catch (err) {
     if (err instanceof StorageUnavailableError) throw err
     throw new StorageUnavailableError(err)
+  } finally {
+    clearTimeout(timer)
   }
 }

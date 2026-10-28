@@ -15,7 +15,9 @@ export async function readLimitedBody(event: H3Event, maxBytes: number): Promise
     const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
     size += buf.length
     if (size > maxBytes) {
-      event.node.req.destroy()
+      // Answer 413, then drop the connection instead of reading the rest of the upload
+      setHeader(event, 'connection', 'close')
+      event.node.res.once('finish', () => event.node.req.destroy())
       throw createError({ statusCode: 413, statusMessage: 'Payload too large' })
     }
     chunks.push(buf)
