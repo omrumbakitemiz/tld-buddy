@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TLD Buddy · map calibration</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root { color-scheme: dark; --bg: #15171a; --panel: #1d2024; --line: #30353b; --text: #e6e6e6; --muted: #9aa0a6; --accent: #f0a04b; --ghost: #6cb4ff; --bad: #ff6b6b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; display: flex; height: 100vh; font: 13px/1.4 system-ui, sans-serif; background: var(--bg); color: var(--text); }
+  aside { width: 360px; display: flex; flex-direction: column; border-right: 1px solid var(--line); background: var(--panel); }
+  header, .fit, footer { padding: 12px; border-bottom: 1px solid var(--line); }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  p { margin: 6px 0; color: var(--muted); }
+  label { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+  select, button { font: inherit; color: var(--text); background: #2a2e33; border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+  button { cursor: pointer; }
+  button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: var(--accent); color: #1a1a1a; border-color: var(--accent); font-weight: 600; }
+  ul { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1; }
+  li { display: grid; grid-template-columns: 14px 1fr auto; gap: 8px; align-items: center; padding: 6px 12px; border-bottom: 1px solid #262a2f; cursor: pointer; }
+  li:hover { background: #24282d; }
+  li.armed { background: #3a2d1c; outline: 1px solid var(--accent); }
+  li .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ghost); }
+  li.placed .dot { background: var(--accent); border-color: var(--accent); }
+  li .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  li .sub { color: var(--muted); font-size: 11px; }
+  li .err { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+  li .err.bad { color: var(--bad); }
+  li .x { color: var(--muted); padding: 0 4px; }
+  .fit { font-variant-numeric: tabular-nums; }
+  #map { flex: 1; background: #0e0f11; }
+  .lm { width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent); border: 2px solid #1a1a1a; box-shadow: 0 0 0 2px var(--accent); }
+  .leaflet-tooltip { font-size: 12px; }
+  .placing #map { cursor: crosshair; }
+</style>
+</head>
+<body>
+<aside>
+  <header>
+    <h1>Map calibration</h1>
+    <label>Scene <select id="scene"></select></label>
+    <label>Artwork <select id="variant"><option value="default">default</option><option value="interloper">interloper</option></select></label>
+    <p>Click a landmark below, then click where it is on the map (a door, cave mouth or region exit). Drag placed points to adjust. After 3 points, blue rings show where the fit predicts every other landmark. Check that they land on the right buildings.</p>
+  </header>
+  <ul id="list"></ul>
+  <div class="fit" id="fit">Place at least 3 landmarks.</div>
+  <footer><button class="primary" id="save" disabled>Save calibration</button> <span id="status"></span></footer>
+</aside>
+<div id="map"></div>
+<script>
+const $ = (id) => document.getElementById(id)
+const state = { maps: [], scenes: [], calibration: {}, files: [], file: null, variant: 'default', placed: new Map(), armed: null, fit: null }
+let map, layer
+
+async function getJson(url, fallback) {
+  try { const r = await fetch(url); return r.ok ? await r.json() : fallback } catch { return fallback }
+}
+
+async function init() {
+  ;[state.maps, state.scenes, state.calibration, state.files] = await Promise.all([
+    getJson('/data/maps.json', []), getJson('/data/game-scenes.json', []),
+    getJson('/data/map-calibration.json', {}), getJson('/api/landmarks', []),
+  ])
+  const known = state.files.filter((f) => state.scenes.some((s) => s.scene === f.scene))
+  if (!known.length) { $('fit').textContent = 'No landmark files for known regions yet. Run the game with the mod and visit a region.'; return }
+  $('scene').innerHTML = known.map((f) => `<option>${f.scene}</option>`).join('')
+  $('scene').onchange = () => load()
+  $('variant').onchange = () => load()
+  $('save').onclick = save
+  load()
+}
+
+function load() {
+  state.file = state.files.find((f) => f.scene === $('scene').value)
+  state.variant = $('variant').value
+  state.mapId = state.scenes.find((s) => s.scene === state.file.scene).mapId
+  const gameMap = state.maps.find((m) => m.id === state.mapId)
+  state.image = gameMap[state.variant]
+  state.armed = null
+  state.placed = new Map()
+  // Each landmark gets a stable key; the same target can have several doors
+  state.landmarks = state.file.landmarks.map((l, i) => ({ ...l, key: `${l.target}|${l.exitPoint}|${i}` }))
+  const saved = state.calibration[state.file.scene]?.[state.variant]
+  for (const p of saved?.points ?? []) {
+    const lm = state.landmarks.find((l) => l.target === p.target && l.exitPoint === p.exitPoint && Math.hypot(l.x - p.world[0], l.z - p.world[1]) < 1)
+    if (lm) state.placed.set(lm.key, { x: p.map[0], y: p.map[1] })
+  }
+  buildMap()
+  refresh()
+}
+
+function buildMap() {
+  map?.remove()
+  const { imageWidth: w, imageHeight: h, imageUrl } = state.image
+  map = L.map('map', { crs: L.CRS.Simple, minZoom: -4, maxZoom: 3, zoomSnap: 0.25, attributionControl: false })
+  const bounds = L.latLngBounds([0, 0], [h, w])
+  L.imageOverlay(imageUrl, bounds).addTo(map)
+  map.fitBounds(bounds)
+  layer = L.layerGroup().addTo(map)
+  map.on('click', (e) => {
+    if (!state.armed) return
+    state.placed.set(state.armed, { x: e.latlng.lng, y: e.latlng.lat })
+    state.armed = null
+    refresh()
+  })
+}
+
+// Least squares affine: [mx, my] = [a b c; d e f] · [wx, wz, 1]
+function fitAffine(pairs) {
+  if (pairs.length < 3) return null
+  const ata = [[0, 0, 0], [0, 0, 0], [0, 0, 0]], atx = [0, 0, 0], aty = [0, 0, 0]
+  for (const { wx, wz, mx, my } of pairs) {
+    const r = [wx, wz, 1]
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) ata[i][j] += r[i] * r[j]
+      atx[i] += r[i] * mx
+      aty[i] += r[i] * my
+    }
+  }
+  const abc = solve3(ata, atx), def = solve3(ata, aty)
+  if (!abc || !def) return null
+  const m = [...abc, ...def]
+  const apply = (wx, wz) => [m[0] * wx + m[1] * wz + m[2], m[3] * wx + m[4] * wz + m[5]]
+  const errors = pairs.map((p) => { const [x, y] = apply(p.wx, p.wz); return Math.hypot(x - p.mx, y - p.my) })
+  const rms = Math.sqrt(errors.reduce((s, e) => s + e * e, 0) / errors.length)
+  const scaleX = Math.hypot(m[0], m[3]), scaleZ = Math.hypot(m[1], m[4])
+  const rotation = Math.atan2(m[3], m[0]) * 180 / Math.PI
+  return { matrix: m, apply, errors, rms, scaleX, scaleZ, rotation }
+}
+
+function solve3(a, b) {
+  const m = a.map((row, i) => [...row, b[i]])
+  for (let c = 0; c < 3; c++) {
+    let p = c
+    for (let r = c + 1; r < 3; r++) if (Math.abs(m[r][c]) > Math.abs(m[p][c])) p = r
+    if (Math.abs(m[p][c]) < 1e-9) return null
+    ;[m[c], m[p]] = [m[p], m[c]]
+    for (let r = 0; r < 3; r++) {
+      if (r === c) continue
+      const f = m[r][c] / m[c][c]
+      for (let k = c; k < 4; k++) m[r][k] -= f * m[c][k]
+    }
+  }
+  return [m[0][3] / m[0][0], m[1][3] / m[1][1], m[2][3] / m[2][2]]
+}
+
+function pairs() {
+  return state.landmarks.filter((l) => state.placed.has(l.key)).map((l) => {
+    const p = state.placed.get(l.key)
+    return { lm: l, wx: l.x, wz: l.z, mx: p.x, my: p.y }
+  })
+}
+
+function refresh() {
+  const ps = pairs()
+  state.fit = fitAffine(ps)
+  const errByKey = new Map(state.fit ? ps.map((p, i) => [p.lm.key, state.fit.errors[i]]) : [])
+  document.body.classList.toggle('placing', !!state.armed)
+
+  $('list').innerHTML = ''
+  for (const l of state.landmarks) {
+    const li = document.createElement('li')
+    const placed = state.placed.has(l.key)
+    const err = errByKey.get(l.key)
+    li.className = (placed ? 'placed' : '') + (state.armed === l.key ? ' armed' : '')
+    li.innerHTML = `<span class="dot"></span>
+      <span><div class="name">${l.target}</div><div class="sub">${l.exitPoint || ''} · (${l.x.toFixed(0)}, ${l.z.toFixed(0)})</div></span>
+      <span>${err != null ? `<span class="err ${err > 25 ? 'bad' : ''}">${err.toFixed(1)} px</span>` : ''}${placed ? '<span class="x" title="Remove">×</span>' : ''}</span>`
+    li.onclick = (e) => {
+      if (e.target.classList.contains('x')) state.placed.delete(l.key)
+      else state.armed = state.armed === l.key ? null : l.key
+      refresh()
+    }
+    $('list').appendChild(li)
+  }
+
+  layer.clearLayers()
+  for (const l of state.landmarks) {
+    const placed = state.placed.get(l.key)
+    const predicted = state.fit?.apply(l.x, l.z)
+    if (predicted) {
+      L.circleMarker([predicted[1], predicted[0]], { radius: 9, color: '#6cb4ff', weight: 2, fill: false })
+        .bindTooltip(l.target, { direction: 'top', permanent: !placed, opacity: 0.85 }).addTo(layer)
+    }
+    if (placed) {
+      if (predicted) L.polyline([[placed.y, placed.x], [predicted[1], predicted[0]]], { color: '#ff6b6b', weight: 1 }).addTo(layer)
+      const m = L.marker([placed.y, placed.x], { draggable: true, icon: L.divIcon({ className: '', html: '<div class="lm"></div>' }) })
+        .bindTooltip(l.target, { direction: 'right' }).addTo(layer)
+      m.on('dragend', () => { const ll = m.getLatLng(); state.placed.set(l.key, { x: ll.lng, y: ll.lat }); refresh() })
+    }
+  }
+
+  const f = state.fit
+  $('fit').innerHTML = f
+    ? `${ps.length} points · RMS error <b>${f.rms.toFixed(1)} px</b><br>scale ${f.scaleX.toFixed(3)} / ${f.scaleZ.toFixed(3)} px per m · rotation ${f.rotation.toFixed(1)}°`
+    : `Place at least 3 landmarks (${ps.length} so far).`
+  $('save').disabled = !f
+}
+
+async function save() {
+  const f = state.fit
+  const transform = {
+    matrix: f.matrix.map((v) => +v.toPrecision(10)),
+    rmsPx: +f.rms.toFixed(2),
+    imageWidth: state.image.imageWidth,
+    imageHeight: state.image.imageHeight,
+    points: pairs().map((p) => ({ target: p.lm.target, exitPoint: p.lm.exitPoint, world: [p.wx, p.wz], map: [+p.mx.toFixed(1), +p.my.toFixed(1)] })),
+  }
+  const r = await fetch('/api/calibration', { method: 'POST', body: JSON.stringify({ scene: state.file.scene, mapId: state.mapId, variant: state.variant, transform }) })
+  $('status').textContent = r.ok ? 'Saved.' : `Save failed: ${await r.text()}`
+  if (r.ok) state.calibration = await getJson('/data/map-calibration.json', {})
+}
+
+init()
+</script>
+</body>
+</html>

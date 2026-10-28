@@ -32,6 +32,18 @@ The build copies `TldBuddy.dll` into `<TLD>/Mods/`. Close the game before you bu
   </Project>
   ```
 
+## Landmarks and map calibration
+
+Each time a scene loads, the mod writes the scene's doors, cave mouths and region exits to `<TLD>/UserData/TldBuddy/landmarks/<scene>.json`, with their world position and the scene they lead to.
+
+To calibrate a region map:
+
+1. Run `node scripts/calibrate/server.ts` and open http://127.0.0.1:5174. `TLD_DIR` overrides the game path.
+2. Pick the scene and artwork, then place 4–6 well-spread landmarks on the map.
+3. Check that the blue rings (predictions for unplaced landmarks) land on the right buildings, then click Save.
+
+Saving writes the transform (world x/z → app map x/y) into `public/data/map-calibration.json`, keyed by scene.
+
 ## Spike output
 
 Once per second the mod logs the following to the MelonLoader console (and `MelonLoader/Latest.log`):
