@@ -120,4 +120,15 @@ test('planBatch puts a lone item exactly on an empty spot', () => {
   assert.deepEqual(ops, [{ kind: 'add', itemId: 'hacksaw', quantity: 1, note: undefined, x: 50, y: 60 }])
 })
 
+test('incremental entries keep distinct positions on the shared ring', () => {
+  const existing: { id: string; itemId: string; x: number; y: number }[] = []
+  for (let i = 0; i < 9; i++) {
+    const [op] = planBatch({ x: 100, y: 100 }, [{ itemId: `item-${i}`, quantity: 1 }], existing)
+    assert.ok(op && op.kind === 'add')
+    if (op.kind !== 'add') return
+    for (const prev of existing) assert.ok(Math.hypot(prev.x - op.x, prev.y - op.y) > 5)
+    existing.push({ ...op, id: `marker-${i}` })
+  }
+})
+
 console.log(`\n${passed} add-item tests passed`)
