@@ -69,17 +69,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import L from 'leaflet'
 import { CrosshairIcon, EyeOffIcon, LoaderIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useImageMap } from '~/composables/useImageMap'
 import { useUiState } from '~/composables/useUiState'
+import { useAddUi, type AddRequest, type MapTile } from '~/composables/useAddUi'
 import type { Marker } from '~/types'
 
 const emit = defineEmits<{
-  'request-add-marker': [position: { x: number; y: number }]
+  'request-add-marker': [request: AddRequest]
 }>()
 
 const {
@@ -88,6 +89,8 @@ const {
 } = useGameData()
 const ui = useUiState()
 const { selectedMarkerId, selectedGroupIds, selectedPOIId, placingLoot, pinningPOIId, hideLooted, nightMap, cancelPlacement } = ui
+
+const addUi = useAddUi()
 
 const container = ref<HTMLElement | null>(null)
 const placing = computed(() => placingLoot.value || !!pinningPOIId.value)
@@ -109,6 +112,12 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
   poiLayer = L.layerGroup().addTo(map)
   markerLayer = L.layerGroup().addTo(map)
 
+  const request = (e: L.LeafletMouseEvent, source: AddRequest['source']): AddRequest => ({
+    pos: { x: e.latlng.lng, y: e.latlng.lat },
+    client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY },
+    source,
+  })
+
   map.on('click', (e: L.LeafletMouseEvent) => {
     const pos = { x: e.latlng.lng, y: e.latlng.lat }
     if (pinningPOIId.value) {
@@ -117,9 +126,12 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
       cancelPlacement()
       return
     }
+    // An add-item variant may own plain clicks (e.g. a stamp mode)
+    if (addUi.handlers()?.interceptClick?.(request(e, 'placing'), e.originalEvent)) return
     if (placingLoot.value || e.originalEvent.shiftKey) {
+      const source = placingLoot.value ? 'placing' : 'shift-click'
       placingLoot.value = false
-      emit('request-add-marker', pos)
+      emit('request-add-marker', request(e, source))
       return
     }
     ui.selectMarker(null)
@@ -130,8 +142,39 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
   map.on('contextmenu', (e: L.LeafletMouseEvent) => {
     if (pinningPOIId.value) return
     placingLoot.value = false
-    emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
+    emit('request-add-marker', request(e, 'context'))
   })
+
+  // Pointer position and projection for the add-item variants (useAddUi)
+  map.on('mousemove', (e: L.LeafletMouseEvent) => {
+    addUi.pointer.value = { pos: { x: e.latlng.lng, y: e.latlng.lat }, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY } }
+  })
+  map.on('mouseout', () => (addUi.pointer.value = null))
+  map.on('move zoom resize', () => addUi.viewTick.value++)
+  const el = map.getContainer()
+  addUi.mapView.value = {
+    container: el,
+    toClient: (pos) => {
+      const pt = map.latLngToContainerPoint([pos.y, pos.x])
+      const box = el.getBoundingClientRect()
+      return { x: box.left + pt.x, y: box.top + pt.y }
+    },
+    fromClient: (client) => {
+      const box = el.getBoundingClientRect()
+      if (client.x < box.left || client.x > box.right || client.y < box.top || client.y > box.bottom) return null
+      const ll = map.containerPointToLatLng([client.x - box.left, client.y - box.top])
+      return { x: ll.lng, y: ll.lat }
+    },
+    reveal: (pos, margin = 120) => {
+      const pt = map.latLngToContainerPoint([pos.y, pos.x])
+      const size = map.getSize()
+      const dx = pt.x < margin ? pt.x - margin : pt.x > size.x - margin ? pt.x - (size.x - margin) : 0
+      const dy = pt.y < margin ? pt.y - margin : pt.y > size.y - margin ? pt.y - (size.y - margin) : 0
+      if (dx || dy) map.panBy([dx, dy], { animate: !reducedMotion() })
+    },
+    // CRS.Simple: one map pixel per screen pixel at zoom 0
+    scale: () => Math.pow(2, -map.getZoom()),
+  }
 
   // Grouping depends on zoom: regroup after every zoom change
   map.on('zoomend', renderMarkers)
@@ -233,10 +276,11 @@ function renderMarkers() {
       if (group.length === 1) ui.selectMarker(selectedMarkerId.value === group[0]!.id ? null : group[0]!.id)
       else ui.selectGroup(ids)
     }
-    layer.on('click', (e) => {
+    layer.on('click', (e: L.LeafletMouseEvent) => {
       L.DomEvent.stopPropagation(e)
-      choose()
+      if (!variantTileClick({ kind: 'loot', markerIds: ids }, { x: lng, y: lat }, e)) choose()
     })
+    layer.on('contextmenu', (e: L.LeafletMouseEvent) => tileContextMenu({ x: lng, y: lat }, e))
     layer.on('keypress', (e: L.LeafletKeyboardEvent) => {
       if (e.originalEvent.key === 'Enter') choose()
     })
@@ -248,6 +292,21 @@ function renderMarkers() {
     markerLayer.removeLayer(view.layer)
     markerViews.delete(id)
   }
+}
+
+/** A click on a tile goes to the add-item variant first (useAddUi `interceptTileClick`). */
+function variantTileClick(tile: MapTile, pos: { x: number; y: number }, e: L.LeafletMouseEvent): boolean {
+  const req: AddRequest = { pos, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, source: 'placing' }
+  return addUi.handlers()?.interceptTileClick?.(tile, req, e.originalEvent) ?? false
+}
+
+/** Right-click on a tile adds to that tile's spot, like right-clicking the map beside it. */
+function tileContextMenu(pos: { x: number; y: number }, e: L.LeafletMouseEvent) {
+  L.DomEvent.stopPropagation(e)
+  L.DomEvent.preventDefault(e.originalEvent)
+  if (pinningPOIId.value) return
+  placingLoot.value = false
+  emit('request-add-marker', { pos, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, source: 'context' })
 }
 
 // ── POIs ────────────────────────────────────────────────────────────────────
@@ -277,10 +336,11 @@ function renderPOIs() {
       title: poi.name,
       keyboard: true,
     })
-    layer.on('click', (e) => {
+    layer.on('click', (e: L.LeafletMouseEvent) => {
       L.DomEvent.stopPropagation(e)
-      ui.selectPOI(pin.poiId)
+      if (!variantTileClick({ kind: 'place', poiId: pin.poiId }, { x: pin.x, y: pin.y }, e)) ui.selectPOI(pin.poiId)
     })
+    layer.on('contextmenu', (e: L.LeafletMouseEvent) => tileContextMenu({ x: pin.x, y: pin.y }, e))
     layer.addTo(poiLayer)
     poiViews.set(pin.poiId, { key, layer })
   }
@@ -325,6 +385,11 @@ function revealPosition(pos: { x: number; y: number }, avoid: DOMRect) {
 }
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+onBeforeUnmount(() => {
+  addUi.mapView.value = null
+  addUi.pointer.value = null
+})
 
 defineExpose({ flyToPosition, fit, zoomIn, zoomOut, getMap, revealPosition })
 </script>

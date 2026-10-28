@@ -106,6 +106,17 @@
             <KeyboardIcon class="size-4" /> Keyboard shortcuts <kbd class="ml-auto">?</kbd>
           </DropdownMenuItem>
           <DropdownMenuSeparator class="my-1 h-px bg-border" />
+          <!-- Add-item lab: switch between the add flows being compared (docs/add-item) -->
+          <DropdownMenuLabel class="hud-label px-2.5 pb-1 pt-1.5 text-muted-foreground">Add flow</DropdownMenuLabel>
+          <DropdownMenuRadioGroup :model-value="addUi.variant.value" @update:model-value="(v) => addUi.setVariant(v as AddVariant)">
+            <DropdownMenuRadioItem v-for="v in ADD_VARIANTS" :key="v.id" :value="v.id" class="menu-item">
+              <span class="size-4" aria-hidden="true">
+                <CheckIcon v-if="addUi.variant.value === v.id" class="size-4" />
+              </span>
+              {{ v.label }}
+            </DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+          <DropdownMenuSeparator class="my-1 h-px bg-border" />
           <DropdownMenuItem class="menu-item text-destructive" @select="emit('logout')">
             <LogOutIcon class="size-4" /> Log out
           </DropdownMenuItem>
@@ -117,23 +128,25 @@
 
 <script setup lang="ts">
 import {
-  DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal,
-  DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal,
+  DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger,
 } from 'reka-ui'
 import {
-  ChevronDownIcon, CompassIcon, EllipsisVerticalIcon, EyeOffIcon, KeyboardIcon, LogOutIcon,
+  CheckIcon, ChevronDownIcon, CompassIcon, EllipsisVerticalIcon, EyeOffIcon, KeyboardIcon, LogOutIcon,
   MapIcon, MoonIcon, PanelLeftIcon, SearchIcon, SlidersHorizontalIcon, SwordsIcon,
 } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import SyncIndicator from '~/components/SyncIndicator.vue'
 import { useGameData } from '~/composables/useGameData'
 import { useUiState } from '~/composables/useUiState'
+import { ADD_VARIANTS, useAddUi, type AddVariant } from '~/composables/useAddUi'
 import DifficultyChip from '~/components/DifficultyChip.vue'
 
 const emit = defineEmits<{ logout: [] }>()
 
 const { currentMap, currentRun, travelMode, toggleTravelMode } = useGameData()
 const { panelOpen, openPanel, showRuns, showSearch, showShortcuts, showPOIConfig, hideLooted, nightMap } = useUiState()
+const addUi = useAddUi()
 </script>
 
 <style scoped>
