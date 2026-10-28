@@ -1,28 +1,40 @@
 <template>
   <div
+    ref="rootRef"
     class="wheel-readout surface-rail flex w-[19.5rem] flex-col gap-2 rounded-xl border border-border p-3 shadow-[0_8px_28px_oklch(0.1_0.02_258/0.6)]"
     @wheel="(e: WheelEvent) => emit('wheel', e)"
   >
-    <!-- Where: the place, the pile you joined, or a fresh spot -->
+    <!-- Where: the place, the pile you joined, or a fresh spot; the count opens the list of what's on it -->
     <div class="flex min-w-0 items-center gap-2">
       <span v-if="place.kind === 'poi'" class="size-[7px] shrink-0 rounded-full bg-place" aria-hidden="true" />
       <MapPinIcon v-else class="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
       <span class="hud-label min-w-0 flex-1 truncate">{{ place.name }}</span>
       <span v-if="crumb" class="hud-label shrink-0 text-muted-foreground">{{ crumb }}</span>
-      <span v-else-if="here.length" class="hud-label tabular shrink-0 text-muted-foreground">
+      <button
+        v-if="here.length"
+        ref="disclosureRef"
+        type="button"
+        class="wheel-disclosure hud-label tabular"
+        :aria-expanded="expanded"
+        aria-controls="wheel-a-spot-list"
+        :title="expanded ? 'Show as tiles' : 'List what is on this spot, and tick things off'"
+        @click="emit('update:expanded', !expanded)"
+      >
         {{ here.length }} here<template v-if="lootedCount"> · {{ lootedCount }} looted</template>
-      </span>
+        <ChevronDownIcon class="size-3.5 transition-transform duration-200" :class="{ 'rotate-180': expanded }" aria-hidden="true" />
+      </button>
     </div>
 
-    <!-- Everything at this spot: what was there (washed out if looted) and what this wheel added (solid ring) -->
-    <template v-if="here.length">
+    <!-- Collapsed: everything at this spot as tiles (washed out if looted, solid ring if added now) -->
+    <template v-if="here.length && !expanded">
       <ul class="flex flex-wrap gap-1.5" aria-label="At this spot">
         <li
           v-for="t in shownHere"
           :key="t.id"
-          class="wheel-mini"
+          class="wheel-mini cursor-pointer"
           :class="{ 'wheel-mini--new': t.touched, 'wheel-mini--last': t.last, 'wheel-mini--looted': t.looted }"
           :title="t.label"
+          @click="emit('update:expanded', true)"
         >
           <img v-if="t.icon" :src="t.icon" alt="" class="wheel-mini__img" draggable="false">
           <PackageIcon v-else class="size-3.5 text-muted-foreground" />
@@ -36,6 +48,50 @@
         Already here: {{ hereSummary }}
       </p>
     </template>
+
+    <!-- Expanded: On this spot, before this visit and this visit, with a looted toggle per item -->
+    <div
+      v-if="here.length && expanded"
+      id="wheel-a-spot-list"
+      class="wheel-spot-list -mx-1 flex flex-col gap-2 overflow-y-auto px-1"
+      :style="{ maxHeight: `${listMax}px` }"
+    >
+      <section v-for="sec in sections" :key="sec.key" :aria-label="sec.title">
+        <h3 class="wheel-spot-list__heading hud-label flex items-center gap-1.5 text-muted-foreground">
+          {{ sec.title }} <span class="tabular">{{ sec.rows.length }}</span>
+        </h3>
+        <ul class="flex flex-col">
+          <li v-for="r in sec.rows" :key="`${sec.key}-${r.markerId}`" class="wheel-row" :class="{ 'wheel-row--looted': r.looted && !r.stacked }">
+            <span class="wheel-row__icon" aria-hidden="true">
+              <img v-if="r.icon" :src="r.icon" alt="" class="size-[18px] object-contain" draggable="false">
+              <PackageIcon v-else class="size-3.5 text-muted-foreground" />
+            </span>
+            <span class="min-w-0 flex-1 truncate">{{ r.name }}</span>
+            <span v-if="r.stacked" class="wheel-row__added tabular" :title="`Added ${r.quantity} now, on the pile above`">+{{ r.quantity }}</span>
+            <span v-else-if="r.quantity > 1" class="tabular text-xs text-muted-foreground">×{{ r.quantity }}</span>
+            <button
+              v-if="!r.stacked"
+              type="button"
+              class="wheel-tick"
+              :aria-pressed="r.looted"
+              :aria-label="`${r.name}${r.quantity > 1 ? ` ×${r.quantity}` : ''}: looted`"
+              :title="r.looted ? 'Looted · click if it is still there' : 'Still there · click when you took it'"
+              @click="emit('toggle-looted', r.markerId)"
+            >
+              <CheckIcon class="size-3" :stroke-width="3.5" />
+            </button>
+            <span v-else class="w-6 shrink-0" aria-hidden="true" />
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- A typed search line is never dropped silently: the first close keeps it -->
+    <p v-if="draft" class="wheel-draft" role="status">
+      <span class="min-w-0 truncate">Unfinished: ‘{{ draft }}’</span>
+      <span class="inline-flex shrink-0 items-center gap-1"><kbd class="wheel-kbd">⏎</kbd> add</span>
+      <span class="inline-flex shrink-0 items-center gap-1"><kbd class="wheel-kbd">Esc</kbd> discard</span>
+    </p>
 
     <!-- The one line that matters right now -->
     <div class="flex h-10 min-w-0 items-center gap-2.5 rounded-lg bg-background/60 px-2.5">
@@ -177,7 +233,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
-import { CheckIcon, ChevronLeftIcon, MapPinIcon, MinusIcon, PackageIcon, PencilLineIcon, PlusIcon, SearchIcon } from '@lucide/vue'
+import { CheckIcon, ChevronDownIcon, ChevronLeftIcon, MapPinIcon, MinusIcon, PackageIcon, PencilLineIcon, PlusIcon, SearchIcon } from '@lucide/vue'
 import type { Stage } from './wheel'
 
 /** The plate under (or over) the wheel: where, what's here, the live line, and the keys. */
@@ -193,6 +249,16 @@ export interface HereTile {
   /** The last pick landed here */
   last: boolean
   label: string
+}
+
+export interface SpotRow {
+  markerId: string
+  name: string
+  icon?: string | null
+  quantity: number
+  looted: boolean
+  /** Added now onto a marker that was already here (its toggle is in "Before this visit") */
+  stacked?: boolean
 }
 
 const props = defineProps<{
@@ -214,6 +280,14 @@ const props = defineProps<{
   qtyTyping: boolean
   /** Paging through a group's items */
   pages: { page: number; pages: number } | null
+  /** The list view of the spot is open */
+  expanded: boolean
+  /** Tallest the list may get without the plate leaving the map */
+  listMax: number
+  /** The spot split into what was there and what this visit added */
+  visit: { before: SpotRow[]; visit: SpotRow[] }
+  /** A typed search line a close attempt was held for */
+  draft: string | null
 }>()
 
 const emit = defineEmits<{
@@ -227,6 +301,8 @@ const emit = defineEmits<{
   done: []
   back: []
   more: []
+  'update:expanded': [value: boolean]
+  'toggle-looted': [markerId: string]
   wheel: [e: WheelEvent]
 }>()
 
@@ -243,6 +319,11 @@ const hereSummary = computed(() => {
   const list = !named.length ? 'only looted items' : rest > 0 ? `${named.join(', ')} and ${rest} more` : named.join(', ')
   return lootedCount.value && named.length ? `${list} (${lootedCount.value} looted)` : list
 })
+
+const sections = computed(() => [
+  { key: 'before', title: 'Before this visit', rows: props.visit.before },
+  { key: 'visit', title: 'This visit', rows: props.visit.visit },
+].filter((sec) => sec.rows.length))
 
 const hints = computed<{ keys: string[]; label: string }[]>(() => {
   switch (props.stage) {
@@ -285,7 +366,17 @@ function focusInputNow() {
   inputRef.value?.focus({ preventScroll: true })
 }
 
-defineExpose({ focusInput, focusInputNow })
+const rootRef = ref<HTMLElement | null>(null)
+const disclosureRef = ref<HTMLButtonElement | null>(null)
+
+/** Shift+Tab from the wheel lands here: the On-this-spot toggle when there is one, else the first button. */
+function focusFirst() {
+  const el = disclosureRef.value ?? rootRef.value?.querySelector<HTMLElement>('button:not(:disabled), input')
+  el?.focus({ preventScroll: true })
+  return !!el
+}
+
+defineExpose({ focusInput, focusInputNow, focusFirst })
 </script>
 
 <style scoped>
@@ -338,6 +429,118 @@ defineExpose({ focusInput, focusInputNow })
   background: var(--looted);
   color: oklch(0.22 0.03 258);
   box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258);
+}
+
+.wheel-disclosure {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 3px;
+  margin: -3px -6px -3px 0;
+  padding: 3px 4px 3px 6px;
+  border-radius: 4px;
+  color: var(--muted-foreground);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.wheel-disclosure:hover,
+.wheel-disclosure[aria-expanded="true"] {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+/* Section names stay in view while the list scrolls */
+.wheel-spot-list__heading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 2px 0 4px;
+  background: var(--rail);
+}
+
+.wheel-row {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.wheel-row + .wheel-row {
+  border-top: 1px solid oklch(0.33 0.03 258 / 0.5);
+}
+
+.wheel-row__icon {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 6px;
+  background: oklch(0.22 0.03 258);
+  border: 1.5px solid var(--loot);
+  transition: opacity 240ms ease, filter 240ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+/* Looted: the map's wash-out, row-sized */
+.wheel-row--looted {
+  color: var(--muted-foreground);
+}
+
+.wheel-row--looted .wheel-row__icon {
+  background: transparent;
+  border-color: transparent;
+  opacity: 0.55;
+  filter: grayscale(1) contrast(0.85);
+}
+
+.wheel-row__added {
+  padding: 0 5px;
+  border-radius: 8px;
+  background: var(--loot);
+  color: var(--primary-foreground);
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 16px;
+}
+
+/* The looted toggle: an empty keylined ring while the loot is there, the mint tick once taken */
+.wheel-tick {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  color: transparent;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.wheel-tick:hover {
+  border-color: var(--looted);
+  color: oklch(0.84 0.085 170 / 0.6);
+}
+
+.wheel-tick[aria-pressed="true"] {
+  background: var(--looted);
+  border-color: var(--looted);
+  color: oklch(0.22 0.03 258);
+  box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258);
+}
+
+.wheel-draft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: oklch(0.84 0.13 85 / 0.1);
+  color: var(--warning);
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .wheel-qty-field {

@@ -9,8 +9,8 @@
     <div
       v-if="open && center"
       ref="rootRef"
-      class="wheel-root absolute size-0 outline-none"
-      :style="{ left: `${center.x}px`, top: `${center.y}px` }"
+      class="wheel-root absolute outline-none"
+      :style="{ left: `${center.x - WHEEL.outer}px`, top: `${center.y - WHEEL.outer}px`, width: `${WHEEL.outer * 2}px`, height: `${WHEEL.outer * 2}px` }"
       role="dialog"
       aria-modal="false"
       :aria-label="`Add loot at ${place.name}`"
@@ -21,6 +21,7 @@
       <p id="wheel-a-help" class="sr-only">
         Arrow keys move around the ring, Enter or Space picks. Digits 1 to 8 pick directly, letters search.
         After a pick, x then a number sets its quantity. Backspace takes the last pick back. Enter closes.
+        Shift Tab moves into the panel below the ring: what is on this spot, with a looted toggle per item.
       </p>
       <WheelRing
         ref="ringRef"
@@ -57,6 +58,10 @@
         :result-count="searchResults.length"
         :qty-typing="!!qtyBuffer"
         :pages="stage === 'items' ? groupPage : null"
+        :expanded="spotListOpen"
+        :list-max="plateLayout?.listMax ?? 216"
+        :visit="visitRows"
+        :draft="draftArmed ? query.trim() : null"
         @update:query="(v) => (query = v)"
         @update:note="(v) => (noteText = v)"
         @update:qty-draft="(v) => (qtyDraft = v)"
@@ -64,24 +69,39 @@
         @qty-open="run({ type: 'qty-open' })"
         @note="run({ type: 'note' })"
         @again="run({ type: 'again' })"
-        @done="close()"
+        @done="leave()"
+        @update:expanded="(v) => (spotListOpen = v)"
+        @toggle-looted="toggleLooted"
         @back="run({ type: 'back' })"
         @more="run({ type: 'more' })"
         @wheel="onWheel"
         @contextmenu.prevent
       />
     </div>
+    <!-- A selected place offers to log loot at its pin; a plain click on the plate still just selects it -->
+    <button
+      v-if="chip"
+      type="button"
+      class="wheel-chip pointer-events-auto absolute"
+      :style="{ left: `${chip.x}px`, top: `${chip.y}px` }"
+      :title="`Open the wheel at ${chip.name} (A)`"
+      @click="openAt(chip.pos)"
+    >
+      <PlusIcon class="size-3.5 text-primary" aria-hidden="true" /> Log loot here <kbd class="wheel-chip__kbd">A</kbd>
+    </button>
     <p class="sr-only" aria-live="polite">{{ liveText }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
-import WheelReadout, { type HereTile } from '~/components/add/a/WheelReadout.vue'
+import { useLocalStorage } from '@vueuse/core'
+import { PlusIcon } from '@lucide/vue'
+import WheelReadout, { type HereTile, type SpotRow } from '~/components/add/a/WheelReadout.vue'
 import WheelRing from '~/components/add/a/WheelRing.vue'
 import { useWheelSession } from '~/components/add/a/useWheelSession'
 import {
-  WHEEL, pageOf, readKey, readoutSide, searchTypesDigits, stepQuantity, typeQuantity, wheelSteps,
+  WHEEL, guardDraft, pageOf, splitVisit, readKey, readoutSide, searchTypesDigits, stepQuantity, typeQuantity, wheelSteps,
   type KeyState, type Stage, type WheelAction, type WheelSlice,
 } from '~/components/add/a/wheel'
 import { useAddItem } from '~/composables/useAddItem'
@@ -183,6 +203,49 @@ const hereTiles = computed<HereTile[]>(() => {
       return { id: m.id, name, icon: item?.icon, quantity: m.quantity, looted: !!m.lootedAt, touched, last: m.id === lastId, label }
     })
 })
+
+/** The plate's "On this spot" list: open or tiles, remembered per device */
+const spotListOpen = useLocalStorage('tld-buddy-wheel-spot-list', false)
+
+/** "Before this visit" and "This visit", for the list */
+const visitRows = computed(() => {
+  const split = splitVisit(markersHere.value, before.value, session.picks.value)
+  const row = (e: { markerId: string; itemId: string; quantity: number; looted: boolean; stacked?: boolean }): SpotRow => {
+    const m = markersHere.value.find((x) => x.id === e.markerId)
+    const item = itemsById.value.get(e.itemId)
+    return { markerId: e.markerId, name: m?.name || item?.name || 'Loot', icon: item?.icon, quantity: e.quantity, looted: e.looted, stacked: e.stacked }
+  }
+  return { before: split.before.map(row), visit: split.visit.map(row) }
+})
+
+function toggleLooted(markerId: string) {
+  const m = game.markers.value.find((x) => x.id === markerId)
+  if (!m) return
+  game.toggleLooted(markerId)
+  liveText.value = `${m.name || session.nameOf(m.itemId)} ${m.lootedAt ? 'still there' : 'marked looted'}`
+}
+
+/** A typed search line is held once when the wheel would close or move (see guardDraft) */
+const draftArmed = ref(false)
+watch(query, () => (draftArmed.value = false))
+
+/** True when a close or move must wait: the first attempt with a typed search line keeps it. */
+function holdDraft(): boolean {
+  if (stage.value !== 'search') return false
+  const g = guardDraft(query.value, draftArmed.value)
+  draftArmed.value = g.armed
+  if (g.block) {
+    liveText.value = `Unfinished search ${query.value.trim()} kept. Enter adds it, Escape discards it.`
+    readoutRef.value?.focusInputNow()
+  }
+  return g.block
+}
+
+/** Done, a click outside: close unless a typed line is being held. */
+function leave() {
+  if (holdDraft()) return
+  close()
+}
 
 /** The search line can carry a quantity and a note: "mat x12 # kitchen" */
 const parsed = computed(() => parseEntry(query.value))
@@ -288,16 +351,45 @@ function clampAxis(v: number, size: number) {
 
 const PLATE_W = 312
 const PLATE_H = 250
-const readoutStyle = computed(() => {
+const PLATE_H_LIST = 420
+/** Where the plate goes, and how tall its "On this spot" list may get there */
+const plateLayout = computed(() => {
   const c = center.value
-  if (!c) return {}
+  if (!c) return null
+  const listOpen = spotListOpen.value && hereTiles.value.length > 0
+  const side = readoutSide(c.y, c.h, listOpen ? PLATE_H_LIST : PLATE_H)
+  const room = side === 'below' ? c.h - (c.y + WHEEL.outer + 10) - 8 : c.y - WHEEL.outer - 10 - 8
+  return { c, side, listMax: Math.max(84, Math.min(216, room - PLATE_H + 30)) }
+})
+
+const readoutStyle = computed(() => {
+  const l = plateLayout.value
+  if (!l) return {}
+  const { c, side } = l
   // Keep the plate inside the map horizontally even when the wheel hugs an edge
   const shift = Math.max(8 - (c.x - PLATE_W / 2), Math.min(0, c.w - 8 - (c.x + PLATE_W / 2)))
-  const side = readoutSide(c.y, c.h, PLATE_H)
   return {
-    left: `${-PLATE_W / 2 + shift}px`,
-    ...(side === 'below' ? { top: `${WHEEL.outer + 10}px` } : { bottom: `${WHEEL.outer + 10}px` }),
+    left: `${WHEEL.outer - PLATE_W / 2 + shift}px`,
+    ...(side === 'below' ? { top: `${WHEEL.outer * 2 + 10}px` } : { bottom: `${WHEEL.outer * 2 + 10}px` }),
   }
+})
+
+/** "Log loot here · A" under a selected place's pin, while no wheel is open */
+const chip = computed(() => {
+  void addUi.viewTick.value
+  const id = ui.selectedPOIId.value
+  const view = addUi.mapView.value
+  const host = hostRef.value
+  if (open.value || !id || !view || !host || game.travelMode.value) return null
+  const poi = game.getPOIById(id)
+  const pin = game.getPOIPin(id)
+  if (!poi || !pin || poi.mapId !== game.currentMapId.value) return null
+  const c = view.toClient(pin)
+  const box = host.getBoundingClientRect()
+  const x = c.x - box.left - 7
+  const y = c.y - box.top + 16
+  if (x < 0 || y < 0 || x > box.width - 40 || y > box.height - 30) return null
+  return { x, y, name: poi.name, pos: { x: pin.x, y: pin.y } }
 })
 
 // ── Opening and closing ──────────────────────────────────────────────────────────
@@ -469,6 +561,7 @@ function run(action: WheelAction) {
     }
     case 'back':
       if (stage.value === 'groups') return close()
+      if (holdDraft()) return
       if (stage.value === 'qty' || stage.value === 'note') {
         stage.value = 'groups'
         return focusRoot()
@@ -480,7 +573,9 @@ function run(action: WheelAction) {
         return afterRingChange(from)
       }
     case 'close':
-      return close()
+      return leave()
+    case 'plate':
+      return readoutRef.value?.focusFirst()
     case 'note':
       if (!session.last.value) return
       noteText.value = session.lastNote.value
@@ -641,7 +736,7 @@ function onPointerUp(e: PointerEvent) {
   if (!open.value || !d || d.inside || e.button !== 0) return
   if (rootRef.value?.contains(e.target as Node)) return
   if (Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6) return
-  close()
+  leave()
 }
 /** Last pointer position on the page: the shell's map pointer goes null while the wheel covers it */
 let lastClient: { x: number; y: number } | null = null
@@ -667,6 +762,8 @@ function onPointerMove(e: PointerEvent) {
 // ── Seam ─────────────────────────────────────────────────────────────────────────
 
 function start(req: AddRequest | null) {
+  // A selected place: A logs loot at its pin (the chip under the plate says so)
+  if (chip.value) return openAt(chip.value.pos)
   if (req) return openAt(req.pos)
   // A with the pointer still where the last wheel was: the shell lost track of it, we didn't
   const pos = req === null && !ui.placingLoot.value ? pointerOnMap() : null
@@ -679,6 +776,8 @@ function start(req: AddRequest | null) {
 
 function request(req: AddRequest) {
   if (open.value && sameSpot(addItem.resolveSpot(req.pos), spot.value)) return run({ type: 'back' })
+  // Moving to another spot with a typed search line: hold it once, like closing
+  if (open.value && holdDraft()) return
   openAt(req.pos)
 }
 
@@ -725,6 +824,49 @@ watch([() => game.currentMapId.value, () => game.currentRun.value?.id, () => gam
   stroke-width: 2;
 }
 
+.wheel-chip {
+  display: inline-flex;
+  height: 28px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px 0 9px;
+  border-radius: 6px;
+  border: 1px solid oklch(0.83 0.07 230 / 0.55);
+  background: oklch(0.2 0.03 258 / 0.94);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.45);
+  animation: wheel-chip-in 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.wheel-chip:hover {
+  border-color: var(--place);
+  background: oklch(0.26 0.035 258 / 0.96);
+}
+
+.wheel-chip__kbd {
+  display: inline-grid;
+  min-width: 16px;
+  height: 16px;
+  place-items: center;
+  border-radius: 4px;
+  background: oklch(0.3 0.035 258);
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+@keyframes wheel-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
 .wheel-root {
   animation: wheel-open 160ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -737,7 +879,8 @@ watch([() => game.currentMapId.value, () => game.currentRun.value?.id, () => gam
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wheel-root {
+  .wheel-root,
+  .wheel-chip {
     animation: none;
   }
 }

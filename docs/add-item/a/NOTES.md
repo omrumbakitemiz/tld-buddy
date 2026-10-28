@@ -12,17 +12,23 @@ The game's radial menu, opened on the map where the pointer is. Pick `?addui=a` 
 | `s5-existing`: right-click on a pile: the plate lists what's already there before you add | `06-quantity`: right after a pick, the plate says how to set the quantity |
 | ![Keyboard focus](a11y-focus.png) | ![Resting](05-resting.png) |
 | `a11y-focus`: arrow keys move focus around the ring; each slice is a named menu item | `05-resting`: pointer away from the ring, so it fades and the map under it reads |
+| ![On this spot](07-on-this-spot.png) | ![Log loot here](08-log-here.png) |
+| `07-on-this-spot`: the plate's list open: "Before this visit" (two items ticked looted) and "This visit" (`+1` stacked onto the matches) | `08-log-here`: a selected place offers "Log loot here · A" under its pin |
+| ![Unfinished search](09-draft.png) | |
+| `09-draft`: `Esc` with "pea" typed keeps the line: "Unfinished: ‘pea’ · ⏎ add · Esc discard" | |
 
 Also: `s3-search.png` (`hack # glovebox`: name and note in one line), `s3-note.png` (Tab note on the last pick).
 
 ## How it works
 
-- **Opening.** `A` or `Space` while the pointer is over the map. Right-click on the map, a loot tile or a place plate also opens it, and so does Shift-click on the map or on a tile (`interceptTileClick`). The spot snaps to a pinned place or an existing pile (`resolveSpot`), so a second visit to a building joins its pile instead of starting a new ring. With no pointer on the map (the Add loot button, the palette, the panel) the shell's "Click the map where the loot is" mode comes up and that click opens the wheel.
+- **Opening.** `A` or `Space` while the pointer is over the map. With a place selected, `A` (or the "Log loot here · A" chip under its pin) opens the wheel at the place's pin instead; a plain click on a place plate still just selects it and opens the Places tab. Right-click on the map, a loot tile or a place plate also opens it, and so does Shift-click on the map or on a tile (`interceptTileClick`). The spot snaps to a pinned place or an existing pile (`resolveSpot`), so a second visit to a building joins its pile instead of starting a new ring. With no pointer on the map (the Add loot button, the palette, the panel) the shell's "Click the map where the loot is" mode comes up and that click opens the wheel.
 - **The spot stays visible.** The middle of the wheel is a clear hole with an apricot crosshair, and the spot's real marker tile shows through it. The ring **rests** (fades to 32 %) right after a pick and whenever the pointer leaves it, so the map under it reads. The hole and crosshair stay at full strength. Moving the pointer back, pressing a key that changes the ring, or focusing a slice brings it back.
 - **The plate** sits under the wheel, or over it when there's no room below. It shows:
-  - Header: the place name, "Existing pile", "New spot", or "New pile" once something is added. Then "9 here · 2 looted".
-  - **Everything at the spot** as mini tiles. Loot that's still there has an apricot ring and its quantity; looted items are washed out with a mint tick; what this wheel added has a solid ring. Each tile has a name for screen readers.
+  - Header: the place name, "Existing pile", "New spot", or "New pile" once something is added. Then "9 here · 2 looted", which is a button that opens the **On this spot** list.
+  - **On this spot, collapsed (the default):** everything at the spot as mini tiles. Loot that's still there has an apricot ring and its quantity; looted items are washed out with a mint tick; what this wheel added has a solid ring. Each tile has a name for screen readers.
   - Before the first pick, one line in words: "Already here: Wood Matches ×12, Pinnacle Peaches ×3 and 6 more (2 looted)".
+  - **On this spot, open** (the "9 here" button or a click on a tile; remembered per device): a compact list in two sections, **Before this visit** and **This visit**, name × quantity with a **looted toggle** per item (`aria-pressed`; looted rows get the wash-out and the mint tick, as on the map). A pick that stacked onto older loot shows in "This visit" as `+N`; its toggle stays on the "before" row. Section names stay pinned while the list scrolls, and the list is sized to the room on its side of the wheel, so the plate never leaves the map. Ticking uses the app's own `toggleLooted`, outside the undo batch, like the loot card.
+  - A typed search line that a close attempt held: "Unfinished: ‘mat x12’ · ⏎ add · Esc discard" in ochre (warning).
   - The live line: the hovered or focused slice, the search, the note or quantity field, or the last pick with its `×N` pill (a button), −/+ and a Note button.
   - Right after a pick, a quantity help line: "Quantity: `x 12 ⏎` or `⇧12` `+ −` scroll".
   - Again/Done, or Groups/More inside a group, then the key hints for the current stage.
@@ -39,6 +45,7 @@ Also: `s3-search.png` (`hack # glovebox`: name and note in one line), `s3-note.p
 - **Same again:** `Space` (or the Again button) adds one more of the last item.
 - **Mistakes:** `Backspace` (or `Ctrl+Z` while the wheel is open) takes back the last pick. After closing, `Ctrl+Z` or the toast's Undo removes the whole wheel.
 - **Closing:** `Enter`, Done, `Esc` from ring 1, or a click (not a drag) outside. Dragging or zooming the map keeps it open, pinned to its spot.
+- **A typed line is never dropped silently.** With text in the search line, the first attempt to leave it (`Esc`, Done, a click outside, a right-click on another spot) is held. The line stays, focus goes back into it, and the plate says "Unfinished: ‘…’ · ⏎ add · Esc discard". The second attempt goes through and discards; typing more re-arms the guard. After dragging the map, typed letters go back into the search line. Open quantity and note fields are saved, not dropped, when you move on (`flushDrafts`). Switching map or run still closes at once.
 - **Right-click on the wheel:** inside a group, search or field it steps back, like `Esc`. On ring 1 it does what right-click does on the map: a new wheel at that point. That keeps S4 fast when the next spot is under the ring. Right-click in the hole goes back too.
 - **Edges:** the map pans so the ring fits. When it can't, the ring slides in and a dashed apricot leader points back to the spot.
 
@@ -46,7 +53,9 @@ Also: `s3-search.png` (`hack # glovebox`: name and note in one line), `s3-note.p
 
 - The wheel is a `role="dialog"` (non-modal) named "Add loot at …", with a description of the keys. The ring is an SVG `role="menu"` named for what it shows ("Groups", "Fire items, page 1 of 3", "Search results for hack"). Each slice is a `menuitem` named with its digit and state ("3, Wood Matches, 12 already here", "1, Fire, 2 added") with `aria-keyshortcuts`. The icon and label layer is `aria-hidden`.
 - Arrow keys move a roving focus around the ring (`→`/`↓` clockwise, `←`/`↑` back, `Home`/`End`). Focus shows as an apricot outline over the slice, and the plate shows the focused slice's details. `Enter` or `Space` picks it. Entering a group puts focus on its first item; after a pick, focus returns to that group's slice.
-- `Tab` from the wheel reaches the ring and then the plate's buttons (Again, Done, Groups, More, −/×N/+, Note), which keep their own `Enter`, `Space` and `Tab`. With a pick present, `Tab` from the ring or wheel opens the note (`Shift+Tab` stays native).
+- `Tab` from the wheel reaches the ring and then the plate's buttons (On this spot, the looted toggles, Again, Done, Groups, More, −/×N/+, Note), which keep their own `Enter`, `Space` and `Tab`. With a pick present, `Tab` from the ring or wheel opens the note. **`Shift+Tab` from the wheel or a slice jumps into the plate**, onto the "N here" list button, so the looted toggles are always a few `Tab`s away.
+- The dialog has a real 300×300 box around the ring (it used to be a 0×0 point at the centre); the slices didn't move.
+- The "Unfinished" notice is a `role="status"`, and ticking an item announces "… marked looted" / "… still there".
 - Mouse clicks don't move focus onto slices, so `Enter` still means Done after a mouse pick.
 - A polite live region announces opening ("…, 9 items already here"), each pick with the quantity hint, quantity changes, take-backs and ring changes.
 - On open, focus goes to the wheel. On close it goes back to where it was, or to the page if that was the map.
@@ -64,15 +73,37 @@ Also: `s3-search.png` (`hack # glovebox`: name and note in one line), `s3-note.p
 | `+` / `=` / `−` | shell: zoom | last pick ±1 | ±1 | typed | typed |
 | `←` `→` `↑` `↓` `Home` `End` | Leaflet pan | move focus round the ring | same | `↑`/`↓` move focus, `←`/`→` move the caret | caret |
 | `Enter` | – | close (picks the focused slice) | close (picks the focused slice) | add the top result (empty line: close) | save |
-| `Esc` | shell: cancel / deselect | close | back to ring 1 | back to ring 1 | cancel |
+| `Esc` | shell: cancel / deselect | close | back to ring 1 | with text typed: held once ("Unfinished"), then back to ring 1 | cancel |
 | `Backspace` | shell: delete the selected marker | take the last pick back | back to ring 1 | delete a letter, then back | typed |
 | `Ctrl/⌘ Z` | undo the last whole wheel (shell) | take the last pick back | same | text undo | text undo |
 | `Tab` | – | note for the last pick (native with nothing picked) | same | note | save (the quantity field saves on `Tab` too) |
+| `Shift+Tab` | – | into the plate (the "N here" list button) | same | same | native |
 | letters | shell shortcuts | start a search | start a search | typed | typed |
 
 **Conflicts, on purpose.** While a wheel is open it takes every single key: the shell's `A L H N / ? P [ 1 2 3 F + − T R E Del` are paused (`useAddUi().active`) and become search letters, choices or quantity, and `Esc` steps back. A capture-phase listener calls `preventDefault()` and `stopPropagation()`, so no digit reaches the shell's panel tabs while a wheel is open. The drive checked the panel tab before and after: unchanged. With the wheel closed, the only new key is `Space`.
 
-## Measured counts (Chrome 1600×1000, lab Redis DB 1 freshly seeded, round 2)
+## Measured counts, round 3 (fold-ins)
+
+Same setup (Chrome 1600×1000, lab DB 1 freshly seeded), counted by the driver, results read back from `/api/data`. The loot groups have been reordered on the lab branch since round 2, so common loot sits in each group's first 8.
+
+| | Clicks | Keys | What was pressed | Checked in the data |
+|---|---|---|---|---|
+| **S1** keyboard | 0 | 31 | as in round 2 (no paging) | 9 markers, 12/3/2/1/1/1/2/5/1 |
+| **S4** 5 spots | 5 | 7 | as in round 2 | 5 firewood markers, ×1 each |
+| **S5** + tick off | 3 | 13 | right-click the pile, open the list (1 click), tick Hatchet looted (1 click); `Shift+Tab`, 4 × `Tab`, `Space` ticks Sewing Kit by keyboard; Wood Matches, Beef Jerky, Flare (6 keys, all page 1 now); `Enter` | Hatchet and Sewing Kit `lootedAt` set; matches 12 → 13 stacked; Beef Jerky and Flare new; still one pile |
+| Log loot here | 2 | 3 | click the Clearcut plate (selects it, Places tab), click the chip, `5` + the Hacksaw digit, `Enter` | Hacksaw at the Clearcut pin |
+| Same, by key | 1 | 1 | click the plate, `A` (pointer elsewhere) | the wheel opens at Clearcut, not at the pointer |
+
+S1 and S4 are unchanged, as the brief required. S5 without the ticking is 1 click + 7 keys (3 picks + `Enter`).
+
+Draft guard, driven:
+- `pea`, `Esc`: the wheel stays open with the notice and "pea"; a second `Esc` goes back to the groups.
+- `mat x3`, then a click outside: held. `Enter` then adds Wood Matches ×3 (toast checked).
+- `hack`, drag the map, type `s`: the line reads "hacks".
+- A right-click on another spot with that line is held (the wheel didn't move, notice shown).
+- Two clicks outside close it, and nothing is added.
+
+## Measured counts (round 2, for reference)
 
 Counted by the driver scripts while performing each scenario; every result was read back from `/api/data`.
 
@@ -98,6 +129,13 @@ Bug checks re-run in the same drive:
 - Arrow focus: the focused slice is "2, Food" (`menuitem`, 8 named items); `Enter` on it focuses "1, Pinnacle Peaches"; `Enter` again adds it.
 
 Earlier checks re-run: a drag keeps the wheel open, a click outside closes it, `Space`/`Esc` open and close it, Add loot goes to aim mode, the edge clamp works, and `?addui=legacy` still opens the old dialog.
+
+## Changes in round 3 (runner-up fold-ins)
+
+1. **Never lose a typed draft (from B).** `guardDraft` in `wheel.ts` (two-step leave, pure and tested) is applied to `Esc`/back, Done, a click outside and a right-click or Shift-click on another spot. The "Unfinished" notice sits in the plate, and letters go back into the line after a map drag. Quantity and note fields keep the orchestrator's `flushDrafts`.
+2. **On this spot with looted toggles (from C), split before/this visit (from B).** `splitVisit` in `wheel.ts` (pure, tested) feeds an expandable list in the plate. The collapsed tile row stays the default, and the open/closed choice is remembered per device. Toggles are buttons with `aria-pressed`, styled with the wash-out and mint tick, and reachable with `Shift+Tab` then `Tab`. The list fits the room on its side of the wheel.
+3. **"Log loot here · A" (from C).** A dusk-ink chip with a glacier keyline (the place plate's own look, so the Add loot pill stays the one apricot button) sits under a selected place's pin and follows pans and zooms. A click or `A` opens the wheel at the pin. It's built entirely in A's own files from the existing `ui.selectedPOIId` / `getPOIPin`, so there's no seam change.
+4. **The dialog has a real box.** The `role="dialog"` root is now 300×300 around the ring; the ring and plate are positioned inside it and the slices didn't move.
 
 ## Changes in round 2 (by critique item)
 
@@ -127,6 +165,8 @@ Maintainability: batch bookkeeping moved out of the component into `a/useWheelSe
 
 ## Seam changes
 
+Round 3: none.
+
 None this round. I used the lab's `interceptTileClick`, tile right-click, `scale()`-aware `resolveSpot` and the merged `amend`/`ringSlot`. From round 1, now on the lab branch: `useAddItem().amend()` and `ringSlot` in `planBatch`. `package.json`'s `test` also runs `scripts/test-add-item-a.ts`.
 
 ## Files
@@ -138,6 +178,9 @@ None this round. I used the lab's `interceptTileClick`, tile right-click, `scale
 - `app/components/add/a/wheel.ts`: pure geometry, the keyboard model (`readKey`), search grammar, quantity entry, pick bookkeeping.
 
 ## Known gaps
+
+- **Ticking looted from the plate isn't part of the wheel's undo batch.** `Ctrl+Z` undoes adds, not ticks; tick again to revert, like the loot card's toggle.
+- **The draft guard covers leaving the search line, not switching map or run** (those close at once).
 
 - **Common items deep in the curated order** (see Objections #1).
 - **It covers about 300 px when awake**, plus a 312×~250 plate; resting helps but doesn't remove it.

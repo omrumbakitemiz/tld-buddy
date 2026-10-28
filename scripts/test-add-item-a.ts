@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict'
 import {
   WHEEL, contribution, digitOf, ownsMarker, pageOf, polar, readKey, readoutSide, sectorPath, sliceAt, sliceMid,
-  searchTypesDigits, stepQuantity, summarise, typeQuantity, wheelSteps, type KeyInput, type KeyState, type WheelPick,
+  guardDraft, searchTypesDigits, splitVisit, stepQuantity, summarise, typeQuantity, wheelSteps, type KeyInput, type KeyState, type WheelPick,
 } from '../app/components/add/a/wheel'
 import { SPREAD_RADIUS, planBatch, ringSlot } from '../app/lib/addItem'
 
@@ -97,7 +97,8 @@ test('letters start a search, Tab opens the note, note keys save or cancel', () 
   assert.equal(readKey(k('h'), at('search', false, false)), null)
   assert.deepEqual(readKey(k('Tab'), at('groups', true)), { type: 'note' })
   assert.equal(readKey(k('Tab'), at('groups', false)), null, 'with nothing to note, Tab moves focus as usual')
-  assert.equal(readKey(k('Tab', { shiftKey: true }), at('groups', true)), null)
+  assert.deepEqual(readKey(k('Tab', { shiftKey: true }), at('groups', true)), { type: 'plate' }, 'Shift+Tab goes into the plate')
+  assert.equal(readKey(k('Tab', { shiftKey: true }), at('groups', true, true, { focus: 'control' })), null, 'inside the plate it is native')
   assert.deepEqual(readKey(k('Enter'), at('note', true)), { type: 'note-save', close: true })
   assert.deepEqual(readKey(k('Tab'), at('note', true)), { type: 'note-save', close: false })
   assert.deepEqual(readKey(k('Escape'), at('note', true)), { type: 'back' })
@@ -224,6 +225,35 @@ test('search grammar: once the line has x12 or a note, digits are typed', () => 
   assert.equal(readKey(k('#', { code: 'Digit3', shiftKey: true }), at('search', true, false)), null, '# is typed: it starts the note')
   assert.equal(readKey(k('#', { code: 'Digit3' }), at('search', false, false)), null, 'a # without the Shift flag is still a #')
   assert.deepEqual(readKey(k('2'), at('search', false, false, { digitsTyped: false })), { type: 'slice', index: 1 })
+})
+
+test('guardDraft: leaving with a typed line takes two steps; typing again re-arms it', () => {
+  assert.deepEqual(guardDraft('', false), { block: false, armed: false })
+  assert.deepEqual(guardDraft('   ', false), { block: false, armed: false }, 'whitespace is not a draft')
+  let g = guardDraft('mat x12', false)
+  assert.deepEqual(g, { block: true, armed: true }, 'first attempt is held')
+  g = guardDraft('mat x12', g.armed)
+  assert.deepEqual(g, { block: false, armed: false }, 'second attempt goes through')
+})
+
+test('splitVisit: what was here before vs what this visit added (stacked shows in both)', () => {
+  const markers = [
+    { id: 'm1', itemId: 'matches', quantity: 14, lootedAt: null },
+    { id: 'm2', itemId: 'cloth', quantity: 2, lootedAt: 5 },
+    { id: 'm3', itemId: 'hatchet', quantity: 1, lootedAt: null },
+    { id: 'm4', itemId: 'flare', quantity: 3, lootedAt: null },
+  ]
+  const { before, visit } = splitVisit(markers, new Set(['m1', 'm2', 'm3']), [
+    { markerId: 'm1', itemId: 'matches', quantity: 2 },
+    { markerId: 'm4', itemId: 'flare', quantity: 3 },
+  ])
+  assert.deepEqual(before.map((e) => e.markerId), ['m1', 'm3', 'm2'], 'remaining first, looted last')
+  assert.equal(before[0]!.quantity, 14, 'before shows the marker as it is now')
+  assert.deepEqual(visit, [
+    { markerId: 'm1', itemId: 'matches', quantity: 2, looted: false, stacked: true },
+    { markerId: 'm4', itemId: 'flare', quantity: 3, looted: false, stacked: false },
+  ])
+  assert.equal(splitVisit(markers, new Set(), [{ markerId: 'gone', itemId: 'x', quantity: 1 }]).visit.length, 0, 'taken-back picks drop out')
 })
 
 console.log(`\n${passed} wheel tests passed`)

@@ -2,7 +2,7 @@
   <div
     class="wheel-ring absolute"
     :class="{ 'wheel-ring--resting': resting }"
-    :style="{ left: `${-WHEEL.outer}px`, top: `${-WHEEL.outer}px`, width: `${size}px`, height: `${size}px` }"
+    :style="{ left: 0, top: 0, width: `${size}px`, height: `${size}px` }"
     @contextmenu.prevent="(e: MouseEvent) => emit('context', e)"
   >
     <svg

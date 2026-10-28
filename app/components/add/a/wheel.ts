@@ -132,6 +132,8 @@ export type WheelAction =
   | { type: 'note-save'; close: boolean }
   | { type: 'search-start'; text: string }
   | { type: 'pick-top' }
+  /** Move focus into the plate (its first button), from the wheel or a slice */
+  | { type: 'plate' }
   /** Swallow the key and do nothing (keeps it from the page and the shell) */
   | { type: 'noop' }
 
@@ -166,7 +168,8 @@ export function readKey(k: KeyInput, s: KeyState): WheelAction | null {
 
   // A focused button in the plate keeps its native keys
   if (s.focus === 'control' && (k.key === 'Enter' || k.key === ' ' || k.key === 'Tab')) return null
-  if (k.key === 'Tab' && k.shiftKey) return null
+  // Shift+Tab from the wheel or a slice goes into the plate (On this spot, quantity, Again, Done)
+  if (k.key === 'Tab' && k.shiftKey) return s.focus === 'control' ? null : { type: 'plate' }
 
   const typing = s.stage === 'search' && s.digitsTyped
   // A digit is what the key types; Shift+digit is read by physical key (it types !@#…)
@@ -314,4 +317,54 @@ export function summarise(entries: { name: string; quantity: number }[], max = 2
     return parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : parts[0] ?? ''
   }
   return `${merged.slice(0, max).map(label).join(', ')} and ${merged.length - max} more`
+}
+
+// ── Unfinished search line ──────────────────────────────────────────────────
+
+/**
+ * Leaving with a typed search line takes two steps, so a draft is never dropped by
+ * accident. The first attempt to close or move the wheel (Esc, Done, a click outside, a
+ * right-click elsewhere) is blocked and arms the guard; the next one goes through. Typing
+ * again disarms it. `draft` is the line as typed (whitespace-only counts as empty).
+ */
+export function guardDraft(draft: string, armed: boolean): { block: boolean; armed: boolean } {
+  if (!draft.trim()) return { block: false, armed: false }
+  return armed ? { block: false, armed: false } : { block: true, armed: true }
+}
+
+// ── What's on the spot ──────────────────────────────────────────────────────
+
+export interface SpotEntry {
+  markerId: string
+  itemId: string
+  quantity: number
+  looted: boolean
+}
+
+/**
+ * Split a spot's markers into what was there before this wheel opened and what this visit
+ * added. A marker that was there and got stacked onto stays in "before" (its looted toggle
+ * lives there) and also shows in "this visit" as the amount added now.
+ */
+export function splitVisit(
+  markers: { id: string; itemId: string; quantity: number; lootedAt?: number | null }[],
+  before: Set<string>,
+  picks: Pick<WheelPick, 'markerId' | 'itemId' | 'quantity'>[],
+): { before: SpotEntry[]; visit: (SpotEntry & { stacked: boolean })[] } {
+  const entry = (m: (typeof markers)[number]): SpotEntry => ({ markerId: m.id, itemId: m.itemId, quantity: m.quantity, looted: !!m.lootedAt })
+  const byId = new Map(markers.map((m) => [m.id, m]))
+  const added = new Map<string, number>()
+  for (const p of picks) added.set(p.markerId, (added.get(p.markerId) ?? 0) + p.quantity)
+  const visit: (SpotEntry & { stacked: boolean })[] = []
+  for (const [id, quantity] of added) {
+    const m = byId.get(id)
+    if (!m) continue
+    const stacked = before.has(id)
+    visit.push({ ...entry(m), quantity: stacked ? quantity : m.quantity, stacked })
+  }
+  const order = (a: SpotEntry, b: SpotEntry) => Number(a.looted) - Number(b.looted)
+  return {
+    before: markers.filter((m) => before.has(m.id)).map(entry).sort(order),
+    visit,
+  }
 }
