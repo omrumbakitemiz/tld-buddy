@@ -79,24 +79,47 @@ export function rankItems(items: Item[], query: string, opts: RankOptions = {}):
   }
 
   const qWords = q.split(' ')
-  const scored: { item: Item; tier: number }[] = []
+  const prior = lootPrior()
+  const scored: { item: Item; tier: number; score: number }[] = []
   for (const item of pool) {
     const name = foldText(item.name)
     const words = name.split(' ')
     let tier = -1
-    if (name.startsWith(q)) tier = 5
-    else if (words.some((w) => w.startsWith(q))) tier = 4
+    // Name prefix and word prefix share a tier: "pea" should find the Pinnacle Peaches you
+    // keep logging, not Peach Pie. Within it, history and the loot prior decide, and a
+    // whole-name prefix only breaks near-ties.
+    if (words.some((w) => w.startsWith(q))) tier = 4
     else if (qWords.length > 1 && qWords.every((qw) => words.some((w) => w.startsWith(qw)))) tier = 3
     else if (name.includes(q)) tier = 2
     else if (isSubsequence(q.replace(/ /g, ''), name.replace(/ /g, ''))) tier = 1
-    if (tier >= 0) scored.push({ item, tier })
+    if (tier < 0) continue
+    const score = fre(item.id) + (prior.get(item.id) ?? 0) + (name.startsWith(q) ? 0.25 : 0)
+    scored.push({ item, tier, score })
   }
   scored.sort((a, b) =>
     b.tier - a.tier
-    || fre(b.item.id) - fre(a.item.id)
+    || b.score - a.score
     || a.item.name.length - b.item.name.length
     || a.item.name.localeCompare(b.item.name))
   return scored.slice(0, limit).map((s) => s.item)
+}
+
+let priorCache: Map<string, number> | null = null
+/**
+ * A small head start for items players actually log (the curated loot groups, earlier in a
+ * group = more common) over cooked recipes, notes and other catalogue entries. Always
+ * below one logged marker's frecency (≥ 1), so the run's history still wins.
+ */
+function lootPrior(): Map<string, number> {
+  if (priorCache) return priorCache
+  priorCache = new Map()
+  for (const g of LOOT_GROUPS) {
+    g.items.forEach((id, i) => {
+      const v = 0.5 + 0.3 * (1 - i / g.items.length)
+      priorCache!.set(id, Math.max(priorCache!.get(id) ?? 0, v))
+    })
+  }
+  return priorCache
 }
 
 function isSubsequence(needle: string, hay: string): boolean {
@@ -272,70 +295,25 @@ export function planBatch(
 
   const total = here.length + adds.length
   adds.forEach((e, i) => {
-    const slot = here.length + i
-    const single = total === 1
-    const angle = (2 * Math.PI * slot) / Math.max(total, 6) - Math.PI / 2
-    ops.push({
-      kind: 'add',
-      itemId: e.itemId,
-      quantity: e.quantity,
-      note: e.note || undefined,
-      x: single ? spot.x : spot.x + Math.cos(angle) * SPREAD_RADIUS,
-      y: single ? spot.y : spot.y + Math.sin(angle) * SPREAD_RADIUS,
-    })
+    const at = total === 1 ? { x: spot.x, y: spot.y } : ringSlot(spot, here.length + i)
+    ops.push({ kind: 'add', itemId: e.itemId, quantity: e.quantity, note: e.note || undefined, ...at })
   })
   return ops
 }
 
-// ── Adjusting an open batch ─────────────────────────────────────────────────
-
-/** The part of a batch record that `planAdjust` reads and updates. */
-export interface BatchLedger {
-  added: string[]
-  stacked: { markerId: string; add: number }[]
-}
-
-export interface AdjustPlan {
-  /** Units actually applied (negative = removed), after clamping */
-  applied: number
-  /** The marker's quantity afterwards */
-  quantity: number
-  /** The marker was created by this batch and is now empty: delete it */
-  remove: boolean
-}
-
 /**
- * Change a marker's quantity from inside a batch, so Undo still reverses exactly what the batch did.
- * Adding records the units; removing only takes back units this batch put there (a marker the batch
- * created can go to zero and is deleted; a marker that was already there keeps what it had).
- * Mutates `ledger`.
+ * Position of the n-th marker around a spot. Slots don't depend on how many there will be,
+ * so items added one at a time land apart just like a batch: 6 on the first ring, 12 on
+ * the second (offset half a step), and so on outwards. (From the variant A builder.)
  */
-export function planAdjust(ledger: BatchLedger, marker: Pick<Marker, 'id' | 'quantity'>, delta: number): AdjustPlan {
-  const made = ledger.added.includes(marker.id)
-  if (delta >= 0) {
-    if (delta > 0 && !made) ledger.stacked.push({ markerId: marker.id, add: delta })
-    return { applied: delta, quantity: marker.quantity + delta, remove: false }
+export function ringSlot(spot: { x: number; y: number }, slot: number): { x: number; y: number } {
+  let ring = 1
+  let first = 0
+  while (slot >= first + 6 * ring) {
+    first += 6 * ring
+    ring++
   }
-  const want = -delta
-  if (made) {
-    const take = Math.min(want, marker.quantity)
-    const quantity = marker.quantity - take
-    if (quantity <= 0) {
-      ledger.added = ledger.added.filter((id) => id !== marker.id)
-      ledger.stacked = ledger.stacked.filter((s) => s.markerId !== marker.id)
-      return { applied: -take, quantity: 0, remove: true }
-    }
-    return { applied: -take, quantity, remove: false }
-  }
-  const mine = ledger.stacked.filter((s) => s.markerId === marker.id)
-  const contribution = mine.reduce((a, s) => a + s.add, 0)
-  const take = Math.max(0, Math.min(want, contribution, marker.quantity - 1))
-  let left = take
-  for (let i = mine.length - 1; i >= 0 && left > 0; i--) {
-    const cut = Math.min(mine[i]!.add, left)
-    mine[i]!.add -= cut
-    left -= cut
-  }
-  ledger.stacked = ledger.stacked.filter((s) => s.add > 0)
-  return { applied: take ? -take : 0, quantity: marker.quantity - take, remove: false }
+  const size = 6 * ring
+  const angle = (2 * Math.PI * (slot - first + (ring > 1 ? 0.5 : 0))) / size - Math.PI / 2
+  return { x: spot.x + Math.cos(angle) * SPREAD_RADIUS * ring, y: spot.y + Math.sin(angle) * SPREAD_RADIUS * ring }
 }

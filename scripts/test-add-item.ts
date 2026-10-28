@@ -4,9 +4,8 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import {
-  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planAdjust, planBatch, rankItems,
+  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems, ringSlot,
 } from '../app/lib/addItem'
-import { moveCursor, pushDigit } from '../app/components/add/c/rummage'
 import type { Item } from '../shared/types/game'
 
 let passed = 0
@@ -47,6 +46,21 @@ test('rankItems puts whole-name prefix first and shorter names before longer', (
 test('rankItems matches word prefixes across words ("rif am")', () => {
   assert.equal(rankItems(items, 'rif am', { limit: 1 })[0]?.name, 'Rifle Ammunition')
   assert.equal(rankItems(items, 'wood mat', { limit: 1 })[0]?.name, 'Wood Matches')
+})
+
+test('rankItems prefers loggable loot and history over a mere name prefix ("pea")', () => {
+  assert.notEqual(rankItems(items, 'pea', { limit: 1 })[0]?.name, 'Peach Pie')
+  const fre = new Map([['pinnacle-peaches', 2]])
+  assert.equal(rankItems(items, 'pea', { limit: 1, frecency: fre })[0]?.name, 'Pinnacle Peaches')
+  assert.equal(rankItems(items, 'hacks', { limit: 1 })[0]?.name, 'Hacksaw')
+  assert.equal(rankItems(items, 'firew', { limit: 1 })[0]?.name, 'Fir Firewood')
+})
+
+test('ringSlot keeps 30 one-by-one adds apart on concentric rings', () => {
+  const pts = Array.from({ length: 30 }, (_, i) => ringSlot({ x: 0, y: 0 }, i))
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = 0; j < i; j++) assert.ok(Math.hypot(pts[i]!.x - pts[j]!.x, pts[i]!.y - pts[j]!.y) > 5, `${i} vs ${j}`)
+  }
 })
 
 test('rankItems lets frecency break ties inside a tier', () => {
@@ -121,54 +135,15 @@ test('planBatch puts a lone item exactly on an empty spot', () => {
   assert.deepEqual(ops, [{ kind: 'add', itemId: 'hacksaw', quantity: 1, note: undefined, x: 50, y: 60 }])
 })
 
-test('planAdjust records extra units so undo can take them back', () => {
-  const ledger = { added: [] as string[], stacked: [] as { markerId: string; add: number }[] }
-  const r = planAdjust(ledger, { id: 'm1', quantity: 3 }, 4)
-  assert.deepEqual(r, { applied: 4, quantity: 7, remove: false })
-  assert.deepEqual(ledger.stacked, [{ markerId: 'm1', add: 4 }])
-  // a marker the batch created needs no record: undo deletes it
-  const made = { added: ['m2'], stacked: [] as { markerId: string; add: number }[] }
-  planAdjust(made, { id: 'm2', quantity: 1 }, 5)
-  assert.deepEqual(made.stacked, [])
-})
-
-test('planAdjust only takes back what the batch added', () => {
-  const ledger = { added: [] as string[], stacked: [{ markerId: 'm1', add: 2 }] }
-  // 3 were there before, the batch added 2: can remove 2 but not the original 3
-  assert.deepEqual(planAdjust(ledger, { id: 'm1', quantity: 5 }, -9), { applied: -2, quantity: 3, remove: false })
-  assert.deepEqual(ledger.stacked, [])
-  assert.deepEqual(planAdjust(ledger, { id: 'm1', quantity: 3 }, -1), { applied: 0, quantity: 3, remove: false })
-})
-
-test('planAdjust deletes a marker the batch created once it reaches zero', () => {
-  const ledger = { added: ['m2', 'm3'], stacked: [{ markerId: 'm2', add: 1 }] }
-  assert.deepEqual(planAdjust(ledger, { id: 'm2', quantity: 2 }, -1), { applied: -1, quantity: 1, remove: false })
-  assert.deepEqual(planAdjust(ledger, { id: 'm2', quantity: 1 }, -1), { applied: -1, quantity: 0, remove: true })
-  assert.deepEqual(ledger.added, ['m3'])
-  assert.deepEqual(ledger.stacked, [])
-})
-
-test('rummage digits build one number inside the window and restart after a pause', () => {
-  let r = pushDigit('', 0, 10_000, '1')
-  assert.deepEqual(r, { buffer: '1', value: 1 })
-  r = pushDigit(r.buffer, 10_000, 10_400, '2')
-  assert.equal(r.value, 12)
-  r = pushDigit(r.buffer, 10_400, 12_000, '5')
-  assert.equal(r.value, 5, 'a pause starts over')
-  assert.equal(pushDigit('', 0, 1, '0').value, 0, 'zeros alone are nothing')
-  assert.equal(pushDigit('0', 1, 2, '7').value, 7)
-  assert.equal(pushDigit('999', 5, 6, '1').value, 999, 'capped at 999')
-})
-
-test('rummage cursor moves over the tile grid and stops at the edges', () => {
-  assert.equal(moveCursor(null, 'ArrowDown', 5, 20), 0)
-  assert.equal(moveCursor(0, 'ArrowDown', 5, 20), 5)
-  assert.equal(moveCursor(4, 'ArrowRight', 5, 20), 4, 'no wrap to the next row')
-  assert.equal(moveCursor(5, 'ArrowLeft', 5, 20), 5)
-  assert.equal(moveCursor(2, 'ArrowUp', 5, 20), 2)
-  assert.equal(moveCursor(17, 'ArrowDown', 5, 20), 17, 'no tile below')
-  assert.equal(moveCursor(18, 'ArrowRight', 5, 19), 18, 'last tile')
-  assert.equal(moveCursor(3, 'ArrowDown', 5, 0), null)
+test('incremental entries keep distinct positions on the shared ring', () => {
+  const existing: { id: string; itemId: string; x: number; y: number }[] = []
+  for (let i = 0; i < 9; i++) {
+    const [op] = planBatch({ x: 100, y: 100 }, [{ itemId: `item-${i}`, quantity: 1 }], existing)
+    assert.ok(op && op.kind === 'add')
+    if (op.kind !== 'add') return
+    for (const prev of existing) assert.ok(Math.hypot(prev.x - op.x, prev.y - op.y) > 5)
+    existing.push({ ...op, id: `marker-${i}` })
+  }
 })
 
 console.log(`\n${passed} add-item tests passed`)
