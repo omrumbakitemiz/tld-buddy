@@ -1,11 +1,12 @@
 <template>
   <div class="flex flex-col h-full">
     <!-- Compact map selector bar -->
-    <div class="flex items-center gap-2 px-3 py-2 bg-card/80 backdrop-blur-md border-b border-border shrink-0 z-10">
+    <div class="surface-rail z-10 flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
       <!-- Map selector dropdown -->
       <div class="relative flex-1 min-w-0" ref="dropdownRef">
         <button
-          class="flex items-center gap-2 w-full px-3 py-1.5 rounded-md bg-muted/50 hover:bg-muted transition-colors text-sm cursor-pointer"
+          class="flex h-9 w-full items-center gap-2 rounded-md border border-border bg-background/50 px-3 text-sm transition-colors hover:border-primary/40"
+          :aria-expanded="showDropdown"
           @click="showDropdown = !showDropdown"
         >
           <MapIcon class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -17,7 +18,7 @@
         <!-- Dropdown -->
         <div
           v-if="showDropdown"
-          class="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-xl z-50 max-h-[400px] overflow-hidden flex flex-col"
+          class="surface-card absolute inset-x-0 top-full z-[1000] mt-1 flex max-h-[400px] flex-col overflow-hidden rounded-lg border border-border shadow-xl"
         >
           <!-- Search -->
           <div class="p-2 border-b border-border shrink-0">
@@ -87,13 +88,11 @@
       </div>
 
       <!-- Side label -->
-      <Badge variant="outline" class="text-[9px] px-1.5 py-0 h-4 shrink-0 uppercase">
-        {{ side }}
-      </Badge>
+      <span class="hud-label shrink-0 text-muted-foreground">{{ side }}</span>
     </div>
 
     <!-- Map view -->
-    <div class="flex-1 min-h-0 relative">
+    <div class="relative isolate min-h-0 flex-1">
       <!-- Empty state -->
       <div
         v-if="!map"
@@ -115,14 +114,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { MapIcon, MapPinOffIcon, ChevronDownIcon, LinkIcon } from '@lucide/vue'
-import L from 'leaflet'
 import { Badge } from '~/components/ui/badge'
 import { Input } from '~/components/ui/input'
 import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
 import type { GameMap } from '~/types'
+import { useImageMap } from '~/composables/useImageMap'
 import { onClickOutside } from '@vueuse/core'
 
 const props = defineProps<{
@@ -144,8 +143,6 @@ const searchInputRef = ref<InstanceType<typeof Input> | null>(null)
 const showDropdown = ref(false)
 const searchQuery = ref('')
 
-let leafletMap: L.Map | null = null
-let imageOverlay: L.ImageOverlay | null = null
 
 // Close dropdown when clicking outside
 onClickOutside(dropdownRef, () => {
@@ -181,50 +178,8 @@ function selectMap(mapId: string) {
 
 // ── Leaflet map ─────────────────────────────────────────────────────────
 
-function initMap() {
-  if (!mapContainer.value || !props.map) return
-  destroyMap()
-
-  const variant = getMapVariant(props.map)
-
-  leafletMap = L.map(mapContainer.value, {
-    crs: L.CRS.Simple,
-    minZoom: -3,
-    maxZoom: 4,
-    zoomSnap: 0.25,
-    zoomDelta: 0.5,
-    attributionControl: false,
-    zoomControl: false,
-  })
-
-  const bounds: L.LatLngBoundsExpression = [
-    [0, 0],
-    [variant.imageHeight, variant.imageWidth],
-  ]
-
-  imageOverlay = L.imageOverlay(variant.imageUrl, bounds).addTo(leafletMap)
-  leafletMap.fitBounds(bounds)
-}
-
-function destroyMap() {
-  if (leafletMap) {
-    leafletMap.remove()
-    leafletMap = null
-    imageOverlay = null
-  }
-}
-
-// ── Watchers ────────────────────────────────────────────────────────────
-
-// Watch for map changes to reinitialize
-watch(
-  () => props.map?.id,
-  (newId, oldId) => {
-    if (newId !== oldId) {
-      nextTick(() => initMap())
-    }
-  },
-)
+const variant = computed(() => (props.map ? getMapVariant(props.map) : null))
+useImageMap(mapContainer, variant)
 
 // Focus search input when dropdown opens
 watch(showDropdown, (open) => {
@@ -238,13 +193,4 @@ watch(showDropdown, (open) => {
   }
 })
 
-onMounted(() => {
-  nextTick(() => {
-    setTimeout(() => initMap(), 50)
-  })
-})
-
-onUnmounted(() => {
-  destroyMap()
-})
 </script>

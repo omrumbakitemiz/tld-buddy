@@ -1,403 +1,263 @@
 <template>
-  <div class="relative w-full h-full">
-    <!-- Loading state -->
+  <div class="relative h-full w-full" :class="{ 'map-placing': placing }">
     <div
       v-if="!staticDataReady"
-      class="flex flex-col items-center justify-center w-full h-full gap-3 text-muted-foreground"
+      class="flex h-full w-full flex-col items-center justify-center gap-3 text-muted-foreground"
     >
-      <LoaderIcon class="h-10 w-10 animate-spin opacity-50" />
-      <p class="text-sm">Loading maps...</p>
+      <LoaderIcon class="size-8 animate-spin opacity-60" />
+      <p class="text-sm">Unrolling the maps…</p>
     </div>
 
-    <!-- Empty state -->
     <div
       v-else-if="!currentMap"
-      class="flex flex-col items-center justify-center w-full h-full gap-3 text-muted-foreground"
+      class="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center text-muted-foreground"
     >
-      <MapPinOffIcon class="h-12 w-12 opacity-40" />
-      <p class="text-lg font-medium">No map selected</p>
-      <p class="text-sm">Open the Maps panel to add or select a map</p>
+      <MapIcon class="size-10 opacity-50" />
+      <p class="text-base font-medium text-foreground">Pick a region to start</p>
+      <p class="text-sm">Open the Maps tab in the side panel, or press 3.</p>
     </div>
 
-    <!-- Leaflet map container -->
     <div
       v-show="currentMap"
-      ref="mapContainer"
-      class="w-full h-full"
+      ref="container"
+      class="h-full w-full"
+      role="application"
+      :aria-label="currentMap ? `${currentMap.name} map` : 'Map'"
     />
+    <div v-if="currentMap" class="map-vignette" aria-hidden="true" />
 
-    <!-- Zoom / reset controls (bottom-right) -->
+    <!-- Placement hint -->
     <div
-      v-if="currentMap"
-      class="absolute bottom-6 right-4 z-[999] flex flex-col gap-1.5"
+      v-if="placing"
+      class="pointer-events-none absolute inset-x-0 top-3 z-[500] flex justify-center px-3"
     >
-      <Button variant="secondary" size="icon" class="h-8 w-8 shadow-lg" title="Zoom in" @click="zoomIn">
-        <PlusIcon class="h-4 w-4" />
-      </Button>
-      <Button variant="secondary" size="icon" class="h-8 w-8 shadow-lg" title="Zoom out" @click="zoomOut">
-        <MinusIcon class="h-4 w-4" />
-      </Button>
-      <Button variant="secondary" size="icon" class="h-8 w-8 shadow-lg" title="Reset view" @click="resetView">
-        <MaximizeIcon class="h-4 w-4" />
-      </Button>
+      <div class="pointer-events-auto flex items-center gap-3 rounded-full surface-rail border border-border py-1.5 pl-4 pr-1.5 text-sm shadow-lg">
+        <CrosshairIcon class="size-4 text-primary" />
+        <span>{{ placingLabel }}</span>
+        <Button size="sm" variant="ghost" class="h-7 rounded-full" @click="cancelPlacement">
+          Cancel <kbd class="ml-1 text-[10px] text-muted-foreground">Esc</kbd>
+        </Button>
+      </div>
     </div>
 
-    <!-- Bottom controls -->
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-[999] flex items-center gap-3">
-      <!-- Pin POI mode -->
-      <template v-if="pinPOIMode">
-        <div class="bg-amber-600 text-white px-5 py-2.5 rounded-full font-medium shadow-lg animate-pulse text-sm">
-          Click to pin "{{ pinPOIName }}"
-        </div>
-        <Button variant="destructive" size="sm" @click="cancelPinMode">
-          Cancel
-        </Button>
-      </template>
-
-      <!-- Add marker mode -->
-      <template v-else-if="addMarkerMode">
-        <div class="bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-medium shadow-lg animate-pulse text-sm">
-          Click on the map to place a marker
-        </div>
-        <Button variant="destructive" size="sm" @click="addMarkerMode = false">
-          Cancel
-        </Button>
-      </template>
-
-      <!-- Default: Add Marker button -->
-      <Button
-        v-else
-        variant="default"
-        class="shadow-lg"
-        @click="addMarkerMode = true"
-        title="Or Shift+Click anywhere on the map"
-      >
-        <PlusIcon class="h-4 w-4 mr-2" />
-        Add Marker
-      </Button>
+    <!-- Zoom / fit -->
+    <div v-if="currentMap" class="absolute bottom-4 right-3 z-[500] flex flex-col overflow-hidden rounded-lg border border-border surface-rail shadow-lg">
+      <button class="map-ctl" aria-label="Zoom in" title="Zoom in (+)" @click="zoomIn">
+        <PlusIcon class="size-4" />
+      </button>
+      <button class="map-ctl border-y border-border" aria-label="Zoom out" title="Zoom out (−)" @click="zoomOut">
+        <MinusIcon class="size-4" />
+      </button>
+      <button class="map-ctl" aria-label="Fit whole map" title="Fit whole map (F)" @click="fit">
+        <MaximizeIcon class="size-4" />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { MapPinOffIcon, PlusIcon, MinusIcon, MaximizeIcon, LoaderIcon } from '@lucide/vue'
+import { computed, ref, watch } from 'vue'
 import L from 'leaflet'
+import { CrosshairIcon, LoaderIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
+import { useImageMap } from '~/composables/useImageMap'
+import { useUiState } from '~/composables/useUiState'
 import type { Marker } from '~/types'
 
 const emit = defineEmits<{
   'request-add-marker': [position: { x: number; y: number }]
-  'request-edit-marker': [marker: Marker]
-  'request-delete-marker': [markerId: string]
 }>()
 
 const {
   currentMap, currentMapVariant, currentMapMarkers, currentMapPOIPins,
-  pois, getItemById, getStashedItems, pinPOI, staticDataReady,
+  items, getItemById, getPOIById, getStashedItemCount, pinPOI, staticDataReady,
 } = useGameData()
+const ui = useUiState()
+const { selectedMarkerId, selectedPOIId, placingLoot, pinningPOIId, hideLooted, cancelPlacement } = ui
 
-const mapContainer = ref<HTMLElement | null>(null)
-const addMarkerMode = ref(false)
+const container = ref<HTMLElement | null>(null)
+const placing = computed(() => placingLoot.value || !!pinningPOIId.value)
+const placingLabel = computed(() => {
+  if (pinningPOIId.value) return `Click where ${getPOIById(pinningPOIId.value)?.name ?? 'this place'} is`
+  return 'Click the map where the loot is'
+})
 
-// POI pin placement mode
-const pinPOIMode = ref(false)
-const pinPOIId = ref<string | null>(null)
-const pinPOIName = ref('')
-
-let map: L.Map | null = null
-let imageOverlay: L.ImageOverlay | null = null
 let markerLayer: L.LayerGroup | null = null
+let renderedMapId: string | null = null
+let pendingFly: { x: number; y: number } | null = null
 let poiLayer: L.LayerGroup | null = null
-let currentBounds: L.LatLngBoundsExpression | null = null
+const markerViews = new Map<string, { key: string; layer: L.Marker }>()
+const poiViews = new Map<string, { key: string; layer: L.Marker }>()
 
-function initMap() {
-  if (!mapContainer.value || !currentMapVariant.value) return
-  destroyMap()
+const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMapVariant, (map) => {
+  markerViews.clear()
+  poiViews.clear()
+  poiLayer = L.layerGroup().addTo(map)
+  markerLayer = L.layerGroup().addTo(map)
 
-  map = L.map(mapContainer.value, {
-    crs: L.CRS.Simple,
-    minZoom: -3,
-    maxZoom: 4,
-    zoomSnap: 0.25,
-    zoomDelta: 0.5,
-    attributionControl: false,
-    zoomControl: false,
+  map.on('click', (e: L.LeafletMouseEvent) => {
+    const pos = { x: e.latlng.lng, y: e.latlng.lat }
+    if (pinningPOIId.value) {
+      pinPOI(pinningPOIId.value, pos.x, pos.y)
+      selectedPOIId.value = pinningPOIId.value
+      cancelPlacement()
+      return
+    }
+    if (placingLoot.value || e.originalEvent.shiftKey) {
+      placingLoot.value = false
+      emit('request-add-marker', pos)
+      return
+    }
+    ui.selectMarker(null)
+    selectedPOIId.value = null
   })
 
-  const { imageWidth, imageHeight, imageUrl } = currentMapVariant.value
-  const bounds: L.LatLngBoundsExpression = [
-    [0, 0],
-    [imageHeight, imageWidth],
-  ]
-  currentBounds = bounds
-
-  imageOverlay = L.imageOverlay(imageUrl, bounds).addTo(map)
-  map.fitBounds(bounds)
-
-  markerLayer = L.layerGroup().addTo(map)
-  poiLayer = L.layerGroup().addTo(map)
-
-  // Handle clicks
-  map.on('click', (e: L.LeafletMouseEvent) => {
-    // POI pin placement mode
-    if (pinPOIMode.value && pinPOIId.value) {
-      pinPOI(pinPOIId.value, e.latlng.lng, e.latlng.lat)
-      cancelPinMode()
-      renderPOIs()
-      return
-    }
-
-    // Shift+Click → instant marker
-    if (e.originalEvent.shiftKey) {
-      emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
-      return
-    }
-
-    // Add marker mode
-    if (!addMarkerMode.value) return
-    addMarkerMode.value = false
+  // Right-click on desktop, long-press on touch
+  map.on('contextmenu', (e: L.LeafletMouseEvent) => {
+    if (pinningPOIId.value) return
+    placingLoot.value = false
     emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
   })
 
   renderMarkers()
   renderPOIs()
-}
 
-function destroyMap() {
-  if (map) {
-    map.remove()
-    map = null
-    imageOverlay = null
-    markerLayer = null
-    poiLayer = null
+  renderedMapId = currentMap.value?.id ?? null
+  if (pendingFly) {
+    map.setView([pendingFly.y, pendingFly.x], 0, { animate: false })
+    pendingFly = null
   }
+})
+
+// ── Markers ─────────────────────────────────────────────────────────────────
+
+const visibleMarkers = computed(() =>
+  currentMapMarkers.value.filter((m) => !hideLooted.value || !m.lootedAt || m.id === selectedMarkerId.value),
+)
+
+function markerHtml(m: Marker, selected: boolean, label: string): string {
+  const item = getItemById(m.itemId)
+  const classes = ['tld-marker', m.lootedAt && 'tld-marker--looted', selected && 'tld-marker--selected'].filter(Boolean).join(' ')
+  const body = item?.icon
+    ? `<img src="${escapeAttr(item.icon)}" alt="" class="tld-marker__img" draggable="false" />`
+    : `<span>${escapeHtml((m.name || item?.name || '?').slice(0, 2))}</span>`
+  const qty = m.quantity > 1 ? `<span class="tld-marker__qty">${m.quantity}</span>` : ''
+  const tick = '<span class="tld-marker__tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'
+  return `<div class="${classes}"><span class="sr-only">${escapeHtml(label)}</span><span aria-hidden="true" class="contents">${body}${qty}${tick}</span></div>`
 }
 
 function renderMarkers() {
   if (!markerLayer) return
-  markerLayer.clearLayers()
+  const seen = new Set<string>()
+  for (const m of visibleMarkers.value) {
+    seen.add(m.id)
+    const selected = m.id === selectedMarkerId.value
+    const key = `${m.x}|${m.y}|${m.itemId}|${m.quantity}|${!!m.lootedAt}|${selected}|${m.name}`
+    const existing = markerViews.get(m.id)
+    if (existing?.key === key) continue
+    if (existing) markerLayer.removeLayer(existing.layer)
 
-  currentMapMarkers.value.forEach((marker) => {
-    const item = getItemById(marker.itemId)
-    const qtyBadge = marker.quantity > 1
-      ? `<span class="tld-marker__qty">${marker.quantity}</span>`
-      : ''
-
-    let markerHtml: string
-    let size: [number, number]
-    let anchor: [number, number]
-    let popupOffset: [number, number]
-
-    if (item?.icon) {
-      markerHtml = `<div class="tld-marker tld-marker--icon"><img src="${item.icon}" alt="" class="tld-marker__img" />${qtyBadge}</div>`
-      size = [32, 32]
-      anchor = [16, 16]
-      popupOffset = [0, -20]
-    } else {
-      const label = marker.quantity > 1 ? String(marker.quantity) : '&bull;'
-      markerHtml = `<div class="tld-marker">${label}</div>`
-      size = [28, 28]
-      anchor = [14, 14]
-      popupOffset = [0, -18]
-    }
-
-    const icon = L.divIcon({
-      className: '',
-      html: markerHtml,
-      iconSize: size,
-      iconAnchor: anchor,
-      popupAnchor: popupOffset,
+    const item = getItemById(m.itemId)
+    const label = `${m.name || item?.name || 'Loot'}${m.quantity > 1 ? ` ×${m.quantity}` : ''}${m.lootedAt ? ' (looted)' : ''}`
+    const layer = L.marker([m.y, m.x], {
+      icon: L.divIcon({ className: '', html: markerHtml(m, selected, label), iconSize: [34, 34], iconAnchor: [17, 17] }),
+      title: label,
+      alt: label,
+      keyboard: true,
+      riseOnHover: true,
+      zIndexOffset: selected ? 1000 : m.lootedAt ? -100 : 0,
     })
-
-    const lMarker = L.marker([marker.y, marker.x], { icon }).addTo(markerLayer!)
-
-    const popupIcon = item?.icon
-      ? `<img src="${item.icon}" style="width:24px;height:24px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,0.1);margin-right:8px;flex-shrink:0" />`
-      : ''
-
-    const popupContent = `
-      <div style="min-width:160px">
-        <div style="display:flex;align-items:center;margin-bottom:4px">
-          ${popupIcon}
-          <div style="font-weight:700;font-size:13px">${escapeHtml(marker.name)}</div>
-        </div>
-        ${item ? `<div style="font-size:12px;opacity:0.75">${escapeHtml(item.name)} &times; ${marker.quantity}</div>` : ''}
-        ${marker.note ? `<div style="font-size:11px;opacity:0.6;margin-top:4px">${escapeHtml(marker.note)}</div>` : ''}
-        <div style="display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1)">
-          <button data-marker-edit="${marker.id}" style="flex:1;padding:4px 8px;font-size:11px;font-weight:600;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:inherit;cursor:pointer;transition:background 0.15s">Edit</button>
-          <button data-marker-delete="${marker.id}" style="padding:4px 8px;font-size:11px;font-weight:600;border-radius:6px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.1);color:#f87171;cursor:pointer;transition:background 0.15s">Delete</button>
-        </div>
-      </div>
-    `
-
-    const popup = L.popup({ closeButton: true, maxWidth: 240 }).setContent(popupContent)
-    lMarker.bindPopup(popup)
-
-    // Listen for popup open to attach event handlers
-    lMarker.on('popupopen', () => {
-      const container = popup.getElement()
-      if (!container) return
-
-      const editBtn = container.querySelector(`[data-marker-edit="${marker.id}"]`) as HTMLButtonElement | null
-      const deleteBtn = container.querySelector(`[data-marker-delete="${marker.id}"]`) as HTMLButtonElement | null
-
-      if (editBtn) {
-        editBtn.onclick = (e) => {
-          e.stopPropagation()
-          lMarker.closePopup()
-          emit('request-edit-marker', marker)
-        }
-      }
-      if (deleteBtn) {
-        deleteBtn.onclick = (e) => {
-          e.stopPropagation()
-          lMarker.closePopup()
-          emit('request-delete-marker', marker.id)
-        }
-      }
+    layer.on('click', (e) => {
+      L.DomEvent.stopPropagation(e)
+      ui.selectMarker(selectedMarkerId.value === m.id ? null : m.id)
     })
-  })
+    layer.on('keypress', (e: L.LeafletKeyboardEvent) => {
+      if (e.originalEvent.key === 'Enter') ui.selectMarker(m.id)
+    })
+    layer.addTo(markerLayer)
+    markerViews.set(m.id, { key, layer })
+  }
+  for (const [id, view] of markerViews) {
+    if (seen.has(id)) continue
+    markerLayer.removeLayer(view.layer)
+    markerViews.delete(id)
+  }
 }
+
+// ── POIs ────────────────────────────────────────────────────────────────────
 
 function renderPOIs() {
   if (!poiLayer) return
-  poiLayer.clearLayers()
+  const seen = new Set<string>()
+  for (const pin of currentMapPOIPins.value) {
+    const poi = getPOIById(pin.poiId)
+    if (!poi) continue
+    seen.add(pin.poiId)
+    const count = getStashedItemCount(pin.poiId)
+    const selected = selectedPOIId.value === pin.poiId
+    const key = `${pin.x}|${pin.y}|${count}|${selected}`
+    const existing = poiViews.get(pin.poiId)
+    if (existing?.key === key) continue
+    if (existing) poiLayer.removeLayer(existing.layer)
 
-  currentMapPOIPins.value.forEach((pin) => {
-    const poi = pois.value.find((p) => p.id === pin.poiId)
-    if (!poi) return
-
-    const stashItems = getStashedItems(pin.poiId)
-    const stashCount = stashItems.length
-
-    // POI marker: landmark-style label
-    const stashBadge = stashCount > 0
-      ? `<span class="tld-poi__count">${stashCount}</span>`
-      : ''
-
-    const poiHtml = `<div class="tld-poi">${escapeHtml(poi.name)}${stashBadge}</div>`
-
-    const icon = L.divIcon({
-      className: '',
-      html: poiHtml,
-      iconSize: [0, 0], // auto-sized by CSS
-      iconAnchor: [0, 16],
-      popupAnchor: [60, -10],
+    const badge = count > 0 ? `<span class="tld-poi__count" aria-label="${count} stashed">${count}</span>` : ''
+    const layer = L.marker([pin.y, pin.x], {
+      icon: L.divIcon({
+        className: '',
+        html: `<div class="tld-poi${selected ? ' tld-poi--selected' : ''}">${escapeHtml(poi.name)}${badge}</div>`,
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+      }),
+      title: poi.name,
+      keyboard: true,
     })
-
-    const lMarker = L.marker([pin.y, pin.x], { icon }).addTo(poiLayer!)
-
-    // Build popup with stash info
-    let stashHtml = ''
-    if (stashCount > 0) {
-      const itemRows = stashItems.map((s) => {
-        const item = getItemById(s.itemId)
-        const iconImg = item?.icon
-          ? `<img src="${item.icon}" style="width:18px;height:18px;object-fit:contain;margin-right:6px;flex-shrink:0" />`
-          : ''
-        return `<div style="display:flex;align-items:center;font-size:11px;padding:2px 0">
-          ${iconImg}<span>${escapeHtml(item?.name ?? 'Unknown')}</span>
-          ${s.quantity > 1 ? `<span style="opacity:0.6;margin-left:4px">&times;${s.quantity}</span>` : ''}
-        </div>`
-      }).join('')
-      stashHtml = `<div style="margin-top:6px;border-top:1px solid rgba(255,255,255,0.1);padding-top:6px">${itemRows}</div>`
-    }
-
-    const featureTags = [
-      poi.hasForge ? '<span style="color:#f97316">Forge</span>' : '',
-      poi.hasWorkbench ? '<span style="color:#3b82f6">Bench</span>' : '',
-      poi.hasBed ? '<span style="color:#10b981">Bed</span>' : '',
-      poi.hasShelter ? '<span style="color:#a855f7">Shelter</span>' : '',
-    ].filter(Boolean).join(' &middot; ')
-
-    const popupContent = `
-      <div style="min-width:140px">
-        <div style="font-weight:700;font-size:13px">${escapeHtml(poi.name)}</div>
-        ${poi.type ? `<div style="font-size:11px;opacity:0.6;text-transform:capitalize">${escapeHtml(poi.type)}</div>` : ''}
-        ${featureTags ? `<div style="font-size:10px;margin-top:3px">${featureTags}</div>` : ''}
-        ${stashHtml}
-      </div>
-    `
-
-    lMarker.bindPopup(popupContent, { closeButton: true, maxWidth: 250 })
-  })
+    layer.on('click', (e) => {
+      L.DomEvent.stopPropagation(e)
+      ui.selectPOI(pin.poiId)
+    })
+    layer.addTo(poiLayer)
+    poiViews.set(pin.poiId, { key, layer })
+  }
+  for (const [id, view] of poiViews) {
+    if (seen.has(id)) continue
+    poiLayer.removeLayer(view.layer)
+    poiViews.delete(id)
+  }
 }
 
-function zoomIn() {
-  map?.zoomIn()
-}
-
-function zoomOut() {
-  map?.zoomOut()
-}
-
-function resetView() {
-  if (map && currentBounds) map.fitBounds(currentBounds)
-}
-
-function flyToMarker(marker: Marker) {
-  if (!map) return
-  map.flyTo([marker.y, marker.x], 0, { duration: 0.8 })
-}
-
-function flyToPosition(pos: { x: number; y: number }) {
-  if (!map) return
-  map.flyTo([pos.y, pos.x], 0, { duration: 0.8 })
-}
-
-function startPinMode(poiId: string) {
-  const poi = pois.value.find((p) => p.id === poiId)
-  if (!poi) return
-  pinPOIMode.value = true
-  pinPOIId.value = poiId
-  pinPOIName.value = poi.name
-  addMarkerMode.value = false
-}
-
-function cancelPinMode() {
-  pinPOIMode.value = false
-  pinPOIId.value = null
-  pinPOIName.value = ''
-}
+watch([visibleMarkers, selectedMarkerId, () => items.value.length], renderMarkers, { deep: true })
+watch([currentMapPOIPins, selectedPOIId, () => currentMapMarkers.value.length], renderPOIs, { deep: true })
+// Stash counts change without pins changing
+watch(() => currentMapPOIPins.value.map((p) => getStashedItemCount(p.poiId)).join(','), renderPOIs)
 
 function escapeHtml(text: string) {
-  const div = document.createElement('div')
-  div.textContent = text
-  return div.innerHTML
+  return text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' })[c]!)
+}
+const escapeAttr = escapeHtml
+
+/** Fly to a position on the given map; if that map is still loading, jump there once it is built. */
+function flyToPosition(pos: { x: number; y: number }, mapId?: string) {
+  if (getMap() && (!mapId || mapId === renderedMapId)) flyTo(pos.x, pos.y, 0)
+  else pendingFly = pos
 }
 
-// Watch markers changes to re-render
-watch(currentMapMarkers, () => {
-  renderMarkers()
-}, { deep: true })
-
-// Watch POI pins to re-render
-watch(currentMapPOIPins, () => {
-  renderPOIs()
-}, { deep: true })
-
-// Watch map variant changes to reinitialize
-watch(
-  () => currentMapVariant.value?.imageUrl,
-  (newUrl, oldUrl) => {
-    if (newUrl !== oldUrl) {
-      nextTick(() => initMap())
-    }
-  },
-)
-
-onMounted(() => {
-  nextTick(() => {
-    setTimeout(() => initMap(), 50)
-  })
-})
-
-onUnmounted(() => {
-  destroyMap()
-})
-
-// Expose methods for parent component
-defineExpose({ flyToMarker, flyToPosition, startPinMode })
+defineExpose({ flyToPosition, fit, zoomIn, zoomOut, getMap })
 </script>
+
+<style scoped>
+.map-ctl {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--foreground);
+  transition: background-color 150ms ease;
+}
+.map-ctl:hover {
+  background: var(--accent);
+}
+.map-ctl:focus-visible {
+  outline-offset: -2px;
+}
+</style>

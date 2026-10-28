@@ -23,228 +23,299 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --color-loot: var(--loot);
+  --color-looted: var(--looted);
+  --color-warning: var(--warning);
+  --color-place: var(--place);
+  --color-rail: var(--rail);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ── Dark survival-game theme (always dark) ── */
+/*
+ * TLD Buddy — "painted dusk" (see docs/DESIGN.md)
+ * Derived from The Long Dark's art direction: a painterly, water-colour storybook world
+ * whose HUD is white-on-dark with sparse, muted state colour. Always dark: it lives
+ * on a second monitor next to the game, usually in a dim room.
+ */
 :root {
-  /* Deep charcoal with warm brown undertone */
-  --background: oklch(0.14 0.01 60);
-  --foreground: oklch(0.90 0.02 75);
+  color-scheme: dark;
 
-  /* Cards / panels: slightly lighter, warm */
-  --card: oklch(0.18 0.012 55);
-  --card-foreground: oklch(0.90 0.02 75);
+  /* Dusk ink: the deep blue-slate of the game's painted night sky */
+  --background: oklch(0.205 0.028 258);
+  --foreground: oklch(0.945 0.014 85); /* bone white, like the game's HUD text */
 
-  /* Popovers */
-  --popover: oklch(0.16 0.012 55);
-  --popover-foreground: oklch(0.90 0.02 75);
+  --card: oklch(0.245 0.03 258);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.235 0.03 258);
+  --popover-foreground: var(--foreground);
+  --rail: oklch(0.175 0.026 258); /* top bar + side panel, a step darker than content */
 
-  /* Primary: muted amber / firelight gold */
-  --primary: oklch(0.70 0.14 75);
-  --primary-foreground: oklch(0.14 0.01 60);
+  /* Sunset apricot: the game's "dramatic sunsets", reserved for loot still out there + primary actions */
+  --primary: oklch(0.82 0.105 58);
+  --primary-foreground: oklch(0.2 0.03 258);
+  --loot: var(--primary);
 
-  /* Secondary: dark olive / forest green */
-  --secondary: oklch(0.25 0.04 140);
-  --secondary-foreground: oklch(0.85 0.04 140);
+  /* Aurora mint: looted / done */
+  --looted: oklch(0.84 0.085 170);
 
-  /* Muted */
-  --muted: oklch(0.22 0.015 60);
-  --muted-foreground: oklch(0.58 0.03 70);
+  /* Dusk lavender: secondary surfaces */
+  --secondary: oklch(0.3 0.04 285);
+  --secondary-foreground: oklch(0.92 0.025 285);
 
-  /* Accent: warm highlight */
-  --accent: oklch(0.24 0.02 70);
-  --accent-foreground: oklch(0.90 0.02 75);
+  --muted: oklch(0.27 0.03 258);
+  --muted-foreground: oklch(0.76 0.03 255);
 
-  /* Destructive: muted rust red */
-  --destructive: oklch(0.50 0.16 25);
-  --destructive-foreground: oklch(0.92 0.02 60);
+  --accent: oklch(0.3 0.035 258);
+  --accent-foreground: var(--foreground);
 
-  /* Borders & inputs: low-contrast warm gray */
-  --border: oklch(0.26 0.015 60);
-  --input: oklch(0.22 0.015 60);
-  --ring: oklch(0.70 0.14 75);
+  /* Pale glacier blue: places (POIs) */
+  --place: oklch(0.83 0.07 230);
 
-  /* Charts */
-  --chart-1: oklch(0.70 0.14 75);
-  --chart-2: oklch(0.55 0.10 140);
-  --chart-3: oklch(0.60 0.12 30);
-  --chart-4: oklch(0.65 0.10 200);
-  --chart-5: oklch(0.58 0.08 310);
+  /* State colours, as in the game's HUD: red = danger, ochre = warning */
+  --destructive: oklch(0.64 0.17 27);
+  --destructive-foreground: oklch(0.97 0.01 85);
+  --warning: oklch(0.84 0.13 85);
+
+  --border: oklch(0.33 0.03 258);
+  --input: oklch(0.31 0.03 258);
+  --ring: oklch(0.82 0.105 58);
 
   --radius: 0.5rem;
 
-  /* Sidebar (sheets) */
-  --sidebar: oklch(0.16 0.012 55);
-  --sidebar-foreground: oklch(0.90 0.02 75);
-  --sidebar-primary: oklch(0.70 0.14 75);
-  --sidebar-primary-foreground: oklch(0.14 0.01 60);
-  --sidebar-accent: oklch(0.24 0.02 70);
-  --sidebar-accent-foreground: oklch(0.90 0.02 75);
-  --sidebar-border: oklch(0.26 0.015 60);
-  --sidebar-ring: oklch(0.70 0.14 75);
+  /* Watercolour-paper grain for panels (very faint) */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html, body {
+    height: 100%;
+    overscroll-behavior: none;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  ::selection {
+    background: oklch(0.82 0.105 58 / 0.35);
+    color: var(--foreground);
+  }
+  input, textarea {
+    caret-color: var(--primary);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.4 0.03 258) transparent;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-/* ── Leaflet overrides for dark theme ── */
+@layer components {
+  /* Uppercase tracked label — echoes the game's HUD lettering */
+  .hud-label {
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .surface-rail {
+    background-color: var(--rail);
+    background-image: var(--grain);
+  }
+  .surface-card {
+    background-color: var(--card);
+    background-image: var(--grain);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ── Leaflet ─────────────────────────────────────────────────────────────── */
+
 .leaflet-container {
-  background: oklch(0.10 0.01 60) !important;
+  background: oklch(0.17 0.025 258) !important;
   font-family: inherit !important;
+  outline: none;
 }
 
-.leaflet-popup-content-wrapper {
-  background: oklch(0.18 0.012 55) !important;
-  color: oklch(0.90 0.02 75) !important;
-  border: 1px solid oklch(0.26 0.015 60) !important;
-  border-radius: 0.5rem !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+.leaflet-container:focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: -2px;
 }
 
-.leaflet-popup-tip {
-  background: oklch(0.18 0.012 55) !important;
-  border: 1px solid oklch(0.26 0.015 60) !important;
-  box-shadow: none !important;
+/* The painting bleeds into dusk at the edges of the viewport */
+.map-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 400;
+  box-shadow: inset 0 0 80px 10px oklch(0.15 0.03 258 / 0.55);
 }
 
-.leaflet-popup-close-button {
-  color: oklch(0.58 0.03 70) !important;
-}
-
-.leaflet-popup-close-button:hover {
-  color: oklch(0.90 0.02 75) !important;
-}
-
-
-/* Custom marker styles -- default (circle with quantity) */
+/* Item marker: dark ink tile with the item icon, apricot ring = still there */
 .tld-marker {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2.5px solid oklch(0.14 0.01 60);
-  background: oklch(0.70 0.14 75);
-  color: oklch(0.14 0.01 60);
-  font-weight: 700;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: oklch(0.22 0.03 258);
+  border: 2px solid var(--loot);
+  box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.55);
+  color: var(--foreground);
   font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease, filter 240ms ease, border-color 160ms ease;
 }
 
 .tld-marker:hover {
-  transform: scale(1.2);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-}
-
-.tld-marker--active {
-  border-color: oklch(0.90 0.02 75);
-  box-shadow: 0 0 0 3px oklch(0.70 0.14 75 / 0.4), 0 4px 16px rgba(0, 0, 0, 0.6);
-  transform: scale(1.25);
-}
-
-/* Icon marker variant -- rounded square with item image */
-.tld-marker--icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: oklch(0.20 0.01 60);
-  border: 2px solid oklch(0.70 0.14 75);
-  padding: 2px;
-}
-
-.tld-marker--icon:hover {
-  border-color: oklch(0.85 0.12 75);
+  transform: scale(1.15);
 }
 
 .tld-marker__img {
-  width: 100%;
-  height: 100%;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
   pointer-events: none;
 }
 
-/* Quantity badge on icon markers */
 .tld-marker__qty {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 16px;
-  height: 16px;
+  top: -7px;
+  right: -7px;
+  min-width: 17px;
+  height: 17px;
   padding: 0 4px;
-  border-radius: 8px;
-  background: oklch(0.70 0.14 75);
-  color: oklch(0.14 0.01 60);
+  border-radius: 9px;
+  background: var(--loot);
+  color: var(--primary-foreground);
   font-size: 10px;
-  font-weight: 700;
-  line-height: 16px;
+  font-weight: 750;
+  line-height: 17px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5);
   pointer-events: none;
 }
 
-/* POI (Point of Interest) marker -- labeled landmark */
+/* Looted: washed out into the painting, with a pale mint tick */
+.tld-marker--looted {
+  border-color: oklch(0.6 0.03 258);
+  border-style: dashed;
+  opacity: 0.62;
+  filter: grayscale(1) contrast(0.85);
+}
+
+.tld-marker--looted .tld-marker__qty {
+  display: none;
+}
+
+.tld-marker__tick {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  display: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--looted);
+  color: oklch(0.22 0.03 258);
+  place-items: center;
+  box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5);
+}
+
+.tld-marker--looted .tld-marker__tick {
+  display: grid;
+}
+
+.tld-marker--selected {
+  transform: scale(1.22);
+  opacity: 1;
+  filter: none;
+  box-shadow: 0 0 0 3px oklch(0.945 0.014 85 / 0.9), 0 4px 14px oklch(0.1 0.02 258 / 0.7);
+}
+
+/* POI: dusk-ink name plate with a glacier-blue pin dot */
 .tld-poi {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: oklch(0.18 0.02 250 / 0.85);
-  border: 1.5px solid oklch(0.50 0.12 250);
-  color: oklch(0.90 0.03 250);
+  gap: 6px;
+  padding: 3px 9px 3px 7px;
+  border-radius: 6px;
+  background: oklch(0.2 0.03 258 / 0.92);
+  border: 1px solid oklch(0.83 0.07 230 / 0.55);
+  color: var(--foreground);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.45);
+  transform: translate(-7px, -50%);
+  transition: border-color 160ms ease, background 160ms ease;
 }
 
-.tld-poi:hover {
-  transform: scale(1.05);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-  border-color: oklch(0.65 0.12 250);
+.tld-poi::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--place);
+  flex-shrink: 0;
 }
 
-/* Stash count badge on POI markers */
+.tld-poi:hover,
+.tld-poi--selected {
+  border-color: var(--place);
+  background: oklch(0.26 0.035 258 / 0.96);
+}
+
 .tld-poi__count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 16px;
-  height: 16px;
+  min-width: 17px;
+  height: 17px;
   padding: 0 4px;
-  border-radius: 8px;
-  background: oklch(0.70 0.14 75);
-  color: oklch(0.14 0.01 60);
+  border-radius: 9px;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
   font-size: 10px;
-  font-weight: 700;
-  line-height: 16px;
+  line-height: 17px;
+  text-align: center;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Placement cursor while adding loot or pinning a place */
+.map-placing .leaflet-container {
+  cursor: crosshair !important;
+}
+
+@media (pointer: coarse) {
+  .tld-marker {
+    width: 40px;
+    height: 40px;
+  }
+  .tld-marker__img {
+    width: 30px;
+    height: 30px;
+  }
 }
