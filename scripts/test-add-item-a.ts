@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict'
 import {
   WHEEL, contribution, digitOf, ownsMarker, pageOf, polar, readKey, readoutSide, sectorPath, sliceAt, sliceMid,
-  stepQuantity, summarise, typeQuantity, wheelSteps, type KeyInput, type KeyState, type WheelPick,
+  searchTypesDigits, stepQuantity, summarise, typeQuantity, wheelSteps, type KeyInput, type KeyState, type WheelPick,
 } from '../app/components/add/a/wheel'
 import { SPREAD_RADIUS, planBatch, ringSlot } from '../app/lib/addItem'
 
@@ -25,7 +25,7 @@ const k = (key: string, extra: Partial<KeyInput> = {}): KeyInput => ({
   shiftKey: false, ctrlKey: false, metaKey: false, altKey: false,
   ...extra,
 })
-const at = (stage: KeyState['stage'], hasPick = false, queryEmpty = true): KeyState => ({ stage, hasPick, queryEmpty })
+const at = (stage: KeyState['stage'], hasPick = false, queryEmpty = true, more: Partial<KeyState> = {}): KeyState => ({ stage, hasPick, queryEmpty, ...more })
 
 test('slices run clockwise from 12 o\'clock and hit-test back to themselves', () => {
   assert.deepEqual(polar(10, sliceMid(0)), { x: 0, y: -10 })
@@ -62,6 +62,7 @@ test('plain digits choose; 9 pages a group; 0 does nothing', () => {
 test('Shift+digits and the numpad are quantity, never navigation', () => {
   assert.deepEqual(readKey(k('@', { code: 'Digit2', shiftKey: true }), at('groups', true)), { type: 'qty-digit', digit: 2 })
   assert.deepEqual(readKey(k('5', { code: 'Numpad5' }), at('items', true)), { type: 'qty-digit', digit: 5 })
+  assert.deepEqual(readKey(k('PageDown', { code: 'Numpad3' }), at('groups', true)), { type: 'qty-digit', digit: 3 }, 'NumLock off')
   assert.deepEqual(readKey(k('!', { code: 'Digit1', shiftKey: true }), at('groups', false)), { type: 'noop' }, 'nothing picked yet')
   assert.deepEqual(readKey(k('+'), at('groups', true)), { type: 'qty-step', delta: 1 })
   assert.deepEqual(readKey(k('-', { code: 'Minus' }), at('groups', true)), { type: 'qty-step', delta: -1 })
@@ -73,6 +74,7 @@ test('Space repeats, Enter closes (or takes the top result), Esc steps back', ()
   assert.equal(readKey(k(' '), at('search', true, false)), null, 'a space inside a search is typed')
   assert.deepEqual(readKey(k('Enter'), at('groups', true)), { type: 'close' })
   assert.deepEqual(readKey(k('Enter'), at('search', false, false)), { type: 'pick-top' })
+  assert.deepEqual(readKey(k('Enter'), at('search', false, true)), { type: 'close' }, 'an empty search line closes like everywhere else')
   assert.deepEqual(readKey(k('Escape'), at('groups')), { type: 'close' })
   assert.deepEqual(readKey(k('Escape'), at('items')), { type: 'back' })
   assert.deepEqual(readKey(k('Escape'), at('search', false, false)), { type: 'back' })
@@ -94,7 +96,8 @@ test('letters start a search, Tab opens the note, note keys save or cancel', () 
   assert.deepEqual(readKey(k('A', { shiftKey: true }), at('items')), { type: 'search-start', text: 'A' })
   assert.equal(readKey(k('h'), at('search', false, false)), null)
   assert.deepEqual(readKey(k('Tab'), at('groups', true)), { type: 'note' })
-  assert.deepEqual(readKey(k('Tab'), at('groups', false)), { type: 'noop' })
+  assert.equal(readKey(k('Tab'), at('groups', false)), null, 'with nothing to note, Tab moves focus as usual')
+  assert.equal(readKey(k('Tab', { shiftKey: true }), at('groups', true)), null)
   assert.deepEqual(readKey(k('Enter'), at('note', true)), { type: 'note-save', close: true })
   assert.deepEqual(readKey(k('Tab'), at('note', true)), { type: 'note-save', close: false })
   assert.deepEqual(readKey(k('Escape'), at('note', true)), { type: 'back' })
@@ -183,6 +186,44 @@ test('planBatch one item at a time (a wheel) spreads like one big batch', () => 
       assert.ok(d > 5, `markers ${i} and ${j} overlap (${d.toFixed(1)} px)`)
     }
   }
+})
+
+test('x opens the quantity field after a pick; the field saves on Enter/Space and cancels on Esc', () => {
+  assert.deepEqual(readKey(k('x'), at('groups', true)), { type: 'qty-open' })
+  assert.deepEqual(readKey(k('x'), at('items', true)), { type: 'qty-open' })
+  assert.deepEqual(readKey(k('x'), at('groups', false)), { type: 'search-start', text: 'x' }, 'nothing picked: x is a letter')
+  assert.deepEqual(readKey(k('Enter'), at('qty', true)), { type: 'qty-save' })
+  assert.deepEqual(readKey(k(' '), at('qty', true)), { type: 'qty-save' })
+  assert.deepEqual(readKey(k('Escape'), at('qty', true)), { type: 'back' })
+  assert.equal(readKey(k('4'), at('qty', true)), null, 'digits are typed into the field')
+})
+
+test('arrows move focus round the ring; Enter/Space pick the focused slice', () => {
+  assert.deepEqual(readKey(k('ArrowRight'), at('groups')), { type: 'focus-step', delta: 1 })
+  assert.deepEqual(readKey(k('ArrowUp'), at('items')), { type: 'focus-step', delta: -1 })
+  assert.deepEqual(readKey(k('Home'), at('groups')), { type: 'focus-to', index: 0 })
+  assert.equal(readKey(k('ArrowLeft'), at('search', false, false)), null, 'caret moves in the search line')
+  const onSlice = { focus: 'slice' as const, focusedSlice: 4 }
+  assert.deepEqual(readKey(k('Enter'), at('groups', true, true, onSlice)), { type: 'slice', index: 4 })
+  assert.deepEqual(readKey(k(' '), at('items', true, true, onSlice)), { type: 'slice', index: 4 })
+  const onButton = { focus: 'control' as const }
+  assert.equal(readKey(k('Enter'), at('groups', true, true, onButton)), null, 'a focused button keeps Enter')
+  assert.equal(readKey(k(' '), at('groups', true, true, onButton)), null)
+  assert.deepEqual(readKey(k('3'), at('groups', true, true, onButton)), { type: 'slice', index: 2 }, 'digits still choose')
+})
+
+test('search grammar: once the line has x12 or a note, digits are typed', () => {
+  assert.equal(searchTypesDigits('mat'), false)
+  assert.equal(searchTypesDigits('mat x'), true)
+  assert.equal(searchTypesDigits('mat x1'), true)
+  assert.equal(searchTypesDigits('box'), false, 'an x inside a word is just a letter')
+  assert.equal(searchTypesDigits('hack # 2nd'), true)
+  assert.equal(searchTypesDigits('hack - car'), true)
+  assert.equal(readKey(k('2'), at('search', false, false, { digitsTyped: true })), null)
+  assert.equal(readKey(k('@', { code: 'Digit2', shiftKey: true }), at('search', true, false, { digitsTyped: true })), null)
+  assert.equal(readKey(k('#', { code: 'Digit3', shiftKey: true }), at('search', true, false)), null, '# is typed: it starts the note')
+  assert.equal(readKey(k('#', { code: 'Digit3' }), at('search', false, false)), null, 'a # without the Shift flag is still a #')
+  assert.deepEqual(readKey(k('2'), at('search', false, false, { digitsTyped: false })), { type: 'slice', index: 1 })
 })
 
 console.log(`\n${passed} wheel tests passed`)

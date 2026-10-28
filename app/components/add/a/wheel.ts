@@ -87,7 +87,7 @@ export interface WheelSlice {
 // ── Keyboard model ──────────────────────────────────────────────────────────
 
 /** What the wheel is showing. */
-export type Stage = 'groups' | 'items' | 'search' | 'note'
+export type Stage = 'groups' | 'items' | 'search' | 'note' | 'qty'
 
 export interface KeyInput {
   key: string
@@ -104,13 +104,26 @@ export interface KeyState {
   hasPick: boolean
   /** The search line is empty */
   queryEmpty: boolean
+  /**
+   * Where focus is inside the wheel: the wheel itself, one of the slices (arrow keys move
+   * it), or a button in the plate (which keeps its own Enter, Space and Tab).
+   */
+  focus?: 'root' | 'slice' | 'control'
+  /** The slice that has focus, if any */
+  focusedSlice?: number | null
+  /** The search line is in its quantity (`x12`) or note (`# …`) part, so digits are typed */
+  digitsTyped?: boolean
 }
 
 export type WheelAction =
   | { type: 'slice'; index: number }
   | { type: 'more' }
+  | { type: 'focus-step'; delta: number }
+  | { type: 'focus-to'; index: number }
   | { type: 'qty-digit'; digit: number }
   | { type: 'qty-step'; delta: number }
+  | { type: 'qty-open' }
+  | { type: 'qty-save' }
   | { type: 'again' }
   | { type: 'remove-last' }
   | { type: 'back' }
@@ -124,10 +137,10 @@ export type WheelAction =
 
 /**
  * Map a keydown to a wheel action. `null` means "not ours": let the browser have it
- * (typing in the search/note line, browser shortcuts).
+ * (typing in the search/note/quantity line, a focused button, browser shortcuts).
  *
- * Plain digits always choose (1–8 slice, 9 more); quantity is Shift+digits or the
- * numpad, so a digit never means two things.
+ * Plain digits always choose (1–8 slice, 9 more). Quantity is `x` then digits (a visible
+ * field), Shift+digits, the numpad, or +/−, so a digit never means two things.
  */
 export function readKey(k: KeyInput, s: KeyState): WheelAction | null {
   const mod = k.ctrlKey || k.metaKey
@@ -135,6 +148,11 @@ export function readKey(k: KeyInput, s: KeyState): WheelAction | null {
   if (s.stage === 'note') {
     if (k.key === 'Enter' && !mod) return { type: 'note-save', close: true }
     if (k.key === 'Tab') return { type: 'note-save', close: false }
+    if (k.key === 'Escape') return { type: 'back' }
+    return null
+  }
+  if (s.stage === 'qty') {
+    if ((k.key === 'Enter' || k.key === ' ' || k.key === 'Tab') && !mod) return { type: 'qty-save' }
     if (k.key === 'Escape') return { type: 'back' }
     return null
   }
@@ -146,27 +164,54 @@ export function readKey(k: KeyInput, s: KeyState): WheelAction | null {
   }
   if (k.altKey) return null
 
-  const digit = digitOf(k)
-  if (digit !== null && (k.shiftKey || k.code.startsWith('Numpad'))) {
-    return s.hasPick ? { type: 'qty-digit', digit } : { type: 'noop' }
-  }
-  if (k.key === '+' || k.key === '=' || k.code === 'NumpadAdd') return s.hasPick ? { type: 'qty-step', delta: 1 } : { type: 'noop' }
-  if ((k.key === '-' || k.code === 'NumpadSubtract') && s.stage !== 'search') return s.hasPick ? { type: 'qty-step', delta: -1 } : { type: 'noop' }
+  // A focused button in the plate keeps its native keys
+  if (s.focus === 'control' && (k.key === 'Enter' || k.key === ' ' || k.key === 'Tab')) return null
+  if (k.key === 'Tab' && k.shiftKey) return null
 
-  if (digit !== null) {
-    if (digit >= 1 && digit <= 8) return { type: 'slice', index: digit - 1 }
-    if (digit === 9 && s.stage === 'items') return { type: 'more' }
+  const typing = s.stage === 'search' && s.digitsTyped
+  // A digit is what the key types; Shift+digit is read by physical key (it types !@#…)
+  const plain = !k.shiftKey && /^\d$/.test(k.key) ? Number(k.key) : null
+  const shifted = k.shiftKey && /^Digit\d$/.test(k.code) ? Number(k.code.slice(5)) : null
+  // Numpad digits by physical key too, so they set quantities with NumLock on or off
+  const numpad = /^Numpad\d$/.test(k.code) ? Number(k.code.slice(6)) : null
+  if (shifted !== null) {
+    // In the search line Shift+3 is "#", the start of a note
+    if (s.stage === 'search') return null
+    return s.hasPick ? { type: 'qty-digit', digit: shifted } : { type: 'noop' }
+  }
+  if (numpad !== null && s.stage !== 'search') return s.hasPick ? { type: 'qty-digit', digit: numpad } : { type: 'noop' }
+  if (s.stage !== 'search' && (k.key === '+' || k.key === '=' || k.code === 'NumpadAdd')) return s.hasPick ? { type: 'qty-step', delta: 1 } : { type: 'noop' }
+  if (s.stage !== 'search' && (k.key === '-' || k.code === 'NumpadSubtract')) return s.hasPick ? { type: 'qty-step', delta: -1 } : { type: 'noop' }
+
+  if (plain !== null) {
+    if (typing) return null
+    if (plain >= 1 && plain <= 8) return { type: 'slice', index: plain - 1 }
+    if (plain === 9 && s.stage === 'items') return { type: 'more' }
     return { type: 'noop' }
   }
 
+  const sliceFocused = s.focus === 'slice' && s.focusedSlice !== null && s.focusedSlice !== undefined
   switch (k.key) {
+    case 'ArrowRight':
+    case 'ArrowDown':
+      return { type: 'focus-step', delta: 1 }
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      return s.stage === 'search' && k.key === 'ArrowLeft' ? null : { type: 'focus-step', delta: -1 }
+    case 'Home':
+      return s.stage === 'search' ? null : { type: 'focus-to', index: 0 }
+    case 'End':
+      return s.stage === 'search' ? null : { type: 'focus-to', index: 7 }
     case 'Enter':
-      return s.stage === 'search' ? { type: 'pick-top' } : { type: 'close' }
+      if (sliceFocused) return { type: 'slice', index: s.focusedSlice! }
+      if (s.stage === 'search') return s.queryEmpty ? { type: 'close' } : { type: 'pick-top' }
+      return { type: 'close' }
     case 'Escape':
       return s.stage === 'groups' ? { type: 'close' } : { type: 'back' }
     case 'Tab':
-      return s.hasPick ? { type: 'note' } : { type: 'noop' }
+      return s.hasPick ? { type: 'note' } : null
     case ' ':
+      if (sliceFocused) return { type: 'slice', index: s.focusedSlice! }
       return s.stage === 'search' && !s.queryEmpty ? null : { type: 'again' }
     case 'Backspace':
       if (s.stage === 'search') return s.queryEmpty ? { type: 'back' } : null
@@ -174,8 +219,20 @@ export function readKey(k: KeyInput, s: KeyState): WheelAction | null {
       return s.hasPick ? { type: 'remove-last' } : { type: 'noop' }
   }
 
-  if (s.stage !== 'search' && k.key.length === 1 && /\p{L}/u.test(k.key)) return { type: 'search-start', text: k.key }
+  if (s.stage !== 'search' && k.key.length === 1 && /\p{L}/u.test(k.key)) {
+    // `x` = "times": opens the quantity field for the last pick (no item name starts with x)
+    if (s.hasPick && k.key.toLowerCase() === 'x') return { type: 'qty-open' }
+    return { type: 'search-start', text: k.key }
+  }
   return null
+}
+
+/**
+ * The search line accepts a quantity and a note after the name: `mat x12`, `hack # car trunk`,
+ * `mat x12 # kitchen`. Once the line is in one of those parts, digits are typed, not picked.
+ */
+export function searchTypesDigits(query: string): boolean {
+  return /(?:^|\s)x\d*$/i.test(query) || /\s(?:-|#)/.test(query) || /^#/.test(query.trim())
 }
 
 /** 0–9 from a digit-row or numpad key (by physical key, so Shift+1 still reads as 1). */

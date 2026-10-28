@@ -1,52 +1,70 @@
 <template>
   <div
     class="wheel-ring absolute"
+    :class="{ 'wheel-ring--resting': resting }"
     :style="{ left: `${-WHEEL.outer}px`, top: `${-WHEEL.outer}px`, width: `${size}px`, height: `${size}px` }"
     @contextmenu.prevent="(e: MouseEvent) => emit('context', e)"
   >
     <svg
+      ref="svgRef"
       class="absolute inset-0 overflow-visible"
       :viewBox="`${-WHEEL.outer} ${-WHEEL.outer} ${size} ${size}`"
       :width="size"
       :height="size"
-      aria-hidden="true"
+      role="menu"
+      :aria-label="label"
     >
       <g :key="ringKey" class="wheel-ring__slices">
-        <path
+        <!-- Each slice is a menu item: named with its digit, reachable with the arrow keys -->
+        <g
           v-for="(s, i) in slices"
           :key="s.key"
-          :d="paths[i]"
-          class="wheel-slice"
-          :class="{
-            'wheel-slice--hot': hovered === i && s.kind !== 'empty',
-            'wheel-slice--empty': s.kind === 'empty',
-          }"
-          @pointerenter="emit('hover', s.kind === 'empty' ? null : i)"
-          @pointerleave="emit('hover', null)"
-          @click="s.kind !== 'empty' && emit('pick', i)"
-        />
+          :data-slice="i"
+          :role="s.kind === 'empty' ? 'none' : 'menuitem'"
+          :tabindex="s.kind === 'empty' ? undefined : i === roving ? 0 : -1"
+          :aria-label="s.kind === 'empty' ? undefined : names[i]"
+          :aria-keyshortcuts="s.kind === 'empty' ? undefined : String(i + 1)"
+          class="wheel-slice-item"
+          @mousedown.prevent
+          @focus="emit('focus', i)"
+          @blur="emit('focus', null)"
+        >
+          <path
+            :d="paths[i]"
+            class="wheel-slice"
+            :class="{
+              'wheel-slice--hot': (hovered === i || focused === i) && s.kind !== 'empty',
+              'wheel-slice--empty': s.kind === 'empty',
+            }"
+            @pointerenter="emit('hover', s.kind === 'empty' ? null : i)"
+            @pointerleave="emit('hover', null)"
+            @click="s.kind !== 'empty' && emit('pick', i)"
+          />
+        </g>
       </g>
       <!-- The rim and the hole: hairlines that hold the ring together on the cream map -->
-      <circle :r="WHEEL.outer" class="wheel-rim" />
+      <circle :r="WHEEL.outer" class="wheel-rim wheel-ring__slices-rim" />
       <circle :r="WHEEL.inner" class="wheel-rim" />
+      <!-- Keyboard focus: an apricot outline on top of the neighbours -->
+      <path v-if="focused !== null && paths[focused]" :d="paths[focused]" class="wheel-focus" />
       <!-- Clear centre over the spot: swallows clicks so the map behind doesn't take them -->
-      <circle :r="WHEEL.inner" class="wheel-hole" @click="emit('hole')" />
-      <g :key="pulse" class="wheel-crosshair" :class="{ 'wheel-crosshair--pulse': pulse > 0 }">
+      <circle :r="WHEEL.inner" class="wheel-hole" aria-hidden="true" @click="emit('hole')" />
+      <g :key="pulse" class="wheel-crosshair" :class="{ 'wheel-crosshair--pulse': pulse > 0 }" aria-hidden="true">
         <circle :r="WHEEL.hole - 4" />
         <path :d="`M0 ${-WHEEL.hole + 4}v6M0 ${WHEEL.hole - 4}v-6M${-WHEEL.hole + 4} 0h6M${WHEEL.hole - 4} 0h-6`" />
       </g>
     </svg>
 
     <!-- Slice contents: icon + label stacked at mid-radius, the digit next to the hole -->
-    <div :key="ringKey" class="wheel-ring__content pointer-events-none absolute inset-0">
+    <div :key="ringKey" class="wheel-ring__content pointer-events-none absolute inset-0" aria-hidden="true">
       <template v-for="(s, i) in slices" :key="s.key">
         <template v-if="s.kind !== 'empty'">
           <span
             class="wheel-digit tabular"
-            :class="{ 'wheel-digit--hot': hovered === i }"
+            :class="{ 'wheel-digit--hot': hovered === i || focused === i }"
             :style="at(WHEEL.digit, i)"
           >{{ i + 1 }}</span>
-          <span class="wheel-cell" :class="{ 'wheel-cell--hot': hovered === i }" :style="at(WHEEL.content, i)">
+          <span class="wheel-cell" :class="{ 'wheel-cell--hot': hovered === i || focused === i }" :style="at(WHEEL.content, i)">
             <span class="relative grid size-9 place-items-center">
               <img v-if="s.icon" :src="s.icon" alt="" class="size-9 object-contain" draggable="false">
               <HistoryIcon v-else-if="s.kind === 'group'" class="size-6" :stroke-width="1.75" />
@@ -63,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { HistoryIcon, PackageIcon } from '@lucide/vue'
 import { WHEEL, polar, sliceMid, slicePath, type WheelSlice } from './wheel'
 
@@ -76,17 +94,40 @@ const props = defineProps<{
   ringKey: string
   /** Bumps on every pick: the crosshair gives a small beat */
   pulse: number
+  /** What the ring offers, for assistive tech ("Groups", "Fire items", "Search results") */
+  label: string
+  /** The slice with keyboard focus */
+  focused: number | null
+  /** The slice that takes focus when the ring is tabbed into */
+  roving: number
+  /** Faded so the map under it reads (pointer away, or just after a pick) */
+  resting: boolean
 }>()
 
 const emit = defineEmits<{
   pick: [index: number]
   hover: [index: number | null]
+  focus: [index: number | null]
   hole: []
   /** Right-click on the ring: the map point under it is where the next wheel goes */
   context: [e: MouseEvent]
 }>()
 
 const size = WHEEL.outer * 2
+const svgRef = ref<SVGSVGElement | null>(null)
+
+/** Accessible names: "1, Fire, 2 added" / "3, Wood Matches, 12 here" */
+const names = computed(() => props.slices.map((s, i) => {
+  const extra = s.here ? `, ${s.here} already here` : s.count ? `, ${s.count} added` : ''
+  return `${i + 1}, ${s.label}${extra}`
+}))
+
+/** Move keyboard focus to a slice (the ring re-renders when its meaning changes, so after a tick). */
+function focusSlice(i: number) {
+  svgRef.value?.querySelector<SVGGElement>(`[data-slice="${i}"][role="menuitem"]`)?.focus({ preventScroll: true })
+}
+
+defineExpose({ focusSlice })
 const paths = computed(() => props.slices.map((_, i) => slicePath(i, props.slices.length)))
 
 function at(r: number, i: number) {
@@ -118,6 +159,31 @@ function at(r: number, i: number) {
 .wheel-slice--empty {
   fill: oklch(0.2 0.03 258 / 0.72);
   cursor: default;
+}
+
+.wheel-slice-item {
+  outline: none;
+}
+
+.wheel-focus {
+  fill: none;
+  stroke: var(--ring);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* Resting: the ring steps back so the map under it reads; the hole and crosshair stay */
+.wheel-ring__slices,
+.wheel-ring__content,
+.wheel-ring__slices-rim {
+  transition: opacity 200ms ease;
+}
+
+.wheel-ring--resting .wheel-ring__slices,
+.wheel-ring--resting .wheel-ring__content,
+.wheel-ring--resting .wheel-ring__slices-rim {
+  opacity: 0.32;
 }
 
 .wheel-rim {
