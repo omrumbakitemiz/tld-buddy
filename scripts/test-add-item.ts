@@ -6,6 +6,7 @@ import path from 'node:path'
 import {
   LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems,
 } from '../app/lib/addItem'
+import { parseFieldNote, placeFieldNote } from '../app/components/add/b/fieldNote'
 import type { Item } from '../shared/types/game'
 
 let passed = 0
@@ -120,4 +121,24 @@ test('planBatch puts a lone item exactly on an empty spot', () => {
   assert.deepEqual(ops, [{ kind: 'add', itemId: 'hacksaw', quantity: 1, note: undefined, x: 50, y: 60 }])
 })
 
+// Field note keeps its grammar and anchoring local to variant B.
+test('field note accepts compact hash notes and preserves quantity grammar', () => {
+  assert.deepEqual(parseFieldNote('12x mat#drawer'), { quantity: 12, query: 'mat', note: 'drawer' })
+  assert.deepEqual(parseFieldNote('hacksaw - car trunk'), { quantity: 1, query: 'hacksaw', note: 'car trunk' })
+})
+test('field note flips at the right edge and stays inside the map', () => {
+  const bounds = { left: 352, right: 1600, top: 48, bottom: 1000 }
+  assert.deepEqual(placeFieldNote({ x: 800, y: 400 }, bounds, 360, 440), { left: 824, top: 380 })
+  assert.deepEqual(placeFieldNote({ x: 1580, y: 980 }, bounds, 360, 440), { left: 1196, top: 548 })
+})
+test('incremental entries keep distinct positions on the shared ring', () => {
+  const existing: { id: string; itemId: string; x: number; y: number }[] = []
+  for (let i = 0; i < 9; i++) {
+    const [op] = planBatch({ x: 100, y: 100 }, [{ itemId: `item-${i}`, quantity: 1 }], existing)
+    assert.ok(op && op.kind === 'add')
+    if (op.kind !== 'add') return
+    for (const prev of existing) assert.ok(Math.hypot(prev.x - op.x, prev.y - op.y) > 5)
+    existing.push({ ...op, id: `marker-${i}` })
+  }
+})
 console.log(`\n${passed} add-item tests passed`)

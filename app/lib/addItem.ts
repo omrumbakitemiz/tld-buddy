@@ -274,7 +274,9 @@ export function planBatch(
   adds.forEach((e, i) => {
     const slot = here.length + i
     const single = total === 1
-    const angle = (2 * Math.PI * slot) / Math.max(total, 6) - Math.PI / 2
+    // A fixed angular step keeps incremental additions apart. Dividing by the
+    // growing total makes the seventh and later live entries converge on one point.
+    const angle = slot * Math.PI * (3 - Math.sqrt(5)) - Math.PI / 2
     ops.push({
       kind: 'add',
       itemId: e.itemId,
