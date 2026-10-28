@@ -12,7 +12,7 @@ let started = false
 
 async function loadJson<T>(url: string): Promise<T[]> {
   try {
-    const res = await fetch(url)
+    const res = await fetch(url, { cache: 'no-cache' })
     if (!res.ok) return []
     const data = await res.json()
     return Array.isArray(data) ? (data as T[]) : []

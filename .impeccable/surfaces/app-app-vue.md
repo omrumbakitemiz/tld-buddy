@@ -15,13 +15,13 @@ Audience/job: one player mid-session on a second desktop monitor (tablet/phone s
 
 THESIS: The map is the whole screen. The interface sits on it like the game's own HUD: bone-white uppercase labels on dusk-ink panels, colour used sparingly and only for state. It rejects the category default of a grey admin sidebar with a toolbar full of equal icon buttons.
 
-OWN-WORLD: Dusk-ink ground (deep blue-slate, painted-night hue 255), bone-white text, a single sunset-apricot accent for "loot still here", a pale aurora-mint check for "looted", rust-red for danger, ochre for warning. Panels carry a faint watercolour-paper grain. Labels are uppercase and tracked like the game's HUD; body text is a plain system sans. Corners are soft, borders are hairlines, there are no glows.
+OWN-WORLD: Dusk-ink ground (deep blue-slate, painted-night hue 255), bone-white text, a single sunset-apricot accent for "loot still here", a pale aurora-mint check for "looted", rust-red for danger, ochre for warning. Labels are uppercase and tracked like the game's HUD; body text is a plain system sans. Corners are soft, borders are hairlines, there are no glows.
 
 STORY: The player sees which loot on this map is still there and what's already taken, opens a spot in one click, ticks it off with one key, and searches anything (item, place, map) from anywhere.
 
 FIRST VIEWPORT: Full-bleed Leaflet map. Thin dusk-ink top bar: wordmark, map switcher (map name), run chip with difficulty colour, search field (/ or Ctrl-K), sync status, travel toggle, menu. A collapsible left panel (Loot / Places / Maps tabs, 360px) over the map edge. Bottom-centre: "Add loot" primary (A). Bottom-right: zoom/fit. A selected marker opens a compact action card over the map with Looted (L), Edit (E), Delete.
 
-FORM: Pinned art direction (TLD painterly HUD); not from a roll. seed: none (unavailable)
+FORM: Pinned art direction (TLD painterly HUD), so concept-seed was not rolled; the user's pin governs. seed: none (direction pinned by user, no roll)
 
 Signature move: the looted state is drawn as a watercolour "wash-out". A taken item's tile fades and desaturates into the map with a pale mint tick, while remaining loot keeps a crisp apricot ring. The map reads as a painting where what's left stands out.
 

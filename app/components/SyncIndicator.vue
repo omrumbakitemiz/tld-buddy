@@ -1,7 +1,7 @@
 <template>
   <span
-    class="flex h-9 items-center gap-1.5 rounded-md px-2 text-xs"
-    :class="tone"
+    class="h-9 items-center gap-1.5 rounded-md px-2 text-xs"
+    :class="[tone, syncStatus === 'saved' ? 'hidden sm:flex' : 'flex']"
     role="status"
     :title="detail"
   >

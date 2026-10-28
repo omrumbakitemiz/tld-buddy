@@ -12,7 +12,7 @@
     <div class="relative flex min-h-0 flex-1">
       <TravelModeView v-if="travelMode" class="flex-1" />
       <template v-else>
-        <SidePanel @fly-to="flyTo" @edit="(m) => (editingMarker = m)" />
+        <SidePanel @fly-to="flyTo" @edit="(m) => (editingMarker = m)" @add-loot="startAddLoot" />
 
         <!-- isolate creates a stacking context that contains Leaflet's internal z-indexes -->
         <main class="relative isolate min-w-0 flex-1">
@@ -143,6 +143,8 @@ function startAddLoot() {
   ui.selectMarker(null)
   ui.pinningPOIId.value = null
   ui.placingLoot.value = true
+  // On phones the sheet covers the map you need to tap
+  if (window.matchMedia('(max-width: 767px)').matches) ui.panelOpen.value = false
 }
 
 function onRequestAddMarker(position: { x: number; y: number }) {

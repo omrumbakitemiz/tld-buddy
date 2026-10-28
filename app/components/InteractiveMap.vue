@@ -136,12 +136,15 @@ const visibleMarkers = computed(() =>
   currentMapMarkers.value.filter((m) => !hideLooted.value || !m.lootedAt || m.id === selectedMarkerId.value),
 )
 
+// Lucide "package" glyph for items without an icon
+const PACKAGE_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/></svg>'
+
 function markerHtml(m: Marker, selected: boolean, label: string): string {
   const item = getItemById(m.itemId)
   const classes = ['tld-marker', m.lootedAt && 'tld-marker--looted', selected && 'tld-marker--selected'].filter(Boolean).join(' ')
   const body = item?.icon
     ? `<img src="${escapeAttr(item.icon)}" alt="" class="tld-marker__img" draggable="false" />`
-    : `<span>${escapeHtml((m.name || item?.name || '?').slice(0, 2))}</span>`
+    : `<span class="tld-marker__glyph">${PACKAGE_SVG}</span>`
   const qty = m.quantity > 1 ? `<span class="tld-marker__qty">${m.quantity}</span>` : ''
   const tick = '<span class="tld-marker__tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'
   return `<div class="${classes}"><span class="sr-only">${escapeHtml(label)}</span><span aria-hidden="true" class="contents">${body}${qty}${tick}</span></div>`

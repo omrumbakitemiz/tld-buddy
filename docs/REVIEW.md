@@ -80,7 +80,7 @@ Dockerfile / compose / deploy.sh are fine for the homelab. Minor notes:
 
 **10. Thumbnails (fixed).** `public/maps/thumbs/` holds 360px previews (~30 KB each, 1.2 MB total). Regenerate with `scripts/make-map-thumbs.sh`.
 
-**11. Caching (fixed).** `routeRules` now send `Cache-Control: public, max-age=604800, stale-while-revalidate` on `/maps/**` and `/items/**`, 1 hour on `/data/**`, and `no-store` on `/api/**`. Cloudflare can now cache the maps too. Verified with `curl -I`.
+**11. Caching (fixed).** `routeRules` now send `Cache-Control: public, max-age=604800, stale-while-revalidate` on `/maps/**` and `/items/**`, `no-cache` (ETag revalidation) on `/data/**`, and `no-store` on `/api/**`. Cloudflare can now cache the maps too. Verified with `curl -I`.
 
 **12. Big map images (open).** Each region is one 2 MB JPEG of about 4235×4650 px, decoded at full resolution. That is fine on desktop and heavy on older phones. A proper fix is a tile pyramid (e.g. `vips dzsave` → `L.tileLayer`) or a lower-resolution variant for small screens. Deferred: it needs a build-step decision.
 

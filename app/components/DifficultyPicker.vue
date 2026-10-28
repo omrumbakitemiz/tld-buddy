@@ -8,7 +8,7 @@
       :aria-checked="modelValue === d"
       :class="cn(
         'hud-label h-8 rounded-md border px-2.5 transition-colors',
-        modelValue === d ? difficultyClass(d) : 'border-border text-muted-foreground hover:text-foreground',
+        modelValue === d ? 'border-primary/60 bg-primary/15 text-foreground' : 'border-border text-muted-foreground hover:text-foreground',
       )"
       @click="emit('update:modelValue', d)"
     >
@@ -19,7 +19,6 @@
 
 <script setup lang="ts">
 import { DIFFICULTIES, type Difficulty } from '~/types'
-import { difficultyClass } from '~/lib/difficulty'
 import { cn } from '~/lib/utils'
 
 defineProps<{ modelValue: Difficulty | null }>()

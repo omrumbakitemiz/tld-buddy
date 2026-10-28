@@ -32,7 +32,8 @@ export default defineNuxtConfig({
     // Static game assets never change between deploys of the same file name
     '/maps/**': { headers: { 'cache-control': 'public, max-age=604800, stale-while-revalidate=86400' } },
     '/items/**': { headers: { 'cache-control': 'public, max-age=604800, stale-while-revalidate=86400' } },
-    '/data/**': { headers: { 'cache-control': 'public, max-age=3600, stale-while-revalidate=86400' } },
+    // Small JSON that changes with deploys: always revalidate (ETag), never serve stale
+    '/data/**': { headers: { 'cache-control': 'no-cache' } },
     '/api/**': { headers: { 'cache-control': 'no-store' } },
   },
 

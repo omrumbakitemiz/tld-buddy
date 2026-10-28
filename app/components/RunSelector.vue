@@ -36,7 +36,7 @@
               <span class="min-w-0 flex-1">
                 <span class="flex items-center gap-2">
                   <span class="truncate font-medium">{{ run.name }}</span>
-                  <span :class="cn('hud-label shrink-0 rounded border px-1.5 text-[10px]', difficultyClass(run.difficulty))">{{ run.difficulty }}</span>
+                  <DifficultyChip :difficulty="run.difficulty" />
                 </span>
                 <span class="tabular mt-0.5 block text-xs text-muted-foreground">
                   {{ stats(run.id).remaining }} to loot · {{ stats(run.id).looted }} looted · started {{ formatDate(run.createdAt) }}
@@ -88,7 +88,7 @@ import { Label } from '~/components/ui/label'
 import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import DifficultyPicker from '~/components/DifficultyPicker.vue'
 import { useGameData } from '~/composables/useGameData'
-import { difficultyClass } from '~/lib/difficulty'
+import DifficultyChip from '~/components/DifficultyChip.vue'
 import { cn } from '~/lib/utils'
 import type { Difficulty, Run } from '~/types'
 

@@ -40,9 +40,10 @@ The app sits next to the game on a second monitor, usually in a dark room. So it
 | Pale glacier blue | `--place` | `oklch(0.83 0.07 230)` | Places (POIs) |
 | HUD red = danger | `--destructive` | `oklch(0.64 0.17 27)` | Delete, errors |
 | HUD yellow = warning | `--warning` | `oklch(0.84 0.13 85)` | Offline, no run selected |
-| Water-colour paper | `--grain` | SVG fractal noise at 5% alpha | Texture on rails and cards only |
 
-**Type.** A plain system sans for everything you read (Operate surface, no web-font cost). The game's voice comes from `.hud-label`: uppercase, 650 weight, +0.08em tracking. It is used for the wordmark, tab names, section labels and POI labels. Numbers use `tabular-nums`.
+**Paper texture: dropped.** A faint noise grain was tried on the panels, but at a strength that doesn't hurt legibility it was invisible, so it was removed rather than kept as a token that does nothing. The painterly material comes from the maps themselves.
+
+**Type.** A plain system sans for everything you read (Operate surface, no web-font cost). Open item: the finish review recommends a self-hosted condensed HUD face for `.hud-label` and POI plates; not done yet. The game's voice comes from `.hud-label`: uppercase, 650 weight, +0.08em tracking. It is used for the wordmark, tab names, section labels and POI labels. Numbers use `tabular-nums`.
 
 **Signature move: the wash-out.** Remaining loot is a crisp dark-ink tile with an apricot ring and a quantity badge. When you mark it looted, it doesn't disappear: the tile desaturates and fades into the painted map (`grayscale + opacity .62`), the border turns dashed, and a pale mint tick appears. Looted items stay readable as history without competing with what's left. `H` hides them completely.
 
@@ -50,6 +51,6 @@ The app sits next to the game on a second monitor, usually in a dark room. So it
 
 **Contrast** (WCAG, computed from the OKLCH values): bone on dusk is 15.3:1, and muted text is 8.4:1 on the ground and 7.6:1 on cards. Apricot on the rail is 10.6:1, dark text on apricot buttons 10.1:1, and mint on the rail 12.0:1. Rust-red on the rail is 5.2:1.
 
-**Difficulty colours** follow the same pastel set: pilgrim (mint), voyageur (glacier), stalker (ochre), interloper (rust), misery (lavender). They appear as tinted chips (`app/lib/difficulty.ts`).
+**Difficulty** is shown as a neutral bone chip with 1–5 pips (pilgrim → misery), not colour. Colour stays reserved for loot state, places and danger/warning, as in the game's HUD (`app/components/DifficultyChip.vue`).
 
 **Motion.** 150–250 ms state transitions only: marker scale on hover and select, the looted wash, panel and dialog fades. Everything respects `prefers-reduced-motion`.

@@ -41,7 +41,7 @@
     >
       <template v-if="currentRun">
         <span class="hidden max-w-[10rem] truncate sm:inline">{{ currentRun.name }}</span>
-        <span :class="cn('hud-label rounded border px-1.5 text-[10px]', difficultyClass(currentRun.difficulty))">{{ currentRun.difficulty }}</span>
+        <DifficultyChip :difficulty="currentRun.difficulty" />
       </template>
       <span v-else class="text-warning">Choose a run</span>
     </button>
@@ -66,7 +66,7 @@
     <Button
       size="icon"
       :variant="travelMode ? 'secondary' : 'ghost'"
-      class="size-9"
+      class="hidden size-9 sm:inline-flex"
       :aria-pressed="travelMode"
       :aria-label="travelMode ? 'Leave travel mode' : 'Travel mode: two maps side by side'"
       :title="travelMode ? 'Leave travel mode (T)' : 'Travel mode (T)'"
@@ -87,6 +87,9 @@
           :side-offset="6"
           class="surface-card z-[1000] min-w-56 rounded-lg border border-border p-1 text-sm shadow-xl data-[state=open]:animate-in data-[state=open]:fade-in-0"
         >
+          <DropdownMenuItem class="menu-item sm:hidden" @select="toggleTravelMode">
+            <CompassIcon class="size-4" /> {{ travelMode ? 'Leave travel mode' : 'Travel mode' }} <kbd class="ml-auto">T</kbd>
+          </DropdownMenuItem>
           <DropdownMenuItem class="menu-item" @select="showRuns = true">
             <SwordsIcon class="size-4" /> Runs <kbd class="ml-auto">R</kbd>
           </DropdownMenuItem>
@@ -122,8 +125,7 @@ import { Button } from '~/components/ui/button'
 import SyncIndicator from '~/components/SyncIndicator.vue'
 import { useGameData } from '~/composables/useGameData'
 import { useUiState } from '~/composables/useUiState'
-import { difficultyClass } from '~/lib/difficulty'
-import { cn } from '~/lib/utils'
+import DifficultyChip from '~/components/DifficultyChip.vue'
 
 const emit = defineEmits<{ logout: [] }>()
 
