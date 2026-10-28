@@ -27,6 +27,17 @@ interface BatchRecord {
 /** Undo stack for this tab (not synced: undo is about what *you* just did here). */
 const batches = ref<BatchRecord[]>([])
 const lastItemId = useLocalStorage<string | null>('tld-buddy-add-last-item', null)
+/** Markers this tab created, oldest first, so "Again" can fall back when one is taken back. */
+const recentAdds: { markerId: string; itemId: string }[] = []
+
+/** Forget removed markers; if "Again" pointed at a taken-back item, fall back to the previous add. */
+function forgetAdds(markerIds: string[]) {
+  if (!markerIds.length) return
+  const gone = new Set(markerIds)
+  const removedItems = new Set(recentAdds.filter((r) => gone.has(r.markerId)).map((r) => r.itemId))
+  for (let i = recentAdds.length - 1; i >= 0; i--) if (gone.has(recentAdds[i]!.markerId)) recentAdds.splice(i, 1)
+  if (lastItemId.value && removedItems.has(lastItemId.value)) lastItemId.value = recentAdds.at(-1)?.itemId ?? null
+}
 
 export function useAddItem() {
   const game = useGameData()
@@ -123,6 +134,8 @@ export function useAddItem() {
           note: op.note,
         })
         batch.added.push(m.id)
+        recentAdds.push({ markerId: m.id, itemId: m.itemId })
+        if (recentAdds.length > 200) recentAdds.shift()
         touched.push(m)
       }
     }
@@ -142,6 +155,7 @@ export function useAddItem() {
       if (m) game.updateMarker(m.id, { quantity: Math.max(1, m.quantity - s.add) })
     }
     for (const id of batch.added) game.deleteMarker(id)
+    forgetAdds(batch.added)
     return batch.added.length + batch.stacked.length
   }
 
@@ -164,6 +178,7 @@ export function useAddItem() {
       else {
         batch.added = batch.added.filter((id) => id !== markerId)
         game.deleteMarker(markerId)
+        forgetAdds([markerId])
       }
     } else {
       const own = batch.stacked.filter((s) => s.markerId === markerId)
