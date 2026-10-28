@@ -37,7 +37,11 @@ export interface AddVariantHandlers {
   request?: (req: AddRequest) => void
   /** Called on every plain map click first; return true to swallow it (stamp modes). */
   interceptClick?: (req: AddRequest, e: MouseEvent) => boolean
+  /** Called when a place plate on the map is clicked; return true to swallow it (otherwise the Places tab opens). */
+  interceptPOIClick?: (poiId: string, e: MouseEvent) => boolean
 }
+
+export interface MapMargin { top?: number; right?: number; bottom?: number; left?: number }
 
 /** Projection helpers published by the main map once it exists. */
 export interface MapView {
@@ -47,8 +51,8 @@ export interface MapView {
   fromClient: (client: { x: number; y: number }) => MapPos | null
   /** The map's DOM element (for bounds, focus and drop targets) */
   container: HTMLElement
-  /** Pan so a position is visible, keeping `margin` px clear */
-  reveal: (pos: MapPos, margin?: number) => void
+  /** Pan so a position is visible, keeping `margin` px clear (one number, or per side when a docked panel covers one) */
+  reveal: (pos: MapPos, margin?: number | MapMargin) => void
 }
 
 const stored = useLocalStorage<AddVariant>('tld-buddy-add-ui', 'legacy')

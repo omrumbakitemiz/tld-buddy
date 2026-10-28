@@ -4,8 +4,9 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import {
-  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planBatch, rankItems,
+  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, nearestSpot, parseEntry, planAdjust, planBatch, rankItems,
 } from '../app/lib/addItem'
+import { moveCursor, pushDigit } from '../app/components/add/c/rummage'
 import type { Item } from '../shared/types/game'
 
 let passed = 0
@@ -118,6 +119,56 @@ test('planBatch stacks the same item at a spot and rings new ones', () => {
 test('planBatch puts a lone item exactly on an empty spot', () => {
   const ops = planBatch({ x: 50, y: 60 }, [{ itemId: 'hacksaw', quantity: 1 }], [])
   assert.deepEqual(ops, [{ kind: 'add', itemId: 'hacksaw', quantity: 1, note: undefined, x: 50, y: 60 }])
+})
+
+test('planAdjust records extra units so undo can take them back', () => {
+  const ledger = { added: [] as string[], stacked: [] as { markerId: string; add: number }[] }
+  const r = planAdjust(ledger, { id: 'm1', quantity: 3 }, 4)
+  assert.deepEqual(r, { applied: 4, quantity: 7, remove: false })
+  assert.deepEqual(ledger.stacked, [{ markerId: 'm1', add: 4 }])
+  // a marker the batch created needs no record: undo deletes it
+  const made = { added: ['m2'], stacked: [] as { markerId: string; add: number }[] }
+  planAdjust(made, { id: 'm2', quantity: 1 }, 5)
+  assert.deepEqual(made.stacked, [])
+})
+
+test('planAdjust only takes back what the batch added', () => {
+  const ledger = { added: [] as string[], stacked: [{ markerId: 'm1', add: 2 }] }
+  // 3 were there before, the batch added 2: can remove 2 but not the original 3
+  assert.deepEqual(planAdjust(ledger, { id: 'm1', quantity: 5 }, -9), { applied: -2, quantity: 3, remove: false })
+  assert.deepEqual(ledger.stacked, [])
+  assert.deepEqual(planAdjust(ledger, { id: 'm1', quantity: 3 }, -1), { applied: 0, quantity: 3, remove: false })
+})
+
+test('planAdjust deletes a marker the batch created once it reaches zero', () => {
+  const ledger = { added: ['m2', 'm3'], stacked: [{ markerId: 'm2', add: 1 }] }
+  assert.deepEqual(planAdjust(ledger, { id: 'm2', quantity: 2 }, -1), { applied: -1, quantity: 1, remove: false })
+  assert.deepEqual(planAdjust(ledger, { id: 'm2', quantity: 1 }, -1), { applied: -1, quantity: 0, remove: true })
+  assert.deepEqual(ledger.added, ['m3'])
+  assert.deepEqual(ledger.stacked, [])
+})
+
+test('rummage digits build one number inside the window and restart after a pause', () => {
+  let r = pushDigit('', 0, 10_000, '1')
+  assert.deepEqual(r, { buffer: '1', value: 1 })
+  r = pushDigit(r.buffer, 10_000, 10_400, '2')
+  assert.equal(r.value, 12)
+  r = pushDigit(r.buffer, 10_400, 12_000, '5')
+  assert.equal(r.value, 5, 'a pause starts over')
+  assert.equal(pushDigit('', 0, 1, '0').value, 0, 'zeros alone are nothing')
+  assert.equal(pushDigit('0', 1, 2, '7').value, 7)
+  assert.equal(pushDigit('999', 5, 6, '1').value, 999, 'capped at 999')
+})
+
+test('rummage cursor moves over the tile grid and stops at the edges', () => {
+  assert.equal(moveCursor(null, 'ArrowDown', 5, 20), 0)
+  assert.equal(moveCursor(0, 'ArrowDown', 5, 20), 5)
+  assert.equal(moveCursor(4, 'ArrowRight', 5, 20), 4, 'no wrap to the next row')
+  assert.equal(moveCursor(5, 'ArrowLeft', 5, 20), 5)
+  assert.equal(moveCursor(2, 'ArrowUp', 5, 20), 2)
+  assert.equal(moveCursor(17, 'ArrowDown', 5, 20), 17, 'no tile below')
+  assert.equal(moveCursor(18, 'ArrowRight', 5, 19), 18, 'last tile')
+  assert.equal(moveCursor(3, 'ArrowDown', 5, 0), null)
 })
 
 console.log(`\n${passed} add-item tests passed`)

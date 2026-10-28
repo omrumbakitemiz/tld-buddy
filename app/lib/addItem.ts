@@ -286,3 +286,56 @@ export function planBatch(
   })
   return ops
 }
+
+// ── Adjusting an open batch ─────────────────────────────────────────────────
+
+/** The part of a batch record that `planAdjust` reads and updates. */
+export interface BatchLedger {
+  added: string[]
+  stacked: { markerId: string; add: number }[]
+}
+
+export interface AdjustPlan {
+  /** Units actually applied (negative = removed), after clamping */
+  applied: number
+  /** The marker's quantity afterwards */
+  quantity: number
+  /** The marker was created by this batch and is now empty: delete it */
+  remove: boolean
+}
+
+/**
+ * Change a marker's quantity from inside a batch, so Undo still reverses exactly what the batch did.
+ * Adding records the units; removing only takes back units this batch put there (a marker the batch
+ * created can go to zero and is deleted; a marker that was already there keeps what it had).
+ * Mutates `ledger`.
+ */
+export function planAdjust(ledger: BatchLedger, marker: Pick<Marker, 'id' | 'quantity'>, delta: number): AdjustPlan {
+  const made = ledger.added.includes(marker.id)
+  if (delta >= 0) {
+    if (delta > 0 && !made) ledger.stacked.push({ markerId: marker.id, add: delta })
+    return { applied: delta, quantity: marker.quantity + delta, remove: false }
+  }
+  const want = -delta
+  if (made) {
+    const take = Math.min(want, marker.quantity)
+    const quantity = marker.quantity - take
+    if (quantity <= 0) {
+      ledger.added = ledger.added.filter((id) => id !== marker.id)
+      ledger.stacked = ledger.stacked.filter((s) => s.markerId !== marker.id)
+      return { applied: -take, quantity: 0, remove: true }
+    }
+    return { applied: -take, quantity, remove: false }
+  }
+  const mine = ledger.stacked.filter((s) => s.markerId === marker.id)
+  const contribution = mine.reduce((a, s) => a + s.add, 0)
+  const take = Math.max(0, Math.min(want, contribution, marker.quantity - 1))
+  let left = take
+  for (let i = mine.length - 1; i >= 0 && left > 0; i--) {
+    const cut = Math.min(mine[i]!.add, left)
+    mine[i]!.add -= cut
+    left -= cut
+  }
+  ledger.stacked = ledger.stacked.filter((s) => s.add > 0)
+  return { applied: take ? -take : 0, quantity: marker.quantity - take, remove: false }
+}

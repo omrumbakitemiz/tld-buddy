@@ -166,10 +166,11 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
       return { x: ll.lng, y: ll.lat }
     },
     reveal: (pos, margin = 120) => {
+      const m = typeof margin === 'number' ? { top: margin, right: margin, bottom: margin, left: margin } : { top: 120, right: 120, bottom: 120, left: 120, ...margin }
       const pt = map.latLngToContainerPoint([pos.y, pos.x])
       const size = map.getSize()
-      const dx = pt.x < margin ? pt.x - margin : pt.x > size.x - margin ? pt.x - (size.x - margin) : 0
-      const dy = pt.y < margin ? pt.y - margin : pt.y > size.y - margin ? pt.y - (size.y - margin) : 0
+      const dx = pt.x < m.left ? pt.x - m.left : pt.x > size.x - m.right ? pt.x - (size.x - m.right) : 0
+      const dy = pt.y < m.top ? pt.y - m.top : pt.y > size.y - m.bottom ? pt.y - (size.y - m.bottom) : 0
       if (dx || dy) map.panBy([dx, dy], { animate: !reducedMotion() })
     },
   }
@@ -320,6 +321,7 @@ function renderPOIs() {
     })
     layer.on('click', (e) => {
       L.DomEvent.stopPropagation(e)
+      if (addUi.handlers()?.interceptPOIClick?.(pin.poiId, e.originalEvent)) return
       ui.selectPOI(pin.poiId)
     })
     layer.addTo(poiLayer)

@@ -3,7 +3,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { createId } from '#shared/utils/appData'
 import type { Item, Marker } from '~/types'
 import {
-  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, markersAtSpot, nearestSpot, planBatch, rankItems, topByFrecency,
+  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, markersAtSpot, nearestSpot, planAdjust, planBatch, rankItems, topByFrecency,
   type BatchEntry, type LootGroupId, type Spot,
 } from '~/lib/addItem'
 import { useGameData } from './useGameData'
@@ -124,6 +124,21 @@ export function useAddItem() {
     return { batchId: batch.id, markers: touched }
   }
 
+  /**
+   * Change one marker's quantity inside an open batch (see `planAdjust`): more is recorded so Undo
+   * takes it back, less only takes back what the batch added. Returns null when the batch is gone
+   * (undone) or the marker no longer exists.
+   */
+  function adjust(markerId: string, delta: number, opts: { batchId: string }) {
+    const batch = batches.value.find((b) => b.id === opts.batchId)
+    const m = game.markers.value.find((x) => x.id === markerId)
+    if (!batch || !m) return null
+    const plan = planAdjust(batch, m, delta)
+    if (plan.remove) game.deleteMarker(m.id)
+    else if (plan.applied) game.updateMarker(m.id, { quantity: plan.quantity })
+    return { applied: plan.applied, marker: plan.remove ? null : m }
+  }
+
   /** Undo one batch (default: the latest). Returns how many markers it touched. */
   function undo(batchId?: string): number {
     const list = batches.value
@@ -152,6 +167,7 @@ export function useAddItem() {
     resolveSpot,
     markersAt,
     addAt,
+    adjust,
     undo,
     canUndo,
     foldText,
