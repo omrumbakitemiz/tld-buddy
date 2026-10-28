@@ -45,6 +45,20 @@ About once a second, the mod posts the player's scene and position to `POST <Ser
    Token = "<same value as MOD_TOKEN>"
    ```
 
+Optional settings in the same section:
+
+- `MarkKey = "F4"`: F1–F12, a letter or a digit.
+- `RunInBackground = true`: keep the game running while TLD Buddy has focus.
+
+### Mark here
+
+Press the mark key in game (default F4) while aiming at an item. A marker for it appears in the current run at your position, and the game shows "TLD Buddy: marked Hatchet".
+
+- Items are matched to the app's item list by display name, then by prefab name (`GEAR_Hatchet`).
+- If you aim at nothing, or at something the app doesn't know, you get an "Unsorted loot" marker. Its note records what the game called it.
+- Indoors, the marker goes on the door you came in by, with an "Inside Camp Office" note.
+- The server holds marks until a TLD Buddy tab picks them up, so marks made with no tab open still arrive.
+
 The position is kept in server memory only, never in the saved data. Requests run off the game thread, at most one at a time, with a 3 s timeout. If the server is unreachable, the mod skips updates and logs a warning at most once a minute.
 
 ## Landmarks and map calibration
