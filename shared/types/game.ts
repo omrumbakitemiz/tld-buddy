@@ -54,6 +54,14 @@ export interface MapConnection {
   label?: string
 }
 
+/** Game scene name (`GameManager.m_ActiveScene`) to app map id, used by the game mod bridge. */
+export interface GameScene {
+  scene: string // e.g. "LakeRegion"
+  mapId: string // e.g. "mystery-lake"
+  /** Seen in the mod's log while playing. Unverified entries come from the game's asset catalog. */
+  verified?: boolean
+}
+
 // ── User data (persisted in Redis under `app-data`) ─────────────────────────
 
 /** An item spotted at a map position, scoped to one run. */
