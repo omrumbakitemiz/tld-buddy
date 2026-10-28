@@ -38,6 +38,12 @@ test('every curated group and likely-item id exists in the catalogue', () => {
   }
 })
 
+test('every S1 farmhouse item is in the first 8 of its loot group', () => {
+  for (const id of ['wood-matches', 'pinnacle-peaches', 'rifle-ammunition', 'hatchet', 'sewing-kit', 'wool-toque', 'cloth', 'fir-firewood', 'antiseptic', 'flare', 'bandage', 'beef-jerky', 'hacksaw']) {
+    assert.ok(LOOT_GROUPS.some((g) => (g.items as readonly string[]).indexOf(id) >= 0 && (g.items as readonly string[]).indexOf(id) < 8), id)
+  }
+})
+
 test('rankItems puts whole-name prefix first and shorter names before longer', () => {
   const r = names(rankItems(items, 'rifle', { limit: 5 }))
   assert.equal(r[0], 'Rifle Ammunition')
