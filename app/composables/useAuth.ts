@@ -22,7 +22,14 @@ export function useAuth() {
       if (data.authenticated === true) await signedIn()
       else state.value = 'signed-out'
     } catch {
-      state.value = 'signed-out'
+      // Network down at startup: with a cached copy, work offline instead of showing the login.
+      // The store keeps retrying the load; a real 401 later still returns to the login screen.
+      if (store.hasLocalData()) {
+        state.value = 'signed-in'
+        await store.pull()
+      } else {
+        state.value = 'signed-out'
+      }
     }
   }
 

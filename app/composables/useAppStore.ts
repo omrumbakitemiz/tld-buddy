@@ -22,6 +22,8 @@ const CACHE_KEY = 'tld-buddy-v1' // AppData only — same key and shape as befor
 const META_KEY = 'tld-buddy-sync-v1' // { base, baseRev, dirty }
 const SAVE_DEBOUNCE_MS = 500
 const RETRY_DELAYS_MS = [2_000, 5_000, 15_000, 30_000]
+/** Back-off between merge-and-retry rounds when other devices keep saving first */
+const CONFLICT_DELAYS_MS = [0, 500, 2_000, 5_000, 10_000]
 const KEEPALIVE_LIMIT_BYTES = 60_000
 
 interface SyncMeta {
@@ -30,10 +32,17 @@ interface SyncMeta {
   dirty: boolean
 }
 
+/** A save the server refused for a reason retrying won't fix. Shown as a banner. */
+export interface SyncError {
+  message: string
+  action: 'reload' | 'retry'
+}
+
 const isClient = typeof window !== 'undefined'
 
 const appData = ref<AppData>(createDefaultAppData())
 const status = ref<SyncStatus>('idle')
+const syncError = ref<SyncError | null>(null)
 const lastSavedAt = ref<number | null>(null)
 const authExpired = ref(false)
 /** True only after a successful authenticated /api/data load — blocks API saves until then. */
@@ -44,12 +53,16 @@ let changeCounter = 0
 let saveTimer: ReturnType<typeof setTimeout> | null = null
 let retryTimer: ReturnType<typeof setTimeout> | null = null
 let retryAttempt = 0
+let conflictAttempt = 0
 let pullRetryTimer: ReturnType<typeof setTimeout> | null = null
 let pullAttempt = 0
+/** Bumped per GET; a response from an older GET than the latest one is ignored */
+let pullGeneration = 0
 let inFlight: Promise<void> | null = null
 let initialised = false
 
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v))
+const revNumber = (rev: string | null | undefined) => (rev && /^\d+$/.test(rev) ? Number(rev) : -1)
 
 // ── Local cache ─────────────────────────────────────────────────────────────
 
@@ -105,8 +118,10 @@ async function pull(): Promise<boolean> {
   if (!isClient) return false
   if (inFlight) await inFlight
   if (status.value !== 'saving') status.value = apiSynced.value ? status.value : 'loading'
+  const generation = ++pullGeneration
   try {
     const res = await fetch('/api/data', { cache: 'no-store' })
+    if (generation !== pullGeneration) return false // a newer load superseded this one
     if (res.status === 401) {
       authExpired.value = true
       apiSynced.value = false
@@ -121,6 +136,9 @@ async function pull(): Promise<boolean> {
     }
     const remote = normalizeAppData(await res.json())
     const rev = res.headers.get('X-Data-Rev')
+    if (generation !== pullGeneration) return false
+    // A save finished while this GET was on the wire: its answer is older than what we hold
+    if (apiSynced.value && revNumber(rev) < revNumber(meta.baseRev)) return true
     adoptRemote(remote, rev)
     apiSynced.value = true
     pullAttempt = 0
@@ -162,23 +180,14 @@ function adoptRemote(remote: AppData, rev: string | null) {
 }
 
 async function push(keepalive = false): Promise<void> {
-  if (!apiSynced.value || !meta.dirty) return
+  if (!apiSynced.value || !meta.dirty || syncError.value?.action === 'reload') return
   const snapshot = clone(appData.value)
   const version = changeCounter
-  const body = JSON.stringify(snapshot)
   status.value = 'saving'
 
   let res: Response
   try {
-    res = await fetch('/api/data', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(meta.baseRev ? { 'X-Base-Rev': meta.baseRev } : {}),
-      },
-      body,
-      keepalive: keepalive && body.length < KEEPALIVE_LIMIT_BYTES,
-    })
+    res = await sendSnapshot(snapshot, keepalive)
   } catch {
     status.value = 'offline'
     scheduleRetry()
@@ -198,18 +207,32 @@ async function push(keepalive = false): Promise<void> {
     adoptRemote(remote, payload?.rev ?? res.headers.get('X-Data-Rev'))
     meta.dirty = true
     writeLocal()
-    scheduleSave(0)
+    if (conflictAttempt >= CONFLICT_DELAYS_MS.length) {
+      fail({ message: 'Another device keeps saving at the same time. Your changes are kept on this device.', action: 'retry' })
+      return
+    }
+    scheduleSave(CONFLICT_DELAYS_MS[conflictAttempt++])
+    return
+  }
+
+  if (res.status >= 500 || res.status === 408 || res.status === 429) {
+    status.value = 'offline'
+    scheduleRetry()
     return
   }
 
   if (!res.ok) {
-    status.value = res.status >= 500 ? 'offline' : 'error'
-    scheduleRetry()
+    // Permanent refusal: retrying the same document won't help
+    const detail = await res.json().catch(() => null) as { message?: string } | null
+    fail(res.status === 428
+      ? { message: 'TLD Buddy was updated. Reload the page to keep saving; your changes are kept on this device.', action: 'reload' }
+      : { message: `The server refused to save (${res.status}${detail?.message ? `: ${detail.message}` : ''}). Your changes are kept on this device.`, action: 'retry' })
     return
   }
 
   const result = await res.json().catch(() => ({})) as { rev?: string }
   retryAttempt = 0
+  conflictAttempt = 0
   meta.base = snapshot
   meta.baseRev = result.rev ?? res.headers.get('X-Data-Rev') ?? meta.baseRev
   meta.dirty = changeCounter !== version
@@ -217,6 +240,21 @@ async function push(keepalive = false): Promise<void> {
   lastSavedAt.value = Date.now()
   if (meta.dirty) scheduleSave(SAVE_DEBOUNCE_MS)
   else status.value = 'saved'
+}
+
+function sendSnapshot(snapshot: AppData, keepalive: boolean): Promise<Response> {
+  const body = JSON.stringify(snapshot)
+  return fetch('/api/data', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-Base-Rev': meta.baseRev ?? '0' },
+    body,
+    keepalive: keepalive && body.length < KEEPALIVE_LIMIT_BYTES,
+  })
+}
+
+function fail(error: SyncError) {
+  syncError.value = error
+  status.value = 'error'
 }
 
 function runPush(keepalive = false) {
@@ -247,13 +285,24 @@ function scheduleRetry() {
   }, delay)
 }
 
-function flush(keepalive = false) {
-  if (!meta.dirty || !apiSynced.value) return
+/**
+ * Send pending edits now. On page close (`unloading`), a request already on the wire
+ * may die with the page, so the latest snapshot also goes out as a keepalive request.
+ * If that one loses a race with the in-flight save, the edits are still in localStorage
+ * with their base revision and get merged on the next load.
+ */
+function flush(unloading = false) {
+  if (!meta.dirty || !apiSynced.value || syncError.value) return
   if (saveTimer) {
     clearTimeout(saveTimer)
     saveTimer = null
   }
-  runPush(keepalive)
+  if (unloading && inFlight) {
+    // Fire-and-forget: the tracked save below may never get to run
+    sendSnapshot(clone(appData.value), true).catch(() => {})
+    return
+  }
+  runPush(unloading)
 }
 
 // ── Public API ──────────────────────────────────────────────────────────────
@@ -263,7 +312,26 @@ function commit() {
   changeCounter++
   meta.dirty = true
   writeLocal()
-  if (apiSynced.value) scheduleSave()
+  if (apiSynced.value && !syncError.value) scheduleSave()
+}
+
+/** User pressed Retry on the error banner. */
+function retry() {
+  syncError.value = null
+  retryAttempt = 0
+  conflictAttempt = 0
+  if (!apiSynced.value) void pull()
+  else if (meta.dirty) scheduleSave(0)
+  else status.value = 'saved'
+}
+
+/** Whether this device has a cached copy to work from while the server is unreachable. */
+function hasLocalData() {
+  try {
+    return !!localStorage.getItem(CACHE_KEY)
+  } catch {
+    return false
+  }
 }
 
 /** Forget the session-bound sync state (logout). Local edits stay cached for the next login. */
@@ -281,7 +349,10 @@ export function useAppStore() {
     commit,
     pull,
     flush,
+    retry,
+    hasLocalData,
     resetSession,
+    syncError: readonly(syncError),
     authExpired,
     apiSynced: readonly(apiSynced),
     syncStatus: readonly(status),
