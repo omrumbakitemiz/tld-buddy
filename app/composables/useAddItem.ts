@@ -3,9 +3,10 @@ import { useLocalStorage } from '@vueuse/core'
 import { createId } from '#shared/utils/appData'
 import type { Item, Marker } from '~/types'
 import {
-  LOOT_GROUPS, computeFrecency, foldText, likelyItemIdsForPOI, markersAtSpot, nearestSpot, planBatch, rankItems, topByFrecency,
+  LOOT_GROUPS, SPOT_RADIUS, computeFrecency, foldText, likelyItemIdsForPOI, markersAtSpot, nearestSpot, planBatch, rankItems, topByFrecency,
   type BatchEntry, type LootGroupId, type Spot,
 } from '~/lib/addItem'
+import { useAddUi } from './useAddUi'
 import { useGameData } from './useGameData'
 import { useStaticData } from './useStaticData'
 
@@ -30,6 +31,7 @@ const lastItemId = useLocalStorage<string | null>('tld-buddy-add-last-item', nul
 export function useAddItem() {
   const game = useGameData()
   const { itemsById } = useStaticData()
+  const addUi = useAddUi()
 
   const frecency = computed(() => computeFrecency(game.currentRunMarkers.value))
 
@@ -70,9 +72,13 @@ export function useAddItem() {
 
   const lastItem = computed(() => (lastItemId.value ? itemsById.value.get(lastItemId.value) ?? null : null))
 
-  /** Snap a map position to a pinned place or an existing pile nearby. */
+  /**
+   * Snap a map position to a pinned place or an existing pile nearby: within 40 map px or
+   * 28 screen px, whichever is larger, so a click just beside a tile joins its pile at any zoom.
+   */
   function resolveSpot(pos: { x: number; y: number }): Spot & { snapped: 'poi' | 'marker' | null } {
-    return nearestSpot(pos, game.currentMapPOIPins.value, game.currentMapMarkers.value)
+    const radius = Math.max(SPOT_RADIUS, 28 * (addUi.mapView.value?.scale() ?? 1))
+    return nearestSpot(pos, game.currentMapPOIPins.value, game.currentMapMarkers.value, radius)
   }
 
   /** Markers of the current run and map at a spot. */
@@ -145,6 +151,7 @@ export function useAddItem() {
    * created, `quantity` is its new quantity and 0 deletes it; for a marker it stacked
    * onto, it is the new amount added on top and 0 takes the stack back. A batch left
    * empty is dropped. Returns false when the batch didn't touch that marker.
+   * (From the variant A builder.)
    */
   function amend(batchId: string, markerId: string, quantity: number): boolean {
     const idx = batches.value.findIndex((b) => b.id === batchId)
