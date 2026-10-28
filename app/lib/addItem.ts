@@ -270,18 +270,19 @@ export function planBatch(
     else adds.push(e)
   }
 
-  const total = here.length + adds.length
   adds.forEach((e, i) => {
     const slot = here.length + i
-    const single = total === 1
-    const angle = (2 * Math.PI * slot) / Math.max(total, 6) - Math.PI / 2
+    const single = slot === 0
+    const ring = slot <= 6 ? 1 : 2
+    const ringSlot = slot <= 6 ? slot - 1 : slot - 7
+    const angle = (2 * Math.PI * ringSlot) / (ring * 6) - Math.PI / 2
     ops.push({
       kind: 'add',
       itemId: e.itemId,
       quantity: e.quantity,
       note: e.note || undefined,
-      x: single ? spot.x : spot.x + Math.cos(angle) * SPREAD_RADIUS,
-      y: single ? spot.y : spot.y + Math.sin(angle) * SPREAD_RADIUS,
+      x: single ? spot.x : spot.x + Math.cos(angle) * SPREAD_RADIUS * ring,
+      y: single ? spot.y : spot.y + Math.sin(angle) * SPREAD_RADIUS * ring,
     })
   })
   return ops

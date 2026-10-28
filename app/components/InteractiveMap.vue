@@ -276,7 +276,7 @@ function renderMarkers() {
     }
     layer.on('click', (e) => {
       L.DomEvent.stopPropagation(e)
-      choose()
+      if (!variantTileClick(e)) choose()
     })
     layer.on('keypress', (e: L.LeafletKeyboardEvent) => {
       if (e.originalEvent.key === 'Enter') choose()
@@ -289,6 +289,15 @@ function renderMarkers() {
     markerLayer.removeLayer(view.layer)
     markerViews.delete(id)
   }
+}
+
+// Give registered variants the same map-click seam on marker and place tiles.
+function variantTileClick(e: L.LeafletMouseEvent): boolean {
+  const handlers = addUi.handlers()
+  if (!handlers) return false
+  const req: AddRequest = { pos: { x: e.latlng.lng, y: e.latlng.lat }, client: { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, source: e.originalEvent.shiftKey ? 'shift-click' : 'placing' }
+  if (e.originalEvent.shiftKey && handlers.request) { handlers.request(req); return true }
+  return handlers.interceptClick?.(req, e.originalEvent) ?? false
 }
 
 // ── POIs ────────────────────────────────────────────────────────────────────
@@ -320,7 +329,7 @@ function renderPOIs() {
     })
     layer.on('click', (e) => {
       L.DomEvent.stopPropagation(e)
-      ui.selectPOI(pin.poiId)
+      if (!variantTileClick(e)) ui.selectPOI(pin.poiId)
     })
     layer.addTo(poiLayer)
     poiViews.set(pin.poiId, { key, layer })

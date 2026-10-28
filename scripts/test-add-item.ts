@@ -120,4 +120,15 @@ test('planBatch puts a lone item exactly on an empty spot', () => {
   assert.deepEqual(ops, [{ kind: 'add', itemId: 'hacksaw', quantity: 1, note: undefined, x: 50, y: 60 }])
 })
 
+test('successive additions use distinct stable slots for a nine-item pile', () => {
+  const existing: Array<{ id: string; itemId: string; x: number; y: number; lootedAt: null }> = []
+  for (let i = 0; i < 9; i++) {
+    const op = planBatch({ x: 100, y: 100 }, [{ itemId: `item-${i}`, quantity: 1 }], existing)[0]!
+    assert.equal(op.kind, 'add')
+    if (op.kind === 'add') existing.push({ id: `m${i}`, itemId: op.itemId, x: op.x, y: op.y, lootedAt: null })
+  }
+  assert.equal(new Set(existing.map(m => `${m.x},${m.y}`)).size, 9)
+  assert.ok(existing.every(m => Math.hypot(m.x - 100, m.y - 100) <= 24.01))
+})
+
 console.log(`\n${passed} add-item tests passed`)
