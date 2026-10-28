@@ -3,31 +3,42 @@
     <section
       v-if="r.session.value"
       ref="panelRef"
-      class="surface-rail pointer-events-auto absolute bottom-3 right-[3.75rem] top-3 z-[570] flex w-[22.5rem] flex-col overflow-hidden rounded-xl border border-border shadow-[0_8px_28px_oklch(0.1_0.02_258/0.6)]"
+      :class="cn('surface-rail pointer-events-auto absolute bottom-3 right-[3.75rem] top-3 z-[570] flex flex-col overflow-hidden rounded-xl border border-border shadow-[0_8px_28px_oklch(0.1_0.02_258/0.6)] transition-[width] duration-200', r.compact.value ? 'w-[16.5rem]' : 'w-[21rem]')"
       aria-label="Log loot at this spot"
       data-rummage="session"
-      @mousedown="keepFocus"
     >
       <header class="flex items-start gap-2 px-3.5 pb-2.5 pt-3">
         <div class="min-w-0 flex-1">
           <h2 class="rummage-plate" :title="r.session.value.name">
-            <span :class="cn('size-[7px] shrink-0 rounded-full', r.session.value.poiId ? 'bg-place' : 'border border-muted-foreground')" aria-hidden="true" />
+            <span :class="cn('size-[7px] shrink-0 rounded-full', r.session.value.spot.poiId ? 'bg-place' : 'border border-muted-foreground')" aria-hidden="true" />
             <span class="truncate">{{ r.session.value.name }}</span>
           </h2>
           <p class="tabular mt-1.5 truncate text-xs text-muted-foreground">
-            <template v-if="r.session.value.kind">{{ r.session.value.kind }} · </template>{{ summary }}
+            <template v-if="r.session.value.kind && !r.compact.value">{{ r.session.value.kind }} · </template>{{ summary }}
           </p>
         </div>
         <Button
-          v-if="r.session.value.poiId"
+          v-if="r.session.value.spot.poiId && !r.compact.value"
+          size="icon"
+          variant="ghost"
+          class="-mt-1 size-8 shrink-0 text-muted-foreground"
+          aria-label="Open this place in the Places tab"
+          title="Open in Places (stash, details)"
+          @click="(e: MouseEvent) => { ui.selectPOI(r.session.value!.spot.poiId ?? null); pointerFocus(e) }"
+        >
+          <ExternalLinkIcon class="size-4" />
+        </Button>
+        <Button
           size="icon"
           variant="ghost"
           class="-mr-1.5 -mt-1 size-8 shrink-0 text-muted-foreground"
-          aria-label="Open this place in the Places tab"
-          title="Open in Places (stash, details)"
-          @click="ui.selectPOI(r.session.value.poiId)"
+          :aria-label="r.compact.value ? 'Show the full panel' : 'Make the panel compact'"
+          :aria-pressed="r.compact.value"
+          :title="r.compact.value ? 'Full panel' : 'Compact panel (more map)'"
+          @click="(e: MouseEvent) => { r.compact.value = !r.compact.value; pointerFocus(e) }"
         >
-          <ExternalLinkIcon class="size-4" />
+          <ChevronsLeftIcon v-if="r.compact.value" class="size-4" />
+          <ChevronsRightIcon v-else class="size-4" />
         </Button>
       </header>
 
@@ -64,17 +75,22 @@
       </div>
 
       <!-- The item the keys act on: fixed height so nothing below it moves -->
-      <div class="mx-3 mt-2 flex h-11 items-center gap-2 rounded-lg bg-background/50 pl-2.5 pr-1" aria-live="polite">
+      <div class="mx-3 mt-2 flex h-12 items-center gap-2 rounded-lg bg-background/50 pl-2.5 pr-1" aria-live="polite">
         <template v-if="r.targetItem.value && !r.flash.value">
           <img v-if="r.targetItem.value.icon" :src="r.targetItem.value.icon" alt="" class="size-6 shrink-0 object-contain">
-          <span class="min-w-0 flex-1 truncate text-sm font-medium">{{ r.targetItem.value.name }}</span>
-          <button type="button" tabindex="-1" class="rummage-step" :aria-label="`One less ${r.targetItem.value.name}`" @click="act(() => r.dec(r.targetItem.value!))">
+          <span class="min-w-0 flex-1">
+            <span class="block truncate text-sm font-medium leading-tight">{{ r.targetItem.value.name }}</span>
+            <span :class="cn('block truncate text-[11px] leading-tight', armedHere ? 'text-primary' : 'text-muted-foreground')">
+              {{ armedHere ? 'type a number for how many' : 'at this spot' }}
+            </span>
+          </span>
+          <button type="button" tabindex="-1" class="rummage-step" :aria-label="`One less ${r.targetItem.value.name}`" @mousedown.prevent @click="act(() => r.dec(r.targetItem.value!))">
             <MinusIcon class="size-3.5" />
           </button>
-          <span :class="cn('tabular w-12 text-center text-base font-semibold', targetCount ? 'text-primary' : 'text-muted-foreground')">
+          <span :class="cn('tabular w-11 text-center text-base font-semibold', targetCount ? 'text-primary' : 'text-muted-foreground')">
             {{ targetCount ? `×${targetCount}` : 'none' }}
           </span>
-          <button type="button" tabindex="-1" class="rummage-step" :aria-label="`One more ${r.targetItem.value.name}`" @click="act(() => r.tick(r.targetItem.value!))">
+          <button type="button" tabindex="-1" class="rummage-step" :aria-label="`One more ${r.targetItem.value.name}`" @mousedown.prevent @click="act(() => r.tick(r.targetItem.value!))">
             <PlusIcon class="size-3.5" />
           </button>
         </template>
@@ -82,13 +98,29 @@
         <p v-else class="text-xs leading-snug text-muted-foreground">Tick what you found. Right after a tick, type a number for how many.</p>
       </div>
 
-      <div class="max-h-[56%] shrink-0 overflow-y-auto px-3 pb-3 pt-3" data-rummage="grid-scroll">
+      <!-- Right under the strip so Tab from the search line lands here: the note is for what you just ticked -->
+      <div class="px-3 pt-2">
+        <input
+          ref="noteRef"
+          v-model="note"
+          type="text"
+          :disabled="!r.noteMarker.value"
+          :placeholder="r.noteMarker.value ? `Note for ${r.noteMarker.value.name}, e.g. car trunk` : 'Tick an item to add a note to it'"
+          aria-label="Note for the item you just ticked"
+          class="rummage-input rummage-input--note"
+          @blur="saveNote"
+          @keydown.enter.prevent="commitNote"
+          @keydown.esc.stop.prevent="commitNote"
+        >
+      </div>
+
+      <div class="max-h-[52%] shrink-0 overflow-y-auto px-3 pb-3 pt-3" data-rummage="grid-scroll">
         <h3 class="hud-label mb-1.5 flex items-baseline justify-between text-muted-foreground">
           <span>{{ r.searching.value ? 'Matches' : 'Likely here' }}</span>
           <span v-if="r.searching.value && r.parsed.value.quantity > 1" class="tabular text-primary">adds ×{{ r.parsed.value.quantity }}</span>
           <span v-else-if="r.searching.value && r.parsed.value.note" class="max-w-[60%] truncate normal-case tracking-normal">note: {{ r.parsed.value.note }}</span>
         </h3>
-        <div v-if="r.view.value.length" id="rummage-grid" role="listbox" aria-label="Items" class="grid grid-cols-5 gap-x-1 gap-y-1.5">
+        <div v-if="r.view.value.length" id="rummage-grid" role="listbox" aria-label="Items" :class="cn('grid gap-x-1 gap-y-1.5', r.compact.value ? 'grid-cols-4' : 'grid-cols-5')">
           <RummageTile
             v-for="(item, i) in r.view.value"
             :id="`rummage-tile-${item.id}`"
@@ -98,7 +130,6 @@
             :looted="r.stateOf(item.id).looted"
             :active="r.cursor.value === i"
             :enter="r.searching.value && i === (r.cursor.value ?? 0)"
-            :pop="r.pop.value?.id === item.id ? r.pop.value.n : 0"
             @tick="act(() => r.tick(item))"
             @dec="act(() => r.dec(item))"
           />
@@ -128,7 +159,7 @@
               type="button"
               class="min-w-0 flex-1 truncate rounded text-left text-sm hover:text-primary"
               :title="m.note ? `${m.name}: ${m.note}` : `Show ${m.name} on the map`"
-              @click="ui.selectMarker(m.id)"
+              @click="(e: MouseEvent) => { ui.selectMarker(m.id); pointerFocus(e) }"
             >
               {{ m.name }}<span v-if="m.note" class="text-muted-foreground"> · {{ m.note }}</span>
             </button>
@@ -139,7 +170,7 @@
               :aria-pressed="!!m.lootedAt"
               :aria-label="m.lootedAt ? `${m.name} is looted. Mark as still here` : `Mark ${m.name} looted`"
               :title="m.lootedAt ? 'Looted: click if it is still there' : 'Mark looted'"
-              @click="toggleLooted(m.id)"
+              @click="(e: MouseEvent) => { toggleLooted(m.id); pointerFocus(e) }"
             >
               <CheckIcon class="size-3.5" :stroke-width="3" />
             </button>
@@ -148,46 +179,29 @@
         <p v-else class="py-1 text-xs text-muted-foreground">Nothing logged here yet.</p>
       </section>
 
-      <footer class="space-y-2 border-t border-border p-3">
-        <input
-          ref="noteRef"
-          v-model="note"
-          type="text"
-          :disabled="!r.noteMarker.value"
-          :placeholder="r.noteMarker.value ? `Note for ${r.noteMarker.value.name}, e.g. car trunk` : 'Tick an item to add a note to it'"
-          aria-label="Note for the item you just ticked"
-          class="rummage-input"
-          @blur="saveNote"
-          @keydown.enter.prevent="commitNote"
-          @keydown.esc.stop.prevent="commitNote"
-        >
-        <div class="flex items-center gap-2">
-          <p class="flex min-w-0 flex-1 flex-wrap gap-x-2.5 gap-y-1 text-[11px] text-muted-foreground">
-            <span><kbd class="rummage-kbd">↵</kbd> add</span>
-            <span><kbd class="rummage-kbd">←↑↓→</kbd> move</span>
-            <span><kbd class="rummage-kbd">0–9</kbd> how many</span>
-            <span><kbd class="rummage-kbd">−</kbd> less</span>
-            <span><kbd class="rummage-kbd">Ctrl Z</kbd> undo</span>
-          </p>
-          <Button size="sm" class="h-9 px-4" @click="act(() => r.close())">
-            Done <kbd class="ml-1 text-[10px] opacity-70">Esc</kbd>
-          </Button>
-        </div>
+      <footer class="flex items-center gap-2 border-t border-border p-3">
+        <p v-if="!r.compact.value" class="flex min-w-0 flex-1 flex-wrap gap-x-2.5 gap-y-1 text-[11px] text-muted-foreground">
+          <span><kbd class="rummage-kbd">↵</kbd> add</span>
+          <span><kbd class="rummage-kbd">0–9</kbd> how many</span>
+          <span><kbd class="rummage-kbd">−</kbd> less</span>
+          <span><kbd class="rummage-kbd">Ctrl Z</kbd> step back</span>
+          <span><kbd class="rummage-kbd">Right-click</kbd> move here</span>
+        </p>
+        <Button size="sm" :class="cn('h-9 px-4', r.compact.value && 'w-full')" @click="act(() => r.close())">
+          Done <kbd class="ml-1 text-[10px] opacity-70">Esc</kbd>
+        </Button>
       </footer>
     </section>
 
     <section
       v-else-if="r.picking.value"
-      class="surface-rail pointer-events-auto absolute right-[3.75rem] top-3 z-[570] w-[22.5rem] rounded-xl border border-border p-4 shadow-[0_8px_28px_oklch(0.1_0.02_258/0.6)]"
+      class="surface-rail pointer-events-auto absolute right-[3.75rem] top-3 z-[570] w-[21rem] rounded-xl border border-border p-4 shadow-[0_8px_28px_oklch(0.1_0.02_258/0.6)]"
       aria-label="Choose where to log loot"
       data-rummage="pick"
     >
       <p class="flex items-center gap-2 text-sm font-medium"><CrosshairIcon class="size-4 text-primary" /> Where did you search?</p>
-      <p class="mt-1 text-xs text-muted-foreground">Click a place plate or any spot on the map.</p>
+      <p class="mt-1 text-xs text-muted-foreground">Click any spot on the map, or right-click a place plate.</p>
       <div class="mt-3 flex flex-wrap gap-2">
-        <Button v-if="lastHere" size="sm" variant="outline" @click="r.openAt(lastHere.spot)">
-          Back to {{ lastName }}
-        </Button>
         <Button size="sm" variant="ghost" @click="r.close()">Cancel <kbd class="ml-1 text-[10px] text-muted-foreground">Esc</kbd></Button>
       </div>
     </section>
@@ -196,7 +210,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import { CheckIcon, CrosshairIcon, ExternalLinkIcon, MinusIcon, PackageIcon, PlusIcon, SearchIcon, XIcon } from '@lucide/vue'
+import { CheckIcon, ChevronsLeftIcon, ChevronsRightIcon, CrosshairIcon, ExternalLinkIcon, MinusIcon, PackageIcon, PlusIcon, SearchIcon, XIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useUiState } from '~/composables/useUiState'
@@ -207,7 +221,7 @@ import type { CursorKey } from './rummage'
 
 const r = useRummage()
 const ui = useUiState()
-const { getItemById, toggleLooted, currentMap, getPOIById } = useGameData()
+const { getItemById, toggleLooted } = useGameData()
 
 const panelRef = ref<HTMLElement | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -216,6 +230,7 @@ const note = ref('')
 /** The marker the note field is editing: the item you just ticked */
 const noteFor = ref<string | null>(null)
 
+const armedHere = computed(() => !!r.armed.value && r.armed.value.itemId === r.targetItem.value?.id)
 const targetCount = computed(() => (r.targetItem.value ? r.stateOf(r.targetItem.value.id).count : 0))
 const activeId = computed(() => {
   const item = r.cursor.value === null ? null : r.view.value[r.cursor.value]
@@ -228,9 +243,6 @@ const summary = computed(() => {
   const looted = rows.filter((m) => m.lootedAt).length
   return `${rows.length} logged here${looted ? `, ${looted} looted` : ''}`
 })
-
-const lastHere = computed(() => (r.lastSpot.value && r.lastSpot.value.mapId === currentMap.value?.id ? r.lastSpot.value : null))
-const lastName = computed(() => (lastHere.value?.spot.poiId ? getPOIById(lastHere.value.spot.poiId)?.name : undefined) ?? 'last spot')
 
 // The note field follows the item you just ticked
 watch(() => r.noteMarker.value?.id, () => {
@@ -271,16 +283,23 @@ function clearQuery() {
   focusSearch()
 }
 
-/** Clicking around the panel must not steal focus from the search line (typing keeps working) */
-function keepFocus(e: MouseEvent) {
-  if (!(e.target as HTMLElement).closest('input')) e.preventDefault()
+/** After a mouse click on a panel button the search line gets the keyboard back; keyboard activation (detail 0) leaves focus where it is */
+function pointerFocus(e: MouseEvent) {
+  if (e.detail > 0) focusSearch()
 }
 
 /** The search line is the keyboard: arrows move over tiles, digits set quantity, Enter adds. */
 function onKey(e: KeyboardEvent) {
   if (e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return
-  const empty = !r.query.value
+  let empty = !r.query.value
   const k = e.key
+  // Digits then a space: they were a search's first word ("3 peaches"), not a quantity (a letter straight after
+  // digits just ends the number: `⏎ 12 pin` is 12, then a new search). The DOM value is set directly because the
+  // key's own insertion happens before Vue re-renders.
+  if (empty && r.typingNumber() && k === ' ' && inputRef.value) {
+    inputRef.value.value = r.query.value = r.reclaimDigits()
+    empty = false
+  }
   if (k === 'Escape') {
     e.preventDefault()
     if (!empty) clearQuery()
@@ -288,11 +307,6 @@ function onKey(e: KeyboardEvent) {
   } else if (k === 'ArrowDown' || k === 'ArrowUp' || ((k === 'ArrowLeft' || k === 'ArrowRight') && empty)) {
     e.preventDefault()
     r.move(k as CursorKey)
-  } else if (k === 'Tab' && !e.shiftKey) {
-    // Tab is "add a note to what I just ticked": straight to the note field, past the tray
-    e.preventDefault()
-    if (r.noteMarker.value) noteRef.value?.focus()
-    else r.say('Tick an item first, then Tab adds a note to it')
   } else if (k === 'Enter') {
     e.preventDefault()
     if (!empty) {
@@ -307,10 +321,12 @@ function onKey(e: KeyboardEvent) {
   } else if (empty && (k === '-' || k === 'Delete')) {
     e.preventDefault()
     if (r.targetItem.value) r.dec(r.targetItem.value)
-  } else if (empty && /^[0-9]$/.test(k) && r.digitsAreQuantity()) {
+  } else if (empty && /^[0-9]$/.test(k) && r.armed.value) {
     e.preventDefault()
     r.digit(k)
+    return
   }
+  r.endNumber()
 }
 
 defineExpose({ focusSearch, inputRef, noteRef, panelRef })
@@ -338,6 +354,11 @@ defineExpose({ focusSearch, inputRef, noteRef, panelRef })
   color: var(--foreground);
   outline: none;
   transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.rummage-input--note {
+  height: 2.25rem;
+  font-size: 0.8125rem;
+  padding-left: 0.75rem !important;
 }
 .rummage-input:is(input[role='combobox']) {
   padding-left: 2rem;

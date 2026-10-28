@@ -1,87 +1,84 @@
 # C · Rummage: a loot session on a building
 
-Pick it with `?addui=c` or ⋮ → Add flow. Concept: [CONCEPTS.md §C](../CONCEPTS.md#c-rummage-a-loot-session-on-a-building). Screenshots in this folder: `01-idle`, `02-open`, `03-mid-batch`, `04-after` (1600×1000).
+Pick it with `?addui=c` or ⋮ → Add flow. Concept: [CONCEPTS.md §C](../CONCEPTS.md#c-rummage-a-loot-session-on-a-building). Screenshots here (1600×1000): `01-idle`, `02-open`, `03-mid-batch`, `04-after`, `05-place-selected` (plain plate click: Places tab + the "Log loot here" chip), `06-compact`.
 
 ## How it works
 
-A **session** is one open spot (a pinned place, a pile of markers, or a bare map position) plus a docked panel. Nothing is written until you tick something; every tick writes straight to the run through the shared seam, so the map, the Loot tab and the sync indicator update as you go. The spot is drawn as an apricot ring on the map.
+A **session** is one open spot (a pinned place, a pile of markers, or a bare map position) plus a docked panel. Nothing is written until you tick something; every tick writes straight to the run through the seam, and the spot is ringed on the map. **One session = one undo batch** (`addAt(…, { batchId })` for new markers, `amend()` for every edit inside it).
 
-Opening a spot:
+Ways in (plain clicks keep their old meaning everywhere):
 
 | Entry | Result |
 |---|---|
-| Click a **place plate** | Session on that place (the Places tab no longer opens on a plate click; the header's ↗ button, or `2`, still gets there) |
-| `A` with the pointer over the map, right-click, Shift-click | Session at the pointer; snaps to a pinned place or pile within 40 map px, otherwise an "Unnamed spot" |
-| `A`, the Add loot button, palette or panel `+` with no pointer on the map | Selected place if there is one, else a "Where did you search?" card (next map click chooses; offers "Back to <last spot>") |
-| Any map click or plate click **while open** | Moves the session. The cursor item stays, so "same item, next spot" is one key |
+| **Right-click** the map, a loot tile or a place plate; **Shift-click**; `A` with the pointer over the map | Session at that spot (snaps to a pinned place or pile; otherwise "Unnamed spot"). Right-click again elsewhere **moves** it |
+| Plain click on a plate | Selects the place and opens the Places tab, as before. A **"Log loot here · A"** chip appears under the selected pin |
+| `A`, the Add loot button, palette, panel `+` with no pointer on the map | Selected place if there is one, else a "Where did you search?" card: the next plain map click chooses the spot |
+| Plain map click while a session is open | Nothing new: it never relocates logging |
 
-The panel (right side, 360 px, left of the zoom buttons so they stay reachable; the map pans just enough to keep the spot clear of it):
+Panel (right, 336 px, or 264 px **compact** via the »/« button in its header, remembered): header plate (glacier dot = pinned place, kind, "N logged here, M looted", ↗ Places); search line; the item the keys act on (name, `−` count `+`, "type a number for how many" while armed); the note for the item just ticked; **Likely here** (20 tiles, 8 in compact; frozen when the spot opens; search finds get a tile appended); **On this spot** (every marker there, looted ones washed out, ✓ toggle, name selects the marker); **Done**. The map pans just enough to keep the spot and its plate clear of the panel.
 
-1. **Header**: place plate (glacier dot = pinned place), kind, "N logged here, M looted", ↗ to Places.
-2. **Search line**: always focused; the whole keyboard goes through it. Grammar: `peaches 3` (quantity after the name), `hacksaw - car trunk` (note after ` - `), diacritic-folded, prefix-first, frecency-ranked (the shared `rankItems`).
-3. **The item the keys act on** (fixed height strip): name, `−` / count / `+`. Count is what is on the map at this spot.
-4. **Likely here**: 20 tiles (5 × 4): this run's top-6 habits first, then the place kind's list (residential, industrial, cave, …) from the seam's `likelyItems`. **Frozen when the spot opens**, so tiles never reshuffle under the pointer. Items found by search get a tile appended. Tiles look like the markers they create: an apricot ring and quantity pill once on the map, a mint tick if only looted units are there. While typing the grid becomes **Matches**, top match marked `↵`.
-5. **On this spot**: every marker at the spot, looted ones last and washed out, each with a looted toggle (mint). Click a name to select that marker on the map (Loot card: edit, delete).
-6. **Footer**: a note for the item you just ticked, key hints, **Done** (the one apricot button).
+### Undo
 
-### Undo model
-
-One **gesture** = consecutive ticks and digits on one item = one undo batch. `Ctrl+Z` steps back one gesture (works from the empty search line; with text typed it stays the browser's own undo). `−` / right-click take back units from the newest gestures of that item, never below what earlier sessions logged, and delete a marker the session created once it hits zero. Leaving a spot or pressing Done toasts a summary ("8 items logged · Lake Cabins"); per-tick toasts were dropped because the panel already shows each add and they stacked on each other.
+- **Inside a session**: `-` / `Delete` / right-click a tile / strip `−` take one unit back from what *this session* put there (newest first, never touching earlier visits; a marker the session made is deleted at zero). `Ctrl+Z` steps back the last thing (digits typed as one number count as one).
+- **The whole visit**: leaving a spot (moving it, Done, Esc) toasts "N items logged · place" with **Undo** for the entire session; `Ctrl+Z` after Done does the same. S1's nine items are one step.
 
 ## Keyboard model
 
-The search line has focus whenever the session is open and after every mouse action in the panel; typing anywhere else (map, a tray button) moves focus to it. Returning from the game (window focus) puts it back.
+The search line holds focus whenever a session is open and after mouse actions in the panel; typing anywhere else (map, a tray button) moves it there, and returning from the game (window focus) puts it back.
 
 | Key | Search line empty | Text typed |
 |---|---|---|
 | letters | start a search | |
-| `↵` | one more of the cursor item (Enter again = +1 again) | add the highlighted match with the typed quantity / note |
-| `Space`, `+`, `=` | same as `↵` | typed as text (`Space`) |
-| `0`–`9` | set how many of the item just ticked (digits within 1.2 s are one number: `1` `2` → 12); on an item you only arrowed to, add that many | typed into the search (`peaches 3`) |
+| `↵` | one more of the target item (the cursor tile, which carries over to the next spot) | add the highlighted match with the typed quantity / note (`peaches 3`, `3 peaches`, `hacksaw - car trunk`) |
+| `Space`, `+`, `=` | same as `↵` | typed (`Space`) |
+| `0`–`9` | **only within 4 s after a tick**: set how many of that marker; a number lasts until the first non-digit key | typed into the search |
+| `Space` right after such digits | the digits move into the search line and the quantity change is reverted (so `3 pin` is a search) | |
 | `-`, `Delete` | take one back | |
-| `↑ ↓ ← →` | move the tile cursor (stops at the edges) | `↑ ↓` step through matches, `← →` move the caret |
-| `Tab` | focus the note for the item just ticked (`Enter` / `Esc` saves and returns) | same |
-| `Esc` | Done | clear the search |
-| `Ctrl/⌘ Z` | undo the last gesture | browser undo |
-| `Ctrl/⌘ K` | command palette (unchanged) | |
+| `↑ ↓ ← →` | move the tile cursor (never arms digits) | `↑ ↓` step through matches, `← →` move the caret |
+| `Tab` | normal DOM order: note → tray names and ✓ toggles → Done (all focusable; Shift+Tab back). Tiles and the strip buttons are mouse-only (`tabindex -1`, they are driven by the cursor) | same |
+| `Esc` | Done (in the note: save, back to search) | clear the search |
+| `Ctrl/⌘ Z` | step back the last thing | browser undo |
+| `Ctrl/⌘ K` | command palette, unchanged | |
 
-Mouse: click a tile = +1, right-click = −1, strip `−` `+`, tray ✓ = looted, **Done**.
+Mouse: tile click = +1, right-click = −1. Buttons in the panel take focus normally; after a pointer click the search line gets the keyboard back, after a keyboard activation focus stays put.
 
-**Shortcuts deliberately paused while a session is open** (`addUi.active`): `A L H N / ? P [ 1 2 3 F + - T R E Del Esc`. They would type into the search line otherwise. `-`, `+`, `=`, `Esc` and `Space` are re-used as above; scroll-wheel zoom and `Ctrl+K` keep working. Without a session everything is as before.
+**Paused while a session is open** (`addUi.active`): `A L H N / ? P [ 1 2 3 F + - T R E Del Esc`; `- + = Esc Space` are re-used as above. Wheel zoom and `Ctrl+K` keep working.
 
 ## Measured counts
 
-Driven with Playwright (`/tmp/tld-c/*.mjs`, not committed) on the seeded lab data: an expert's frecency, the shortest prefix I'd really type, and the digit key after the Enter. "Click" = mouse press, "key" = keystroke.
+Driven with Playwright against the seeded lab DB (`/tmp/tld-c/*.mjs`, not committed): an expert's frecency, the shortest prefix I'd really type, digits after the Enter.
 
 | | Clicks | Keys | How |
 |---|---|---|---|
-| S1 keyboard (9 items, 5 with quantity) | 1 (plate; or 0 clicks and 1 more key with `A` over the place) | 50 | `mat⏎12 pin⏎3 rifle am⏎2 hat⏎ sew⏎ toq⏎ clo⏎2 firew⏎5 anti⏎` |
-| S1 mouse-first | 7 (right-click + 6 tiles) | 25 | tiles for matches, peaches, sewing kit, toque, cloth, antiseptic + `12` `3` `2` `5`; search for ammo, hatchet, firewood |
-| S2 stash (4 items) | 1 | 34 | `rifle am⏎20 hunting r⏎ pin⏎6 firew⏎10`; "hunt" alone resolves to Hunting Knife |
-| S3 rare item + note | 1 | 24 (6 without the note) | right-click, `hacks⏎`, `Tab`, `in the car trunk`, `⏎` |
-| S4 firewood × 5 spots, keyboard | 5 | 10 | right-click, `firew⏎`, then 4 × (click the spot, `⏎`) |
-| S4 mouse-only | 10 | 0 | 5 × (click the spot, click the tile) |
-| S5 container, 3 items now | 1 | 17 | plate click, `pain⏎2 band⏎3 anti⏎` |
-| S5 two more after alt-tab | 0 | 12 | focus returns to the search line: `clo⏎2 wool s⏎` (2 clicks if the tiles are in the grid) |
+| S1 keyboard, 9 items (5 with quantity) | 1 (right-click; 0 with `A`, +1 key) | 50 | `mat⏎12 pin⏎3 rifle am⏎2 hat⏎ sew⏎ toq⏎ clo⏎2 firew⏎5 anti⏎` |
+| S1 mouse-first | 7 | 25 | right-click, 6 tiles, `12 3 2 5`; search for ammo, hatchet, firewood (unchanged by round 1) |
+| S2 stash | 1 | 34 | unchanged flow |
+| S3 hacksaw + note | 1 | 24 (6 without the note) | right-click, `hacks⏎`, `Tab`, `in the car trunk`, `⏎` |
+| S4 firewood × 5, keyboard | 5 | 10 | right-click, `firew⏎`, then 4 × (right-click the spot, `⏎`) |
+| S4 mouse-only | 10 | 0 | 5 × (right-click the spot, tile) |
+| S5 three items, then two more after alt-tab | 1 then 0 | 17 then 12 | right-click plate; later focus is waiting in the search line |
+| Mistake | 0 | 1–2 | `book⏎` then `-` (or `Ctrl+Z`) |
+| Undo S1 entirely | 1 or 0 | 0 or 2 | toast Undo, or `Esc` `Ctrl+Z` |
 
-Verified on the map: same item at a spot stacks (Wood Matches 7 + 12 → 19; Antiseptic 1 + 1 → 2), new items land on the ring, markers group with a count badge at low zoom, the ring follows pan/zoom, and `Ctrl+Z` removes gestures one at a time.
+Data checked through `/api/data`: S1's nine markers sit ≥ 12 map px apart on the seam's concentric ring (the round-1 build put items 7–9 on top of each other); the toast Undo and `Ctrl+Z` after Done restored exactly the starting 211 markers; plain plate click opens no session; right-click on a loot tile and on a plate opens the session at that spot.
 
-## Seam changes (all small, generic, additive)
+## Round-1 fixes, per critique item
 
-- `useAddUi.ts` / `InteractiveMap.vue`: **`interceptPOIClick(poiId, e)`** handler hook; a place-plate click calls it before opening the Places tab, return `true` to swallow. Needed so a plate click can open a session.
-- `useAddUi.ts` / `InteractiveMap.vue`: **`mapView.reveal(pos, margin)`** now also takes `{ top, right, bottom, left }` (a number still works), so a docked panel can reserve only its own side.
-- `useAddItem.ts` + `lib/addItem.ts`: **`adjust(markerId, delta, { batchId })`** with the pure `planAdjust`: change a quantity inside an open batch so Undo still reverses exactly what the batch did (extra units are recorded; removal only takes back what the batch added). Returns `null` when the batch was undone. Unit-tested.
+1. **Digits swallowed.** Digits are a quantity only while *armed*: right after a tick/Enter/stack, for 4 s, cleared by any search typing, arrow move, new spot, Esc or returning to the window. The cursor item carried to a new spot is never armed, so `3 peaches` there is a search. The 1.2 s inter-digit window is gone (a number ends at the next non-digit). Space after digits reclaims them as a search (`3 pin` right after a tick is still a search).
+2. **Undo.** One batch per session; summary toast has Undo for the visit; in-session take-back via `-`, right-click and `Ctrl+Z` (ledger in `c/rummage.ts`, edits through `amend`).
+3. **Stray click.** Only right-click / `A` / Shift-click move a session; plain clicks do not. The footer says "Right-click: move here".
+4. **Plate click.** Restored to select-place/Places. Sessions come from right-click on a plate (seam) and the "Log loot here" chip on a selected place (also reachable from the Places list).
+5. **Screen cost.** Panel 360 → 336 px, plus a compact mode (264 px, 4-column, 8 tiles) that saves 72 px more. Left panel + session: 47 % of 1600 px full, 42 % compact. Closing the left panel (button) gives the rest back.
+6. **Keyboard / a11y.** `keepFocus` removed; panel buttons are focusable by mouse. Tab walks search → note (moved right under the strip) → tray → Done. Digits typed with focus on a button still reach the armed item.
+7. **Size.** State is an instance (`createRummage`, provided to the panel), not module globals; `adjust`/`planAdjust`, the gesture stacks, tile pop animation and "back to last spot" are gone. Pure parts (`pushDigit`, `moveCursor`, ledger) are tested in `scripts/test-rummage.ts`. Still ~1,150 lines in total (about 430 are CSS and template for the panel and tile).
 
-No change to the `app-data` shape; `?addui=legacy` is unchanged (checked: `A` placing hint and right-click dialog still work).
+## Seam use
 
-New files: `app/components/add/c/{useRummage.ts, rummage.ts, RummagePanel.vue, RummageTile.vue}`; `AddUiC.vue` registers handlers, draws the ring and owns the capture-phase keys (Ctrl+Z, Esc, type-anywhere). Pure logic (`pushDigit`, `moveCursor`, `planAdjust`) is tested in `scripts/test-add-item.ts`.
+Uses the lab seam as is: `addAt` with `batchId`, `amend`, right-click on tiles/plates → `request`, `resolveSpot`, `likelyItems`. My own seam additions were dropped: `interceptPOIClick` (replaced by right-click + the chip) and `adjust`/`planAdjust` (`amend` does the same job; I only needed per-marker "units this session" bookkeeping, which lives in the ledger). Kept one generic edit: `mapView.reveal(pos, margin)` also accepts `{ top, right, bottom, left }` so the docked panel reserves only its own side (number still works).
 
-## Known gaps
+## Objections and known gaps
 
-- No way into a session from a marker tile: Leaflet markers swallow right-click, and the Loot card has no "add here". `A` with the pointer next to the tile, or the plate, works.
-- A plate click now opens a session instead of the Places tab (stash UI is one `2` away). If that costs too much for stash users, gate it on a modifier or on the loot-tab being active.
-- Note belongs to one marker. A noted marker doesn't stack with later ticks (shared `planBatch` rule), so ticking the same item again after a note makes a second marker.
-- Likely-item lists are the seam's editorial table; untyped places get the residential mix. No difficulty down-ranking.
-- Decrement can't reach units logged before this session; use the Loot card to edit or delete those.
-- Not done on purpose: touch UI, a condensed HUD font.
-- Not tested: windows narrower than ~1100 px (panel would cover most of the map), screen readers beyond the listbox/combobox wiring.
+- **Armed digits stay.** The critique asked that digits only mean quantity right after a tick; that is what they do now, but "type a number right after `Enter`" (S1's `mat⏎12`) is the whole fast path, so a 4 s window remains rather than removing the quantity-by-digit entirely. `peaches 3` and `3 peaches` both work in the search line.
+- **Compact is opt-in**, not automatic: at 1600 px the full panel keeps 5 legible columns. Auto-compacting when the left panel is open would be one `computed`; I left it out so the screenshots and counts describe one layout.
+- Decrement can't reach units logged before this visit (use the Loot card). A noted marker doesn't stack with later ticks (shared `planBatch` rule).
+- Not done: touch UI, a condensed HUD font, windows narrower than ~1100 px.

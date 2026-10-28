@@ -1,6 +1,7 @@
 <template>
   <button
     type="button"
+    tabindex="-1"
     role="option"
     :aria-selected="active"
     :aria-label="label"
@@ -13,7 +14,7 @@
     @click="emit('tick')"
     @contextmenu.prevent="emit('dec')"
   >
-    <span :class="cn('rummage-chip', count > 0 && 'rummage-chip--here', pop && 'rummage-chip--pop')" :key="popKey">
+    <span :class="cn('rummage-chip', count > 0 && 'rummage-chip--here',)">
       <img v-if="item.icon" :src="item.icon" alt="" class="size-[26px] object-contain" draggable="false" loading="lazy">
       <PackageIcon v-else class="size-[18px] text-muted-foreground" />
       <span v-if="count > 0" class="rummage-qty tabular">{{ count }}</span>
@@ -41,12 +42,9 @@ const props = defineProps<{
   active: boolean
   /** Show the Enter hint (top search result) */
   enter?: boolean
-  /** Bumps each time this tile is ticked (restarts the pop) */
-  pop?: number
 }>()
 const emit = defineEmits<{ tick: []; dec: [] }>()
 
-const popKey = computed(() => props.pop ?? 0)
 const label = computed(() => `${props.item.name}${props.count ? `, ${props.count} here` : ''}${props.looted && !props.count ? ', looted here' : ''}`)
 </script>
 
@@ -71,13 +69,6 @@ const label = computed(() => `${props.item.name}${props.count ? `, ${props.count
 }
 .rummage-tile:hover .rummage-chip--here {
   border-color: var(--loot);
-}
-.rummage-chip--pop {
-  animation: rummage-pop 220ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes rummage-pop {
-  from { transform: scale(0.86); }
-  to { transform: scale(1); }
 }
 .rummage-qty {
   position: absolute;
@@ -107,8 +98,5 @@ const label = computed(() => `${props.item.name}${props.count ? `, ${props.count
   background: var(--looted);
   color: oklch(0.22 0.03 258);
   box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258);
-}
-@media (prefers-reduced-motion: reduce) {
-  .rummage-chip--pop { animation: none; }
 }
 </style>

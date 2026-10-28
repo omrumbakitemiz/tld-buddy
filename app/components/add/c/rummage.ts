@@ -1,19 +1,16 @@
-// Pure helpers for concept C (Rummage): the quantity-digit buffer and the tile cursor.
+// Pure helpers for concept C (Rummage): the quantity-digit buffer, the tile cursor and the session ledger.
 // No Vue, no DOM: unit-tested in scripts/test-add-item.ts.
-
-/** Digits typed this close together are one number ("1" "2" → 12). */
-export const DIGIT_WINDOW_MS = 1200
 
 /** Largest quantity one marker takes from the keyboard. */
 export const MAX_QUANTITY = 999
 
 /**
- * Feed one digit key into the quantity buffer. A pause starts a new number; leading zeros are dropped;
- * the number stops growing at 999. `value` is 0 while only zeros were typed.
+ * Feed one digit key into the quantity buffer. A number lasts until the first key that isn't a digit
+ * (the caller clears the buffer then); leading zeros are dropped and it stops growing at 999.
+ * `value` is 0 while only zeros were typed.
  */
-export function pushDigit(buffer: string, lastAt: number, now: number, digit: string): { buffer: string; value: number } {
-  const fresh = now - lastAt > DIGIT_WINDOW_MS
-  const joined = ((fresh ? '' : buffer) + digit).replace(/^0+/, '')
+export function pushDigit(buffer: string, digit: string): { buffer: string; value: number } {
+  const joined = (buffer + digit).replace(/^0+/, '')
   const next = Number(joined) > MAX_QUANTITY ? buffer : joined
   return { buffer: next, value: Number(next || 0) }
 }
@@ -32,4 +29,62 @@ export function moveCursor(index: number | null, key: CursorKey, cols: number, c
   if (key === 'ArrowLeft' && index % cols === 0) return index
   if (key === 'ArrowRight' && (index % cols === cols - 1 || next >= count)) return index
   return next < 0 || next >= count ? index : next
+}
+
+export interface LedgerEntry {
+  markerId: string
+  itemId: string
+  /** Units this session had put on the marker before and after */
+  from: number
+  to: number
+  /** Set while digits are typing one number: later digits update this entry instead of adding one */
+  digits?: boolean
+}
+
+/**
+ * What a session has put on the map: units per marker, plus a log to step back through.
+ * One session is one undo batch in the seam; this is what lets `-` and Ctrl+Z reach inside it.
+ */
+export function createLedger() {
+  const own = new Map<string, { itemId: string; q: number }>()
+  const log: LedgerEntry[] = []
+
+  const units = (markerId: string) => own.get(markerId)?.q ?? 0
+  function store(markerId: string, itemId: string, q: number) {
+    if (q > 0) own.set(markerId, { itemId, q })
+    else own.delete(markerId)
+  }
+
+  return {
+    units,
+    /** Record that the session now has `to` units on a marker. `continuing` extends a digit entry. */
+    set(markerId: string, itemId: string, to: number, opts: { digits?: boolean; continuing?: boolean } = {}) {
+      const last = log[log.length - 1]
+      if (opts.digits && opts.continuing && last?.digits && last.markerId === markerId) last.to = to
+      else log.push({ markerId, itemId, from: units(markerId), to, digits: opts.digits })
+      store(markerId, itemId, to)
+    },
+    /** Step back the latest entry; returns it so the caller can restore the marker. */
+    undo(): LedgerEntry | null {
+      const e = log.pop()
+      if (e) store(e.markerId, e.itemId, e.from)
+      return e ?? null
+    },
+    /** The latest entry, without removing it */
+    last: (): LedgerEntry | null => log[log.length - 1] ?? null,
+    /** The marker of an item this session touched most recently and still has units on */
+    latestFor(itemId: string): string | null {
+      for (let i = log.length - 1; i >= 0; i--) {
+        const e = log[i]!
+        if (e.itemId === itemId && units(e.markerId) > 0) return e.markerId
+      }
+      return null
+    },
+    /** Markers the session still has units on */
+    live: () => own.size,
+    clear() {
+      own.clear()
+      log.length = 0
+    },
+  }
 }

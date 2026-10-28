@@ -2,45 +2,57 @@
   <!-- Variant C · Rummage: a loot session on a building (docs/add-item/c/NOTES.md) -->
   <div ref="rootRef" class="pointer-events-none absolute inset-0">
     <div v-if="ringStyle" :key="ringKey" class="rummage-ring" :style="ringStyle" aria-hidden="true" />
+    <Button
+      v-if="chipStyle"
+      size="sm"
+      class="pointer-events-auto absolute left-0 top-0 z-[480] h-8 rounded-full px-3.5 shadow-[0_4px_14px_oklch(0.1_0.02_258/0.55)]"
+      :style="chipStyle"
+      @click="begin(null)"
+    >
+      <PlusIcon class="size-3.5" /> Log loot here <kbd class="ml-0.5 text-[10px] opacity-70">A</kbd>
+    </Button>
     <RummagePanel ref="panelRef" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
+import { PlusIcon } from '@lucide/vue'
+import { Button } from '~/components/ui/button'
 import RummagePanel from '~/components/add/c/RummagePanel.vue'
-import { useRummage } from '~/components/add/c/useRummage'
+import { RUMMAGE_KEY, createRummage } from '~/components/add/c/useRummage'
 import { useAddItem } from '~/composables/useAddItem'
 import { useAddUi } from '~/composables/useAddUi'
 import { useGameData } from '~/composables/useGameData'
 import { useUiState } from '~/composables/useUiState'
 
 /**
- * Registers Rummage with the add-item seam and owns what happens outside the panel:
- * the ring on the map, entry points (A, right-click, plate click, map click while open),
- * and the keyboard when focus is elsewhere. The panel itself is c/RummagePanel.vue.
+ * Registers Rummage with the add-item seam and owns what happens outside the panel: the ring on the
+ * map, the "Log loot here" chip on a selected place, the entry points (A, right-click on the map, a
+ * loot tile or a plate, Shift-click) and the keys while focus is elsewhere. The panel is c/RummagePanel.vue.
  */
 
 const addUi = useAddUi()
 const addItem = useAddItem()
 const ui = useUiState()
 const game = useGameData()
-const r = useRummage()
+const r = createRummage()
+provide(RUMMAGE_KEY, r)
 
 const rootRef = ref<HTMLElement | null>(null)
 const panelRef = ref<InstanceType<typeof RummagePanel> | null>(null)
 
 const open = computed(() => !!r.session.value || r.picking.value)
 
-// The panel covers the right third of the map. A clicked spot is visible by definition, so this only nudges it
-// off the panel's edge; a place's plate runs ~150 px to the right of its pin and needs that room too.
-const PANEL_CLEARANCE = 360 + 60 + 24
+// The panel covers the right of the map. A spot you pointed at is visible by definition, so this only nudges
+// it off the panel's edge; a place's plate runs ~150 px to the right of its pin and needs that room too.
+const panelWidth = computed(() => (r.compact.value ? 264 : 336))
 
 function reveal(spot: { x: number; y: number; poiId?: string }) {
   const view = addUi.mapView.value
   if (!view) return
-  const w = view.container.clientWidth
-  view.reveal(spot, { right: Math.min(PANEL_CLEARANCE + (spot.poiId ? 150 : 0), w * 0.55), top: 110, bottom: 110, left: 110 })
+  const clearance = panelWidth.value + 60 + 24 + (spot.poiId ? 150 : 0)
+  view.reveal(spot, { right: Math.min(clearance, view.container.clientWidth * 0.55), top: 110, bottom: 110, left: 110 })
 }
 
 function focusSearch() {
@@ -70,21 +82,14 @@ function begin(req: { pos: { x: number; y: number } } | null) {
   r.startPicking()
 }
 
+// Moving a session takes a deliberate gesture: right-click (map, tile or plate), `A`, Shift-click. A plain
+// click only chooses a spot while the session is waiting for one, so a stray click never relocates logging.
 const unregister = addUi.register({
   start: begin,
   request: (req) => openAtPos(req.pos),
-  // While a session is open (or waiting for a spot), a map click moves it
   interceptClick: (req) => {
-    if (!open.value) return false
+    if (!r.picking.value) return false
     openAtPos(req.pos)
-    return true
-  },
-  // Place plates: a click opens the session there; the Places tab stays one key (2) away
-  interceptPOIClick: (poiId) => {
-    const pin = game.getPOIPin(poiId)
-    if (!pin || !game.currentRun.value) return false
-    ui.selectedPOIId.value = null
-    openAtPos(pin)
     return true
   },
 })
@@ -99,20 +104,33 @@ watch(() => r.picking.value, (v) => addUi.mapView.value?.container.classList.tog
 // Another map, another run: the session doesn't carry over
 watch([() => game.currentMap.value?.id, () => game.currentRun.value?.id], () => r.close())
 
-// ── Ring on the map ─────────────────────────────────────────────────────────
+// ── On the map ──────────────────────────────────────────────────────────────
 
-const ringStyle = computed(() => {
+/** Map position → pixels inside this overlay (re-read on every pan and zoom) */
+function toLocal(pos: { x: number; y: number }) {
   void addUi.viewTick.value
-  const s = r.session.value
   const view = addUi.mapView.value
   const root = rootRef.value
-  if (!s || !view || !root) return null
-  const p = view.toClient(s.spot)
+  if (!view || !root) return null
+  const p = view.toClient(pos)
   const box = root.getBoundingClientRect()
-  return { transform: `translate(${p.x - box.left}px, ${p.y - box.top}px) translate(-50%, -50%)` }
+  return { x: p.x - box.left, y: p.y - box.top }
+}
+
+const ringStyle = computed(() => {
+  const s = r.session.value
+  const p = s && toLocal(s.spot)
+  return p ? { transform: `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)` } : null
 })
 /** A new spot replays the ring's entrance */
 const ringKey = computed(() => (r.session.value ? `${r.session.value.spot.x}|${r.session.value.spot.y}` : ''))
+
+/** A selected place offers "Log loot here" under its pin: the plain plate click still selects the place as before */
+const chipStyle = computed(() => {
+  const pin = !open.value && ui.selectedPOIId.value ? game.getPOIPin(ui.selectedPOIId.value) : undefined
+  const p = pin && toLocal(pin)
+  return p ? { transform: `translate(${p.x - 8}px, ${p.y + 18}px)` } : null
+})
 
 // ── Keyboard outside the panel ──────────────────────────────────────────────
 
@@ -127,14 +145,13 @@ function onKeydown(e: KeyboardEvent) {
   // Dialogs (runs, search palette, …) keep their own keys
   if (target?.closest?.('[role="dialog"]')) return
 
-  // Ctrl/Cmd+Z: the shell skips it while a text field has focus. In an empty search line there
-  // is nothing of ours to undo, so it steps back the last item; with text typed it stays native.
+  // Ctrl/Cmd+Z inside a session steps back the last thing (the whole visit is one undo batch for the toast
+  // and for Ctrl+Z after Done). With text typed in a field it stays the browser's own undo.
   if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'z') {
     if (isField(target) && (target === panelRef.value?.noteRef || r.query.value)) return
     e.preventDefault()
     e.stopPropagation()
-    const n = addItem.undo()
-    addUi.announce(n ? 'Undone' : 'Nothing to undo')
+    if (!r.stepBack()) r.say('Nothing to step back here yet')
     return
   }
   if (e.ctrlKey || e.metaKey || e.altKey) return
@@ -144,15 +161,20 @@ function onKeydown(e: KeyboardEvent) {
     r.close()
     return
   }
-  // Typing with focus anywhere else (map, tray button) lands in the search line
+  // Typing with focus on a button or the map goes to the search line; a digit right after a tick still means "how many"
   const onButton = target?.tagName === 'BUTTON'
   if (r.session.value && !isField(target) && e.key.length === 1 && !(onButton && e.key === ' ')) {
+    if (/^[0-9]$/.test(e.key) && r.armed.value) {
+      e.preventDefault()
+      r.digit(e.key)
+    }
     panelRef.value?.focusSearch()
   }
 }
 
-// Back from the game: the search line is waiting
+// Back from the game: the search line is waiting, and a number typed earlier doesn't linger
 function onWindowFocus() {
+  r.disarm()
   if (r.session.value && !isField(document.activeElement)) panelRef.value?.focusSearch()
 }
 
