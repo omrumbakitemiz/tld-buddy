@@ -1,0 +1,179 @@
+{
+  "LakeRegion": {
+    "mapId": "mystery-lake",
+    "default": {
+      "matrix": [
+        1.948212371,
+        0.04039102345,
+        492.0213134,
+        0.02454385236,
+        1.940060176,
+        591.0832173
+      ],
+      "rmsPx": 28.9,
+      "imageWidth": 4235,
+      "imageHeight": 4650,
+      "points": [
+        {
+          "target": "CampOffice",
+          "exitPoint": "CampOfficeBackEnterPoint",
+          "world": [
+            1017.8,
+            437.59
+          ],
+          "map": [
+            2463.8,
+            1441.3
+          ]
+        },
+        {
+          "target": "CampOffice",
+          "exitPoint": "CampOfficeFrontEnterPoint",
+          "world": [
+            1019.27,
+            443.68
+          ],
+          "map": [
+            2510.9,
+            1521.2
+          ]
+        },
+        {
+          "target": "Dam",
+          "exitPoint": "DamInteriorEnterPoint",
+          "world": [
+            1676.85,
+            1386.49
+          ],
+          "map": [
+            3837,
+            3310.6
+          ]
+        },
+        {
+          "target": "RavineTransitionZone",
+          "exitPoint": "LakeRegionExitPoint",
+          "world": [
+            1798.12,
+            1296.49
+          ],
+          "map": [
+            4040.9,
+            3143.3
+          ]
+        },
+        {
+          "target": "SafeHouseA",
+          "exitPoint": "CabinEnterPoint",
+          "world": [
+            37.6,
+            26.83
+          ],
+          "map": [
+            577.7,
+            629
+          ]
+        },
+        {
+          "target": "TrailerA",
+          "exitPoint": "TrailerAEnterPoint",
+          "world": [
+            894.73,
+            1245.39
+          ],
+          "map": [
+            2272.1,
+            3042.4
+          ]
+        }
+      ]
+    },
+    "interloper": {
+      "matrix": [
+        1.935964883,
+        0.06688670267,
+        497.9086263,
+        0.0631747035,
+        1.892304185,
+        582.9352842
+      ],
+      "rmsPx": 28,
+      "imageWidth": 4235,
+      "imageHeight": 4650,
+      "points": [
+        {
+          "target": "CampOffice",
+          "exitPoint": "CampOfficeBackEnterPoint",
+          "world": [
+            1017.8,
+            437.59
+          ],
+          "map": [
+            2467.6,
+            1441.9
+          ]
+        },
+        {
+          "target": "CampOffice",
+          "exitPoint": "CampOfficeFrontEnterPoint",
+          "world": [
+            1019.27,
+            443.68
+          ],
+          "map": [
+            2503.3,
+            1501.4
+          ]
+        },
+        {
+          "target": "Dam",
+          "exitPoint": "DamInteriorEnterPoint",
+          "world": [
+            1676.85,
+            1386.49
+          ],
+          "map": [
+            3869,
+            3329.1
+          ]
+        },
+        {
+          "target": "MarshRegion",
+          "exitPoint": "LakeRegionExitPoint",
+          "world": [
+            766.18,
+            -152.11
+          ],
+          "map": [
+            1991.2,
+            355.7
+          ]
+        },
+        {
+          "target": "MountainTownCaveB",
+          "exitPoint": "MountainTownCaveBEnterPoint2",
+          "world": [
+            139.34,
+            -95.95
+          ],
+          "map": [
+            759.3,
+            410.3
+          ]
+        },
+        {
+          "target": "RavineTransitionZone",
+          "exitPoint": "LakeRegionExitPoint",
+          "world": [
+            1798.12,
+            1296.49
+          ],
+          "map": [
+            4043,
+            3139.9
+          ]
+        }
+      ]
+    }
+  }
+}
