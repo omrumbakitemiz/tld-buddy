@@ -1,4 +1,4 @@
-import { cleanLiveEvent, validateLiveEvent, type LiveMarkEvent } from '#shared/utils/live'
+import { cleanLiveEvent, validateLiveEvent, type LiveItemsEvent, type LiveMarkEvent } from '#shared/utils/live'
 import { readLimitedBody } from '../../../utils/body'
 import { getModToken } from '../../../utils/config'
 import { isModRequest, publishLiveEvent } from '../../../utils/live'
@@ -6,8 +6,8 @@ import { isModRequest, publishLiveEvent } from '../../../utils/live'
 const MAX_BODY_BYTES = 16 * 1024
 
 /**
- * One-off events from the game mod ("mark here"). Held until a browser acks them, so the
- * marker is added even if no TLD Buddy tab is open at the moment of the key press.
+ * One-off events from the game mod: "mark here", pickups and drops. Held until a browser
+ * acks them, so markers are updated even if no TLD Buddy tab is open at that moment.
  * Idempotent per event id: the mod retries until it gets an answer.
  */
 export default defineEventHandler(async (event) => {
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   const problem = validateLiveEvent(body)
   if (problem) throw createError({ statusCode: 400, statusMessage: 'Invalid live event', message: problem })
 
-  publishLiveEvent(cleanLiveEvent(body as Omit<LiveMarkEvent, 'createdAt'>, Date.now()))
+  publishLiveEvent(cleanLiveEvent(body as Omit<LiveMarkEvent, 'createdAt'> | Omit<LiveItemsEvent, 'createdAt'>, Date.now()))
   setResponseStatus(event, 202)
   return null
 })

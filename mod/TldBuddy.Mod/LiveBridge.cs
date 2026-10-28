@@ -14,8 +14,8 @@ namespace TldBuddy.Mod
     /// Live state (POST /api/live/v1/state): at most one request is in flight; while one is pending,
     /// newer updates are skipped rather than queued, so a slow or unreachable server never piles up
     /// work or stalls the game.
-    /// Mark events (POST /api/live/v1/events): each is retried a few times, since a lost key press
-    /// can't be recovered. The outcome is queued as a notice for the game thread to show.
+    /// Game events (POST /api/live/v1/events): each is retried a few times, since a lost key press
+    /// or pickup can't be recovered. The outcome is queued as a notice for the game thread to show.
     /// </summary>
     sealed class LiveBridge
     {
@@ -66,17 +66,20 @@ namespace TldBuddy.Mod
             }
         }
 
-        /// <summary>Sends a mark event; `label` names it in the in-game notice ("marked Hatchet").</summary>
-        public void SendEvent(string serverUrl, string token, string json, string label)
+        /// <summary>
+        /// Sends a game event. `sentNotice` is shown in game once it arrives (null = quietly),
+        /// `failedNotice` if it can't be delivered.
+        /// </summary>
+        public void SendEvent(string serverUrl, string token, string json, string sentNotice, string failedNotice)
         {
             string url = serverUrl.TrimEnd('/') + "/api/live/v1/events";
-            _ = PostEventAsync(url, token, json, label);
+            _ = PostEventAsync(url, token, json, sentNotice, failedNotice);
         }
 
         /// <summary>Text for the game's HUD, produced by background requests. Call from the game thread.</summary>
         public bool TryTakeNotice(out string text) => notices.TryDequeue(out text);
 
-        async Task PostEventAsync(string url, string token, string json, string label)
+        async Task PostEventAsync(string url, string token, string json, string sentNotice, string failedNotice)
         {
             for (int attempt = 1; attempt <= EventAttempts; attempt++)
             {
@@ -90,7 +93,7 @@ namespace TldBuddy.Mod
                     using var response = await http.SendAsync(request).ConfigureAwait(false);
                     if (response.IsSuccessStatusCode)
                     {
-                        notices.Enqueue($"TLD Buddy: marked {label}");
+                        if (sentNotice != null) notices.Enqueue(sentNotice);
                         return;
                     }
                     reason = $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}";
@@ -101,11 +104,11 @@ namespace TldBuddy.Mod
                 {
                     reason = e.GetBaseException().Message;
                 }
-                log.Warning($"Mark not sent (attempt {attempt}/{EventAttempts}) to {url}: {reason}");
+                log.Warning($"Event not sent (attempt {attempt}/{EventAttempts}) to {url}: {reason}");
                 if (!retry) break;
                 if (attempt < EventAttempts) await Task.Delay(TimeSpan.FromSeconds(2 * attempt)).ConfigureAwait(false);
             }
-            notices.Enqueue("TLD Buddy: could not send the mark (see MelonLoader log)");
+            notices.Enqueue(failedNotice);
         }
 
         /// <summary>Logs the first failure, then at most once a minute while it keeps failing.</summary>

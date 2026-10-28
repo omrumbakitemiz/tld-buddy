@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
 import type { H3Event } from 'h3'
-import type { LiveMarkEvent, LiveState } from '#shared/utils/live'
+import type { LiveGameEvent, LiveState } from '#shared/utils/live'
 import { getModToken } from './config'
 
 /**
@@ -10,12 +10,13 @@ import { getModToken } from './config'
 let latest: { state: LiveState; receivedAt: number } | null = null
 
 /**
- * Mark events waiting for a browser to turn them into markers. A browser acks once it has
- * added the marker; until then every newly connecting browser gets them, so a mark made
- * while no tab was open still arrives. Bounded, and dropped after a day.
+ * Game events (marks, pickups, drops) waiting for a browser to apply them to the markers.
+ * A browser acks once it has; until then every newly connecting browser gets them, so what
+ * happened in game while no tab was open still arrives. Bounded (pickups add up over a
+ * session), and dropped after a day.
  */
-const pending = new Map<string, LiveMarkEvent>()
-const MAX_PENDING = 50
+const pending = new Map<string, LiveGameEvent>()
+const MAX_PENDING = 300
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000
 
 /** What browsers receive on the stream. `ageMs` lets clients judge staleness without trusting clocks. */
@@ -24,7 +25,7 @@ export interface LiveMessage {
   ageMs: number | null
 }
 
-export type LiveBroadcast = { kind: 'state'; message: LiveMessage } | { kind: 'mark'; event: LiveMarkEvent }
+export type LiveBroadcast = { kind: 'state'; message: LiveMessage } | { kind: 'event'; event: LiveGameEvent }
 
 const listeners = new Set<(broadcast: LiveBroadcast) => void>()
 
@@ -45,18 +46,18 @@ function prunePending(now: number) {
   for (const [id, e] of pending) if (now - e.createdAt > PENDING_TTL_MS) pending.delete(id)
 }
 
-/** Stores and broadcasts a mark. Returns false for an id already seen (a retry from the mod). */
-export function publishLiveEvent(event: LiveMarkEvent): boolean {
+/** Stores and broadcasts a game event. Returns false for an id already seen (a retry from the mod). */
+export function publishLiveEvent(event: LiveGameEvent): boolean {
   if (pending.has(event.id)) return false
   prunePending(event.createdAt)
   // Map keeps insertion order: drop the oldest when full
   while (pending.size >= MAX_PENDING) pending.delete(pending.keys().next().value!)
   pending.set(event.id, event)
-  broadcast({ kind: 'mark', event })
+  broadcast({ kind: 'event', event })
   return true
 }
 
-export function pendingLiveEvents(): LiveMarkEvent[] {
+export function pendingLiveEvents(): LiveGameEvent[] {
   prunePending(Date.now())
   return [...pending.values()]
 }

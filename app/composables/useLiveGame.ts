@@ -1,6 +1,6 @@
 import { computed, ref, shallowRef, watch } from 'vue'
 import { getVariantKey } from '~/types'
-import { planMark, resolveLivePosition, sceneLabel, type LiveMarkEvent, type LiveState } from '#shared/utils/live'
+import { planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveState } from '#shared/utils/live'
 import { useAddUi } from './useAddUi'
 import { useAuth } from './useAuth'
 import { useGameData } from './useGameData'
@@ -11,30 +11,31 @@ import { useStaticData } from './useStaticData'
  * The mod sends about once a second; without an update for STALE_MS the game counts as
  * not running (closed, main menu, or the PC is off) and the marker hides.
  *
- * "Mark here" events from the mod become markers in the current run. The server holds them
- * until a browser acks, so marks made while no tab was open arrive when one connects.
+ * Game events from the mod update the current run: "mark here" adds a marker, a pickup loots
+ * the nearest marker for that item, a drop adds a stash. The server holds them until a
+ * browser acks, so what happened while no tab was open arrives when one connects.
  */
 
 const STALE_MS = 10_000
 const RECONNECT_MS = 10_000
 const HIDDEN_GRACE_MS = 5_000
-/** Event ids this browser already turned into markers, shared by its tabs. */
+/** Event ids this browser already applied, shared by its tabs. */
 const HANDLED_KEY = 'tld-buddy-handled-marks'
-const MAX_HANDLED = 200
+const MAX_HANDLED = 1000
 /**
- * Marks that had no map position yet (region not calibrated). Kept in this browser and placed
- * as soon as a deploy brings that region's calibration, so no mark is lost.
+ * Events that had no map position yet (region not calibrated). Kept in this browser and applied
+ * as soon as a deploy brings that region's calibration, so nothing is lost.
  */
 const UNPLACED_KEY = 'tld-buddy-unplaced-marks'
-const MAX_UNPLACED = 100
+const MAX_UNPLACED = 300
 
 const state = shallowRef<LiveState | null>(null)
 /** Local time the state was sent by the mod, derived from the server's age so clocks needn't agree. */
 const receivedAt = ref(0)
 const now = ref(Date.now())
 const connected = ref(false)
-/** Mark events received but not placed yet (data still loading, or no run selected). */
-const pendingMarks = shallowRef<LiveMarkEvent[]>([])
+/** Game events received but not applied yet (data still loading, or no run selected). */
+const pendingEvents = shallowRef<LiveGameEvent[]>([])
 
 let source: EventSource | null = null
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null
@@ -49,9 +50,9 @@ function connect() {
     state.value = message.state
     receivedAt.value = message.ageMs == null ? 0 : Date.now() - message.ageMs
   })
-  source.addEventListener('mark', (e) => {
-    const event = JSON.parse((e as MessageEvent<string>).data) as LiveMarkEvent
-    if (!pendingMarks.value.some((m) => m.id === event.id)) pendingMarks.value = [...pendingMarks.value, event]
+  source.addEventListener('game', (e) => {
+    const event = JSON.parse((e as MessageEvent<string>).data) as LiveGameEvent
+    if (!pendingEvents.value.some((m) => m.id === event.id)) pendingEvents.value = [...pendingEvents.value, event]
   })
   source.addEventListener('error', () => {
     connected.value = false
@@ -80,7 +81,7 @@ function readList<T>(key: string, keep: (x: unknown) => x is T): T[] {
 }
 
 const readHandled = () => readList(HANDLED_KEY, (x): x is string => typeof x === 'string')
-const readUnplaced = () => readList(UNPLACED_KEY, (x): x is LiveMarkEvent => !!x && typeof x === 'object' && typeof (x as LiveMarkEvent).id === 'string')
+const readUnplaced = () => readList(UNPLACED_KEY, (x): x is LiveGameEvent => !!x && typeof x === 'object' && typeof (x as LiveGameEvent).id === 'string')
 
 function ack(ids: string[]) {
   if (!ids.length) return
@@ -115,7 +116,7 @@ function start() {
     if (s !== 'signed-in') {
       disconnect()
       state.value = null
-      pendingMarks.value = []
+      pendingEvents.value = []
     } else if (v) {
       if (!source) connect()
     } else {
@@ -129,7 +130,7 @@ function start() {
   const addUi = useAddUi()
 
   /** "Winding River & Carter Hydro Dam", or the building/scene name when it isn't on a map. */
-  function placeName(event: LiveMarkEvent): string {
+  function placeName(event: LiveGameEvent): string {
     for (const s of event.scenes) {
       const known = statics.gameScenes.value.find((g) => g.scene === s.scene)
       if (known) return statics.getMap(known.mapId)?.name ?? sceneLabel(s.scene)
@@ -137,49 +138,81 @@ function start() {
     return sceneLabel(event.scenes[0]?.scene ?? 'the game')
   }
 
-  // Place new marks, and retry kept ones, once the run's data and the static data are loaded
-  watch([pendingMarks, game.apiSynced, game.currentRun, statics.ready], () => {
+  // Apply new events, and retry kept ones, once the run's data and the static data are loaded
+  watch([pendingEvents, game.apiSynced, game.currentRun, statics.ready], () => {
     const run = game.currentRun.value
     if (!game.apiSynced.value || !statics.ready.value || !run) return
-    const fresh = pendingMarks.value
+    const fresh = pendingEvents.value
     if (!fresh.length && !readUnplaced().length) return
-    pendingMarks.value = []
+    pendingEvents.value = []
     void withMarkLock(() => {
       const handled = readHandled()
       const kept = readUnplaced()
       const freshIds = new Set(fresh.map((e) => e.id))
       const batch = [...kept.filter((e) => !freshIds.has(e.id)), ...fresh]
       const variant = getVariantKey(run.difficulty)
+      const placing = {
+        scenes: statics.gameScenes.value,
+        calibration: statics.calibration.value,
+        variant,
+        imageFor: (mapId: string) => statics.getMap(mapId)?.[variant],
+        items: statics.items.value,
+      }
+      const counted = (name: string, n: number) => (n > 1 ? `${name} ×${n}` : name)
       const added: string[] = []
-      const stillUnplaced: LiveMarkEvent[] = []
-      const newlyUnplaced: LiveMarkEvent[] = []
+      const looted: string[] = []
+      const stashed: string[] = []
+      const stillUnplaced: LiveGameEvent[] = []
+      const newlyUnplaced: LiveGameEvent[] = []
+      const keep = (event: LiveGameEvent) => {
+        stillUnplaced.push(event)
+        // Pickups and drops are kept quietly: only a mark is worth a toast
+        if (event.type === 'mark' && !kept.some((k) => k.id === event.id)) newlyUnplaced.push(event)
+      }
       for (const event of batch) {
         if (handled.includes(event.id)) continue
-        const plan = planMark(event, {
-          scenes: statics.gameScenes.value,
-          calibration: statics.calibration.value,
-          variant,
-          imageFor: (mapId) => statics.getMap(mapId)?.[variant],
-          items: statics.items.value,
-        })
-        if (!plan) {
-          stillUnplaced.push(event)
-          if (!kept.some((k) => k.id === event.id)) newlyUnplaced.push(event)
+        if (event.type === 'mark') {
+          const plan = planMark(event, placing)
+          if (!plan) {
+            keep(event)
+            continue
+          }
+          handled.push(event.id)
+          // Another browser may have added it already and synced it here
+          if (game.markers.value.some((m) => m.id === plan.id)) continue
+          game.addMarker({ ...plan, runId: run.id })
+          added.push(counted(plan.name, plan.quantity))
+          continue
+        }
+        const changes = planItemsEvent(event, { ...placing, markers: game.markers.value.filter((m) => m.runId === run.id) })
+        if (!changes) {
+          keep(event)
           continue
         }
         handled.push(event.id)
-        // Another browser may have added it already and synced it here
-        if (game.markers.value.some((m) => m.id === plan.id)) continue
-        game.addMarker({ ...plan, runId: run.id })
-        added.push(plan.quantity > 1 ? `${plan.name} ×${plan.quantity}` : plan.name)
+        for (const c of changes) {
+          if (c.kind === 'add') {
+            if (game.markers.value.some((m) => m.id === c.marker.id)) continue
+            game.addMarker({ ...c.marker, runId: run.id })
+            stashed.push(counted(c.marker.name, c.marker.quantity))
+          } else if (c.kind === 'quantity') {
+            game.updateMarker(c.markerId, { quantity: c.quantity })
+            ;(c.by > 0 ? stashed : looted).push(counted(c.name, Math.abs(c.by)))
+          } else {
+            game.setLooted(c.markerId, true)
+            looted.push(c.name)
+          }
+        }
       }
       localStorage.setItem(HANDLED_KEY, JSON.stringify(handled.slice(-MAX_HANDLED)))
       localStorage.setItem(UNPLACED_KEY, JSON.stringify(stillUnplaced.slice(-MAX_UNPLACED)))
-      // Every fresh mark is now either a marker or kept in this browser: the server can drop it
+      // Every fresh event is now applied or kept in this browser: the server can drop it
       ack(fresh.map((e) => e.id))
-      // One toast slot: say both things in one message
+      // One toast slot: say everything in one message
       const parts: string[] = []
       if (added.length) parts.push(`Marked from the game: ${added.join(', ')}`)
+      if (looted.length) parts.push(`Looted: ${looted.join(', ')}`)
+      if (stashed.length) parts.push(`Stashed: ${stashed.join(', ')}`)
       if (newlyUnplaced.length) {
         const where = [...new Set(newlyUnplaced.map(placeName))].join(', ')
         parts.push(`Kept ${newlyUnplaced.length === 1 ? 'a mark' : `${newlyUnplaced.length} marks`} from ${where}: shown once that map is calibrated`)

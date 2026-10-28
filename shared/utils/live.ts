@@ -42,9 +42,11 @@ export interface LivePosition {
   point: { x: number; y: number } | null
   /** Heading on screen, degrees clockwise from up. Null indoors or without calibration. */
   rotation: number | null
+  /** Map pixels per game metre (≈ world unit), or null without calibration. */
+  pxPerMeter: number | null
 }
 
-/** What the player aimed at when they pressed the mark key. */
+/** An item in a game event: aimed at (mark), picked up or put down. */
 export interface LiveMarkItem {
   name: string // GearItem.DisplayName, e.g. "Hatchet"
   gearName?: string // prefab name, e.g. "GEAR_Hatchet"
@@ -61,6 +63,22 @@ export interface LiveMarkEvent {
   item?: LiveMarkItem | null
 }
 
+/**
+ * Items the player took (`pickup`: from the ground or a container) or put down (`drop`: on the
+ * ground, or into a container). Pickups loot the nearest marker for the item; drops add a stash.
+ */
+export interface LiveItemsEvent {
+  id: string
+  type: 'pickup' | 'drop'
+  createdAt: number
+  scenes: LiveSceneSample[]
+  items: LiveMarkItem[]
+  /** Name of the container the items came from or went into, e.g. "Locker". */
+  container?: string | null
+}
+
+export type LiveGameEvent = LiveMarkEvent | LiveItemsEvent
+
 export const MAX_LIVE_SCENES = 8
 const SCENE_NAME = /^[A-Za-z0-9_]{1,64}$/
 const EVENT_ID = /^[A-Za-z0-9-]{8,64}$/
@@ -68,6 +86,8 @@ const GEAR_NAME = /^[A-Za-z0-9_]{1,80}$/
 const MAX_COORD = 100_000
 const MAX_ITEM_NAME = 100
 const MAX_QUANTITY = 9999
+export const MAX_EVENT_ITEMS = 50
+const MAX_CONTAINER_NAME = 60
 
 function validateScenes(scenes: unknown): string | null {
   if (!Array.isArray(scenes) || scenes.length < 1 || scenes.length > MAX_LIVE_SCENES) {
@@ -97,30 +117,46 @@ export function cleanLiveState(body: LiveState): LiveState {
   return { scenes: cleanScenes(body.scenes) }
 }
 
-/** Problem with a POST /api/live/v1/events body, or null when it is a valid mark event. */
-export function validateLiveEvent(body: unknown): string | null {
-  if (!body || typeof body !== 'object') return 'body must be an object'
-  const { id, type, scenes, item } = body as Record<string, unknown>
-  if (typeof id !== 'string' || !EVENT_ID.test(id)) return 'id must be 8–64 letters, digits or dashes'
-  if (type !== 'mark') return 'type must be "mark"'
-  const problem = validateScenes(scenes)
-  if (problem) return problem
-  if (item === undefined || item === null) return null
-  if (typeof item !== 'object') return 'item must be an object'
+function validateItem(item: unknown, at: string): string | null {
+  if (!item || typeof item !== 'object') return `${at} must be an object`
   const { name, gearName, quantity } = item as Record<string, unknown>
-  if (typeof name !== 'string' || !name.trim() || name.length > MAX_ITEM_NAME) return 'item.name must be a short string'
-  if (gearName !== undefined && (typeof gearName !== 'string' || !GEAR_NAME.test(gearName))) return 'item.gearName is not a prefab name'
+  if (typeof name !== 'string' || !name.trim() || name.length > MAX_ITEM_NAME) return `${at}.name must be a short string`
+  if (gearName !== undefined && (typeof gearName !== 'string' || !GEAR_NAME.test(gearName))) return `${at}.gearName is not a prefab name`
   if (quantity !== undefined && (!Number.isInteger(quantity) || (quantity as number) < 1 || (quantity as number) > MAX_QUANTITY)) {
-    return `item.quantity must be a whole number 1–${MAX_QUANTITY}`
+    return `${at}.quantity must be a whole number 1–${MAX_QUANTITY}`
   }
   return null
 }
 
-export function cleanLiveEvent(body: Omit<LiveMarkEvent, 'createdAt'>, createdAt: number): LiveMarkEvent {
-  const item = body.item
-    ? { name: body.item.name.trim(), gearName: body.item.gearName, quantity: body.item.quantity }
-    : null
-  return { id: body.id, type: 'mark', createdAt, scenes: cleanScenes(body.scenes), item }
+/** Problem with a POST /api/live/v1/events body, or null when it is a valid game event. */
+export function validateLiveEvent(body: unknown): string | null {
+  if (!body || typeof body !== 'object') return 'body must be an object'
+  const { id, type, scenes, item, items, container } = body as Record<string, unknown>
+  if (typeof id !== 'string' || !EVENT_ID.test(id)) return 'id must be 8–64 letters, digits or dashes'
+  if (type !== 'mark' && type !== 'pickup' && type !== 'drop') return 'type must be "mark", "pickup" or "drop"'
+  const problem = validateScenes(scenes)
+  if (problem) return problem
+  if (type === 'mark') return item === undefined || item === null ? null : validateItem(item, 'item')
+  if (!Array.isArray(items) || items.length < 1 || items.length > MAX_EVENT_ITEMS) return `items must be an array of 1–${MAX_EVENT_ITEMS} entries`
+  for (const [i, it] of items.entries()) {
+    const p = validateItem(it, `items[${i}]`)
+    if (p) return p
+  }
+  if (container !== undefined && container !== null && (typeof container !== 'string' || container.length > MAX_CONTAINER_NAME)) {
+    return 'container must be a short string'
+  }
+  return null
+}
+
+const cleanItem = (item: LiveMarkItem): LiveMarkItem => ({ name: item.name.trim(), gearName: item.gearName, quantity: item.quantity })
+
+/** Keeps only the known fields of a validated event, and stamps the server's time. */
+export function cleanLiveEvent(body: Omit<LiveMarkEvent, 'createdAt'> | Omit<LiveItemsEvent, 'createdAt'>, createdAt: number): LiveGameEvent {
+  const scenes = cleanScenes(body.scenes)
+  if (body.type === 'mark') return { id: body.id, type: 'mark', createdAt, scenes, item: body.item ? cleanItem(body.item) : null }
+  // No control characters: the name ends up in a marker note
+  const container = body.container?.replace(/\p{Cc}/gu, '').trim() || null
+  return { id: body.id, type: body.type, createdAt, scenes, items: body.items.map(cleanItem), container }
 }
 
 // ── Turning a mark event into a marker ──────────────────────────────────────
@@ -199,6 +235,104 @@ export function planMark<I extends { id: string; name: string }>(
   }
 }
 
+/** Within this distance a pickup counts as taking a marked item (covers hand-placed markers too). */
+export const PICKUP_RADIUS_M = 20
+/** Drops of the same item this close to an earlier one add to that stash instead of a new marker. */
+export const STASH_MERGE_RADIUS_M = 3
+
+/** What a pickup or drop needs to know about the run's markers. */
+export interface MarkerLike {
+  id: string
+  mapId: string
+  itemId: string
+  x: number
+  y: number
+  quantity: number
+  note?: string
+  lootedAt?: number | null
+}
+
+export type MarkerChange =
+  | { kind: 'add'; marker: PlannedMark }
+  | { kind: 'quantity'; markerId: string; quantity: number; name: string; by: number }
+  | { kind: 'looted'; markerId: string; name: string }
+
+const INSIDE = 'Inside '
+
+/**
+ * Marker changes for a pickup or drop, or null when the position can't be placed on a calibrated
+ * map (kept and retried later, like marks). Items are applied one after another, so picking up
+ * two of the same thing loots two markers.
+ *
+ * Indoors every marker sits at the door, so there a pickup only matches markers noted as inside
+ * the same building; outdoors it matches the nearest marker for the item within PICKUP_RADIUS_M
+ * that isn't inside a building. A pickup leaves the rest when the marker holds more.
+ */
+export function planItemsEvent<I extends { id: string; name: string }>(
+  event: LiveItemsEvent,
+  ctx: {
+    scenes: GameScene[]
+    calibration: MapCalibration
+    variant: 'default' | 'interloper'
+    imageFor?: (mapId: string) => { imageWidth: number; imageHeight: number } | undefined
+    items: I[]
+    /** The run's markers. */
+    markers: MarkerLike[]
+  },
+): MarkerChange[] | null {
+  const pos = resolveLivePosition({ scenes: event.scenes }, ctx.scenes, ctx.calibration, ctx.variant, ctx.imageFor)
+  if (!pos?.point || !pos.pxPerMeter) return null
+  const at = pos.point
+  const inside = pos.indoors ? `${INSIDE}${sceneLabel(event.scenes[0]!.scene)}` : null
+  const distance = (m: MarkerLike) => Math.hypot(m.x - at.x, m.y - at.y) / pos.pxPerMeter!
+  // Working copy, so later items in this event see the changes of earlier ones
+  const markers = ctx.markers.filter((m) => m.mapId === pos.mapId).map((m) => ({ ...m }))
+  const changes: MarkerChange[] = []
+
+  for (const [i, it] of event.items.entries()) {
+    const item = matchItem(it, ctx.items)
+    const quantity = it.quantity ?? 1
+    if (event.type === 'pickup') {
+      // Nothing the app knows: no marker can be for it
+      if (!item) continue
+      const candidates = markers.filter((m) => !m.lootedAt && m.itemId === item.id && (inside
+        ? !!m.note?.includes(inside)
+        : !m.note?.includes(INSIDE) && distance(m) <= PICKUP_RADIUS_M))
+      // A stash in the container it came from first, then the closest
+      const fromContainer = (m: MarkerLike) => (event.container && m.note?.includes(event.container) ? 0 : 1)
+      candidates.sort((a, b) => fromContainer(a) - fromContainer(b) || distance(a) - distance(b))
+      const target = candidates[0]
+      if (!target) continue
+      if (target.quantity > quantity) {
+        target.quantity -= quantity
+        changes.push({ kind: 'quantity', markerId: target.id, quantity: target.quantity, name: item.name, by: -quantity })
+      } else {
+        target.lootedAt = event.createdAt
+        changes.push({ kind: 'looted', markerId: target.id, name: item.name })
+      }
+      continue
+    }
+
+    const notes = [event.container ? `Stashed in ${event.container}` : 'Stashed']
+    if (inside) notes.push(inside)
+    if (!item) notes.push(`Game: ${it.name}`)
+    const note = notes.join(' · ')
+    const itemId = item?.id ?? UNSORTED_ITEM_ID
+    const name = item?.name ?? UNSORTED_ITEM_NAME
+    const stash = markers.find((m) => !m.lootedAt && m.itemId === itemId && m.note === note && distance(m) <= STASH_MERGE_RADIUS_M)
+    if (stash) {
+      stash.quantity += quantity
+      changes.push({ kind: 'quantity', markerId: stash.id, quantity: stash.quantity, name, by: quantity })
+      continue
+    }
+    // Same shape as other marker ids (the time is read from them), unique per item of the event
+    const marker: PlannedMark = { id: `${markerIdForEvent(event)}-${i}`, mapId: pos.mapId, x: at.x, y: at.y, itemId, name, quantity, note }
+    markers.push({ ...marker, lootedAt: null })
+    changes.push({ kind: 'add', marker })
+  }
+  return changes
+}
+
 export function applyTransform(t: MapTransform, x: number, z: number): { x: number; y: number } {
   const [a, b, c, d, e, f] = t.matrix as [number, number, number, number, number, number]
   return { x: a * x + b * z + c, y: d * x + e * z + f }
@@ -245,6 +379,7 @@ export function resolveLivePosition(
       indoors,
       point: t ? applyTransform(t, sample.x, sample.z) : null,
       rotation: t && !indoors ? headingOnMap(t, sample.heading) : null,
+      pxPerMeter: t ? Math.sqrt(Math.abs(t.matrix[0]! * t.matrix[4]! - t.matrix[1]! * t.matrix[3]!)) : null,
     }
   }
   return null

@@ -15,7 +15,8 @@ namespace TldBuddy.Mod
 {
     /// <summary>
     /// Sends the player's scene and position to the TLD Buddy server about once per second,
-    /// turns the mark key into a marker for the item under the crosshair, logs every few seconds,
+    /// turns the mark key into a marker for the item under the crosshair, reports pickups and drops
+    /// (they loot markers and record stashes), logs every few seconds,
     /// and exports each scene's transitions (doors, region exits) as calibration landmarks.
     /// </summary>
     public sealed class TldBuddyMod : MelonMod
@@ -29,6 +30,8 @@ namespace TldBuddy.Mod
         /// <summary>How far the crosshair looks for an item to mark, in metres.</summary>
         const float AimRange = 5f;
         const string DefaultMarkKey = "F4";
+        /// <summary>Server limit per event (MAX_EVENT_ITEMS).</summary>
+        const int MaxEventItems = 50;
 
         MelonPreferences_Entry<string> serverUrl;
         MelonPreferences_Entry<string> token;
@@ -67,6 +70,7 @@ namespace TldBuddy.Mod
             prefs.SaveToFile(false);
             ApplyRunInBackground();
             bridge = new LiveBridge(LoggerInstance);
+            ItemEvents.Log = LoggerInstance;
             markKey = Hotkey.Parse(markKeyName.Value);
             if (markKey == null)
             {
@@ -82,6 +86,9 @@ namespace TldBuddy.Mod
         public override void OnSceneWasInitialized(int buildIndex, string sceneName)
         {
             LoggerInstance.Msg($"Scene initialized: {sceneName} (build index {buildIndex})");
+            // Pickups just before the door belong to the scene left; the trail still has it first
+            FlushItemEvents();
+            ItemEvents.Ready = false;
             // Right after a load the player still has the old scene's position and the old
             // scene's containers are not destroyed yet; wait a moment before reading either.
             nextTick = Time.unscaledTime + SceneSettleDelay;
@@ -112,6 +119,8 @@ namespace TldBuddy.Mod
             {
                 // A save loaded next may be anywhere: don't place it relative to the last one
                 trail.Clear();
+                ItemEvents.Ready = false;
+                ItemEvents.Discard();
                 return;
             }
 
@@ -133,6 +142,9 @@ namespace TldBuddy.Mod
             Vector3 pos = player.position;
             float heading = player.eulerAngles.y;
             UpdateTrail(Sample(gameScene, player));
+            // Ticks only run once the scene has settled (see OnSceneWasInitialized)
+            ItemEvents.Ready = true;
+            FlushItemEvents();
 
             if (BridgeOn)
             {
@@ -182,7 +194,8 @@ namespace TldBuddy.Mod
             MarkItem item = AimedItem();
             var mark = new MarkEvent(System.Guid.NewGuid().ToString(), new List<SceneSample>(trail), item);
             string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
-            bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions), label);
+            bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions),
+                $"TLD Buddy: marked {label}", "TLD Buddy: could not send the mark (see MelonLoader log)");
             LoggerInstance.Msg($"Mark: {label} in {scene}");
             SaveMarkPoint(trail[0], label);
         }
@@ -211,6 +224,38 @@ namespace TldBuddy.Mod
             }
         }
 
+        /// <summary>
+        /// Sends what was picked up or put down since the last tick, one event per kind and
+        /// container, with repeats of an item (sticks picked up one by one) added together.
+        /// </summary>
+        void FlushItemEvents()
+        {
+            if (!ItemEvents.HasPending) return;
+            var entries = ItemEvents.TakeAll();
+            if (!BridgeOn || trail.Count == 0) return;
+
+            var groups = new Dictionary<string, ItemsEvent>();
+            foreach (var e in entries)
+            {
+                string key = e.type + "|" + e.container;
+                if (!groups.TryGetValue(key, out var ev))
+                {
+                    ev = new ItemsEvent(System.Guid.NewGuid().ToString(), e.type, new List<SceneSample>(trail), e.container);
+                    groups[key] = ev;
+                }
+                var same = ev.items.Find(i => i.name == e.name && i.gearName == e.gearName);
+                if (same != null) same.quantity = System.Math.Min(same.quantity + e.quantity, 9999);
+                else if (ev.items.Count < MaxEventItems) ev.items.Add(new MarkItem(e.name, e.gearName, e.quantity));
+            }
+            foreach (var ev in groups.Values)
+            {
+                string what = string.Join(", ", ev.items.ConvertAll(i => i.quantity > 1 ? $"{i.name} x{i.quantity}" : i.name));
+                LoggerInstance.Msg($"{(ev.type == "pickup" ? "Picked up" : "Put down")}: {what}{(ev.container != null ? $" ({ev.container})" : "")} in {trail[0].scene}");
+                bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(ev, JsonOptions),
+                    null, $"TLD Buddy: could not send a {ev.type} (see MelonLoader log)");
+            }
+        }
+
         /// <summary>The gear item under the crosshair, or null (nothing, or not an item: a door, a container).</summary>
         MarkItem AimedItem()
         {
@@ -222,8 +267,8 @@ namespace TldBuddy.Mod
                 if (gear == null) return null;
                 string name = gear.DisplayName;
                 if (string.IsNullOrWhiteSpace(name)) return null;
-                int units = gear.m_StackableItem != null ? gear.m_StackableItem.m_Units : 1;
-                return new MarkItem(name.Trim(), PrefabName(target.name), Mathf.Clamp(units, 1, 9999));
+                int units = Gear.Units(gear);
+                return new MarkItem(name.Trim(), Gear.PrefabName(target.name), Mathf.Clamp(units, 1, 9999));
             }
             catch (System.Exception e)
             {
@@ -231,18 +276,6 @@ namespace TldBuddy.Mod
                 LoggerInstance.Warning($"Could not read the item under the crosshair: {e.Message}");
                 return null;
             }
-        }
-
-        /// <summary>"GEAR_Hatchet(Clone)" → "GEAR_Hatchet"; only characters the server accepts.</summary>
-        static string PrefabName(string objectName)
-        {
-            var chars = new System.Text.StringBuilder();
-            foreach (char c in objectName ?? "")
-            {
-                if (c == '(' || c == ' ') break;
-                if (char.IsLetterOrDigit(c) && c < 128 || c == '_') chars.Append(c);
-            }
-            return chars.Length > 0 && chars.Length <= 80 ? chars.ToString() : null;
         }
 
         /// <summary>
@@ -372,6 +405,24 @@ namespace TldBuddy.Mod
                 this.id = id;
                 this.scenes = scenes;
                 this.item = item;
+            }
+        }
+
+        /// <summary>Body of POST /api/live/v1/events (shared/utils/live.ts LiveItemsEvent).</summary>
+        sealed class ItemsEvent
+        {
+            public string id;
+            public string type;
+            public List<SceneSample> scenes;
+            public List<MarkItem> items = new List<MarkItem>();
+            public string container;
+
+            public ItemsEvent(string id, string type, List<SceneSample> scenes, string container)
+            {
+                this.id = id;
+                this.type = type;
+                this.scenes = scenes;
+                this.container = container;
             }
         }
 

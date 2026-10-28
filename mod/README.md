@@ -59,6 +59,15 @@ Press the mark key in game (default F4) while aiming at an item. A marker for it
 - Indoors, the marker goes on the door you came in by, with an "Inside Camp Office" note.
 - The server holds marks until a TLD Buddy tab picks them up, so marks made with no tab open still arrive.
 
+### Pickups and drops
+
+The mod also reports what you pick up and put down, without a key press:
+
+- **Pickup** (from the ground or a container): the nearest marker for that item within 20 m is set to looted. If the marker holds more than you took, its quantity goes down instead. Indoors, only markers noted as inside the same building count, and a stash in the container you took from comes first.
+- **Drop** (on the ground, or into a container): a "Stashed" marker at your position, or "Stashed in Locker" for a container. Putting more of the same item in the same place adds to that marker.
+
+The MelonLoader log shows each one ("Picked up: Stick x3 in LakeRegion"). Nothing is recorded while a save loads, so loading doesn't loot your markers.
+
 The position is kept in server memory only, never in the saved data. Requests run off the game thread, at most one at a time, with a 3 s timeout. If the server is unreachable, the mod skips updates and logs a warning at most once a minute.
 
 ## Landmarks and map calibration

@@ -6,7 +6,7 @@ const KEEPALIVE_MS = 15_000
 /**
  * Server-sent events for signed-in browsers:
  * - `state`: the latest game state, right away and then on every update from the mod
- * - `mark`: "mark here" events not yet acked, right away and then as they happen
+ * - `game`: game events (mark here, pickups, drops) not yet acked, right away and then as they happen
  * Ping events keep proxies (Cloudflare) from closing an idle stream while the game is not running.
  */
 export default defineEventHandler(async (event) => {
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   const stream = createEventStream(event)
   const push = (name: string, data: unknown) => void stream.push({ event: name, data: JSON.stringify(data) })
 
-  const unsubscribe = subscribeLive((b) => (b.kind === 'state' ? push('state', b.message) : push('mark', b.event)))
+  const unsubscribe = subscribeLive((b) => (b.kind === 'state' ? push('state', b.message) : push('game', b.event)))
   const keepalive = setInterval(() => void stream.push({ event: 'ping', data: '' }), KEEPALIVE_MS)
   stream.onClosed(async () => {
     unsubscribe()
@@ -33,6 +33,6 @@ export default defineEventHandler(async (event) => {
   })
 
   push('state', currentLiveMessage())
-  for (const mark of pendingLiveEvents()) push('mark', mark)
+  for (const e of pendingLiveEvents()) push('game', e)
   return stream.send()
 })

@@ -3,9 +3,9 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
-  applyTransform, cleanLiveEvent, cleanLiveState, headingOnMap, markerIdForEvent, matchItem, planMark, resolveLivePosition,
+  applyTransform, cleanLiveEvent, cleanLiveState, headingOnMap, markerIdForEvent, matchItem, planItemsEvent, planMark, resolveLivePosition,
   sceneLabel, UNSORTED_ITEM_ID, validateLiveEvent, validateLiveState,
-  type LiveMarkEvent, type LiveState, type MapCalibration, type MapTransform,
+  type LiveItemsEvent, type LiveMarkEvent, type LiveState, type MapCalibration, type MapTransform, type MarkerChange, type MarkerLike,
 } from '../shared/utils/live'
 import type { GameScene } from '../shared/types/game'
 
@@ -60,7 +60,7 @@ test('heading: north is up, east is right, also through a rotated map', () => {
 
 test('outdoors in a calibrated region: point and heading', () => {
   const pos = resolveLivePosition({ scenes: [sample('LakeRegion', 10, 20, 90)] }, SCENES, CAL, 'default', image)
-  assert.deepEqual(pos, { mapId: 'mystery-lake', scene: 'LakeRegion', indoors: false, point: { x: 120, y: 240 }, rotation: 90 })
+  assert.deepEqual(pos, { mapId: 'mystery-lake', scene: 'LakeRegion', indoors: false, point: { x: 120, y: 240 }, rotation: 90, pxPerMeter: 2 })
 })
 
 test('indoors: placed at the door of the region they came from, no heading', () => {
@@ -173,6 +173,76 @@ test('committed calibration and scene table are consistent', () => {
     assert.equal(scenes.find((s) => s.scene === scene)?.mapId, entry.mapId, scene)
     for (const t of [entry.default, entry.interloper]) if (t) assert.equal(t.matrix.length, 6, scene)
   }
+})
+
+// ── Pickups and drops ────────────────────────────────────────────────────────
+
+const itemsEvent = (type: 'pickup' | 'drop', items: LiveItemsEvent['items'], extra: Partial<LiveItemsEvent> = {}): LiveItemsEvent => ({
+  id: '7d1e2f3a-0000-4000-8000-000000000000', type, createdAt: 1761700000000, scenes: [sample('LakeRegion', 10, 20)], items, ...extra,
+})
+// Player at map (120, 240); 2 px per metre
+const marker = (id: string, extra: Partial<MarkerLike> = {}): MarkerLike => ({
+  id, mapId: 'mystery-lake', itemId: 'hatchet', x: 120, y: 240, quantity: 1, lootedAt: null, ...extra,
+})
+const withMarkers = (markers: MarkerLike[]) => ({ ...ctx, markers })
+const summary = (changes: MarkerChange[] | null) => changes?.map((c) => (c.kind === 'add' ? `add ${c.marker.itemId}×${c.marker.quantity} ${c.marker.note}` : c.kind === 'quantity' ? `${c.markerId}=${c.quantity}` : `looted ${c.markerId}`))
+
+test('pickup and drop events validate; junk is rejected', () => {
+  const { createdAt: _, ...body } = itemsEvent('pickup', [{ name: 'Hatchet' }], { container: 'Locker' })
+  assert.equal(validateLiveEvent(body), null)
+  assert.notEqual(validateLiveEvent({ ...body, items: [] }), null)
+  assert.notEqual(validateLiveEvent({ ...body, items: Array.from({ length: 51 }, () => ({ name: 'Stick' })) }), null)
+  assert.notEqual(validateLiveEvent({ ...body, items: [{ name: '' }] }), null)
+  assert.notEqual(validateLiveEvent({ ...body, container: 'x'.repeat(61) }), null)
+  const cleaned = cleanLiveEvent({ ...body, container: ' Lock\u0007er ' }, 42)
+  assert.deepEqual(cleaned.type === 'pickup' && [cleaned.createdAt, cleaned.container], [42, 'Locker'])
+})
+
+test('pickup loots the nearest marker for the item, within the radius', () => {
+  const markers = [marker('far', { x: 120 + 2 * 25 }), marker('near', { x: 120 + 2 * 5 }), marker('other', { itemId: 'peaches' })]
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }]), withMarkers(markers))), ['looted near'])
+  // 25 m away is too far
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }]), withMarkers([markers[0]!]))), [])
+  // Already looted, or something the app doesn't know: nothing changes
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }]), withMarkers([marker('done', { lootedAt: 1 })]))), [])
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Stick' }]), withMarkers([marker('u', { itemId: UNSORTED_ITEM_ID })]))), [])
+})
+
+test('pickup takes part of a bigger stack, and two pickups loot two markers', () => {
+  const stack = [marker('ammo', { itemId: 'rifle-ammunition', quantity: 10 })]
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Rifle Ammunition', quantity: 4 }]), withMarkers(stack))), ['ammo=6'])
+  const two = [marker('a'), marker('b', { x: 122 })]
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }, { name: 'Hatchet' }]), withMarkers(two))), ['looted a', 'looted b'])
+})
+
+test('indoors a pickup only matches markers inside that building, preferring its container', () => {
+  const indoors = { scenes: [sample('CampOffice', -1, 3), sample('LakeRegion', 10, 20)] }
+  const markers = [
+    marker('outside'),
+    marker('cabin', { note: 'Inside Lake Cabin A' }),
+    marker('desk', { note: 'Stashed in Desk · Inside Camp Office' }),
+    marker('locker', { note: 'Stashed in Locker · Inside Camp Office' }),
+  ]
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }], { ...indoors, container: 'Locker' }), withMarkers(markers))), ['looted locker'])
+  // Outdoors, markers inside buildings (all at their door) are left alone
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }]), withMarkers(markers.slice(1)))), [])
+})
+
+test('drop adds a stash marker, and more of the same joins it', () => {
+  const dropped = planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }, { name: 'Mystery Box', quantity: 2 }]), withMarkers([]))
+  assert.deepEqual(summary(dropped), ['add hatchet×1 Stashed', `add ${UNSORTED_ITEM_ID}×2 Stashed · Game: Mystery Box`])
+  const ids = dropped!.map((c) => (c.kind === 'add' ? c.marker.id : ''))
+  assert.equal(new Set(ids).size, 2)
+  assert.equal(Number(ids[0]!.split('-')[1]), 1761700000000)
+  const stash = [marker('s', { quantity: 2, note: 'Stashed' })]
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }]), withMarkers(stash))), ['s=3'])
+  // In a container indoors: noted, and kept apart from a loose stash at the same door
+  const inLocker = planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }], { scenes: [sample('CampOffice'), sample('LakeRegion', 10, 20)], container: 'Locker' }), withMarkers(stash))
+  assert.deepEqual(summary(inLocker), ['add hatchet×1 Stashed in Locker · Inside Camp Office'])
+})
+
+test('pickups and drops without a calibrated position are kept for later', () => {
+  assert.equal(planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }], { scenes: [sample('RuralRegion')] }), withMarkers([])), null)
 })
 
 console.log(`\n${passed} passed`)
