@@ -29,6 +29,7 @@ namespace TldBuddy.Mod
 
         MelonPreferences_Entry<string> serverUrl;
         MelonPreferences_Entry<string> token;
+        MelonPreferences_Entry<bool> runInBackground;
         LiveBridge bridge;
 
         float nextTick;
@@ -49,7 +50,10 @@ namespace TldBuddy.Mod
                 description: "TLD Buddy server, reachable from this PC (LAN address, not the Cloudflare URL)");
             token = prefs.CreateEntry("Token", "",
                 description: "Same value as MOD_TOKEN in the server's .env. Empty = live bridge off");
+            runInBackground = prefs.CreateEntry("RunInBackground", true,
+                description: "Keep the game running while another window (TLD Buddy) has focus, so the live position keeps updating");
             prefs.SaveToFile(false);
+            ApplyRunInBackground();
             bridge = new LiveBridge(LoggerInstance);
 
             LoggerInstance.Msg(string.IsNullOrWhiteSpace(token.Value)
@@ -65,6 +69,13 @@ namespace TldBuddy.Mod
             nextTick = Time.unscaledTime + SceneSettleDelay;
             nextContainerScan = 0f;
             exportedScene = null;
+            // The game may reset it while loading; set it again for every scene
+            ApplyRunInBackground();
+        }
+
+        void ApplyRunInBackground()
+        {
+            if (runInBackground.Value) Application.runInBackground = true;
         }
 
         public override void OnUpdate()
