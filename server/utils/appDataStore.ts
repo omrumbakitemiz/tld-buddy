@@ -1,4 +1,4 @@
-import { getRedis } from './redis'
+import { withStorage } from './redis'
 
 /** Redis keys. `app-data` keeps the exact JSON shape older builds wrote and read. */
 export const KEYS = {
@@ -10,19 +10,22 @@ export const KEYS = {
 
 const BACKUP_INTERVAL_MS = 10 * 60 * 1000
 const BACKUP_KEEP = 50
+/** Total size cap for the backup list; the newest backup is always kept even if larger. */
+const BACKUP_MAX_BYTES = 25 * 1024 * 1024
 
 /**
  * Atomic compare-and-set of the document plus revision counter.
  * Before overwriting, the previous document is pushed onto a capped backup list
- * (at most once per BACKUP_INTERVAL_MS) so a bad write can always be rolled back.
+ * (at most once per interval, at most BACKUP_KEEP entries and BACKUP_MAX_BYTES total)
+ * so a bad write can always be rolled back.
  *
  * KEYS: data, rev, backups, backupAt
- * ARGV: newJson, baseRev ('' = unconditional, legacy clients), nowMs, intervalMs, keep
+ * ARGV: newJson, baseRev, nowMs, intervalMs, keep, maxBytes
  * Returns: { ok(1|0), rev }
  */
 const SAVE_SCRIPT = `
 local cur = redis.call('GET', KEYS[2]) or '0'
-if ARGV[2] ~= '' and ARGV[2] ~= cur then
+if ARGV[2] ~= cur then
   return {0, cur}
 end
 local old = redis.call('GET', KEYS[1])
@@ -33,6 +36,16 @@ if old then
     redis.call('LPUSH', KEYS[3], ARGV[3] .. ':' .. cur .. '\\n' .. old)
     redis.call('LTRIM', KEYS[3], 0, tonumber(ARGV[5]) - 1)
     redis.call('SET', KEYS[4], ARGV[3])
+    local budget = tonumber(ARGV[6])
+    local total = 0
+    local items = redis.call('LRANGE', KEYS[3], 0, -1)
+    for i, v in ipairs(items) do
+      total = total + string.len(v)
+      if total > budget and i > 1 then
+        redis.call('LTRIM', KEYS[3], 0, i - 2)
+        break
+      end
+    end
   end
 end
 local nxt = tostring(tonumber(cur) + 1)
@@ -46,19 +59,22 @@ export interface StoredDocument {
   rev: string
 }
 
+/** Document and revision in one round trip, so a stale document never pairs with a newer revision. */
 export async function readAppData(): Promise<StoredDocument> {
-  const redis = await getRedis()
-  const [raw, rev] = await Promise.all([redis.get(KEYS.data), redis.get(KEYS.rev)])
-  return { raw, rev: rev ?? '0' }
+  return withStorage(async (redis) => {
+    const [raw, rev] = await redis.mGet([KEYS.data, KEYS.rev])
+    return { raw: raw ?? null, rev: rev ?? '0' }
+  })
 }
 
-export type SaveResult = { ok: true; rev: string } | { ok: false; rev: string }
+export type SaveResult = { ok: boolean; rev: string }
 
-export async function writeAppData(json: string, baseRev: string | null): Promise<SaveResult> {
-  const redis = await getRedis()
-  const reply = await redis.eval(SAVE_SCRIPT, {
-    keys: [KEYS.data, KEYS.rev, KEYS.backups, KEYS.backupAt],
-    arguments: [json, baseRev ?? '', String(Date.now()), String(BACKUP_INTERVAL_MS), String(BACKUP_KEEP)],
-  }) as [number, string]
-  return { ok: Number(reply[0]) === 1, rev: String(reply[1]) }
+export async function writeAppData(json: string, baseRev: string): Promise<SaveResult> {
+  return withStorage(async (redis) => {
+    const reply = await redis.eval(SAVE_SCRIPT, {
+      keys: [KEYS.data, KEYS.rev, KEYS.backups, KEYS.backupAt],
+      arguments: [json, baseRev, String(Date.now()), String(BACKUP_INTERVAL_MS), String(BACKUP_KEEP), String(BACKUP_MAX_BYTES)],
+    }) as [number, string]
+    return { ok: Number(reply[0]) === 1, rev: String(reply[1]) }
+  })
 }

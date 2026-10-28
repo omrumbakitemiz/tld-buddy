@@ -1,23 +1,35 @@
-import { isAppDataPayload } from '#shared/utils/appData'
+import { validateAppData } from '#shared/utils/appData'
 import { readAppData, writeAppData } from '../utils/appDataStore'
+import { StorageUnavailableError } from '../utils/redis'
+import { readLimitedBody } from '../utils/body'
 
 const MAX_BODY_BYTES = 5 * 1024 * 1024
 
 export default defineEventHandler(async (event) => {
-  const length = Number(getHeader(event, 'content-length') ?? 0)
-  if (length > MAX_BODY_BYTES) {
-    throw createError({ statusCode: 413, statusMessage: 'Payload too large' })
+  // Optimistic concurrency is mandatory: a save must say which revision it builds on.
+  // Builds from before revisions existed get told to reload instead of overwriting.
+  const baseRev = getHeader(event, 'x-base-rev')?.trim()
+  if (!baseRev || !/^\d+$/.test(baseRev)) {
+    throw createError({
+      statusCode: 428,
+      statusMessage: 'Precondition Required',
+      message: 'This version of TLD Buddy is out of date. Reload the page to keep saving.',
+    })
   }
 
-  const body = await readBody(event)
-  // Reject anything that is not an AppData document so a buggy client cannot wipe storage
-  if (!isAppDataPayload(body)) {
-    throw createError({ statusCode: 400, statusMessage: 'Invalid data payload' })
+  // Byte limit enforced on the stream, so chunked uploads without Content-Length can't bypass it
+  const text = await readLimitedBody(event, MAX_BODY_BYTES)
+  let body: unknown
+  try {
+    body = JSON.parse(text)
+  } catch {
+    throw createError({ statusCode: 400, statusMessage: 'Invalid JSON' })
   }
-
-  // Optimistic concurrency: clients send the revision their edits are based on.
-  // Clients without the header (builds before revisions existed) keep last-write-wins.
-  const baseRev = getHeader(event, 'x-base-rev')?.trim() || null
+  // Reject anything that is not a well-formed AppData document so a buggy client cannot wipe storage
+  const problem = validateAppData(body)
+  if (problem) {
+    throw createError({ statusCode: 400, statusMessage: 'Invalid data payload', message: problem })
+  }
 
   try {
     const result = await writeAppData(JSON.stringify(body), baseRev)
@@ -32,6 +44,9 @@ export default defineEventHandler(async (event) => {
     return { ok: true, rev: result.rev }
   } catch (err) {
     console.error('Failed to write to Redis:', err)
+    if (err instanceof StorageUnavailableError) {
+      throw createError({ statusCode: 503, statusMessage: 'Storage unavailable' })
+    }
     throw createError({ statusCode: 500, statusMessage: 'Failed to save data' })
   }
 })

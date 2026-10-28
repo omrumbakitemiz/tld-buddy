@@ -1,8 +1,16 @@
 import { createClient, type RedisClientType } from 'redis'
 import { getRedisUrl } from './config'
 
-/** How long a request waits for Redis before answering 503 instead of hanging. */
-const READY_WAIT_MS = 3000
+/** How long a request waits for Redis (connection or a single command) before giving up. */
+export const REDIS_DEADLINE_MS = 3000
+
+/** Raised for any "storage is down / too slow" condition; handlers answer 503 for it. */
+export class StorageUnavailableError extends Error {
+  constructor(cause?: unknown) {
+    super('Storage unavailable', { cause })
+    this.name = 'StorageUnavailableError'
+  }
+}
 
 let client: RedisClientType | null = null
 let connectPromise: Promise<unknown> | null = null
@@ -10,16 +18,17 @@ let lastErrorLog = 0
 
 /**
  * Shared Redis client. It reconnects in the background forever, but requests never
- * queue behind a dead connection: commands fail fast while it is down (no offline
- * queue), so the API can answer 503 and the client keeps its local copy.
+ * hang on it: there is no offline queue, every command has a deadline, and the
+ * initial wait for a connection is capped. Callers get StorageUnavailableError.
  */
 export async function getRedis(): Promise<RedisClientType> {
   if (!client) {
     const redis = createClient({
       url: getRedisUrl(),
       disableOfflineQueue: true,
+      commandOptions: { timeout: REDIS_DEADLINE_MS },
       socket: {
-        connectTimeout: READY_WAIT_MS,
+        connectTimeout: REDIS_DEADLINE_MS,
         reconnectStrategy: (retries) => Math.min(250 * 2 ** retries, 5000),
       },
     }) as RedisClientType
@@ -39,8 +48,18 @@ export async function getRedis(): Promise<RedisClientType> {
   }
 
   if (!client.isReady) {
-    await Promise.race([connectPromise, new Promise((resolve) => setTimeout(resolve, READY_WAIT_MS))])
+    await Promise.race([connectPromise, new Promise((resolve) => setTimeout(resolve, REDIS_DEADLINE_MS))])
   }
-  if (!client?.isReady) throw new Error('Redis not ready')
+  if (!client?.isReady) throw new StorageUnavailableError()
   return client
+}
+
+/** Run a storage operation; any Redis failure (down, timeout, disconnect) becomes StorageUnavailableError. */
+export async function withStorage<T>(fn: (redis: RedisClientType) => Promise<T>): Promise<T> {
+  try {
+    return await fn(await getRedis())
+  } catch (err) {
+    if (err instanceof StorageUnavailableError) throw err
+    throw new StorageUnavailableError(err)
+  }
 }
