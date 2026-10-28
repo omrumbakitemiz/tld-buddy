@@ -46,13 +46,10 @@ export async function validateSessionToken(token: string | undefined): Promise<b
   const [issuedAt, signature] = token.split('.')
   if (!issuedAt || !signature || !/^\d+$/.test(issuedAt)) return false
   if (Date.now() - Number(issuedAt) > SESSION_MAX_AGE_S * 1000) return false
-  try {
-    const expected = Buffer.from(sign(await getSessionSecret(), issuedAt), 'hex')
-    const given = Buffer.from(signature, 'hex')
-    return given.length === expected.length && crypto.timingSafeEqual(given, expected)
-  } catch {
-    return false
-  }
+  // Throws when the secret cannot be read (Redis down); callers map that to 503, not 401
+  const expected = Buffer.from(sign(await getSessionSecret(), issuedAt), 'hex')
+  const given = Buffer.from(signature, 'hex')
+  return given.length === expected.length && crypto.timingSafeEqual(given, expected)
 }
 
 /** Constant-time password comparison (hashing first equalises lengths). */

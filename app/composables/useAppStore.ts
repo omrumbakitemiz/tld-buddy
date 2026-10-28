@@ -44,6 +44,8 @@ let changeCounter = 0
 let saveTimer: ReturnType<typeof setTimeout> | null = null
 let retryTimer: ReturnType<typeof setTimeout> | null = null
 let retryAttempt = 0
+let pullRetryTimer: ReturnType<typeof setTimeout> | null = null
+let pullAttempt = 0
 let inFlight: Promise<void> | null = null
 let initialised = false
 
@@ -91,7 +93,8 @@ function init() {
   })
   window.addEventListener('pagehide', () => flush(true))
   window.addEventListener('online', () => {
-    if (meta.dirty) scheduleSave(0)
+    if (!apiSynced.value) void pull()
+    else if (meta.dirty) scheduleSave(0)
   })
 }
 
@@ -113,19 +116,33 @@ async function pull(): Promise<boolean> {
     // Redis down / server error — keep local cache, do not mark synced (blocks PUT wipe)
     if (!res.ok) {
       status.value = 'offline'
+      schedulePullRetry()
       return false
     }
     const remote = normalizeAppData(await res.json())
     const rev = res.headers.get('X-Data-Rev')
     adoptRemote(remote, rev)
     apiSynced.value = true
+    pullAttempt = 0
     if (meta.dirty) scheduleSave(0)
     else status.value = 'saved'
     return true
   } catch {
     status.value = 'offline'
+    schedulePullRetry()
     return false
   }
+}
+
+/** Until the first successful load nothing can be saved, so keep trying in the background. */
+function schedulePullRetry() {
+  if (pullRetryTimer || apiSynced.value) return
+  const delay = RETRY_DELAYS_MS[Math.min(pullAttempt, RETRY_DELAYS_MS.length - 1)]
+  pullAttempt++
+  pullRetryTimer = setTimeout(() => {
+    pullRetryTimer = null
+    if (!apiSynced.value && !authExpired.value) void pull()
+  }, delay)
 }
 
 /** Take a server document as the new base, keeping local edits made since the old base. */

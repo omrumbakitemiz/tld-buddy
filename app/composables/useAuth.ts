@@ -12,6 +12,12 @@ export function useAuth() {
   async function check() {
     try {
       const res = await fetch('/api/auth/check', { cache: 'no-store' })
+      // Server up but storage down: stay in the app on cached data instead of showing the login
+      if (res.status === 503) {
+        state.value = 'signed-in'
+        await store.pull()
+        return
+      }
       const data = await res.json() as { authenticated?: boolean }
       if (data.authenticated === true) await signedIn()
       else state.value = 'signed-out'
