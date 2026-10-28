@@ -337,8 +337,19 @@ function openAt(pos: MapPos) {
   })
 }
 
+/** An open quantity or note field is saved, not dropped, when the user moves on (Done, a pick, a click outside). */
+function flushDrafts() {
+  if (stage.value === 'qty') {
+    const n = Number(qtyDraft.value)
+    if (n >= 1 && n !== session.last.value?.quantity) setLastQuantity(Math.min(999, n))
+  } else if (stage.value === 'note') {
+    session.noteLast(noteText.value)
+  }
+}
+
 function close() {
   if (!open.value) return
+  flushDrafts()
   const done = session.summary()
   if (done) addUi.announce(`Added ${done.text}`, done.batchId)
   const hadFocus = !!rootRef.value?.contains(document.activeElement) || document.activeElement === document.body
@@ -368,6 +379,7 @@ function sameSpot(a: { x: number; y: number }, b: { x: number; y: number }) {
 
 function pick(item: Item, opts: { quantity?: number; note?: string } = {}) {
   const fromGroup = groupIdx.value
+  flushDrafts()
   if (!session.pick(item, opts)) return
   const p = session.last.value!
   toGroups()
@@ -503,7 +515,7 @@ function nextFilled(from: number, delta: number): number | null {
 
 function onSlice(index: number) {
   if (stage.value === 'groups' || stage.value === 'note' || stage.value === 'qty') {
-    if (stage.value === 'note') session.noteLast(noteText.value)
+    flushDrafts()
     groupIdx.value = index
     page.value = 0
     stage.value = 'items'
