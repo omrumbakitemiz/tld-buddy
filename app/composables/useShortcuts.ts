@@ -15,8 +15,10 @@ export interface Shortcut {
 /** Display list for the shortcuts help dialog. */
 export const SHORTCUT_HELP: { keys: string[]; label: string }[] = [
   { keys: ['/', 'Ctrl K'], label: 'Search items, places, loot and maps' },
-  { keys: ['A'], label: 'Add loot (then click the map)' },
-  { keys: ['Shift', 'click'], label: 'Add loot right where you click' },
+  { keys: ['A'], label: 'Add loot: wheel at the pointer (or click the map)' },
+  { keys: ['Right-click'], label: 'Add loot right there, or to that pile' },
+  { keys: ['1–8', 'Shift 1–9'], label: 'Wheel: pick group, item · quantity' },
+  { keys: ['Space', 'Bksp'], label: 'Wheel: same again · take the last pick back' },
   { keys: ['L'], label: 'Mark selected loot looted / back' },
   { keys: ['E'], label: 'Edit selected loot' },
   { keys: ['Del'], label: 'Delete selected loot' },

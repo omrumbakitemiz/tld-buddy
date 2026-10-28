@@ -13,11 +13,12 @@
     <div class="relative flex min-h-0 flex-1">
       <TravelModeView v-if="travelMode" class="flex-1" />
       <template v-else>
-        <SidePanel @fly-to="flyTo" @edit="(m) => (editingMarker = m)" @add-loot="startAddLoot" />
+        <SidePanel @fly-to="flyTo" @edit="(m) => (editingMarker = m)" @add-loot="startAddLoot('panel')" />
 
         <!-- isolate creates a stacking context that contains Leaflet's internal z-indexes -->
         <main class="relative isolate min-w-0 flex-1">
           <InteractiveMap ref="mapRef" @request-add-marker="onRequestAddMarker" />
+          <AddUiHost />
 
           <div class="pointer-events-none absolute inset-x-0 bottom-4 z-[550] flex justify-center px-3">
             <div ref="cardSlotRef" class="pointer-events-auto">
@@ -30,11 +31,11 @@
                 @open="(id) => ui.selectMarker(id)"
               />
               <Button
-                v-else-if="currentMap && !ui.placingLoot.value && !ui.pinningPOIId.value"
+                v-else-if="currentMap && !ui.placingLoot.value && !ui.pinningPOIId.value && !addUi.hideAddButton.value"
                 size="lg"
                 class="h-11 rounded-full px-5 shadow-[0_6px_20px_oklch(0.1_0.02_258/0.55)]"
                 title="Add loot (A) — or right-click / long-press the map"
-                @click="startAddLoot"
+                @click="startAddLoot('button')"
               >
                 <PlusIcon class="size-4" /> Add loot
                 <kbd class="ml-1 hidden rounded bg-primary-foreground/15 px-1 text-[10px] sm:inline">A</kbd>
@@ -73,6 +74,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { LoaderIcon, PlusIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import AppTopBar from '~/components/AppTopBar.vue'
+import AddUiHost from '~/components/add/AddUiHost.vue'
 import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import InteractiveMap from '~/components/InteractiveMap.vue'
 import LoginScreen from '~/components/LoginScreen.vue'
@@ -86,6 +88,8 @@ import ShortcutsDialog from '~/components/ShortcutsDialog.vue'
 import SidePanel from '~/components/SidePanel.vue'
 import SyncBanner from '~/components/SyncBanner.vue'
 import TravelModeView from '~/components/TravelModeView.vue'
+import { useAddItem } from '~/composables/useAddItem'
+import { useAddUi, type AddRequest } from '~/composables/useAddUi'
 import { useAuth } from '~/composables/useAuth'
 import { useGameData } from '~/composables/useGameData'
 import { useLiveGame } from '~/composables/useLiveGame'
@@ -96,6 +100,8 @@ import type { Marker } from '~/types'
 const auth = useAuth()
 const ui = useUiState()
 const live = useLiveGame()
+const addUi = useAddUi()
+const addItem = useAddItem()
 const {
   maps, markers, currentMap, currentMapId, currentRun, addMarker, updateMarker, setLooted, toggleLooted,
   deleteMarker, setCurrentMap, getItemById, travelMode, toggleTravelMode, authExpired, apiSynced,
@@ -165,24 +171,33 @@ function flyTo(target: { x: number; y: number; mapId: string }) {
   if (window.matchMedia('(max-width: 767px)').matches) ui.panelOpen.value = false
 }
 
-function startAddLoot() {
+function startAddLoot(source: AddRequest['source'] = 'key') {
   if (!currentRun.value) {
     ui.showRuns.value = true
     return
   }
   ui.selectMarker(null)
   ui.pinningPOIId.value = null
+  // The add-item variant being tried owns the flow (docs/add-item); the pointer is the spot when it's over the map
+  const variant = addUi.handlers()
+  if (variant?.start) {
+    const p = addUi.pointer.value
+    variant.start(p ? { pos: p.pos, client: p.client, source } : null)
+    return
+  }
   ui.placingLoot.value = true
   // On phones the sheet covers the map you need to tap
   if (window.matchMedia('(max-width: 767px)').matches) ui.panelOpen.value = false
 }
 
-function onRequestAddMarker(position: { x: number; y: number }) {
+function onRequestAddMarker(req: AddRequest) {
   if (!currentRun.value) {
     ui.showRuns.value = true
     return
   }
-  pendingMarkerPosition.value = position
+  const variant = addUi.handlers()
+  if (variant?.request) variant.request(req)
+  else pendingMarkerPosition.value = req.pos
 }
 
 function onSaveMarker(data: { items: Array<{ itemId: string; name: string; quantity: number }>; note: string }) {
@@ -226,7 +241,7 @@ function confirmDeleteMarker() {
 }
 
 function onPaletteAction(name: 'add-loot' | 'travel' | 'runs' | 'shortcuts' | 'hide-looted') {
-  if (name === 'add-loot') startAddLoot()
+  if (name === 'add-loot') startAddLoot('palette')
   else if (name === 'travel') toggleTravelMode()
   else if (name === 'runs') ui.showRuns.value = true
   else if (name === 'shortcuts') ui.showShortcuts.value = true
@@ -244,7 +259,13 @@ useShortcuts(() => {
   const onMap = !travelMode.value
   return [
     { key: 'k', mod: true, allowInInput: true, handler: () => (ui.showSearch.value = !ui.showSearch.value) },
-    ...(anyDialogOpen.value ? [] : [
+    // Undo the last add (any variant); typing fields keep their own Ctrl+Z
+    ...(onMap && addItem.canUndo.value ? [{ key: 'z', mod: true, handler: () => {
+      const n = addItem.undo()
+      addUi.announce(n ? 'Undone' : 'Nothing to undo')
+    } }] : []),
+    // An open add-item UI owns the keyboard
+    ...(anyDialogOpen.value || addUi.active.value ? [] : [
       { key: '/', handler: () => (ui.showSearch.value = true) },
       { key: '?', handler: () => (ui.showShortcuts.value = true) },
       { key: 't', handler: () => toggleTravelMode() },
@@ -257,7 +278,7 @@ useShortcuts(() => {
           else if (selectedMarkers.value.length) ui.selectMarker(null)
           else ui.selectedPOIId.value = null
         } },
-        { key: 'a', handler: startAddLoot },
+        { key: 'a', handler: () => startAddLoot('key') },
         // '[' needs AltGr on Turkish Q and other layouts: match the physical key too, and offer P
         { key: '[', code: 'BracketLeft', handler: () => (ui.panelOpen.value = !ui.panelOpen.value) },
         { key: 'p', handler: () => (ui.panelOpen.value = !ui.panelOpen.value) },
