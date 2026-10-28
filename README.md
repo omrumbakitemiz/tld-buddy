@@ -79,7 +79,9 @@ pnpm dev
 
 - **Add loot:** press `A` and click the map, or Shift-click / right-click (long-press on touch).
 - **Mark looted:** the ✓ next to an item in the Loot tab, or select a marker and press `L`. Looted
-  items fade out on the map; `H` hides them.
+  items fade out on the map; `H` hides them. Items at the same spot share one tile with a count;
+  click it for the list.
+- **Night map:** `N` dims the bright map image (on by default). `P` (or `[`) collapses the side panel.
 - **Search anything:** `/` or `Ctrl K`. Press `?` for all shortcuts.
 - **Places:** track a region's places, pin them on the map, and stash items there (per run).
 

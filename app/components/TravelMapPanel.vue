@@ -92,7 +92,7 @@
     </div>
 
     <!-- Map view -->
-    <div class="relative isolate min-h-0 flex-1">
+    <div class="relative isolate min-h-0 flex-1" :class="{ 'night-map': nightMap }">
       <!-- Empty state -->
       <div
         v-if="!map"
@@ -122,6 +122,7 @@ import { useGameData } from '~/composables/useGameData'
 import { cn } from '~/lib/utils'
 import type { GameMap } from '~/types'
 import { useImageMap } from '~/composables/useImageMap'
+import { useUiState } from '~/composables/useUiState'
 import { onClickOutside } from '@vueuse/core'
 
 const props = defineProps<{
@@ -136,6 +137,7 @@ const emit = defineEmits<{
 }>()
 
 const { maps, getConnectedMaps, getMapVariant } = useGameData()
+const { nightMap } = useUiState()
 
 const mapContainer = ref<HTMLElement | null>(null)
 const dropdownRef = ref<HTMLElement | null>(null)

@@ -8,6 +8,7 @@
   <div v-else class="flex h-dvh w-screen flex-col overflow-hidden bg-background text-foreground">
     <NuxtRouteAnnouncer />
     <AppTopBar @logout="auth.logout" />
+    <SyncBanner />
 
     <div class="relative flex min-h-0 flex-1">
       <TravelModeView v-if="travelMode" class="flex-1" />
@@ -19,13 +20,14 @@
           <InteractiveMap ref="mapRef" @request-add-marker="onRequestAddMarker" />
 
           <div class="pointer-events-none absolute inset-x-0 bottom-4 z-[550] flex justify-center px-3">
-            <div class="pointer-events-auto">
+            <div ref="cardSlotRef" class="pointer-events-auto">
               <LootCard
-                v-if="selectedMarker"
-                :marker="selectedMarker"
+                v-if="selectedMarkers.length"
+                :markers="selectedMarkers"
                 @close="ui.selectMarker(null)"
                 @edit="(m) => (editingMarker = m)"
                 @delete="(id) => (pendingDeleteMarkerId = id)"
+                @open="(id) => ui.selectMarker(id)"
               />
               <Button
                 v-else-if="currentMap && !ui.placingLoot.value && !ui.pinningPOIId.value"
@@ -82,6 +84,7 @@ import RunSelector from '~/components/RunSelector.vue'
 import SearchPalette from '~/components/SearchPalette.vue'
 import ShortcutsDialog from '~/components/ShortcutsDialog.vue'
 import SidePanel from '~/components/SidePanel.vue'
+import SyncBanner from '~/components/SyncBanner.vue'
 import TravelModeView from '~/components/TravelModeView.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useGameData } from '~/composables/useGameData'
@@ -102,6 +105,25 @@ const editingMarker = ref<Marker | null>(null)
 const pendingDeleteMarkerId = ref<string | null>(null)
 
 const selectedMarker = computed(() => markers.value.find((m) => m.id === ui.selectedMarkerId.value) ?? null)
+/** What the loot card shows: one marker, or every marker of a grouped tile */
+const selectedMarkers = computed(() => {
+  if (selectedMarker.value) return [selectedMarker.value]
+  const ids = new Set(ui.selectedGroupIds.value ?? [])
+  return ids.size ? markers.value.filter((m) => ids.has(m.id)) : []
+})
+const cardSlotRef = ref<HTMLElement | null>(null)
+
+// Keep the selected loot visible: if the card would cover it, pan the map up a little
+watch(() => selectedMarkers.value.map((m) => m.id).join(','), async (ids) => {
+  if (!ids) return
+  await nextTick()
+  await new Promise((r) => requestAnimationFrame(r))
+  const card = cardSlotRef.value?.getBoundingClientRect()
+  const list = selectedMarkers.value
+  if (!card || !list.length) return
+  const center = { x: list.reduce((a, m) => a + m.x, 0) / list.length, y: list.reduce((a, m) => a + m.y, 0) / list.length }
+  mapRef.value?.revealPosition(center, card)
+})
 
 onMounted(() => {
   // Phones start with the map, not the bottom sheet
@@ -125,7 +147,7 @@ watch([apiSynced, () => maps.value.length], ([synced, mapCount]) => {
 
 // Switching maps or runs drops selections that no longer apply
 watch([currentMapId, () => currentRun.value?.id], () => {
-  if (selectedMarker.value && selectedMarker.value.mapId !== currentMapId.value) ui.selectMarker(null)
+  if (selectedMarkers.value.some((m) => m.mapId !== currentMapId.value)) ui.selectMarker(null)
   ui.cancelPlacement()
 })
 
@@ -159,8 +181,9 @@ function onSaveMarker(data: { items: Array<{ itemId: string; name: string; quant
   const pos = pendingMarkerPosition.value
   if (!pos || !currentMap.value || !currentRun.value) return
 
-  // Several items at one spot are fanned out in a small circle so each stays clickable
-  const SPREAD_RADIUS = 25
+  // Several items at one spot get slightly different positions; on screen they are drawn
+  // as one grouped tile until you zoom in far enough to tell them apart
+  const SPREAD_RADIUS = 12
   const count = data.items.length
   let last: Marker | null = null
   data.items.forEach((entry, i) => {
@@ -219,14 +242,17 @@ useShortcuts(() => {
       { key: 't', handler: () => toggleTravelMode() },
       { key: 'r', handler: () => (ui.showRuns.value = true) },
       { key: 'h', handler: () => (ui.hideLooted.value = !ui.hideLooted.value) },
+      { key: 'n', handler: () => (ui.nightMap.value = !ui.nightMap.value) },
       ...(onMap ? [
         { key: 'Escape', handler: () => {
           if (ui.placingLoot.value || ui.pinningPOIId.value) ui.cancelPlacement()
-          else if (ui.selectedMarkerId.value) ui.selectMarker(null)
+          else if (selectedMarkers.value.length) ui.selectMarker(null)
           else ui.selectedPOIId.value = null
         } },
         { key: 'a', handler: startAddLoot },
-        { key: '[', handler: () => (ui.panelOpen.value = !ui.panelOpen.value) },
+        // '[' needs AltGr on Turkish Q and other layouts: match the physical key too, and offer P
+        { key: '[', code: 'BracketLeft', handler: () => (ui.panelOpen.value = !ui.panelOpen.value) },
+        { key: 'p', handler: () => (ui.panelOpen.value = !ui.panelOpen.value) },
         ...tabs.map((tab, i) => ({ key: String(i + 1), handler: () => ui.openPanel(tab) })),
         { key: 'f', handler: () => mapRef.value?.fit() },
         { key: '+', handler: () => mapRef.value?.zoomIn() },

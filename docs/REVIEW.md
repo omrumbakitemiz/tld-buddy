@@ -59,9 +59,9 @@ Then add `command: ["redis-server", "--appendonly", "yes"]` to the `redis` servi
 
 The app is now public at https://tld.immino.dev behind Cloudflare Access, plus the LAN port and the tsdproxy/tailnet name.
 
-**5. Session token (fixed).** The token was `HMAC_SHA256(key=password, "tld-buddy:"+password)`. That made it the same value for every login, forever. Logout only deleted the browser's cookie; the token stayed valid until the password changed. Anyone holding a cookie could also brute-force the password offline. Tokens are now `issuedAt.signature`, signed with a random 32-byte secret stored in Redis (`auth:session-secret`, overridable with `NUXT_SESSION_SECRET`). They are bound to the current password and expire after 30 days. `redis-cli DEL auth:session-secret` signs every device out. **Deploying this signs everyone out once.**
+**5. Session token (fixed).** Tokens are `<session id>.<signature>`. The session id must exist in Redis (`auth:session:<id>`, 30-day TTL), so logout revokes the token server-side, and `redis-cli --scan --pattern 'auth:session:*' | xargs redis-cli del` signs everyone out. The signing secret is re-read from Redis every minute instead of being cached forever. History: The token was `HMAC_SHA256(key=password, "tld-buddy:"+password)`. That made it the same value for every login, forever. Logout only deleted the browser's cookie; the token stayed valid until the password changed. Anyone holding a cookie could also brute-force the password offline. Tokens are now `issuedAt.signature`, signed with a random 32-byte secret stored in Redis (`auth:session-secret`, overridable with `NUXT_SESSION_SECRET`). They are bound to the current password and expire after 30 days. `redis-cli DEL auth:session-secret` signs every device out. **Deploying this signs everyone out once.**
 
-**6. Brute force (fixed).** Login now allows 10 failures per 10 minutes per client, then returns `429`. The client key is `cf-connecting-ip` when present, otherwise the socket address. Password checks use `timingSafeEqual` on hashes. Caveat: through tsdproxy all requests share one socket address, so on the tailnet the limit is effectively global.
+**6. Brute force (fixed).** Login allows 10 failures per 10 minutes per TCP peer address, plus 50 failures per 10 minutes across all clients; past either limit it returns `429`. The tracked-client map is capped at 1000 entries. `CF-Connecting-IP` is *not* trusted, because port 4000 is reachable without Cloudflare and anyone can set that header. Behind the tunnel or tsdproxy all traffic shares one peer, so the limit is effectively global there. Trade-off: someone on the LAN or tailnet can lock out logins for 10 minutes. Password checks use `timingSafeEqual` on hashes.
 
 **7. Cloudflare Access bypass (open).** Port 4000 on the Pi and the tsdproxy hostname reach the app without Access, so the shared password is the only gate there. Recommendations:
 - Bind the port to localhost or the LAN interface (`127.0.0.1:4000:3000`) if only the tunnel needs it.
@@ -130,3 +130,35 @@ Dead code removed: `ItemManager` (no item in `items.json` has a description; sea
 - `app-data` keeps its exact top-level shape. Markers gain an optional `lootedAt: number | null`; older documents load as "still there". Older builds ignore the field, so rolling back is safe.
 - New keys: `app-data:rev`, `app-data:backups`, `app-data:backup-at`, `auth:session-secret`.
 - No migration needs to run. `normalizeAppData` reads any older document.
+
+## Fix pass after PR #8 review
+
+A Codex code review and an impeccable UI review came back on the first version of this branch. What changed:
+
+| Item | Change |
+|------|--------|
+| A1 | Document and revision read in one `MGET` |
+| A2 | `validateAppData`: record shapes, unique ids, run references, numeric coordinates and quantities. Legacy omissions are still accepted (tests use the old-format seed) |
+| A3 | Merge resurrects a run that one side deleted while the other added or edited its loot or stashes |
+| A4 | GET answers older than the held revision, or superseded by a newer GET, are ignored |
+| A5 | Throttle keyed on the TCP peer address, global cap 50 per 10 min, map bounded at 1000 |
+| A6 | Server-side sessions (`auth:session:<id>`); logout revokes; secret refreshed every 60 s |
+| A7 | On close with a save in flight, the latest snapshot also goes out as a keepalive PUT |
+| A8 | Network failure on the startup auth check with a cached copy → offline mode, not the login screen |
+| A9 | Every storage operation has a hard deadline (6 s): connect wait plus command, which also covers a frozen server. All storage failures → `503` |
+| A10 | 5 MB limit enforced on the stream (chunked bodies too); backups capped at 25 MB total as well as 50 entries |
+| A11 | PUT without `X-Base-Rev` → `428` ("reload"); the client shows a Reload banner |
+| A12 | Same id added on both sides with different content: both kept, local re-id'd (runs carry their children) |
+| A13 | Conflicts back off (0 / 0.5 / 2 / 5 / 10 s) and stop after 5 rounds; permanent 4xx stop retrying; both show a banner with Retry |
+| A14 | Trailing whitespace removed |
+| B1 | Markers within 22 screen px are drawn as one stacked tile with a count, recomputed on zoom; clicking it lists the items with a looted toggle each |
+| B2 | In the add dialog, Enter on an empty search saves when items are picked, and never adds a random item |
+| B3 | Night map (default on, `N`): the map image is dimmed |
+| B4 | Ink keyline outside rings and badges; looted tiles lose fill and ring for a soft ink edge |
+| B5 | The map pans so the selected loot isn't under the card; selecting on a phone closes the sheet |
+| B6 | "Looted hidden · H" chip; sync status shows Offline / Not saved in words; error banner with Retry or Reload |
+| B7 | `P` and the physical `[` key (Turkish Q: `ğ`) toggle the panel; focus ring on marker tiles and POI plates; reduced motion uses `setView`/`fitBounds` without animation; the sheet handle collapses the sheet |
+| B8 | Deferred: HUD typeface (your decision) |
+| B9 | Brief FORM line now records the roll's seed reference, with the pinned direction governing |
+
+**Deploy note:** browser tabs still running the old build can no longer save after the deploy. They get `428`, and their unsaved edits stay only in that tab's localStorage, so reload every open tab right after deploying.

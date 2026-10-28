@@ -10,7 +10,15 @@
     )"
     aria-label="Side panel"
   >
-    <div class="mx-auto mt-2 h-1 w-10 rounded-full bg-border md:hidden" aria-hidden="true" />
+    <!-- Handle: tap to collapse the sheet back to the map -->
+    <button
+      type="button"
+      class="mx-auto mt-1 flex h-5 w-16 items-center justify-center md:hidden"
+      aria-label="Collapse panel"
+      @click="panelOpen = false"
+    >
+      <span class="h-1 w-10 rounded-full bg-border" />
+    </button>
     <TabsRoot v-model="panelTab" class="flex min-h-0 flex-1 flex-col">
       <div class="flex items-center gap-1 px-2 pt-2">
         <TabsList class="flex flex-1 gap-1" aria-label="Panel sections">
@@ -29,7 +37,7 @@
         <Button size="icon" class="size-9 shrink-0 md:hidden" aria-label="Add loot" @click="emit('add-loot')">
           <PlusIcon class="size-4" />
         </Button>
-        <Button size="icon" variant="ghost" class="size-9 shrink-0" aria-label="Close panel" title="Close panel ([)" @click="panelOpen = false">
+        <Button size="icon" variant="ghost" class="size-9 shrink-0" aria-label="Close panel" title="Close panel (P)" @click="panelOpen = false">
           <PanelLeftCloseIcon class="hidden size-4 md:block" />
           <XIcon class="size-4 md:hidden" />
         </Button>

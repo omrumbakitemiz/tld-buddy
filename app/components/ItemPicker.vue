@@ -8,7 +8,7 @@
         :placeholder="placeholder"
         class="h-9 pl-8"
         aria-label="Search items"
-        @keydown.enter.exact.prevent="pickFirst"
+        @keydown.enter.exact.prevent="onEnter"
         @keydown.down.prevent="focusGrid"
       />
     </div>
@@ -90,7 +90,11 @@ const props = withDefaults(defineProps<{
   autofocus: true,
 })
 
-const emit = defineEmits<{ pick: [item: Item] }>()
+const emit = defineEmits<{
+  pick: [item: Item]
+  /** Enter on an empty search with something already picked: the caller should save */
+  submit: []
+}>()
 
 const { items, itemCategories, currentRunMarkers, currentRunStashedItems, getItemById } = useGameData()
 
@@ -136,7 +140,12 @@ function isSelected(id: string) {
   return props.selectedIds.includes(id)
 }
 
-function pickFirst() {
+/** Enter adds the top match; with nothing typed it never picks a random item, it submits (or does nothing). */
+function onEnter() {
+  if (!query.value.trim()) {
+    if (props.selectedIds.length) emit('submit')
+    return
+  }
   const first = results.value[0]
   if (first) emit('pick', first)
 }

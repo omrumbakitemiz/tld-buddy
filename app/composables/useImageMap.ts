@@ -32,6 +32,7 @@ export function useImageMap(
       attributionControl: false,
       zoomControl: false,
       keyboard: true,
+      zoomAnimation: !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     })
     bounds = L.latLngBounds([0, 0], [v.imageHeight, v.imageWidth])
     L.imageOverlay(v.imageUrl, bounds, { className: 'tld-map-image' }).addTo(map)
@@ -63,16 +64,22 @@ export function useImageMap(
     destroy()
   })
 
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
   return {
     getMap: () => map,
     fit: () => {
-      if (map && bounds) map.flyToBounds(bounds, { duration: 0.4 })
+      if (!map || !bounds) return
+      if (reducedMotion()) map.fitBounds(bounds, { animate: false })
+      else map.flyToBounds(bounds, { duration: 0.4 })
     },
-    zoomIn: () => map?.zoomIn(),
-    zoomOut: () => map?.zoomOut(),
+    zoomIn: () => map?.zoomIn(undefined, { animate: !reducedMotion() }),
+    zoomOut: () => map?.zoomOut(undefined, { animate: !reducedMotion() }),
     flyTo: (x: number, y: number, zoom?: number) => {
       if (!map) return
-      map.flyTo([y, x], Math.max(zoom ?? 0, map.getZoom()), { duration: 0.6 })
+      const z = Math.max(zoom ?? 0, map.getZoom())
+      if (reducedMotion()) map.setView([y, x], z, { animate: false })
+      else map.flyTo([y, x], z, { duration: 0.6 })
     },
   }
 }

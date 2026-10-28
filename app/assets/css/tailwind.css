@@ -156,6 +156,26 @@
   outline-offset: -2px;
 }
 
+/* Night map: the community maps are bright cream paper; dim them for a dark room */
+.tld-map-image {
+  transition: filter 200ms ease;
+}
+
+.night-map .tld-map-image {
+  filter: brightness(0.74) saturate(0.85) sepia(0.06);
+}
+
+/* Keyboard focus on map markers lands on Leaflet's wrapper; draw the ring on the visible tile */
+.tld-icon:focus-visible {
+  outline: none;
+}
+
+.tld-icon:focus-visible .tld-marker,
+.tld-icon:focus-visible .tld-poi {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
 /* The painting bleeds into dusk at the edges of the viewport */
 .map-vignette {
   pointer-events: none;
@@ -175,7 +195,8 @@
   border-radius: 9px;
   background: oklch(0.22 0.03 258);
   border: 2px solid var(--loot);
-  box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.55);
+  /* Ink keyline outside the apricot ring keeps it visible on the cream map */
+  box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258), 0 2px 6px oklch(0.1 0.02 258 / 0.55);
   color: var(--foreground);
   font-size: 11px;
   font-weight: 700;
@@ -219,22 +240,53 @@
   line-height: 17px;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5);
+  box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258), 0 1px 3px oklch(0.1 0.02 258 / 0.5);
   pointer-events: none;
 }
 
-/* Looted: the tile washes out into the painting; only the mint tick stays crisp */
+/* Several items at one spot: a second tile peeking out behind (a literal stack), plus a bone count badge */
+.tld-marker--group {
+  box-shadow:
+    0 0 0 1.5px oklch(0.16 0.03 258),
+    4px -4px 0 -1px oklch(0.32 0.03 258),
+    4px -4px 0 0.5px oklch(0.16 0.03 258),
+    0 2px 6px oklch(0.1 0.02 258 / 0.55);
+}
+
+.tld-marker__count {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--foreground);
+  color: oklch(0.2 0.03 258);
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258);
+  pointer-events: none;
+}
+
+/* Looted: no fill, the icon washes out into the painting behind a soft ink edge; the mint tick stays crisp */
 .tld-marker--looted {
-  background: oklch(0.22 0.03 258 / 0.5);
-  border-color: oklch(0.62 0.03 258 / 0.8);
-  border-style: dashed;
-  box-shadow: none;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: 0 0 0 1px oklch(0.2 0.03 258 / 0.35), 0 0 8px 2px oklch(0.2 0.03 258 / 0.45);
 }
 
 .tld-marker--looted .tld-marker__img,
 .tld-marker--looted .tld-marker__glyph {
-  opacity: 0.5;
+  opacity: 0.55;
   filter: grayscale(1) contrast(0.85);
+}
+
+.tld-marker--looted.tld-marker--group {
+  box-shadow: 0 0 0 1px oklch(0.2 0.03 258 / 0.35), 0 0 8px 2px oklch(0.2 0.03 258 / 0.45), 4px -4px 0 -1px oklch(0.32 0.03 258 / 0.4);
 }
 
 .tld-marker--looted .tld-marker__qty {
@@ -252,7 +304,7 @@
   background: var(--looted);
   color: oklch(0.22 0.03 258);
   place-items: center;
-  box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5);
+  box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258), 0 1px 3px oklch(0.1 0.02 258 / 0.5);
 }
 
 .tld-marker--looted .tld-marker__tick {
@@ -261,7 +313,7 @@
 
 .tld-marker--selected {
   transform: scale(1.22);
-  box-shadow: 0 0 0 3px oklch(0.945 0.014 85 / 0.9), 0 4px 14px oklch(0.1 0.02 258 / 0.7);
+  box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258), 0 0 0 4px oklch(0.945 0.014 85 / 0.9), 0 4px 14px oklch(0.1 0.02 258 / 0.7);
 }
 
 /* POI: dusk-ink name plate with a glacier-blue pin dot */

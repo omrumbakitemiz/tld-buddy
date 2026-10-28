@@ -45,7 +45,9 @@ The app sits next to the game on a second monitor, usually in a dark room. So it
 
 **Type.** A plain system sans for everything you read (Operate surface, no web-font cost). Open item: the finish review recommends a self-hosted condensed HUD face for `.hud-label` and POI plates; not done yet. The game's voice comes from `.hud-label`: uppercase, 650 weight, +0.08em tracking. It is used for the wordmark, tab names, section labels and POI labels. Numbers use `tabular-nums`.
 
-**Signature move: the wash-out.** Remaining loot is a crisp dark-ink tile with an apricot ring and a quantity badge. When you mark it looted, it doesn't disappear: the item icon desaturates and fades (`grayscale + opacity .5`), the tile goes translucent with a dashed border, and a crisp mint tick appears. Looted items stay readable as history without competing with what's left. `H` hides them completely.
+**Signature move: the wash-out.** Remaining loot is a crisp dark-ink tile with an apricot ring and a quantity badge. When you mark it looted, it doesn't disappear: the tile loses its fill and ring, the item icon desaturates and fades (`grayscale + opacity .55`) behind a soft ink edge, and a keylined mint tick stays crisp. Remaining loot keeps an ink keyline outside its apricot ring so it holds on the cream paper. Looted items stay readable as history without competing with what's left. `H` hides them completely.
+
+**Night map.** The community maps are bright cream paper and were the brightest thing on screen. They are dimmed by default (`brightness(.74) saturate(.85) sepia(.06)`); `N` or the menu toggles it.
 
 **Map treatment.** The community maps are bright cream paper with dense coloured icons. So markers and POI labels are *dark* ink plates with light borders, which keeps them legible on cream. A soft dusk vignette at the edges blends the painting into the app ground.
 

@@ -10,8 +10,12 @@ const panelOpen = useLocalStorage('tld-buddy-ui-panel-open', true)
 const panelTab = useLocalStorage<PanelTab>('tld-buddy-ui-panel-tab', 'loot')
 const hideLooted = useLocalStorage('tld-buddy-ui-hide-looted', false)
 const lootFilter = useLocalStorage<LootFilter>('tld-buddy-ui-loot-filter', 'remaining')
+/** Dim the bright cream map images for dark rooms */
+const nightMap = useLocalStorage('tld-buddy-ui-night-map', true)
 
 const selectedMarkerId = ref<string | null>(null)
+/** Several markers drawn as one tile, picked together */
+const selectedGroupIds = ref<string[] | null>(null)
 const selectedPOIId = ref<string | null>(null)
 /** Map is waiting for a click to place new loot */
 const placingLoot = ref(false)
@@ -28,15 +32,30 @@ function openPanel(tab: PanelTab) {
   panelOpen.value = true
 }
 
+const isPhone = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+
 function selectMarker(id: string | null) {
   selectedMarkerId.value = id
-  if (id) selectedPOIId.value = null
+  selectedGroupIds.value = null
+  if (id) {
+    selectedPOIId.value = null
+    // On phones the bottom sheet would cover the loot card
+    if (isPhone()) panelOpen.value = false
+  }
+}
+
+function selectGroup(ids: string[]) {
+  selectedMarkerId.value = null
+  selectedGroupIds.value = ids
+  selectedPOIId.value = null
+  if (isPhone()) panelOpen.value = false
 }
 
 function selectPOI(id: string | null) {
   selectedPOIId.value = id
   if (id) {
     selectedMarkerId.value = null
+    selectedGroupIds.value = null
     openPanel('places')
   }
 }
@@ -52,7 +71,9 @@ export function useUiState() {
     panelTab,
     hideLooted,
     lootFilter,
+    nightMap,
     selectedMarkerId,
+    selectedGroupIds,
     selectedPOIId,
     placingLoot,
     pinningPOIId,
@@ -62,6 +83,7 @@ export function useUiState() {
     showPOIConfig,
     openPanel,
     selectMarker,
+    selectGroup,
     selectPOI,
     cancelPlacement,
   }

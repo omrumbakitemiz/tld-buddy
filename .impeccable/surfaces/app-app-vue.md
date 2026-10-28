@@ -21,7 +21,7 @@ STORY: The player sees which loot on this map is still there and what's already 
 
 FIRST VIEWPORT: Full-bleed Leaflet map. Thin dusk-ink top bar: wordmark, map switcher (map name), run chip with difficulty colour, search field (/ or Ctrl-K), sync status, travel toggle, menu. A collapsible left panel (Loot / Places / Maps tabs, 360px) over the map edge. Bottom-centre: "Add loot" primary (A). Bottom-right: zoom/fit. A selected marker opens a compact action card over the map with Looted (L), Edit (E), Delete.
 
-FORM: Pinned art direction (TLD painterly HUD), so concept-seed was not rolled; the user's pin governs. seed: none (direction pinned by user, no roll)
+FORM: Pinned art direction (TLD painterly HUD), position 1 on the list; the roll ran and its dealt hand was set aside because a user-pinned direction beats the roll. seed:98f7f66290e8ff78
 
 Signature move: the looted state is drawn as a watercolour "wash-out". A taken item's tile fades and desaturates into the map with a pale mint tick, while remaining loot keeps a crisp apricot ring. The map reads as a painting where what's left stands out.
 

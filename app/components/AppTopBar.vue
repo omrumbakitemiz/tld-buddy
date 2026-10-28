@@ -8,7 +8,7 @@
       :aria-label="panelOpen ? 'Hide side panel' : 'Show side panel'"
       :aria-expanded="panelOpen"
       aria-controls="side-panel"
-      :title="`${panelOpen ? 'Hide' : 'Show'} side panel ([)`"
+      :title="`${panelOpen ? 'Hide' : 'Show'} side panel (P)`"
       @click="panelOpen = !panelOpen"
     >
       <PanelLeftIcon class="size-4" />
@@ -99,6 +99,9 @@
           <DropdownMenuCheckboxItem v-model="hideLooted" class="menu-item">
             <EyeOffIcon class="size-4" /> Hide looted markers <kbd class="ml-auto">H</kbd>
           </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem v-model="nightMap" class="menu-item">
+            <MoonIcon class="size-4" /> Night map <kbd class="ml-auto">N</kbd>
+          </DropdownMenuCheckboxItem>
           <DropdownMenuItem class="menu-item" @select="showShortcuts = true">
             <KeyboardIcon class="size-4" /> Keyboard shortcuts <kbd class="ml-auto">?</kbd>
           </DropdownMenuItem>
@@ -119,7 +122,7 @@ import {
 } from 'reka-ui'
 import {
   ChevronDownIcon, CompassIcon, EllipsisVerticalIcon, EyeOffIcon, KeyboardIcon, LogOutIcon,
-  MapIcon, PanelLeftIcon, SearchIcon, SlidersHorizontalIcon, SwordsIcon,
+  MapIcon, MoonIcon, PanelLeftIcon, SearchIcon, SlidersHorizontalIcon, SwordsIcon,
 } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import SyncIndicator from '~/components/SyncIndicator.vue'
@@ -130,7 +133,7 @@ import DifficultyChip from '~/components/DifficultyChip.vue'
 const emit = defineEmits<{ logout: [] }>()
 
 const { currentMap, currentRun, travelMode, toggleTravelMode } = useGameData()
-const { panelOpen, openPanel, showRuns, showSearch, showShortcuts, showPOIConfig, hideLooted } = useUiState()
+const { panelOpen, openPanel, showRuns, showSearch, showShortcuts, showPOIConfig, hideLooted, nightMap } = useUiState()
 </script>
 
 <style scoped>

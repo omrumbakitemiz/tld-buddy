@@ -168,7 +168,7 @@ The map is the whole screen, and the interface sits on it the way The Long Dark'
 
 The surface is dense and quiet. It is an Operate tool used beside a running game in a dim room, so it is always dark, uses the system sans for everything you read, and borrows the game's voice only in its uppercase tracked labels. The painterly material comes from the community maps themselves; the chrome never imitates it with texture (a paper grain was tried and removed).
 
-The signature move is the wash-out: a looted item's tile fades and desaturates into the painted map behind a dashed border and a small mint tick, while remaining loot keeps a crisp apricot ring. The map reads as a painting where what is left stands out.
+The signature move is the wash-out: a looted item's tile loses its fill and ring, its icon fades and desaturates into the painted map behind a soft ink edge, and a small keylined mint tick stays crisp, while remaining loot keeps a crisp apricot ring. The map reads as a painting where what is left stands out.
 
 **Key Characteristics:**
 - Dark-only (`color-scheme: dark`), one dusk-ink hue family for every surface.
@@ -241,7 +241,8 @@ Depth is mostly tonal (the lightness steps of the one ink hue). Shadows exist on
 
 ### Shadow Vocabulary
 - **Marker lift** (`box-shadow: 0 2px 6px oklch(0.1 0.02 258 / 0.55)`): item tiles and POI plates (at 0.45) on the map.
-- **Badge lift** (`box-shadow: 0 1px 3px oklch(0.1 0.02 258 / 0.5)`): quantity badge and looted tick.
+- **Badge lift** (`box-shadow: 0 0 0 1.5px oklch(0.16 0.03 258), 0 1px 3px oklch(0.1 0.02 258 / 0.5)`): quantity badge, group count and looted tick, each with an ink keyline so they hold on the cream map.
+- **Marker keyline** (`0 0 0 1.5px oklch(0.16 0.03 258)`): outside the apricot ring of every remaining marker. Grouped tiles add a second offset tile behind (`4px -4px`) to read as a stack.
 - **Floating action** (`box-shadow: 0 6px 20px oklch(0.1 0.02 258 / 0.55)`): the Add loot pill.
 - **Floating card** (`box-shadow: 0 8px 28px oklch(0.1 0.02 258 / 0.6)`): the selected-marker loot card.
 - **Sheet** (`box-shadow: 0 -8px 30px oklch(0.1 0.02 258 / 0.5)`): the phone bottom sheet; removed when docked.
@@ -253,7 +254,7 @@ Depth is mostly tonal (the lightness steps of the one ink hue). Shadows exist on
 
 ## Shapes
 
-Soft, small corners from one 8px base radius: 4px chips and kbd hints, 6px controls, tabs, POI plates and menu items, 8px dialogs, menus and item-card thumbnails, 12px for the floating loot card, 16px for the bottom sheet's top. Item markers are 9px-radius squircles at 34px; badges are 17px-tall pills; the looted tick and POI pin dot are circles. Borders are 1px hairlines everywhere except the marker ring, which is a 2px stroke: solid apricot while loot remains, dashed muted when looted.
+Soft, small corners from one 8px base radius: 4px chips and kbd hints, 6px controls, tabs, POI plates and menu items, 8px dialogs, menus and item-card thumbnails, 12px for the floating loot card, 16px for the bottom sheet's top. Item markers are 9px-radius squircles at 34px; badges are 17px-tall pills; the looted tick and POI pin dot are circles. Borders are 1px hairlines everywhere except the marker ring, which is a 2px stroke: solid apricot with an ink keyline while loot remains; looted tiles drop the ring for a soft 8px ink edge.
 
 ## Components
 
@@ -271,7 +272,7 @@ Compact and quiet; only one button per view is apricot.
 - **Count badges:** tabular numerals on 60% dusk ink inside tabs; lavender on POI plates; apricot on markers.
 
 ### Cards / Containers
-- **Loot card:** rail ink, 12px radius, hairline border, 12px padding, floating-card shadow; a 48px marker preview that mirrors the marker's state (apricot ring, or dashed and greyscale when looted), title + status line, then an action row (Mark looted primary, Take 1, Edit, Delete).
+- **Loot card:** rail ink, 12px radius, hairline border, 12px padding, floating-card shadow; a 48px marker preview that mirrors the marker's state (apricot ring, or ringless and greyscale when looted). For a grouped tile it becomes a list with a looted toggle per item, title + status line, then an action row (Mark looted primary, Take 1, Edit, Delete).
 - **Dialogs:** card ink, 8px radius, hairline border, 24px padding, fade and 95% zoom over a black 80% scrim.
 - **Menus:** card ink, 8px radius, 4px padding, 36px items, accent-ink highlight, apricot for checked items.
 
@@ -286,7 +287,7 @@ Compact and quiet; only one button per view is apricot.
 - **Panel tabs:** label type, 36px, muted bone at rest, bone on accent ink when active, each with a 14px icon and an optional count.
 
 ### Loot Marker (signature)
-A 34px marker-ink squircle (9px radius) holding the item icon at 26px, ringed in 2px apricot, with an apricot quantity pill top-right. Hover scales to 1.15, selection to 1.22 with a 3px bone ring. **Looted** is the wash-out: tile at 50% alpha, dashed muted border, icon at 50% opacity with full greyscale, no shadow, quantity hidden, and a 16px mint tick bottom-right. Transitions: 160ms `cubic-bezier(0.16, 1, 0.3, 1)` for scale, 240ms ease for opacity and filter.
+A 34px marker-ink squircle (9px radius) holding the item icon at 26px, ringed in 2px apricot, with an apricot quantity pill top-right. Hover scales to 1.15, selection to 1.22 with a 3px bone ring. **Looted** is the wash-out: no fill, no ring, a soft ink edge (`0 0 8px 2px` at 45%), icon at 55% opacity with full greyscale, quantity hidden, and a keylined 16px mint tick bottom-right. **Grouped** (markers within 22 screen px at the current zoom, recomputed on zoom): one tile with a stacked second tile behind and a bone count pill top-right. **Night map** (default on, `N`): the map image gets `brightness(.74) saturate(.85) sepia(.06)`. Transitions: 160ms `cubic-bezier(0.16, 1, 0.3, 1)` for scale, 240ms ease for opacity and filter.
 
 ### POI Plate (signature)
 A dark ink name plate (92% alpha) with a 7px glacier pin dot, plate type in bone, glacier border at 55%, stash count in a lavender pill; hover or selection brings the border to full glacier and lifts the fill one step.
@@ -296,7 +297,7 @@ A dark ink name plate (92% alpha) with a 7px glacier pin dot, plate type in bone
 ### Do:
 - **Do** build every surface from the dusk-ink family (hue 258) and separate layers by lightness step, not by new hues.
 - **Do** reserve sunset apricot for loot still out there, the single primary action, and focus.
-- **Do** draw looted things as the wash-out (fade, greyscale, dashed border, mint tick) rather than removing them.
+- **Do** draw looted things as the wash-out (fade, greyscale, soft edge, mint tick) rather than removing them.
 - **Do** keep map overlays as dark ink plates with light borders so they read on the cream community maps.
 - **Do** use the label treatment (650, 0.6875rem, +0.08em, uppercase) for control, field and group names, and `tabular-nums` for every count.
 - **Do** keep transitions at 150-250ms for state changes only, and honour `prefers-reduced-motion`.

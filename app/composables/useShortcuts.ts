@@ -3,6 +3,8 @@ import { onBeforeUnmount, onMounted } from 'vue'
 export interface Shortcut {
   /** KeyboardEvent.key, compared case-insensitively ("a", "/", "Escape", "Delete") */
   key: string
+  /** Physical key (KeyboardEvent.code) that also triggers it, for layouts where `key` needs AltGr */
+  code?: string
   mod?: boolean // Ctrl on Windows/Linux, ⌘ on macOS
   shift?: boolean
   /** Fire even while typing in an input (only sensible for mod-combos and Escape) */
@@ -19,7 +21,8 @@ export const SHORTCUT_HELP: { keys: string[]; label: string }[] = [
   { keys: ['E'], label: 'Edit selected loot' },
   { keys: ['Del'], label: 'Delete selected loot' },
   { keys: ['H'], label: 'Hide or show looted markers' },
-  { keys: ['['], label: 'Collapse or expand the side panel' },
+  { keys: ['N'], label: 'Night map: dim the map image' },
+  { keys: ['P', '['], label: 'Collapse or expand the side panel' },
   { keys: ['1', '2', '3'], label: 'Panel: Loot, Places, Maps' },
   { keys: ['F'], label: 'Fit the whole map' },
   { keys: ['+', '−'], label: 'Zoom' },
@@ -42,7 +45,7 @@ export function useShortcuts(shortcuts: () => Shortcut[]) {
     // Leave keys alone while a dialog/sheet has focus, except the ones that ask otherwise
     const inDialog = !!(e.target as HTMLElement | null)?.closest?.('[role="dialog"]')
     for (const s of shortcuts()) {
-      if (s.key.toLowerCase() !== e.key.toLowerCase()) continue
+      if (s.key.toLowerCase() !== e.key.toLowerCase() && !(s.code && s.code === e.code)) continue
       const mod = e.ctrlKey || e.metaKey
       if (!!s.mod !== mod) continue
       if (s.shift !== undefined && s.shift !== e.shiftKey) continue

@@ -5,7 +5,7 @@
       <DialogHeader>
         <DialogTitle>Add loot here</DialogTitle>
         <DialogDescription>
-          Pick what you found. Type a name and press Enter to add it, then the next one.
+          Pick what you found. Type a name and press Enter to add it; Enter again to save.
         </DialogDescription>
       </DialogHeader>
 
@@ -16,6 +16,7 @@
         :selected-ids="[...quantities.keys()]"
         max-height="15rem"
         @pick="toggle"
+        @submit="handleSave"
       />
 
       <div v-if="selectedItems.length" class="space-y-1">
@@ -42,7 +43,7 @@
       </div>
 
       <DialogFooter class="items-center gap-2">
-        <span class="mr-auto hidden text-xs text-muted-foreground sm:inline"><kbd>Ctrl</kbd> <kbd>Enter</kbd> to add</span>
+        <span class="mr-auto hidden text-xs text-muted-foreground sm:inline"><kbd>Enter</kbd> to add · <kbd>Enter</kbd> again to save</span>
         <Button variant="ghost" @click="emit('close')">Cancel</Button>
         <Button :disabled="!quantities.size" @click="handleSave">
           {{ quantities.size > 1 ? `Add ${quantities.size} items` : 'Add loot' }}

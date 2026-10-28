@@ -6,8 +6,9 @@
     :title="detail"
   >
     <component :is="icon" :class="cn('size-4', syncStatus === 'saving' && 'animate-pulse')" />
-    <span class="hidden xl:inline">{{ label }}</span>
-    <span class="sr-only xl:hidden">{{ label }}</span>
+    <!-- Problems always say so in words; the calm states stay icon-only on narrow screens -->
+    <span :class="quiet ? 'hidden xl:inline' : 'inline'">{{ label }}</span>
+    <span v-if="quiet" class="sr-only xl:hidden">{{ label }}</span>
   </span>
 </template>
 
@@ -32,4 +33,5 @@ const icon = computed(() => state.value.icon)
 const label = computed(() => state.value.label)
 const tone = computed(() => state.value.tone)
 const detail = computed(() => state.value.detail)
+const quiet = computed(() => syncStatus.value !== 'offline' && syncStatus.value !== 'error')
 </script>

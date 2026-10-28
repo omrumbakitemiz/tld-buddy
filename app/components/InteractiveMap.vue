@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-full w-full" :class="{ 'map-placing': placing }">
+  <div class="relative h-full w-full" :class="{ 'map-placing': placing, 'night-map': nightMap }">
     <div
       v-if="!staticDataReady"
       class="flex h-full w-full flex-col items-center justify-center gap-3 text-muted-foreground"
@@ -40,6 +40,19 @@
       </div>
     </div>
 
+    <!-- Looted markers are hidden: say so, and offer the way back -->
+    <button
+      v-if="currentMap && hideLooted && !placing"
+      type="button"
+      class="surface-rail absolute left-3 top-3 z-[500] flex h-8 items-center gap-1.5 rounded-full border border-border px-3 text-xs shadow-lg transition-colors hover:border-primary/50"
+      title="Show looted markers (H)"
+      @click="hideLooted = false"
+    >
+      <EyeOffIcon class="size-3.5 text-muted-foreground" />
+      Looted hidden
+      <kbd class="text-[10px] text-muted-foreground">H</kbd>
+    </button>
+
     <!-- Zoom / fit -->
     <div v-if="currentMap" class="absolute bottom-4 right-3 z-[500] flex flex-col overflow-hidden rounded-lg border border-border surface-rail shadow-lg">
       <button class="map-ctl" aria-label="Zoom in" title="Zoom in (+)" @click="zoomIn">
@@ -58,7 +71,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import L from 'leaflet'
-import { CrosshairIcon, LoaderIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
+import { CrosshairIcon, EyeOffIcon, LoaderIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useImageMap } from '~/composables/useImageMap'
@@ -74,7 +87,7 @@ const {
   items, getItemById, getPOIById, getStashedItemCount, pinPOI, staticDataReady,
 } = useGameData()
 const ui = useUiState()
-const { selectedMarkerId, selectedPOIId, placingLoot, pinningPOIId, hideLooted, cancelPlacement } = ui
+const { selectedMarkerId, selectedGroupIds, selectedPOIId, placingLoot, pinningPOIId, hideLooted, nightMap, cancelPlacement } = ui
 
 const container = ref<HTMLElement | null>(null)
 const placing = computed(() => placingLoot.value || !!pinningPOIId.value)
@@ -120,6 +133,9 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
     emit('request-add-marker', { x: e.latlng.lng, y: e.latlng.lat })
   })
 
+  // Grouping depends on zoom: regroup after every zoom change
+  map.on('zoomend', renderMarkers)
+
   renderMarkers()
   renderPOIs()
 
@@ -136,50 +152,96 @@ const visibleMarkers = computed(() =>
   currentMapMarkers.value.filter((m) => !hideLooted.value || !m.lootedAt || m.id === selectedMarkerId.value),
 )
 
+/** Markers closer than this on screen merge into one tile with a count, so every tile stays clickable. */
+const GROUP_RADIUS_PX = 22
+
 // Lucide "package" glyph for items without an icon
 const PACKAGE_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/></svg>'
+const TICK_SVG = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
 
-function markerHtml(m: Marker, selected: boolean, label: string): string {
-  const item = getItemById(m.itemId)
-  const classes = ['tld-marker', m.lootedAt && 'tld-marker--looted', selected && 'tld-marker--selected'].filter(Boolean).join(' ')
+function itemLabel(m: Marker) {
+  return `${m.name || getItemById(m.itemId)?.name || 'Loot'}${m.quantity > 1 ? ` ×${m.quantity}` : ''}`
+}
+
+/** Greedy screen-space grouping at the current zoom. Remaining loot seeds groups first. */
+function groupMarkers(map: L.Map, list: Marker[]): Marker[][] {
+  const pts = list.map((m) => ({ m, p: map.latLngToLayerPoint([m.y, m.x]) }))
+  pts.sort((a, b) => Number(!!a.m.lootedAt) - Number(!!b.m.lootedAt) || a.m.id.localeCompare(b.m.id))
+  const used = new Set<string>()
+  const groups: Marker[][] = []
+  for (const seed of pts) {
+    if (used.has(seed.m.id)) continue
+    used.add(seed.m.id)
+    const group = [seed.m]
+    for (const other of pts) {
+      if (used.has(other.m.id)) continue
+      if (seed.p.distanceTo(other.p) <= GROUP_RADIUS_PX) {
+        used.add(other.m.id)
+        group.push(other.m)
+      }
+    }
+    groups.push(group)
+  }
+  return groups
+}
+
+function tileHtml(group: Marker[], selected: boolean, label: string): string {
+  const lead = group.find((m) => !m.lootedAt) ?? group[0]!
+  const allLooted = group.every((m) => m.lootedAt)
+  const item = getItemById(lead.itemId)
+  const classes = ['tld-marker', allLooted && 'tld-marker--looted', group.length > 1 && 'tld-marker--group', selected && 'tld-marker--selected'].filter(Boolean).join(' ')
   const body = item?.icon
-    ? `<img src="${escapeAttr(item.icon)}" alt="" class="tld-marker__img" draggable="false" />`
+    ? `<img src="${escapeHtml(item.icon)}" alt="" class="tld-marker__img" draggable="false" />`
     : `<span class="tld-marker__glyph">${PACKAGE_SVG}</span>`
-  const qty = m.quantity > 1 ? `<span class="tld-marker__qty">${m.quantity}</span>` : ''
-  const tick = '<span class="tld-marker__tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'
-  return `<div class="${classes}"><span class="sr-only">${escapeHtml(label)}</span><span aria-hidden="true" class="contents">${body}${qty}${tick}</span></div>`
+  const badge = group.length > 1
+    ? `<span class="tld-marker__count">${group.length}</span>`
+    : lead.quantity > 1 ? `<span class="tld-marker__qty">${lead.quantity}</span>` : ''
+  return `<div class="${classes}"><span class="sr-only">${escapeHtml(label)}</span><span aria-hidden="true" class="contents">${body}${badge}<span class="tld-marker__tick">${TICK_SVG}</span></span></div>`
 }
 
 function renderMarkers() {
-  if (!markerLayer) return
+  const map = getMap()
+  if (!markerLayer || !map) return
   const seen = new Set<string>()
-  for (const m of visibleMarkers.value) {
-    seen.add(m.id)
-    const selected = m.id === selectedMarkerId.value
-    const key = `${m.x}|${m.y}|${m.itemId}|${m.quantity}|${!!m.lootedAt}|${selected}|${m.name}`
-    const existing = markerViews.get(m.id)
+  const groupIds = new Set(selectedGroupIds.value ?? [])
+  for (const group of groupMarkers(map, visibleMarkers.value)) {
+    const ids = group.map((m) => m.id)
+    const viewKey = ids.join(',')
+    seen.add(viewKey)
+    const selected = ids.includes(selectedMarkerId.value ?? '') || (groupIds.size > 0 && ids.every((id) => groupIds.has(id)))
+    const key = group.map((m) => `${m.x}|${m.y}|${m.itemId}|${m.quantity}|${!!m.lootedAt}|${m.name}`).join(';') + `|${selected}`
+    const existing = markerViews.get(viewKey)
     if (existing?.key === key) continue
     if (existing) markerLayer.removeLayer(existing.layer)
 
-    const item = getItemById(m.itemId)
-    const label = `${m.name || item?.name || 'Loot'}${m.quantity > 1 ? ` ×${m.quantity}` : ''}${m.lootedAt ? ' (looted)' : ''}`
-    const layer = L.marker([m.y, m.x], {
-      icon: L.divIcon({ className: '', html: markerHtml(m, selected, label), iconSize: [34, 34], iconAnchor: [17, 17] }),
+    const remaining = group.filter((m) => !m.lootedAt).length
+    const label = group.length === 1
+      ? `${itemLabel(group[0]!)}${group[0]!.lootedAt ? ' (looted)' : ''}`
+      : `${group.length} items here, ${remaining} still there: ${group.map(itemLabel).join(', ')}`
+    // Group tiles sit at the centroid of their members
+    const lat = group.reduce((a, m) => a + m.y, 0) / group.length
+    const lng = group.reduce((a, m) => a + m.x, 0) / group.length
+    const layer = L.marker([lat, lng], {
+      icon: L.divIcon({ className: 'tld-icon', html: tileHtml(group, selected, label), iconSize: [34, 34], iconAnchor: [17, 17] }),
       title: label,
       alt: label,
       keyboard: true,
       riseOnHover: true,
-      zIndexOffset: selected ? 1000 : m.lootedAt ? -100 : 0,
+      zIndexOffset: selected ? 1000 : remaining ? 0 : -100,
     })
+    const choose = () => {
+      if (group.length === 1) ui.selectMarker(selectedMarkerId.value === group[0]!.id ? null : group[0]!.id)
+      else ui.selectGroup(ids)
+    }
     layer.on('click', (e) => {
       L.DomEvent.stopPropagation(e)
-      ui.selectMarker(selectedMarkerId.value === m.id ? null : m.id)
+      choose()
     })
     layer.on('keypress', (e: L.LeafletKeyboardEvent) => {
-      if (e.originalEvent.key === 'Enter') ui.selectMarker(m.id)
+      if (e.originalEvent.key === 'Enter') choose()
     })
     layer.addTo(markerLayer)
-    markerViews.set(m.id, { key, layer })
+    markerViews.set(viewKey, { key, layer })
   }
   for (const [id, view] of markerViews) {
     if (seen.has(id)) continue
@@ -207,7 +269,7 @@ function renderPOIs() {
     const badge = count > 0 ? `<span class="tld-poi__count" aria-label="${count} stashed">${count}</span>` : ''
     const layer = L.marker([pin.y, pin.x], {
       icon: L.divIcon({
-        className: '',
+        className: 'tld-icon',
         html: `<div class="tld-poi${selected ? ' tld-poi--selected' : ''}">${escapeHtml(poi.name)}${badge}</div>`,
         iconSize: [0, 0],
         iconAnchor: [0, 0],
@@ -229,7 +291,7 @@ function renderPOIs() {
   }
 }
 
-watch([visibleMarkers, selectedMarkerId, () => items.value.length], renderMarkers, { deep: true })
+watch([visibleMarkers, selectedMarkerId, selectedGroupIds, () => items.value.length], renderMarkers, { deep: true })
 watch([currentMapPOIPins, selectedPOIId, () => currentMapMarkers.value.length], renderPOIs, { deep: true })
 // Stash counts change without pins changing
 watch(() => currentMapPOIPins.value.map((p) => getStashedItemCount(p.poiId)).join(','), renderPOIs)
@@ -237,7 +299,6 @@ watch(() => currentMapPOIPins.value.map((p) => getStashedItemCount(p.poiId)).joi
 function escapeHtml(text: string) {
   return text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' })[c]!)
 }
-const escapeAttr = escapeHtml
 
 /** Fly to a position on the given map; if that map is still loading, jump there once it is built. */
 function flyToPosition(pos: { x: number; y: number }, mapId?: string) {
@@ -245,7 +306,27 @@ function flyToPosition(pos: { x: number; y: number }, mapId?: string) {
   else pendingFly = pos
 }
 
-defineExpose({ flyToPosition, fit, zoomIn, zoomOut, getMap })
+/**
+ * Pan just enough that a map position isn't hidden under an overlay (the loot card).
+ * `avoid` is in viewport coordinates.
+ */
+function revealPosition(pos: { x: number; y: number }, avoid: DOMRect) {
+  const map = getMap()
+  if (!map || !container.value) return
+  const box = container.value.getBoundingClientRect()
+  const pt = map.latLngToContainerPoint([pos.y, pos.x])
+  const margin = 28
+  const top = avoid.top - box.top - margin
+  const left = avoid.left - box.left - margin
+  const right = avoid.right - box.left + margin
+  if (pt.y > top && pt.x > left && pt.x < right) {
+    map.panBy([0, pt.y - top], { animate: !reducedMotion() })
+  }
+}
+
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+defineExpose({ flyToPosition, fit, zoomIn, zoomOut, getMap, revealPosition })
 </script>
 
 <style scoped>
