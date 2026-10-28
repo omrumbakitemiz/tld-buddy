@@ -1,317 +1,46 @@
-import { ref, computed } from 'vue'
-import type { GameMap, Item, Marker, AppData, Run, Difficulty, MapVariant, POI, POIPin, StashedItem, MapConnection } from '~/types'
+import { computed } from 'vue'
+import type { Difficulty, GameMap, MapVariant, Marker, POIPin, Run, StashedItem } from '~/types'
 import { getVariantKey } from '~/types'
-
-const LOCAL_CACHE_KEY = 'tld-buddy-v1'
-const SAVE_DEBOUNCE_MS = 500
-
-const MAX_RECENT_MAPS = 10
-
-const defaultData: AppData = {
-  runs: [],
-  currentRunId: null,
-  currentMapId: null,
-  markers: [],
-  enabledPOIs: [],
-  poiPins: [],
-  stashedItems: [],
-  recentMapIds: [],
-  travelMode: false,
-  travelLeftMapId: null,
-  travelRightMapId: null,
-}
-
-const appData = ref<AppData>({ ...defaultData })
-const staticMaps = ref<GameMap[]>([])
-const staticItems = ref<Item[]>([])
-const staticPOIs = ref<POI[]>([])
-const staticConnections = ref<MapConnection[]>([])
-const authExpired = ref(false)
-const staticDataReady = ref(false)
-/** True only after a successful authenticated /api/data load — blocks API saves until then. */
-const apiSynced = ref(false)
-let loaded = false
-let staticDataLoaded = false
-let saveTimer: ReturnType<typeof setTimeout> | null = null
-let markerIdCounter = 0
-
-// ── Load static data from JSON files ────────────────────────────────────────
-
-async function loadJson<T>(url: string): Promise<T[]> {
-  try {
-    const res = await fetch(url)
-    if (!res.ok) return []
-    const data = await res.json()
-    if (!Array.isArray(data)) return []
-    return data as T[]
-  } catch {
-    console.warn(`Could not load ${url}`)
-    return []
-  }
-}
-
-function loadItems() {
-  return loadJson<Item>('/data/items.json')
-}
-
-function loadMaps() {
-  return loadJson<GameMap>('/data/maps.json')
-}
-
-function loadPOIs() {
-  return loadJson<POI>('/data/pois.json')
-}
-
-function loadConnections() {
-  return loadJson<MapConnection>('/data/map-connections.json')
-}
-
-// ── Persistence ─────────────────────────────────────────────────────────────
-
-function parseAppData(parsed: Partial<AppData>): AppData {
-  return {
-    runs: Array.isArray(parsed.runs) ? parsed.runs : [],
-    currentRunId: parsed.currentRunId ?? null,
-    currentMapId: parsed.currentMapId ?? null,
-    markers: Array.isArray(parsed.markers) ? parsed.markers : [],
-    enabledPOIs: Array.isArray(parsed.enabledPOIs) ? parsed.enabledPOIs : [],
-    poiPins: Array.isArray(parsed.poiPins) ? parsed.poiPins : [],
-    stashedItems: Array.isArray(parsed.stashedItems) ? parsed.stashedItems : [],
-    recentMapIds: Array.isArray(parsed.recentMapIds) ? parsed.recentMapIds : [],
-    travelMode: parsed.travelMode ?? false,
-    travelLeftMapId: parsed.travelLeftMapId ?? null,
-    travelRightMapId: parsed.travelRightMapId ?? null,
-  }
-}
-
-/** Load from localStorage first (instant), then reconcile with API (async). */
-function load() {
-  if (loaded) return
-  loaded = true
-  if (typeof window === 'undefined') return
-
-  // Step 1: Read from localStorage cache for instant UI
-  try {
-    const raw = localStorage.getItem(LOCAL_CACHE_KEY)
-    if (raw) {
-      appData.value = parseAppData(JSON.parse(raw))
-    }
-  } catch {
-    console.warn('Failed to read localStorage cache')
-  }
-
-  // Step 2: Fetch from API in background, API wins if available
-  loadFromAPI()
-}
-
-async function loadFromAPI(): Promise<boolean> {
-  try {
-    const res = await fetch('/api/data')
-    if (res.status === 401) {
-      authExpired.value = true
-      apiSynced.value = false
-      return false
-    }
-    // Redis down / server error — keep local cache, do not mark synced (blocks PUT wipe)
-    if (!res.ok) {
-      console.warn(`Could not fetch from API (${res.status}), using local cache`)
-      return false
-    }
-    const data = await res.json()
-    if (data && typeof data === 'object') {
-      appData.value = parseAppData(data)
-      saveToLocalStorage()
-      apiSynced.value = true
-      return true
-    }
-    return false
-  } catch {
-    console.warn('Could not fetch from API, using local cache')
-    return false
-  }
-}
+import { MAX_RECENT_MAPS, createId } from '#shared/utils/appData'
+import { useAppStore } from './useAppStore'
+import { thumbnailUrl, useStaticData } from './useStaticData'
 
 /**
- * Re-fetch user data after login / successful auth check.
- * Must run before any API save so we never overwrite Redis with stale localStorage.
+ * Domain operations over the user's data (runs, markers, POIs, stashes, travel mode).
+ * State and syncing live in useAppStore; static game data in useStaticData.
+ * Every mutation ends with `commit()`, which caches locally and schedules a save.
  */
-async function reloadFromAPI(): Promise<boolean> {
-  return loadFromAPI()
-}
-
-/** Write to localStorage (instant, synchronous). */
-function saveToLocalStorage() {
-  if (typeof window === 'undefined') return
-  try {
-    localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(appData.value))
-  } catch {
-    // localStorage full or unavailable -- not critical
-  }
-}
-
-/** Write to API (debounced, async). Skipped until a successful authenticated load. */
-function saveToAPI() {
-  if (typeof window === 'undefined') return
-  if (!apiSynced.value) {
-    console.warn('Skipping API save — not synced with server yet')
-    return
-  }
-  fetch('/api/data', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(appData.value),
-  }).then((res) => {
-    if (res.status === 401) {
-      authExpired.value = true
-      apiSynced.value = false
-    }
-  }).catch(() => {
-    console.warn('Failed to save to API')
-  })
-}
-
-/** Save to both localStorage (instant) and API (debounced, if synced). */
-function save() {
-  saveToLocalStorage()
-
-  if (!apiSynced.value) return
-
-  if (saveTimer) clearTimeout(saveTimer)
-  saveTimer = setTimeout(saveToAPI, SAVE_DEBOUNCE_MS)
-}
-
-// Auto-load on first import
-if (typeof window !== 'undefined') {
-  load()
-}
-
-// ── Composable ──────────────────────────────────────────────────────────────
-
 export function useGameData() {
-  load()
+  const store = useAppStore()
+  const { appData, commit } = store
+  const statics = useStaticData()
+  const { maps, items, pois, connections, getItem, getMap, getPOI } = statics
 
-  // Load static data (items + maps + pois) asynchronously on first use
-  if (typeof window !== 'undefined' && !staticDataLoaded) {
-    staticDataLoaded = true
+  // ── Runs ────────────────────────────────────────────────────────────────
 
-    Promise.all([loadItems(), loadMaps(), loadPOIs(), loadConnections()]).then(([items, maps, pois, connections]) => {
-      if (items.length > 0) staticItems.value = items
-      if (maps.length > 0) staticMaps.value = maps
-      if (pois.length > 0) staticPOIs.value = pois
-      if (connections.length > 0) staticConnections.value = connections
-
-      // Auto-select first map if none selected
-      if (!appData.value.currentMapId && maps[0]) {
-        appData.value.currentMapId = maps[0].id
-      }
-    }).finally(() => {
-      staticDataReady.value = true
-    })
-  }
-
-  // ── Computed ────────────────────────────────────────────────────────────
-
-  const maps = computed(() => staticMaps.value)
-  const items = computed(() => staticItems.value)
-  const markers = computed(() => appData.value.markers)
   const runs = computed(() => appData.value.runs)
-  const currentMapId = computed(() => appData.value.currentMapId)
-  const pois = computed(() => staticPOIs.value)
-  const enabledPOIs = computed(() => appData.value.enabledPOIs)
-
-  const currentRun = computed(() =>
-    appData.value.runs.find((r) => r.id === appData.value.currentRunId) ?? null,
-  )
-
-  const currentMap = computed(() =>
-    staticMaps.value.find((m) => m.id === appData.value.currentMapId) ?? null,
-  )
-
-  /**
-   * Resolves the correct map variant (default or interloper)
-   * based on the current run's difficulty.
-   */
-  const currentMapVariant = computed<MapVariant | null>(() => {
-    const map = currentMap.value
-    if (!map) return null
-    const run = currentRun.value
-    if (!run) return map.default
-    const key = getVariantKey(run.difficulty)
-    return map[key]
-  })
-
-  /**
-   * Markers for the current map AND current run.
-   */
-  const currentMapMarkers = computed(() =>
-    appData.value.markers.filter(
-      (m) =>
-        m.mapId === appData.value.currentMapId &&
-        m.runId === appData.value.currentRunId,
-    ),
-  )
-
-  // ── POI computed ──────────────────────────────────────────────────────────
-
-  /** All POIs for the current map */
-  const currentMapAllPOIs = computed(() =>
-    staticPOIs.value.filter((p) => p.mapId === appData.value.currentMapId),
-  )
-
-  /** Only enabled POIs for the current map */
-  const currentMapPOIs = computed(() =>
-    currentMapAllPOIs.value.filter((p) => appData.value.enabledPOIs.includes(p.id)),
-  )
-
-  /**
-   * Pinned POIs for the current map. Pin positions are global (a POI's
-   * physical location is the same across all runs); only stashed items
-   * are scoped per run.
-   */
-  const currentMapPOIPins = computed(() => {
-    const enabledIds = new Set(appData.value.enabledPOIs)
-    return appData.value.poiPins.filter((pin) => {
-      if (!enabledIds.has(pin.poiId)) return false
-      const poi = staticPOIs.value.find((p) => p.id === pin.poiId)
-      return poi?.mapId === appData.value.currentMapId
-    })
-  })
-
-  /** Stashed items for the current run */
-  const currentRunStashedItems = computed(() => {
-    const runId = appData.value.currentRunId
-    if (!runId) return []
-    return appData.value.stashedItems.filter((s) => s.runId === runId)
-  })
-
-  // ── Run management ──────────────────────────────────────────────────────
+  const currentRun = computed(() => appData.value.runs.find((r) => r.id === appData.value.currentRunId) ?? null)
 
   function addRun(name: string, difficulty: Difficulty): Run {
-    const run: Run = {
-      id: `run-${Date.now()}`,
-      name,
-      difficulty,
-      createdAt: Date.now(),
-    }
+    const run: Run = { id: createId('run'), name, difficulty, createdAt: Date.now() }
     appData.value.runs.push(run)
     appData.value.currentRunId = run.id
-    save()
+    commit()
     return run
   }
 
   function deleteRun(runId: string) {
-    appData.value.runs = appData.value.runs.filter((r) => r.id !== runId)
-    appData.value.markers = appData.value.markers.filter((m) => m.runId !== runId)
-    appData.value.stashedItems = appData.value.stashedItems.filter((s) => s.runId !== runId)
-    if (appData.value.currentRunId === runId) {
-      appData.value.currentRunId = appData.value.runs[0]?.id ?? null
-    }
-    save()
+    const d = appData.value
+    d.runs = d.runs.filter((r) => r.id !== runId)
+    d.markers = d.markers.filter((m) => m.runId !== runId)
+    d.stashedItems = d.stashedItems.filter((s) => s.runId !== runId)
+    if (d.currentRunId === runId) d.currentRunId = d.runs[0]?.id ?? null
+    commit()
   }
 
   function setCurrentRun(runId: string) {
     appData.value.currentRunId = runId
-    save()
+    commit()
   }
 
   function updateRun(runId: string, updates: Partial<Pick<Run, 'name' | 'difficulty'>>) {
@@ -319,207 +48,258 @@ export function useGameData() {
     if (!run) return
     if (updates.name !== undefined) run.name = updates.name
     if (updates.difficulty !== undefined) run.difficulty = updates.difficulty
-    save()
+    commit()
   }
 
-  // ── Map selection ───────────────────────────────────────────────────────
+  // ── Maps ────────────────────────────────────────────────────────────────
 
-  /** Ordered list of recently visited maps (most recent first), resolved to GameMap objects */
-  const recentMaps = computed(() => {
-    return appData.value.recentMapIds
-      .map((id) => staticMaps.value.find((m) => m.id === id))
-      .filter((m): m is GameMap => !!m)
-  })
+  const currentMapId = computed(() => appData.value.currentMapId)
+  const currentMap = computed(() => getMap(appData.value.currentMapId) ?? null)
 
-  function trackRecentMap(mapId: string) {
-    // If already in the list, don't reorder — keeps the sidebar stable
-    if (appData.value.recentMapIds.includes(mapId)) return
-    appData.value.recentMapIds = [mapId, ...appData.value.recentMapIds].slice(0, MAX_RECENT_MAPS)
+  /** Map artwork variant (default or interloper) for the current run's difficulty. */
+  function getMapVariant(map: GameMap): MapVariant {
+    const run = currentRun.value
+    return run ? map[getVariantKey(run.difficulty)] : map.default
   }
+
+  const currentMapVariant = computed<MapVariant | null>(() => (currentMap.value ? getMapVariant(currentMap.value) : null))
+
+  function getMapThumbnail(map: GameMap): string {
+    return thumbnailUrl(getMapVariant(map).imageUrl)
+  }
+
+  const recentMaps = computed(() =>
+    appData.value.recentMapIds.map((id) => getMap(id)).filter((m): m is GameMap => !!m),
+  )
 
   function setCurrentMap(mapId: string) {
-    appData.value.currentMapId = mapId
-    trackRecentMap(mapId)
-    save()
+    const d = appData.value
+    d.currentMapId = mapId
+    // Already listed maps keep their slot so the recent list stays stable
+    if (!d.recentMapIds.includes(mapId)) {
+      d.recentMapIds = [mapId, ...d.recentMapIds].slice(0, MAX_RECENT_MAPS)
+    }
+    commit()
   }
 
   function clearRecentMaps() {
     appData.value.recentMapIds = []
-    save()
+    commit()
   }
 
-  // ── Travel mode ────────────────────────────────────────────────────────
-
-  const travelMode = computed(() => appData.value.travelMode)
-  const travelLeftMapId = computed(() => appData.value.travelLeftMapId)
-  const travelRightMapId = computed(() => appData.value.travelRightMapId)
-  const mapConnections = computed(() => staticConnections.value)
-
-  const travelLeftMap = computed(() =>
-    staticMaps.value.find((m) => m.id === appData.value.travelLeftMapId) ?? null,
-  )
-
-  const travelRightMap = computed(() =>
-    staticMaps.value.find((m) => m.id === appData.value.travelRightMapId) ?? null,
-  )
-
-  /** Get the map variant for a given map based on current run difficulty */
-  function getMapVariant(map: GameMap): MapVariant {
-    const run = currentRun.value
-    if (!run) return map.default
-    const key = getVariantKey(run.difficulty)
-    return map[key]
-  }
-
-  /** Get all maps connected to a given map */
   function getConnectedMaps(mapId: string): { map: GameMap; label?: string }[] {
     const results: { map: GameMap; label?: string }[] = []
-    for (const conn of staticConnections.value) {
-      let neighborId: string | null = null
-      if (conn.maps[0] === mapId) neighborId = conn.maps[1]
-      else if (conn.maps[1] === mapId) neighborId = conn.maps[0]
-      if (neighborId) {
-        const neighborMap = staticMaps.value.find((m) => m.id === neighborId)
-        if (neighborMap) results.push({ map: neighborMap, label: conn.label })
-      }
+    for (const conn of connections.value) {
+      const neighborId = conn.maps[0] === mapId ? conn.maps[1] : conn.maps[1] === mapId ? conn.maps[0] : null
+      const neighbor = neighborId ? getMap(neighborId) : undefined
+      if (neighbor) results.push({ map: neighbor, label: conn.label })
     }
     return results
   }
 
-  function toggleTravelMode() {
-    appData.value.travelMode = !appData.value.travelMode
-    // When entering travel mode, pre-fill left map with current map
-    if (appData.value.travelMode && !appData.value.travelLeftMapId && appData.value.currentMapId) {
-      appData.value.travelLeftMapId = appData.value.currentMapId
-    }
-    save()
-  }
-
-  function setTravelLeftMap(mapId: string) {
-    appData.value.travelLeftMapId = mapId
-    save()
-  }
-
-  function setTravelRightMap(mapId: string) {
-    appData.value.travelRightMapId = mapId
-    save()
-  }
-
-  // ── Items ───────────────────────────────────────────────────────────────
-
-  function getItemById(itemId: string) {
-    return staticItems.value.find((i) => i.id === itemId)
-  }
-
   // ── Markers ─────────────────────────────────────────────────────────────
 
+  const markers = computed(() => appData.value.markers)
+
+  /** Markers of the current run, any map. */
+  const currentRunMarkers = computed(() => appData.value.markers.filter((m) => m.runId === appData.value.currentRunId))
+
+  /** Markers for the current map AND current run. */
+  const currentMapMarkers = computed(() => currentRunMarkers.value.filter((m) => m.mapId === appData.value.currentMapId))
+
+  /** Per-map counts for the current run: { total, remaining }. */
+  const markerCountsByMap = computed(() => {
+    const counts = new Map<string, { total: number; remaining: number }>()
+    for (const m of currentRunMarkers.value) {
+      const c = counts.get(m.mapId) ?? { total: 0, remaining: 0 }
+      c.total++
+      if (!m.lootedAt) c.remaining++
+      counts.set(m.mapId, c)
+    }
+    return counts
+  })
+
+  function findMarker(markerId: string) {
+    return appData.value.markers.find((m) => m.id === markerId)
+  }
+
   function addMarker(marker: Omit<Marker, 'id'>) {
-    const newMarker: Marker = { ...marker, id: `marker-${Date.now()}-${markerIdCounter++}` }
+    const newMarker: Marker = { lootedAt: null, ...marker, id: createId('marker') }
     appData.value.markers.push(newMarker)
-    save()
+    commit()
     return newMarker
   }
 
-  function updateMarker(markerId: string, updates: Partial<Pick<Marker, 'name' | 'quantity' | 'note'>>) {
-    const marker = appData.value.markers.find((m) => m.id === markerId)
+  function updateMarker(markerId: string, updates: Partial<Pick<Marker, 'name' | 'quantity' | 'note' | 'x' | 'y'>>) {
+    const marker = findMarker(markerId)
     if (!marker) return
-    if (updates.name !== undefined) marker.name = updates.name
-    if (updates.quantity !== undefined) marker.quantity = updates.quantity
-    if (updates.note !== undefined) marker.note = updates.note
-    save()
+    Object.assign(marker, updates)
+    commit()
+  }
+
+  function setLooted(markerId: string, looted: boolean) {
+    const marker = findMarker(markerId)
+    if (!marker || !!marker.lootedAt === looted) return
+    marker.lootedAt = looted ? Date.now() : null
+    commit()
+  }
+
+  function toggleLooted(markerId: string) {
+    const marker = findMarker(markerId)
+    if (marker) setLooted(markerId, !marker.lootedAt)
   }
 
   function deleteMarker(markerId: string) {
     appData.value.markers = appData.value.markers.filter((m) => m.id !== markerId)
-    save()
+    commit()
   }
 
-  // ── POI management ────────────────────────────────────────────────────────
+  // ── POIs ────────────────────────────────────────────────────────────────
+
+  const enabledPOIs = computed(() => appData.value.enabledPOIs)
+  const enabledPOISet = computed(() => new Set(appData.value.enabledPOIs))
+  const pinsByPOI = computed(() => new Map(appData.value.poiPins.map((p) => [p.poiId, p])))
+
+  const currentMapAllPOIs = computed(() => pois.value.filter((p) => p.mapId === appData.value.currentMapId))
+  const currentMapPOIs = computed(() => currentMapAllPOIs.value.filter((p) => enabledPOISet.value.has(p.id)))
+
+  /** Pinned, enabled POIs on the current map. Pins are global; stashes are per run. */
+  const currentMapPOIPins = computed(() =>
+    appData.value.poiPins.filter((pin) => enabledPOISet.value.has(pin.poiId) && getPOI(pin.poiId)?.mapId === appData.value.currentMapId),
+  )
+
+  function isPOIEnabled(poiId: string) {
+    return enabledPOISet.value.has(poiId)
+  }
 
   function togglePOI(poiId: string) {
-    const idx = appData.value.enabledPOIs.indexOf(poiId)
-    if (idx >= 0) {
-      appData.value.enabledPOIs.splice(idx, 1)
-    } else {
-      appData.value.enabledPOIs.push(poiId)
-    }
-    save()
+    const list = appData.value.enabledPOIs
+    const idx = list.indexOf(poiId)
+    if (idx >= 0) list.splice(idx, 1)
+    else list.push(poiId)
+    commit()
   }
 
   function enablePOIs(poiIds: string[]) {
-    const current = new Set(appData.value.enabledPOIs)
-    for (const id of poiIds) current.add(id)
-    appData.value.enabledPOIs = [...current]
-    save()
+    appData.value.enabledPOIs = [...new Set([...appData.value.enabledPOIs, ...poiIds])]
+    commit()
   }
 
   function disablePOIs(poiIds: string[]) {
-    const toRemove = new Set(poiIds)
-    appData.value.enabledPOIs = appData.value.enabledPOIs.filter((id) => !toRemove.has(id))
-    save()
+    const remove = new Set(poiIds)
+    appData.value.enabledPOIs = appData.value.enabledPOIs.filter((id) => !remove.has(id))
+    commit()
   }
 
-  function isPOIEnabled(poiId: string): boolean {
-    return appData.value.enabledPOIs.includes(poiId)
+  function getPOIPin(poiId: string): POIPin | undefined {
+    return pinsByPOI.value.get(poiId)
   }
-
-  // ── POI Pins ──────────────────────────────────────────────────────────────
 
   function pinPOI(poiId: string, x: number, y: number) {
-    appData.value.poiPins = appData.value.poiPins.filter((p) => p.poiId !== poiId)
-    appData.value.poiPins.push({ poiId, x, y })
-    save()
+    const d = appData.value
+    if (!d.enabledPOIs.includes(poiId)) d.enabledPOIs.push(poiId)
+    d.poiPins = [...d.poiPins.filter((p) => p.poiId !== poiId), { poiId, x, y }]
+    commit()
   }
 
   function unpinPOI(poiId: string) {
     appData.value.poiPins = appData.value.poiPins.filter((p) => p.poiId !== poiId)
-    save()
+    commit()
   }
 
-  function getPOIPin(poiId: string): POIPin | undefined {
-    return appData.value.poiPins.find((p) => p.poiId === poiId)
-  }
+  // ── Stashes ─────────────────────────────────────────────────────────────
 
-  // ── Stashed Items ─────────────────────────────────────────────────────────
+  const currentRunStashedItems = computed(() => {
+    const runId = appData.value.currentRunId
+    return runId ? appData.value.stashedItems.filter((s) => s.runId === runId) : []
+  })
 
-  function addStashedItem(stash: Omit<StashedItem, 'id'>) {
-    const newStash: StashedItem = { ...stash, id: `stash-${Date.now()}` }
-    appData.value.stashedItems.push(newStash)
-    save()
-    return newStash
-  }
-
-  function removeStashedItem(stashId: string) {
-    appData.value.stashedItems = appData.value.stashedItems.filter((s) => s.id !== stashId)
-    save()
-  }
+  const stashesByPOI = computed(() => {
+    const byPOI = new Map<string, StashedItem[]>()
+    for (const s of currentRunStashedItems.value) {
+      const list = byPOI.get(s.poiId) ?? []
+      list.push(s)
+      byPOI.set(s.poiId, list)
+    }
+    return byPOI
+  })
 
   function getStashedItems(poiId: string): StashedItem[] {
-    const runId = appData.value.currentRunId
-    if (!runId) return []
-    return appData.value.stashedItems.filter((s) => s.poiId === poiId && s.runId === runId)
+    return stashesByPOI.value.get(poiId) ?? []
   }
 
   function getStashedItemCount(poiId: string): number {
     return getStashedItems(poiId).length
   }
 
-  // ── Map thumbnails ──────────────────────────────────────────────────────
+  /** Add to a stash; stacking onto an existing entry of the same item. */
+  function addStashedItem(stash: Omit<StashedItem, 'id'>) {
+    const existing = appData.value.stashedItems.find(
+      (s) => s.runId === stash.runId && s.poiId === stash.poiId && s.itemId === stash.itemId && !s.note && !stash.note,
+    )
+    if (existing) {
+      existing.quantity += stash.quantity
+      commit()
+      return existing
+    }
+    const newStash: StashedItem = { ...stash, id: createId('stash') }
+    appData.value.stashedItems.push(newStash)
+    commit()
+    return newStash
+  }
 
-  /** Resolve the thumbnail URL for a map based on the current run's difficulty. */
-  function getMapThumbnail(map: GameMap): string {
-    const run = currentRun.value
-    if (!run) return map.default.imageUrl
-    const key = getVariantKey(run.difficulty)
-    return map[key].imageUrl
+  function setStashedQuantity(stashId: string, quantity: number) {
+    const stash = appData.value.stashedItems.find((s) => s.id === stashId)
+    if (!stash) return
+    if (quantity < 1) {
+      removeStashedItem(stashId)
+      return
+    }
+    stash.quantity = quantity
+    commit()
+  }
+
+  function removeStashedItem(stashId: string) {
+    appData.value.stashedItems = appData.value.stashedItems.filter((s) => s.id !== stashId)
+    commit()
+  }
+
+  // ── Travel mode ─────────────────────────────────────────────────────────
+
+  const travelMode = computed(() => appData.value.travelMode)
+  const travelLeftMapId = computed(() => appData.value.travelLeftMapId)
+  const travelRightMapId = computed(() => appData.value.travelRightMapId)
+  const travelLeftMap = computed(() => getMap(appData.value.travelLeftMapId) ?? null)
+  const travelRightMap = computed(() => getMap(appData.value.travelRightMapId) ?? null)
+
+  function toggleTravelMode() {
+    const d = appData.value
+    d.travelMode = !d.travelMode
+    // Entering travel mode starts from the map you were looking at
+    if (d.travelMode && !d.travelLeftMapId && d.currentMapId) d.travelLeftMapId = d.currentMapId
+    commit()
+  }
+
+  function setTravelLeftMap(mapId: string) {
+    appData.value.travelLeftMapId = mapId
+    commit()
+  }
+
+  function setTravelRightMap(mapId: string) {
+    appData.value.travelRightMapId = mapId
+    commit()
   }
 
   return {
     // Static data
     maps,
     items,
-    markers,
     pois,
+    staticDataReady: statics.ready,
+    itemCategories: statics.itemCategories,
+    getItemById: getItem,
+    getMapById: getMap,
+    getPOIById: getPOI,
     // Runs
     runs,
     currentRun,
@@ -536,46 +316,49 @@ export function useGameData() {
     clearRecentMaps,
     getMapThumbnail,
     getMapVariant,
-    // Markers (scoped to current map + run)
+    getConnectedMaps,
+    // Markers
+    markers,
+    currentRunMarkers,
     currentMapMarkers,
+    markerCountsByMap,
     addMarker,
     updateMarker,
+    setLooted,
+    toggleLooted,
     deleteMarker,
-    // Items
-    getItemById,
     // POIs
     enabledPOIs,
     currentMapAllPOIs,
     currentMapPOIs,
     currentMapPOIPins,
-    currentRunStashedItems,
+    isPOIEnabled,
     togglePOI,
     enablePOIs,
     disablePOIs,
-    isPOIEnabled,
+    getPOIPin,
     pinPOI,
     unpinPOI,
-    getPOIPin,
-    addStashedItem,
-    removeStashedItem,
+    // Stashes
+    currentRunStashedItems,
     getStashedItems,
     getStashedItemCount,
+    addStashedItem,
+    setStashedQuantity,
+    removeStashedItem,
     // Travel mode
     travelMode,
     travelLeftMapId,
     travelRightMapId,
     travelLeftMap,
     travelRightMap,
-    mapConnections,
-    getConnectedMaps,
     toggleTravelMode,
     setTravelLeftMap,
     setTravelRightMap,
-    // Auth / sync
-    authExpired,
-    apiSynced,
-    reloadFromAPI,
-    // Loading
-    staticDataReady,
+    // Sync
+    syncStatus: store.syncStatus,
+    authExpired: store.authExpired,
+    apiSynced: store.apiSynced,
+    reloadFromAPI: store.pull,
   }
 }

@@ -1,10 +1,66 @@
 [
   {
+    "id": "astrids-backpack",
+    "name": "Astrid's Backpack",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Backpack",
+    "icon": "/items/astrids-backpack.png"
+  },
+  {
+    "id": "astrids-boots",
+    "name": "Astrid's Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Boots",
+    "icon": "/items/astrids-boots.png"
+  },
+  {
+    "id": "astrids-gloves",
+    "name": "Astrid's Gloves",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Gloves",
+    "icon": "/items/astrids-gloves.png"
+  },
+  {
+    "id": "astrids-jacket",
+    "name": "Astrid's Jacket",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Jacket",
+    "icon": "/items/astrids-jacket.png"
+  },
+  {
+    "id": "astrids-jeans",
+    "name": "Astrid's Jeans",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Jeans",
+    "icon": "/items/astrids-jeans.png"
+  },
+  {
+    "id": "astrids-sweater",
+    "name": "Astrid's Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Sweater",
+    "icon": "/items/astrids-sweater.png"
+  },
+  {
+    "id": "astrids-toque",
+    "name": "Astrid's Toque",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Astrid's_Toque",
+    "icon": "/items/astrids-toque.png"
+  },
+  {
     "id": "aviator-cap",
     "name": "Aviator Cap",
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Aviator_Cap",
     "icon": "/items/aviator-cap.png"
+  },
+  {
+    "id": "balaclava",
+    "name": "Balaclava",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Balaclava",
+    "icon": "/items/balaclava.png"
   },
   {
     "id": "baseball-cap",
@@ -42,6 +98,13 @@
     "icon": "/items/climbing-socks.png"
   },
   {
+    "id": "combat-boots",
+    "name": "Combat Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Combat_Boots",
+    "icon": "/items/combat-boots.png"
+  },
+  {
     "id": "combat-pants",
     "name": "Combat Pants",
     "category": "Clothing",
@@ -70,11 +133,32 @@
     "icon": "/items/cougar-hide-wrap.png"
   },
   {
+    "id": "cowichan-sweater",
+    "name": "Cowichan Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Cowichan_Sweater",
+    "icon": "/items/cowichan-sweater.png"
+  },
+  {
     "id": "crampons",
     "name": "Crampons",
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Crampons",
     "icon": "/items/crampons.png"
+  },
+  {
+    "id": "deerskin-boots",
+    "name": "Deerskin Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Deerskin_Boots",
+    "icon": "/items/deerskin-boots.png"
+  },
+  {
+    "id": "deerskin-pants",
+    "name": "Deerskin Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Deerskin_Pants",
+    "icon": "/items/deerskin-pants.png"
   },
   {
     "id": "down-vest",
@@ -138,6 +222,13 @@
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Flight_Jacket",
     "icon": "/items/flight-jacket.png"
+  },
+  {
+    "id": "gauntlets",
+    "name": "Gauntlets",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Gauntlets",
+    "icon": "/items/gauntlets.png"
   },
   {
     "id": "hardhat",
@@ -231,11 +322,67 @@
     "icon": "/items/long-wool-scarf.png"
   },
   {
+    "id": "mackenzies-boots",
+    "name": "Mackenzie's Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Boots",
+    "icon": "/items/mackenzies-boots.png"
+  },
+  {
+    "id": "mackenzies-pants",
+    "name": "Mackenzie's Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Pants",
+    "icon": "/items/mackenzies-pants.png"
+  },
+  {
+    "id": "mackenzies-parka",
+    "name": "Mackenzie's Parka",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Parka",
+    "icon": "/items/mackenzies-parka.png"
+  },
+  {
+    "id": "mackenzies-shirt",
+    "name": "Mackenzie's Shirt",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Shirt",
+    "icon": "/items/mackenzies-shirt.png"
+  },
+  {
+    "id": "mackenzies-sweater",
+    "name": "Mackenzie's Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Sweater",
+    "icon": "/items/mackenzies-sweater.png"
+  },
+  {
+    "id": "mackenzies-toque",
+    "name": "Mackenzie's Toque",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackenzie's_Toque",
+    "icon": "/items/mackenzies-toque.png"
+  },
+  {
+    "id": "mackinaw-jacket",
+    "name": "Mackinaw Jacket",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mackinaw_Jacket",
+    "icon": "/items/mackinaw-jacket.png"
+  },
+  {
     "id": "mariners-pea-coat",
     "name": "Mariner's Pea Coat",
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Mariner's_Pea_Coat",
     "icon": "/items/mariners-pea-coat.png"
+  },
+  {
+    "id": "military-coat",
+    "name": "Military Coat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Military_Coat",
+    "icon": "/items/military-coat.png"
   },
   {
     "id": "miners-jacket",
@@ -264,6 +411,20 @@
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Moose-Hide_Satchel",
     "icon": "/items/moose-hide-satchel.png"
+  },
+  {
+    "id": "mountaineering-boots",
+    "name": "Mountaineering Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mountaineering_Boots",
+    "icon": "/items/mountaineering-boots.png"
+  },
+  {
+    "id": "mukluks",
+    "name": "Mukluks",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Mukluks",
+    "icon": "/items/mukluks.png"
   },
   {
     "id": "old-fashioned-parka",
@@ -322,6 +483,13 @@
     "icon": "/items/plaid-shirt.png"
   },
   {
+    "id": "rabbitskin-hat",
+    "name": "Rabbitskin Hat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Rabbitskin_Hat",
+    "icon": "/items/rabbitskin-hat.png"
+  },
+  {
     "id": "rabbitskin-mitts",
     "name": "Rabbitskin Mitts",
     "category": "Clothing",
@@ -343,6 +511,13 @@
     "icon": "/items/simple-parka.png"
   },
   {
+    "id": "ski-boots",
+    "name": "Ski Boots",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Ski_Boots",
+    "icon": "/items/ski-boots.png"
+  },
+  {
     "id": "ski-gloves",
     "name": "Ski Gloves",
     "category": "Clothing",
@@ -355,6 +530,13 @@
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Ski_Jacket",
     "icon": "/items/ski-jacket.png"
+  },
+  {
+    "id": "snow-pants",
+    "name": "Snow Pants",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Snow_Pants",
+    "icon": "/items/snow-pants.png"
   },
   {
     "id": "sport-vest",
@@ -441,6 +623,13 @@
     "icon": "/items/thick-wool-sweater.png"
   },
   {
+    "id": "thin-wool-sweater",
+    "name": "Thin Wool Sweater",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Thin_Wool_Sweater",
+    "icon": "/items/thin-wool-sweater.png"
+  },
+  {
     "id": "trail-boots",
     "name": "Trail Boots",
     "category": "Clothing",
@@ -462,6 +651,13 @@
     "icon": "/items/windbreaker.png"
   },
   {
+    "id": "wolfskin-coat",
+    "name": "Wolfskin Coat",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wolfskin_Coat",
+    "icon": "/items/wolfskin-coat.png"
+  },
+  {
     "id": "wolfskin-hat",
     "name": "Wolfskin Hat",
     "category": "Clothing",
@@ -481,6 +677,13 @@
     "category": "Clothing",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Ear_Wrap",
     "icon": "/items/wool-ear-wrap.png"
+  },
+  {
+    "id": "wool-longjohns",
+    "name": "Wool Longjohns",
+    "category": "Clothing",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Wool_Longjohns",
+    "icon": "/items/wool-longjohns.png"
   },
   {
     "id": "wool-mittens",
@@ -553,18 +756,18 @@
     "icon": "/items/a-page-from-a-journal.png"
   },
   {
-    "id": "a-page-from-an-old-newsletter",
-    "name": "A page from an old newsletter.",
-    "category": "Collectible",
-    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_page_from_an_old_newsletter.",
-    "icon": "/items/a-page-from-an-old-newsletter.png"
-  },
-  {
     "id": "a-sewing-primer-the-basics-of-survival",
     "name": "A Sewing Primer (The Basics of Survival)",
     "category": "Collectible",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/A_Sewing_Primer_(The_Basics_of_Survival)",
     "icon": "/items/a-sewing-primer-the-basics-of-survival.png"
+  },
+  {
+    "id": "a-page-from-an-old-newsletter",
+    "name": "A page from an old newsletter.",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/A_page_from_an_old_newsletter.",
+    "icon": "/items/a-page-from-an-old-newsletter.png"
   },
   {
     "id": "admin-office-key",
@@ -833,18 +1036,18 @@
     "icon": "/items/cannery-memo.png"
   },
   {
-    "id": "carter-hydro-dam-safety-shutdown-notice",
-    "name": "Carter Hydro Dam -- Safety & Shutdown Notice",
-    "category": "Collectible",
-    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Dam_--_Safety_%26_Shutdown_Notice",
-    "icon": "/items/carter-hydro-dam-safety-shutdown-notice.png"
-  },
-  {
     "id": "carter-hydro-dam-collectible",
     "name": "Carter Hydro Dam (Collectible)",
     "category": "Collectible",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Dam_(Collectible)",
     "icon": "/items/carter-hydro-dam-collectible.png"
+  },
+  {
+    "id": "carter-hydro-dam-safety-shutdown-notice",
+    "name": "Carter Hydro Dam -- Safety & Shutdown Notice",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Carter_Hydro_Dam_--_Safety_%26_Shutdown_Notice",
+    "icon": "/items/carter-hydro-dam-safety-shutdown-notice.png"
   },
   {
     "id": "carter-hydro-medical-supplies",
@@ -1603,18 +1806,18 @@
     "icon": "/items/logging-camp-trailer-key.png"
   },
   {
-    "id": "lost-in-the-storm",
-    "name": "Lost in the Storm",
-    "category": "Collectible",
-    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lost_in_the_Storm",
-    "icon": "/items/lost-in-the-storm.png"
-  },
-  {
     "id": "lost-workers-note",
     "name": "Lost Worker's Note",
     "category": "Collectible",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Lost_Worker's_Note",
     "icon": "/items/lost-workers-note.png"
+  },
+  {
+    "id": "lost-in-the-storm",
+    "name": "Lost in the Storm",
+    "category": "Collectible",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Lost_in_the_Storm",
+    "icon": "/items/lost-in-the-storm.png"
   },
   {
     "id": "map-of-pleasant-valley",
@@ -2345,6 +2548,13 @@
     "icon": "/items/book.png"
   },
   {
+    "id": "campfire",
+    "name": "Campfire",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Campfire",
+    "icon": "/items/campfire.png"
+  },
+  {
     "id": "cardboard-matches",
     "name": "Cardboard Matches",
     "category": "Fire/Light",
@@ -2408,6 +2618,13 @@
     "icon": "/items/firestriker.png"
   },
   {
+    "id": "flashlight",
+    "name": "Flashlight",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Flashlight",
+    "icon": "/items/flashlight.png"
+  },
+  {
     "id": "frontier-shooting-guide",
     "name": "Frontier Shooting Guide",
     "category": "Fire/Light",
@@ -2434,6 +2651,13 @@
     "category": "Fire/Light",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Magnifying_Lens",
     "icon": "/items/magnifying-lens.png"
+  },
+  {
+    "id": "marine-flare",
+    "name": "Marine Flare",
+    "category": "Fire/Light",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Marine_Flare",
+    "icon": "/items/marine-flare.png"
   },
   {
     "id": "newsprint",
@@ -2847,6 +3071,13 @@
     "category": "Food",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Dried_Apples",
     "icon": "/items/dried-apples.png"
+  },
+  {
+    "id": "emergency-food",
+    "name": "Emergency Food",
+    "category": "Food",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Emergency_Food",
+    "icon": "/items/emergency-food.png"
   },
   {
     "id": "energy-bar",
@@ -3528,6 +3759,13 @@
     "icon": "/items/arrowhead.png"
   },
   {
+    "id": "broken-arrow",
+    "name": "Broken Arrow",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Broken_Arrow",
+    "icon": "/items/broken-arrow.png"
+  },
+  {
     "id": "bullet",
     "name": "Bullet",
     "category": "Resource",
@@ -3540,6 +3778,13 @@
     "category": "Resource",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Burdock_Root",
     "icon": "/items/burdock-root.png"
+  },
+  {
+    "id": "car-battery",
+    "name": "Car Battery",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Car_Battery",
+    "icon": "/items/car-battery.png"
   },
   {
     "id": "cat-tail",
@@ -3787,6 +4032,13 @@
     "icon": "/items/scrap-metal.png"
   },
   {
+    "id": "scrap-metal-shard",
+    "name": "Scrap Metal Shard",
+    "category": "Resource",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Scrap_Metal_Shard",
+    "icon": "/items/scrap-metal-shard.png"
+  },
+  {
     "id": "stump-remover",
     "name": "Stump Remover",
     "category": "Resource",
@@ -3906,18 +4158,18 @@
     "icon": "/items/camera.png"
   },
   {
-    "id": "can-of-gunpowder",
-    "name": "Can of Gunpowder",
-    "category": "Tool",
-    "wikiUrl": "https://thelongdark.fandom.com/wiki/Can_of_Gunpowder",
-    "icon": "/items/can-of-gunpowder.png"
-  },
-  {
     "id": "can-opener",
     "name": "Can Opener",
     "category": "Tool",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Can_Opener",
     "icon": "/items/can-opener.png"
+  },
+  {
+    "id": "can-of-gunpowder",
+    "name": "Can of Gunpowder",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Can_of_Gunpowder",
+    "icon": "/items/can-of-gunpowder.png"
   },
   {
     "id": "charcoal",
@@ -3960,6 +4212,13 @@
     "category": "Tool",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Distress_Pistol",
     "icon": "/items/distress-pistol.png"
+  },
+  {
+    "id": "distress-pistol-kit",
+    "name": "Distress Pistol Kit",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Distress_Pistol_Kit",
+    "icon": "/items/distress-pistol-kit.png"
   },
   {
     "id": "document-stash-1",
@@ -4088,6 +4347,13 @@
     "icon": "/items/handheld-shortwave-radio.png"
   },
   {
+    "id": "hatchet",
+    "name": "Hatchet",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hatchet",
+    "icon": "/items/hatchet.png"
+  },
+  {
     "id": "heavy-hammer",
     "name": "Heavy Hammer",
     "category": "Tool",
@@ -4107,6 +4373,13 @@
     "category": "Tool",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunter's_Revolver",
     "icon": "/items/hunters-revolver.png"
+  },
+  {
+    "id": "hunting-knife",
+    "name": "Hunting Knife",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Hunting_Knife",
+    "icon": "/items/hunting-knife.png"
   },
   {
     "id": "hunting-lodge-rifle",
@@ -4135,6 +4408,13 @@
     "category": "Tool",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Hatchet",
     "icon": "/items/improvised-hatchet.png"
+  },
+  {
+    "id": "improvised-knife",
+    "name": "Improvised Knife",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Improvised_Knife",
+    "icon": "/items/improvised-knife.png"
   },
   {
     "id": "insulated-flask",
@@ -4184,6 +4464,20 @@
     "category": "Tool",
     "wikiUrl": "https://thelongdark.fandom.com/wiki/Noisemaker",
     "icon": "/items/noisemaker.png"
+  },
+  {
+    "id": "prybar",
+    "name": "Prybar",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Prybar",
+    "icon": "/items/prybar.png"
+  },
+  {
+    "id": "quality-tools",
+    "name": "Quality Tools",
+    "category": "Tool",
+    "wikiUrl": "https://thelongdark.fandom.com/wiki/Quality_Tools",
+    "icon": "/items/quality-tools.png"
   },
   {
     "id": "recycled-can",

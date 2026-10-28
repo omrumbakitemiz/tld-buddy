@@ -54,7 +54,8 @@ docker compose down            # stop (keeps Redis data)
 docker compose down -v         # stop and wipe Redis data
 ```
 
-**HTTPS:** Behind a reverse proxy with TLS, set `COOKIE_SECURE=true` in `.env`.
+**HTTPS:** Behind a reverse proxy with TLS (e.g. the Cloudflare hostname), set `COOKIE_SECURE=true` in `.env`.
+Optional: `NUXT_SESSION_SECRET` pins the session-signing secret; otherwise one is generated and kept in Redis.
 For plain `http://` homelab access, keep `COOKIE_SECURE=false`.
 
 ## Local Development
@@ -67,10 +68,32 @@ docker compose up redis -d
 
 # Install deps and run dev server
 pnpm install
-cp .env.example .env.local
-# set APP_PASSWORD and REDIS_URL=redis://localhost:6379
+cp .env.example .env
+# set APP_PASSWORD and REDIS_URL=redis://localhost:6379 (nuxt dev loads .env)
 pnpm dev
 ```
+
+`pnpm exec nuxi typecheck` and `pnpm build` should both pass before deploying.
+
+## Using it
+
+- **Add loot:** press `A` and click the map, or Shift-click / right-click (long-press on touch).
+- **Mark looted:** the ✓ next to an item in the Loot tab, or select a marker and press `L`. Looted
+  items fade out on the map; `H` hides them. Items at the same spot share one tile with a count;
+  click it for the list.
+- **Night map:** `N` dims the bright map image (on by default). `P` (or `[`) collapses the side panel.
+- **Search anything:** `/` or `Ctrl K`. Press `?` for all shortcuts.
+- **Places:** track a region's places, pin them on the map, and stash items there (per run).
+
+## Data and sync
+
+All user data is one JSON document in Redis (`app-data`) with a revision counter (`app-data:rev`).
+Every device saves against the revision it last saw. If another device saved in between, the app
+merges both sets of changes instead of overwriting them. Edits made while offline are kept on the
+device and sent when the server is back. The previous document is kept in `app-data:backups`
+(about every 10 minutes, last 50). See `docs/REVIEW.md` for how to restore one.
+
+Design notes: `docs/DESIGN.md`. Review findings: `docs/REVIEW.md`.
 
 ## Data Import Scripts
 
@@ -80,4 +103,5 @@ Game data is imported from The Long Dark wiki and Steam community guides. Re-run
 pnpm exec tsx scripts/import-wiki-items.ts   # Items + icons
 pnpm exec tsx scripts/import-wiki-pois.ts    # Points of Interest
 pnpm exec tsx scripts/import-steam-maps.ts   # Region map images
+./scripts/make-map-thumbs.sh                 # Map previews (macOS sips)
 ```

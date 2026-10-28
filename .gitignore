@@ -27,3 +27,6 @@ logs
 # Static assets are committed for CDN serving
 # Regenerate with scripts/import-*.ts if needed
 .vercel
+
+# Impeccable review captures (local only)
+.impeccable/review/

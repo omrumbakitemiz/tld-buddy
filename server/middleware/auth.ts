@@ -1,16 +1,18 @@
-import { validateSessionToken } from '../utils/auth'
+import { isAuthenticated } from '../utils/auth'
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
 
-  // Only protect /api/data routes -- skip auth routes and everything else
-  if (!path.startsWith('/api/data')) {
-    return
-  }
+  // Only user data needs a session; auth routes and static assets stay public
+  if (!path.startsWith('/api/data')) return
 
-  const token = getCookie(event, 'tld-buddy-session')
-
-  if (!token || !validateSessionToken(token)) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  let ok: boolean
+  try {
+    ok = await isAuthenticated(event)
+  } catch (err) {
+    // Session secret lives in Redis: storage down is "try later", not "signed out"
+    console.error('Session check failed:', err)
+    throw createError({ statusCode: 503, statusMessage: 'Storage unavailable' })
   }
+  if (!ok) throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
 })

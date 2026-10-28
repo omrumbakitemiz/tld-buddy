@@ -1,11 +1,10 @@
-import { validateSessionToken } from '../../utils/auth'
+import { isAuthenticated } from '../../utils/auth'
 
-export default defineEventHandler((event) => {
-  const token = getCookie(event, 'tld-buddy-session')
-
-  if (!token || !validateSessionToken(token)) {
-    return { authenticated: false }
+export default defineEventHandler(async (event) => {
+  try {
+    return { authenticated: await isAuthenticated(event) }
+  } catch (err) {
+    console.error('Session check failed:', err)
+    throw createError({ statusCode: 503, statusMessage: 'Storage unavailable' })
   }
-
-  return { authenticated: true }
 })
