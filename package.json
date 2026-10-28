@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test": "tsx scripts/test-app-data.ts && tsx scripts/test-add-item.ts"
+    "test": "tsx scripts/test-app-data.ts && tsx scripts/test-add-item.ts && tsx scripts/test-add-item-a.ts"
   },
   "dependencies": {
     "@lucide/vue": "^1.24.0",

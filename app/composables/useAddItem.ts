@@ -139,6 +139,38 @@ export function useAddItem() {
     return batch.added.length + batch.stacked.length
   }
 
+  /**
+   * Change how much an open batch put on one marker (e.g. typing a quantity right after
+   * an add, or taking the last pick back), keeping undo exact. For a marker the batch
+   * created, `quantity` is its new quantity and 0 deletes it; for a marker it stacked
+   * onto, it is the new amount added on top and 0 takes the stack back. A batch left
+   * empty is dropped. Returns false when the batch didn't touch that marker.
+   */
+  function amend(batchId: string, markerId: string, quantity: number): boolean {
+    const idx = batches.value.findIndex((b) => b.id === batchId)
+    const batch = batches.value[idx]
+    if (!batch) return false
+    const q = Math.max(0, Math.round(quantity))
+    if (batch.added.includes(markerId)) {
+      batch.stacked = batch.stacked.filter((s) => s.markerId !== markerId)
+      if (q > 0) game.updateMarker(markerId, { quantity: q })
+      else {
+        batch.added = batch.added.filter((id) => id !== markerId)
+        game.deleteMarker(markerId)
+      }
+    } else {
+      const own = batch.stacked.filter((s) => s.markerId === markerId)
+      if (!own.length) return false
+      const m = game.markers.value.find((x) => x.id === markerId)
+      const had = own.reduce((a, s) => a + s.add, 0)
+      if (m) game.updateMarker(markerId, { quantity: Math.max(1, m.quantity - had + q) })
+      batch.stacked = batch.stacked.filter((s) => s.markerId !== markerId)
+      if (q > 0) batch.stacked.push({ markerId, add: q })
+    }
+    if (!batch.added.length && !batch.stacked.length) batches.value.splice(idx, 1)
+    return true
+  }
+
   const canUndo = computed(() => batches.value.length > 0)
 
   return {
@@ -152,6 +184,7 @@ export function useAddItem() {
     resolveSpot,
     markersAt,
     addAt,
+    amend,
     undo,
     canUndo,
     foldText,

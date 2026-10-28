@@ -273,16 +273,25 @@ export function planBatch(
   const total = here.length + adds.length
   adds.forEach((e, i) => {
     const slot = here.length + i
-    const single = total === 1
-    const angle = (2 * Math.PI * slot) / Math.max(total, 6) - Math.PI / 2
-    ops.push({
-      kind: 'add',
-      itemId: e.itemId,
-      quantity: e.quantity,
-      note: e.note || undefined,
-      x: single ? spot.x : spot.x + Math.cos(angle) * SPREAD_RADIUS,
-      y: single ? spot.y : spot.y + Math.sin(angle) * SPREAD_RADIUS,
-    })
+    const at = total === 1 ? { x: spot.x, y: spot.y } : ringSlot(spot, slot)
+    ops.push({ kind: 'add', itemId: e.itemId, quantity: e.quantity, note: e.note || undefined, ...at })
   })
   return ops
+}
+
+/**
+ * Position of the n-th marker around a spot. Slots don't depend on how many there will be,
+ * so items added one at a time land apart just like a batch: 6 on the first ring, 12 on
+ * the second (offset half a step), and so on outwards.
+ */
+export function ringSlot(spot: { x: number; y: number }, slot: number): { x: number; y: number } {
+  let ring = 1
+  let first = 0
+  while (slot >= first + 6 * ring) {
+    first += 6 * ring
+    ring++
+  }
+  const size = 6 * ring
+  const angle = (2 * Math.PI * (slot - first + (ring > 1 ? 0.5 : 0))) / size - Math.PI / 2
+  return { x: spot.x + Math.cos(angle) * SPREAD_RADIUS * ring, y: spot.y + Math.sin(angle) * SPREAD_RADIUS * ring }
 }
