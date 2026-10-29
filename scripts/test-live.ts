@@ -272,9 +272,9 @@ test('the mark key pressed again on the same thing is a repeat', () => {
   assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'g1' } }), withRun([marker('marker-1-x', { gameId: 'g1' })]))?.repeatOf, 'marker-1-x')
   // No id: same item, same spot, moments ago
   assert.equal(planMark(mark(), withRun([earlier()]))?.repeatOf, `marker-${t - 30_000}-abc`)
-  // Not a repeat: looted, a metre and a half away, long ago, or another object of the same kind
+  // Not a repeat: looted, two metres away, long ago, or another object of the same kind
   assert.equal(planMark(mark(), withRun([earlier({ lootedAt: 1 })]))?.repeatOf, undefined)
-  assert.equal(planMark(mark(), withRun([earlier({ x: 123 })]))?.repeatOf, undefined)
+  assert.equal(planMark(mark(), withRun([earlier({ x: 124 })]))?.repeatOf, undefined)
   assert.equal(planMark(mark(), withRun([marker(`marker-${t - 10 * 60_000}-abc`)]))?.repeatOf, undefined)
   assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'g2' } }), withRun([marker('marker-1-x', { gameId: 'g1' })]))?.repeatOf, undefined)
 })
@@ -288,6 +288,21 @@ test('marking an item just put down is a repeat of its stash', () => {
   // A stash of something else, or in another building, is not
   assert.equal(planMark(mark({ item: { name: 'Mystery Box' } }), { ...ctx, markers: [stash('Stashed · Game: Other')].map((m) => ({ ...m, itemId: UNSORTED_ITEM_ID })) })?.repeatOf, undefined)
   assert.equal(planMark(mark(), { ...ctx, markers: [stash('Stashed · Inside Camp Office')] })?.repeatOf, undefined)
+})
+
+test('a mark goes where the item lies, and its stash counts however old', () => {
+  // Player at (10, 20), item 3 m east: map x 120 + 2·3
+  const atItem = mark({ at: { x: 13, y: 5, z: 20 } })
+  assert.deepEqual(planMark(atItem, ctx) && [planMark(atItem, ctx)!.x, planMark(atItem, ctx)!.y], [126, 240])
+  // Indoors the door still wins
+  const inside = planMark(mark({ at: { x: 1, y: 0, z: 1 }, scenes: [sample('CampOffice', -1, 3), sample('LakeRegion', 10, 20)] }), ctx)
+  assert.deepEqual(inside && [inside.x, inside.y], [120, 240])
+  // Dropped an hour ago where the item lies: still the same thing
+  const stash = marker(`marker-${1761700000000 - 3_600_000}-abc`, { x: 126, note: 'Stashed' })
+  assert.equal(planMark(atItem, { ...ctx, markers: [stash] })?.repeatOf, stash.id)
+  // The validator checks the position
+  const { createdAt: _, ...body } = mark({ at: { x: 1, y: Number.NaN, z: 1 } })
+  assert.notEqual(validateLiveEvent(body), null)
 })
 
 console.log(`\n${passed} passed`)

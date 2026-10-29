@@ -63,6 +63,8 @@ export interface LiveMarkEvent {
   createdAt: number
   scenes: LiveSceneSample[]
   item?: LiveMarkItem | null
+  /** Where the aimed item lies (same scene as scenes[0]); the marker goes there, not at the player. */
+  at?: { x: number; y: number; z: number } | null
 }
 
 /**
@@ -135,12 +137,21 @@ function validateItem(item: unknown, at: string): string | null {
 /** Problem with a POST /api/live/v1/events body, or null when it is a valid game event. */
 export function validateLiveEvent(body: unknown): string | null {
   if (!body || typeof body !== 'object') return 'body must be an object'
-  const { id, type, scenes, item, items, container } = body as Record<string, unknown>
+  const { id, type, scenes, item, items, container, at } = body as Record<string, unknown>
   if (typeof id !== 'string' || !EVENT_ID.test(id)) return 'id must be 8–64 letters, digits or dashes'
   if (type !== 'mark' && type !== 'pickup' && type !== 'drop') return 'type must be "mark", "pickup" or "drop"'
   const problem = validateScenes(scenes)
   if (problem) return problem
-  if (type === 'mark') return item === undefined || item === null ? null : validateItem(item, 'item')
+  if (type === 'mark') {
+    if (at !== undefined && at !== null) {
+      if (typeof at !== 'object') return 'at must be an object'
+      for (const key of ['x', 'y', 'z']) {
+        const v = (at as Record<string, unknown>)[key]
+        if (typeof v !== 'number' || !Number.isFinite(v) || Math.abs(v) > MAX_COORD) return `at.${key} must be a finite number`
+      }
+    }
+    return item === undefined || item === null ? null : validateItem(item, 'item')
+  }
   if (!Array.isArray(items) || items.length < 1 || items.length > MAX_EVENT_ITEMS) return `items must be an array of 1–${MAX_EVENT_ITEMS} entries`
   for (const [i, it] of items.entries()) {
     const p = validateItem(it, `items[${i}]`)
@@ -157,7 +168,10 @@ const cleanItem = (item: LiveMarkItem): LiveMarkItem => ({ name: item.name.trim(
 /** Keeps only the known fields of a validated event, and stamps the server's time. */
 export function cleanLiveEvent(body: Omit<LiveMarkEvent, 'createdAt'> | Omit<LiveItemsEvent, 'createdAt'>, createdAt: number): LiveGameEvent {
   const scenes = cleanScenes(body.scenes)
-  if (body.type === 'mark') return { id: body.id, type: 'mark', createdAt, scenes, item: body.item ? cleanItem(body.item) : null }
+  if (body.type === 'mark') {
+    const at = body.at ? { x: body.at.x, y: body.at.y, z: body.at.z } : null
+    return { id: body.id, type: 'mark', createdAt, scenes, item: body.item ? cleanItem(body.item) : null, at }
+  }
   // No control characters: the name ends up in a marker note
   const container = body.container?.replace(/\p{Cc}/gu, '').trim() || null
   return { id: body.id, type: body.type, createdAt, scenes, items: body.items.map(cleanItem), container }
@@ -228,7 +242,10 @@ export function planMark<I extends { id: string; name: string }>(
     markers?: MarkerLike[]
   },
 ): PlannedMark | null {
-  const pos = resolveLivePosition({ scenes: event.scenes }, ctx.scenes, ctx.calibration, ctx.variant, ctx.imageFor)
+  // The item's own spot when known (it can be a few metres from the player); indoors the door wins anyway
+  const [here, ...before] = event.scenes
+  const scenes = event.at && here ? [{ ...here, x: event.at.x, y: event.at.y, z: event.at.z }, ...before] : event.scenes
+  const pos = resolveLivePosition({ scenes }, ctx.scenes, ctx.calibration, ctx.variant, ctx.imageFor)
   if (!pos?.point) return null
   const item = matchItem(event.item, ctx.items)
   const notes: string[] = []
@@ -246,19 +263,20 @@ export function planMark<I extends { id: string; name: string }>(
     gameId: event.item?.objectId,
     note: notes.length ? notes.join(' · ') : undefined,
   }
+  const near = (m: MarkerLike) => Math.hypot(m.x - plan.x, m.y - plan.y) <= REPEAT_MARK_RADIUS_M * (pos.pxPerMeter ?? 0)
   const repeat = ctx.markers?.find((m) => !m.lootedAt && m.mapId === plan.mapId && (plan.gameId
     ? m.gameId === plan.gameId
-    // Without an object id: the same thing marked from the same spot moments ago
-    // (or a stash of it the player just put down there)
-    : !m.gameId && m.itemId === plan.itemId && (m.note === plan.note || isStashOf(m.note, plan.note))
-      && Math.hypot(m.x - plan.x, m.y - plan.y) <= REPEAT_MARK_RADIUS_M * (pos.pxPerMeter ?? 0)
-      && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS))
+    : !m.gameId && m.itemId === plan.itemId && near(m) && (
+      // A stash of it lies right there (the player put it down): whenever that was
+      isStashOf(m.note, plan.note)
+      // Without an object id: the same thing marked moments ago
+      || (m.note === plan.note && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS))))
   if (repeat) plan.repeatOf = repeat.id
   return plan
 }
 
-/** A mark of the same item this close to, and this soon after, an earlier one is a repeat. */
-export const REPEAT_MARK_RADIUS_M = 1
+/** A mark of the same item this close to an earlier one (soon after, or its stash) is a repeat. */
+export const REPEAT_MARK_RADIUS_M = 1.5
 export const REPEAT_MARK_WINDOW_MS = 2 * 60 * 1000
 
 /** A stash note ("Stashed · Inside Camp Office") for the same place as a mark's note. */

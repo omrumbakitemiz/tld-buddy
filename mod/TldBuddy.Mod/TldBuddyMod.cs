@@ -191,14 +191,14 @@ namespace TldBuddy.Mod
             }
 
             UpdateTrail(Sample(scene, player));
-            MarkItem item = AimedItem();
-            var mark = new MarkEvent(System.Guid.NewGuid().ToString(), new List<SceneSample>(trail), item);
+            MarkItem item = AimedItem(out Point at);
+            var mark = new MarkEvent(System.Guid.NewGuid().ToString(), new List<SceneSample>(trail), item, at);
             string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
             bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions),
                 $"TLD Buddy: marked {label}", "TLD Buddy: could not send the mark (see MelonLoader log)");
             // Prefab name and object id too: they decide the item match and the duplicate check
             LoggerInstance.Msg($"Mark: {label} in {scene} (prefab {item?.gearName ?? "-"}, id {item?.objectId ?? "-"})");
-            SaveMarkPoint(trail[0], label);
+            SaveMarkPoint(at != null ? new SceneSample(scene, at.x, at.y, at.z, 0) : trail[0], label);
         }
 
         /// <summary>
@@ -258,9 +258,13 @@ namespace TldBuddy.Mod
             }
         }
 
-        /// <summary>The gear item under the crosshair, or null (nothing, or not an item: a door, a container).</summary>
-        MarkItem AimedItem()
+        /// <summary>
+        /// The gear item under the crosshair and where it lies, or null (nothing, or not an item:
+        /// a door, a container).
+        /// </summary>
+        MarkItem AimedItem(out Point at)
         {
+            at = null;
             try
             {
                 PlayerManager pm = GameManager.GetPlayerManagerComponent();
@@ -271,6 +275,8 @@ namespace TldBuddy.Mod
                 string name = gear.DisplayName;
                 if (string.IsNullOrWhiteSpace(name)) return null;
                 int units = Gear.Units(gear);
+                Vector3 p = gear.transform.position;
+                at = new Point(Round(p.x), Round(p.y), Round(p.z));
                 return new MarkItem(name.Trim(), Gear.PrefabName(gear.gameObject.name), Mathf.Clamp(units, 1, 9999), Gear.ObjectId(gear.gameObject));
             }
             catch (System.Exception e)
@@ -404,12 +410,27 @@ namespace TldBuddy.Mod
             public string type = "mark";
             public List<SceneSample> scenes;
             public MarkItem item;
+            /// <summary>Where the aimed item lies; null when nothing was aimed at.</summary>
+            public Point at;
 
-            public MarkEvent(string id, List<SceneSample> scenes, MarkItem item)
+            public MarkEvent(string id, List<SceneSample> scenes, MarkItem item, Point at)
             {
                 this.id = id;
                 this.scenes = scenes;
                 this.item = item;
+                this.at = at;
+            }
+        }
+
+        sealed class Point
+        {
+            public double x, y, z;
+
+            public Point(double x, double y, double z)
+            {
+                this.x = x;
+                this.y = y;
+                this.z = z;
             }
         }
 
