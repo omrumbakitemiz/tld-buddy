@@ -520,5 +520,83 @@
         }
       ]
     }
+  },
+  "WhalingStationRegion": {
+    "mapId": "desolation-point",
+    "default": {
+      "matrix": [
+        1.485904539,
+        0.03194637887,
+        90.55100149,
+        -0.01451069,
+        1.48486658,
+        -143.7285905
+      ],
+      "rmsPx": 17.04,
+      "imageWidth": 2490,
+      "imageHeight": 2493,
+      "points": [
+        {
+          "target": "HighwayMineTransitionZone",
+          "exitPoint": "WhalingExitPoint",
+          "world": [
+            93.57,
+            1090.86
+          ],
+          "map": [
+            269.1,
+            1475.1
+          ]
+        },
+        {
+          "target": "WhalingMine",
+          "exitPoint": "Whale2ExitPoint",
+          "world": [
+            789.6,
+            1421.58
+          ],
+          "map": [
+            1311.1,
+            1956
+          ]
+        },
+        {
+          "target": "WhalingMine",
+          "exitPoint": "Whale1ExitPoint",
+          "world": [
+            427.72,
+            1127.36
+          ],
+          "map": [
+            753.5,
+            1523
+          ]
+        },
+        {
+          "target": "WhalingShipA",
+          "exitPoint": "WhalingShipEnterDoor",
+          "world": [
+            1038.1,
+            1000.92
+          ],
+          "map": [
+            1641.5,
+            1319.1
+          ]
+        },
+        {
+          "target": "WhalingShipA",
+          "exitPoint": "WhalingShipEnterHull",
+          "world": [
+            1022.6,
+            996.78
+          ],
+          "map": [
+            1667.5,
+            1330.1
+          ]
+        }
+      ]
+    }
   }
 }
