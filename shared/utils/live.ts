@@ -249,7 +249,8 @@ export function planMark<I extends { id: string; name: string }>(
   const repeat = ctx.markers?.find((m) => !m.lootedAt && m.mapId === plan.mapId && (plan.gameId
     ? m.gameId === plan.gameId
     // Without an object id: the same thing marked from the same spot moments ago
-    : !m.gameId && m.itemId === plan.itemId && m.note === plan.note
+    // (or a stash of it the player just put down there)
+    : !m.gameId && m.itemId === plan.itemId && (m.note === plan.note || isStashOf(m.note, plan.note))
       && Math.hypot(m.x - plan.x, m.y - plan.y) <= REPEAT_MARK_RADIUS_M * (pos.pxPerMeter ?? 0)
       && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS))
   if (repeat) plan.repeatOf = repeat.id
@@ -259,6 +260,13 @@ export function planMark<I extends { id: string; name: string }>(
 /** A mark of the same item this close to, and this soon after, an earlier one is a repeat. */
 export const REPEAT_MARK_RADIUS_M = 1
 export const REPEAT_MARK_WINDOW_MS = 2 * 60 * 1000
+
+/** A stash note ("Stashed · Inside Camp Office") for the same place as a mark's note. */
+function isStashOf(stashNote: string | undefined, markNote: string | undefined): boolean {
+  if (!stashNote?.startsWith('Stashed')) return false
+  const rest = (note: string | undefined) => (note ?? '').split(' · ').filter((p) => !p.startsWith('Stashed'))
+  return rest(stashNote).join(' · ') === rest(markNote).join(' · ')
+}
 
 /** Epoch ms in a `marker-<ms>-<rand>` id; 0 when absent. */
 const markerTime = (id: string) => Number(id.split('-')[1]) || 0

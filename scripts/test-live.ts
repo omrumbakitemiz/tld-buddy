@@ -279,4 +279,15 @@ test('the mark key pressed again on the same thing is a repeat', () => {
   assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'g2' } }), withRun([marker('marker-1-x', { gameId: 'g1' })]))?.repeatOf, undefined)
 })
 
+test('marking an item just put down is a repeat of its stash', () => {
+  const t = 1761700000000
+  const stash = (note: string) => marker(`marker-${t - 5_000}-abc`, { note })
+  assert.equal(planMark(mark(), { ...ctx, markers: [stash('Stashed')] })?.repeatOf, `marker-${t - 5_000}-abc`)
+  // Unknown items keep the game's name in both notes
+  assert.equal(planMark(mark({ item: { name: 'Mystery Box' } }), { ...ctx, markers: [stash('Stashed · Game: Mystery Box')].map((m) => ({ ...m, itemId: UNSORTED_ITEM_ID })) })?.repeatOf, `marker-${t - 5_000}-abc`)
+  // A stash of something else, or in another building, is not
+  assert.equal(planMark(mark({ item: { name: 'Mystery Box' } }), { ...ctx, markers: [stash('Stashed · Game: Other')].map((m) => ({ ...m, itemId: UNSORTED_ITEM_ID })) })?.repeatOf, undefined)
+  assert.equal(planMark(mark(), { ...ctx, markers: [stash('Stashed · Inside Camp Office')] })?.repeatOf, undefined)
+})
+
 console.log(`\n${passed} passed`)
