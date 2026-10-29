@@ -130,7 +130,7 @@ export function validateAppData(raw: unknown): string | null {
     if (!idString(m.mapId) || !idString(m.itemId)) return `markers[${i}] needs mapId and itemId`
     if (!isFiniteNumber(m.x) || !isFiniteNumber(m.y)) return `markers[${i}] needs numeric x/y`
     if (!isFiniteNumber(m.quantity) || m.quantity < 0) return `markers[${i}].quantity must be a number >= 0`
-    if (!optString(m.name) || !optString(m.note)) return `markers[${i}] name/note must be strings`
+    if (!optString(m.name) || !optString(m.note) || !optString(m.gameId)) return `markers[${i}] name/note/gameId must be strings`
     if (m.lootedAt !== undefined && m.lootedAt !== null && !isFiniteNumber(m.lootedAt)) return `markers[${i}].lootedAt must be a number or null`
     markerIds.add(m.id)
   }

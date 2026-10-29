@@ -243,9 +243,10 @@ namespace TldBuddy.Mod
                     ev = new ItemsEvent(System.Guid.NewGuid().ToString(), e.type, new List<SceneSample>(trail), e.container);
                     groups[key] = ev;
                 }
-                var same = ev.items.Find(i => i.name == e.name && i.gearName == e.gearName);
+                // Separate objects stay separate items, so each can loot its own marker
+                var same = e.objectId == null ? ev.items.Find(i => i.objectId == null && i.name == e.name && i.gearName == e.gearName) : null;
                 if (same != null) same.quantity = System.Math.Min(same.quantity + e.quantity, 9999);
-                else if (ev.items.Count < MaxEventItems) ev.items.Add(new MarkItem(e.name, e.gearName, e.quantity));
+                else if (ev.items.Count < MaxEventItems) ev.items.Add(new MarkItem(e.name, e.gearName, e.quantity, e.objectId));
             }
             foreach (var ev in groups.Values)
             {
@@ -268,7 +269,7 @@ namespace TldBuddy.Mod
                 string name = gear.DisplayName;
                 if (string.IsNullOrWhiteSpace(name)) return null;
                 int units = Gear.Units(gear);
-                return new MarkItem(name.Trim(), Gear.PrefabName(target.name), Mathf.Clamp(units, 1, 9999));
+                return new MarkItem(name.Trim(), Gear.PrefabName(target.name), Mathf.Clamp(units, 1, 9999), Gear.ObjectId(target));
             }
             catch (System.Exception e)
             {
@@ -383,12 +384,14 @@ namespace TldBuddy.Mod
             public string name;
             public string gearName;
             public int quantity;
+            public string objectId;
 
-            public MarkItem(string name, string gearName, int quantity)
+            public MarkItem(string name, string gearName, int quantity, string objectId)
             {
                 this.name = name;
                 this.gearName = gearName;
                 this.quantity = quantity;
+                this.objectId = objectId;
             }
         }
 

@@ -77,6 +77,8 @@ export interface Marker {
   note?: string
   /** Epoch ms when marked as looted. Absent/null = still there. Added in the UI overhaul; older data has none. */
   lootedAt?: number | null
+  /** Game object id (ObjectGuid, kept in TLD saves) of the item marked with the mod's mark key. */
+  gameId?: string
 }
 
 /** User-placed coordinates for a POI on the map (global, shared across all runs) */

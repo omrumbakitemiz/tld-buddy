@@ -50,6 +50,8 @@ export interface LivePosition {
 export interface LiveMarkItem {
   name: string // GearItem.DisplayName, e.g. "Hatchet"
   gearName?: string // prefab name, e.g. "GEAR_Hatchet"
+  /** The object's id in the game (ObjectGuid), the same in every session of a save. */
+  objectId?: string
   quantity?: number
 }
 
@@ -83,6 +85,7 @@ export const MAX_LIVE_SCENES = 8
 const SCENE_NAME = /^[A-Za-z0-9_]{1,64}$/
 const EVENT_ID = /^[A-Za-z0-9-]{8,64}$/
 const GEAR_NAME = /^[A-Za-z0-9_]{1,80}$/
+const OBJECT_ID = /^[A-Za-z0-9_-]{1,64}$/
 const MAX_COORD = 100_000
 const MAX_ITEM_NAME = 100
 const MAX_QUANTITY = 9999
@@ -119,9 +122,10 @@ export function cleanLiveState(body: LiveState): LiveState {
 
 function validateItem(item: unknown, at: string): string | null {
   if (!item || typeof item !== 'object') return `${at} must be an object`
-  const { name, gearName, quantity } = item as Record<string, unknown>
+  const { name, gearName, quantity, objectId } = item as Record<string, unknown>
   if (typeof name !== 'string' || !name.trim() || name.length > MAX_ITEM_NAME) return `${at}.name must be a short string`
   if (gearName !== undefined && (typeof gearName !== 'string' || !GEAR_NAME.test(gearName))) return `${at}.gearName is not a prefab name`
+  if (objectId !== undefined && (typeof objectId !== 'string' || !OBJECT_ID.test(objectId))) return `${at}.objectId is not an object id`
   if (quantity !== undefined && (!Number.isInteger(quantity) || (quantity as number) < 1 || (quantity as number) > MAX_QUANTITY)) {
     return `${at}.quantity must be a whole number 1–${MAX_QUANTITY}`
   }
@@ -148,7 +152,7 @@ export function validateLiveEvent(body: unknown): string | null {
   return null
 }
 
-const cleanItem = (item: LiveMarkItem): LiveMarkItem => ({ name: item.name.trim(), gearName: item.gearName, quantity: item.quantity })
+const cleanItem = (item: LiveMarkItem): LiveMarkItem => ({ name: item.name.trim(), gearName: item.gearName, quantity: item.quantity, objectId: item.objectId })
 
 /** Keeps only the known fields of a validated event, and stamps the server's time. */
 export function cleanLiveEvent(body: Omit<LiveMarkEvent, 'createdAt'> | Omit<LiveItemsEvent, 'createdAt'>, createdAt: number): LiveGameEvent {
@@ -200,6 +204,8 @@ export interface PlannedMark {
   name: string
   quantity: number
   note?: string
+  /** Game object id, for marks of one specific item (not stashes, which can hold several). */
+  gameId?: string
 }
 
 /**
@@ -231,6 +237,7 @@ export function planMark<I extends { id: string; name: string }>(
     itemId: item?.id ?? UNSORTED_ITEM_ID,
     name: item?.name ?? UNSORTED_ITEM_NAME,
     quantity: event.item?.quantity ?? 1,
+    gameId: event.item?.objectId,
     note: notes.length ? notes.join(' · ') : undefined,
   }
 }
@@ -250,6 +257,7 @@ export interface MarkerLike {
   quantity: number
   note?: string
   lootedAt?: number | null
+  gameId?: string
 }
 
 export type MarkerChange =
@@ -264,9 +272,10 @@ const INSIDE = 'Inside '
  * map (kept and retried later, like marks). Items are applied one after another, so picking up
  * two of the same thing loots two markers.
  *
- * Indoors every marker sits at the door, so there a pickup only matches markers noted as inside
- * the same building; outdoors it matches the nearest marker for the item within PICKUP_RADIUS_M
- * that isn't inside a building. A pickup leaves the rest when the marker holds more.
+ * A marker made with the mark key knows its game object, and only a pickup of that object loots
+ * it. Otherwise, indoors every marker sits at the door, so there a pickup only matches markers
+ * noted as inside the same building; outdoors it matches the nearest marker for the item within
+ * PICKUP_RADIUS_M that isn't inside a building. A pickup leaves the rest when the marker holds more.
  */
 export function planItemsEvent<I extends { id: string; name: string }>(
   event: LiveItemsEvent,
@@ -293,22 +302,26 @@ export function planItemsEvent<I extends { id: string; name: string }>(
     const item = matchItem(it, ctx.items)
     const quantity = it.quantity ?? 1
     if (event.type === 'pickup') {
-      // Nothing the app knows: no marker can be for it
-      if (!item) continue
-      const candidates = markers.filter((m) => !m.lootedAt && m.itemId === item.id && (inside
-        ? !!m.note?.includes(inside)
-        : !m.note?.includes(INSIDE) && distance(m) <= PICKUP_RADIUS_M))
+      // The very object marked with the mark key, wherever its marker is
+      const exact = it.objectId ? markers.find((m) => !m.lootedAt && m.gameId === it.objectId) : undefined
+      // Otherwise nothing the app knows can have a marker
+      if (!exact && !item) continue
+      const candidates = exact ? [exact] : markers.filter((m) => !m.lootedAt && m.itemId === item!.id
+        // A marker for another object of the same kind is not this one
+        && !(m.gameId && it.objectId)
+        && (inside ? !!m.note?.includes(inside) : !m.note?.includes(INSIDE) && distance(m) <= PICKUP_RADIUS_M))
       // A stash in the container it came from first, then the closest
       const fromContainer = (m: MarkerLike) => (event.container && m.note?.includes(event.container) ? 0 : 1)
       candidates.sort((a, b) => fromContainer(a) - fromContainer(b) || distance(a) - distance(b))
       const target = candidates[0]
       if (!target) continue
+      const name = item?.name ?? it.name
       if (target.quantity > quantity) {
         target.quantity -= quantity
-        changes.push({ kind: 'quantity', markerId: target.id, quantity: target.quantity, name: item.name, by: -quantity })
+        changes.push({ kind: 'quantity', markerId: target.id, quantity: target.quantity, name, by: -quantity })
       } else {
         target.lootedAt = event.createdAt
-        changes.push({ kind: 'looted', markerId: target.id, name: item.name })
+        changes.push({ kind: 'looted', markerId: target.id, name })
       }
       continue
     }

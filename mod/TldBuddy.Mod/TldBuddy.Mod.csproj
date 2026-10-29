@@ -33,6 +33,7 @@
     <Reference Include="Il2CppInterop.Runtime" HintPath="$(MelonDir)\net6\Il2CppInterop.Runtime.dll" Private="false" />
     <Reference Include="Assembly-CSharp" HintPath="$(Il2CppDir)\Assembly-CSharp.dll" Private="false" />
     <Reference Include="Il2Cppmscorlib" HintPath="$(Il2CppDir)\Il2Cppmscorlib.dll" Private="false" />
+    <Reference Include="Il2CppTLD.PDID" HintPath="$(Il2CppDir)\Il2CppTLD.PDID.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(Il2CppDir)\UnityEngine.CoreModule.dll" Private="false" />
   </ItemGroup>
 

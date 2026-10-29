@@ -144,7 +144,7 @@ test('scene labels read like place names', () => {
 test('planned mark outdoors: known item at the player position', () => {
   const plan = planMark(mark({ item: { name: 'Hatchet', quantity: 2 } }), ctx)
   assert.deepEqual(plan && { ...plan, id: undefined }, {
-    id: undefined, mapId: 'mystery-lake', x: 120, y: 240, itemId: 'hatchet', name: 'Hatchet', quantity: 2, note: undefined,
+    id: undefined, mapId: 'mystery-lake', x: 120, y: 240, itemId: 'hatchet', name: 'Hatchet', quantity: 2, note: undefined, gameId: undefined,
   })
 })
 
@@ -243,6 +243,21 @@ test('drop adds a stash marker, and more of the same joins it', () => {
 
 test('pickups and drops without a calibrated position are kept for later', () => {
   assert.equal(planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }], { scenes: [sample('RuralRegion')] }), withMarkers([])), null)
+})
+
+test('a marked object is looted only by picking up that object', () => {
+  const markers = [marker('mine', { gameId: 'guid-a', x: 120 + 2 * 50 }), marker('plain')]
+  // Its own marker wins even when far away
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet', objectId: 'guid-a' }]), withMarkers(markers))), ['looted mine'])
+  // Another hatchet next to it leaves it alone, and takes the plain marker
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet', objectId: 'guid-b' }]), withMarkers([marker('mine', { gameId: 'guid-a' }), marker('plain')]))), ['looted plain'])
+  // Works for items the app doesn't know too (an unsorted mark of that object)
+  const unsorted = [marker('u', { itemId: UNSORTED_ITEM_ID, gameId: 'guid-c' })]
+  assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Mystery Box', objectId: 'guid-c' }]), withMarkers(unsorted))), ['looted u'])
+  // Marks carry the id; it must look like one
+  assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'guid-a' } }), ctx)?.gameId, 'guid-a')
+  const { createdAt: _, ...body } = mark({ item: { name: 'Hatchet', objectId: 'not an id!' } })
+  assert.notEqual(validateLiveEvent(body), null)
 })
 
 console.log(`\n${passed} passed`)

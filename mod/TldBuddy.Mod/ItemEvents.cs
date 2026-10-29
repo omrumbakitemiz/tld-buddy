@@ -30,6 +30,7 @@ namespace TldBuddy.Mod
             public string name;
             public string gearName;
             public int quantity;
+            public string objectId;
         }
 
         public static bool HasPending => pending.Count > 0;
@@ -76,6 +77,8 @@ namespace TldBuddy.Mod
                     name = name.Trim(),
                     gearName = Gear.PrefabName(gi.name),
                     quantity = UnityEngine.Mathf.Clamp(units, 1, 9999),
+                    // Only pickups: a stash can hold several objects, so its marker has no single one
+                    objectId = type == "pickup" ? Gear.ObjectId(gi.gameObject) : null,
                 });
             }
             catch (System.Exception e)
