@@ -251,7 +251,9 @@ function start() {
     if (!game.apiSynced.value || !statics.ready.value || !current) return
     const fresh = pendingEvents.value
     if (!fresh.length && !readUnplaced().length) return
-    pendingEvents.value = []
+    // Only when there is something to take: a new empty list is a change too, and would run this
+    // watcher again, forever, while kept events wait (a map not calibrated, a save without a run)
+    if (fresh.length) pendingEvents.value = []
     void withMarkLock(() => {
       const handled = readHandled()
       const kept = readUnplaced()
