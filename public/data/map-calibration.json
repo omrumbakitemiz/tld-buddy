@@ -1,4 +1,70 @@
 {
+  "CrashMountainRegion": {
+    "mapId": "timberwolf-mountain",
+    "default": {
+      "matrix": [
+        1.452661795,
+        0.007023051041,
+        72.22272564,
+        0.02190001765,
+        1.515712013,
+        558.2050332
+      ],
+      "rmsPx": 19.5,
+      "imageWidth": 3067,
+      "imageHeight": 3648,
+      "points": [
+        {
+          "target": "AshCanyonRegion",
+          "exitPoint": "TWMExitPoint1",
+          "world": [
+            1848.89,
+            711.06
+          ],
+          "map": [
+            2780.8,
+            1687.8
+          ]
+        },
+        {
+          "target": "AshCaveA",
+          "exitPoint": "AshCaveAEnterPoint1",
+          "world": [
+            1745.43,
+            1555.56
+          ],
+          "map": [
+            2599.8,
+            2942.1
+          ]
+        },
+        {
+          "target": "BlackrockCaveA",
+          "exitPoint": "BlackrockCaveEnterPoint1",
+          "world": [
+            181.12,
+            1410.87
+          ],
+          "map": [
+            360,
+            2710.1
+          ]
+        },
+        {
+          "target": "RuralRegion",
+          "exitPoint": "CrashMountainExitPoint",
+          "world": [
+            191,
+            305.79
+          ],
+          "map": [
+            338.1,
+            1017.1
+          ]
+        }
+      ]
+    }
+  },
   "DamRiverTransitionZoneB": {
     "mapId": "winding-river",
     "default": {
