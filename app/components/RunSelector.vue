@@ -20,6 +20,9 @@
             <DifficultyPicker v-model="editDifficulty" />
             <p class="text-xs text-muted-foreground">Changing difficulty switches the map artwork for this run.</p>
             <div class="flex justify-end gap-2">
+              <Button v-if="run.gameSave" type="button" variant="ghost" size="sm" class="mr-auto text-muted-foreground" @click="linkRunToSave(run.id, null)">
+                <Link2OffIcon class="size-4" /> Unlink game save
+              </Button>
               <Button type="button" variant="ghost" size="sm" @click="cancelEdit">Cancel</Button>
               <Button type="submit" size="sm" :disabled="!editName.trim() || !editDifficulty">Save</Button>
             </div>
@@ -37,6 +40,7 @@
                 <span class="flex items-center gap-2">
                   <span class="truncate font-medium">{{ run.name }}</span>
                   <DifficultyChip :difficulty="run.difficulty" />
+                  <Gamepad2Icon v-if="run.gameSave" class="size-3.5 shrink-0 text-muted-foreground" aria-label="Follows a game save" />
                 </span>
                 <span class="tabular mt-0.5 block text-xs text-muted-foreground">
                   {{ stats(run.id).remaining }} to loot · {{ stats(run.id).looted }} looted · started {{ formatDate(run.createdAt) }}
@@ -100,7 +104,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CheckIcon, EraserIcon, PencilIcon, PlusIcon, TrashIcon } from '@lucide/vue'
+import { CheckIcon, EraserIcon, Gamepad2Icon, Link2OffIcon, PencilIcon, PlusIcon, TrashIcon } from '@lucide/vue'
 import { Dialog, DialogDescription, DialogHeader, DialogScrollContent, DialogTitle } from '~/components/ui/dialog'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
@@ -116,7 +120,7 @@ import type { Difficulty, Run } from '~/types'
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
-const { runs, currentRun, markers, addRun, deleteRun, clearRunItems, setCurrentRun, updateRun } = useGameData()
+const { runs, currentRun, markers, addRun, deleteRun, clearRunItems, setCurrentRun, updateRun, linkRunToSave } = useGameData()
 
 const newRunName = ref('')
 const selectedDifficulty = ref<Difficulty | null>(null)

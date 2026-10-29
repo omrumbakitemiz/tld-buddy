@@ -1,6 +1,8 @@
 import { computed, ref, shallowRef, watch } from 'vue'
-import { getVariantKey } from '~/types'
-import { planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveState } from '#shared/utils/live'
+import { getVariantKey, type Run } from '~/types'
+import {
+  planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveSave, type LiveState, type LiveWorld,
+} from '#shared/utils/live'
 import { useAddUi } from './useAddUi'
 import { useAuth } from './useAuth'
 import { useGameData } from './useGameData'
@@ -139,9 +141,10 @@ function start() {
   }
 
   // Apply new events, and retry kept ones, once the run's data and the static data are loaded
-  watch([pendingEvents, game.apiSynced, game.currentRun, statics.ready], () => {
-    const run = game.currentRun.value
-    if (!game.apiSynced.value || !statics.ready.value || !run) return
+  const runLinks = () => game.runs.value.map((r) => `${r.id}=${r.gameSave ?? ''}`).join()
+  watch([pendingEvents, game.apiSynced, game.currentRun, runLinks, statics.ready], () => {
+    const current = game.currentRun.value
+    if (!game.apiSynced.value || !statics.ready.value || !current) return
     const fresh = pendingEvents.value
     if (!fresh.length && !readUnplaced().length) return
     pendingEvents.value = []
@@ -150,13 +153,21 @@ function start() {
       const kept = readUnplaced()
       const freshIds = new Set(fresh.map((e) => e.id))
       const batch = [...kept.filter((e) => !freshIds.has(e.id)), ...fresh]
-      const variant = getVariantKey(run.difficulty)
-      const placing = {
-        scenes: statics.gameScenes.value,
-        calibration: statics.calibration.value,
-        variant,
-        imageFor: (mapId: string) => statics.getMap(mapId)?.[variant],
-        items: statics.items.value,
+      /** The run linked to the event's save, else the current run unless that one tracks another save. */
+      const runFor = (event: LiveGameEvent) => {
+        if (!event.save) return current
+        return game.runs.value.find((r) => r.gameSave === event.save) ?? (current.gameSave ? null : current)
+      }
+      const placingFor = (run: Run) => {
+        const variant = getVariantKey(run.difficulty)
+        return {
+          scenes: statics.gameScenes.value,
+          calibration: statics.calibration.value,
+          variant,
+          imageFor: (mapId: string) => statics.getMap(mapId)?.[variant],
+          items: statics.items.value,
+          markers: game.markers.value.filter((m) => m.runId === run.id),
+        }
       }
       const counted = (name: string, n: number) => (n > 1 ? `${name} ×${n}` : name)
       const added: string[] = []
@@ -174,8 +185,15 @@ function start() {
       }
       for (const event of batch) {
         if (handled.includes(event.id)) continue
+        const run = runFor(event)
+        // From a save no run is linked to yet: kept until the player links or starts one
+        if (!run) {
+          stillUnplaced.push(event)
+          continue
+        }
+        const placing = placingFor(run)
         if (event.type === 'mark') {
-          const plan = planMark(event, { ...placing, markers: game.markers.value.filter((m) => m.runId === run.id) })
+          const plan = planMark(event, placing)
           if (!plan) {
             keep(event)
             continue
@@ -199,7 +217,7 @@ function start() {
           added.push(counted(plan.name, plan.quantity))
           continue
         }
-        const changes = planItemsEvent(event, { ...placing, markers: game.markers.value.filter((m) => m.runId === run.id) })
+        const changes = planItemsEvent(event, placing)
         if (!changes) {
           keep(event)
           continue
@@ -240,6 +258,18 @@ function start() {
       if (parts.length) addUi.announce(parts.join('. '))
     })
   })
+
+  // Open the run of the save being played. Only when the game starts reporting a save (load, or
+  // another save), so picking another run by hand while playing is not undone every second.
+  let followedSave: string | null = null
+  watch([() => state.value?.save?.id ?? null, game.apiSynced], ([saveId, synced]) => {
+    if (!saveId || !synced || saveId === followedSave) return
+    followedSave = saveId
+    const linked = game.runs.value.find((r) => r.gameSave === saveId)
+    if (!linked || linked.id === game.currentRun.value?.id) return
+    game.setCurrentRun(linked.id)
+    addUi.announce(`Switched to ${linked.name}: the run of the save you're playing`)
+  })
 }
 
 /** Drops game events kept for maps not calibrated yet, so they don't come back after a reset. */
@@ -264,5 +294,9 @@ export function useLiveGame() {
   /** Scene the player is in right now (also unmapped interiors), for status text. */
   const currentScene = computed(() => (online.value ? state.value?.scenes[0]?.scene ?? null : null))
 
-  return { connected, online, position, currentScene }
+  /** Save being played, and its time, weather and condition (null when the game is not running). */
+  const save = computed<LiveSave | null>(() => (online.value ? state.value?.save ?? null : null))
+  const world = computed<LiveWorld | null>(() => (online.value ? state.value?.world ?? null : null))
+
+  return { connected, online, position, currentScene, save, world }
 }

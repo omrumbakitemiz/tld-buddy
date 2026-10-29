@@ -53,6 +53,21 @@
       <kbd class="text-[10px] text-muted-foreground">H</kbd>
     </button>
 
+    <!-- The game's time, weather and condition while it runs -->
+    <div
+      v-if="currentMap && world"
+      class="surface-rail tabular pointer-events-none absolute right-3 top-3 z-[500] flex h-8 items-center gap-2 rounded-full border border-border px-3 text-xs shadow-lg"
+      :title="`Day ${world.day}, ${clock}. ${weatherLabel(world.weather)}, ${Math.round(world.airC)}°C, feels like ${Math.round(world.feelsC)}°C, wind ${Math.round(world.windMph)} mph. Condition ${Math.round(world.condition)}%`"
+    >
+      <span>Day {{ world.day }} · {{ clock }}</span>
+      <span class="text-muted-foreground">·</span>
+      <span>{{ weatherLabel(world.weather) }}</span>
+      <span class="text-muted-foreground">{{ Math.round(world.feelsC) }}°C</span>
+      <span class="text-muted-foreground">·</span>
+      <HeartPulseIcon class="size-3.5" :class="world.condition < 30 ? 'text-destructive' : 'text-muted-foreground'" aria-hidden="true" />
+      <span :class="world.condition < 30 ? 'text-destructive' : ''">{{ Math.round(world.condition) }}%</span>
+    </div>
+
     <!-- Zoom / fit -->
     <div v-if="currentMap" class="absolute bottom-4 right-3 z-[500] flex flex-col overflow-hidden rounded-lg border border-border surface-rail shadow-lg">
       <button
@@ -80,7 +95,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import L from 'leaflet'
-import { CrosshairIcon, EyeOffIcon, LoaderIcon, LocateFixedIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
+import { CrosshairIcon, EyeOffIcon, HeartPulseIcon, LoaderIcon, LocateFixedIcon, MapIcon, MaximizeIcon, MinusIcon, PlusIcon } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useImageMap } from '~/composables/useImageMap'
@@ -88,6 +103,7 @@ import { useLiveGame } from '~/composables/useLiveGame'
 import { useUiState } from '~/composables/useUiState'
 import { useAddUi, type AddRequest, type MapTile } from '~/composables/useAddUi'
 import type { Marker } from '~/types'
+import { weatherLabel } from '#shared/utils/live'
 
 const emit = defineEmits<{
   'request-add-marker': [request: AddRequest]
@@ -122,6 +138,9 @@ const livePoint = computed(() => {
   const pos = live.position.value
   return pos?.point && pos.mapId === currentMap.value?.id ? pos.point : null
 })
+const world = live.world
+/** In-game time as the game shows it, e.g. "07:05". */
+const clock = computed(() => (world.value ? `${String(world.value.hour).padStart(2, '0')}:${String(world.value.minute).padStart(2, '0')}` : ''))
 let liveMarker: L.Marker | null = null
 let liveMarkerIndoors = false
 /** Unwrapped arrow angle, so the CSS transition always turns the short way. */

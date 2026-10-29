@@ -50,6 +50,15 @@ Optional settings in the same section:
 - `MarkKey = "F4"`: F1–F12, a letter or a digit.
 - `RunInBackground = true`: keep the game running while TLD Buddy has focus.
 
+### Runs follow the save
+
+The mod also sends which save you're playing (its name and experience mode), plus the in-game day and time, weather, temperature (feels like) and your condition. The time, weather and condition show at the top right of the map.
+
+- A run linked to the save opens by itself when you load that save.
+- With no linked run, a bar asks you to pick one: use the current run, or start a new run named after the save, with the save's difficulty.
+- Marks, pickups and drops go to the run of the save they happened in, even if you have another run open. Events from a save no run is linked to wait until you link one.
+- To unlink, edit the run in Runs.
+
 ### Mark here
 
 Press the mark key in game (default F4) while aiming at an item. A marker for it appears in the current run where the item lies (at your position when you aim at nothing), and the game shows "TLD Buddy: marked Hatchet".

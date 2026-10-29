@@ -148,7 +148,7 @@ namespace TldBuddy.Mod
 
             if (BridgeOn)
             {
-                bridge.Send(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(new LiveState(trail), JsonOptions));
+                bridge.Send(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(new LiveState(trail, GameInfo.CurrentSave(LoggerInstance), GameInfo.CurrentWorld(LoggerInstance)), JsonOptions));
             }
 
             if (ticks++ % LogEveryTicks == 0)
@@ -156,7 +156,7 @@ namespace TldBuddy.Mod
                 string unityScene = UnitySceneManager.GetActiveScene().name;
                 LoggerInstance.Msg(
                     $"scene={gameScene} unity={unityScene} " +
-                    $"pos=({pos.x:F1}, {pos.y:F1}, {pos.z:F1}) heading={heading:F0} containers={containerCount}");
+                    $"pos=({pos.x:F1}, {pos.y:F1}, {pos.z:F1}) heading={heading:F0} containers={containerCount} save={GameInfo.SaveId(LoggerInstance) ?? "-"}");
             }
         }
 
@@ -192,7 +192,7 @@ namespace TldBuddy.Mod
 
             UpdateTrail(Sample(scene, player));
             MarkItem item = AimedItem(out Point at);
-            var mark = new MarkEvent(System.Guid.NewGuid().ToString(), new List<SceneSample>(trail), item, at);
+            var mark = new MarkEvent(System.Guid.NewGuid().ToString(), new List<SceneSample>(trail), GameInfo.SaveId(LoggerInstance), item, at);
             string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
             bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions),
                 $"TLD Buddy: marked {label}", "TLD Buddy: could not send the mark (see MelonLoader log)");
@@ -241,7 +241,7 @@ namespace TldBuddy.Mod
                 string key = e.type + "|" + e.container;
                 if (!groups.TryGetValue(key, out var ev))
                 {
-                    ev = new ItemsEvent(System.Guid.NewGuid().ToString(), e.type, new List<SceneSample>(trail), e.container);
+                    ev = new ItemsEvent(System.Guid.NewGuid().ToString(), e.type, new List<SceneSample>(trail), GameInfo.SaveId(LoggerInstance), e.container);
                     groups[key] = ev;
                 }
                 // Separate objects stay separate items, so each can loot its own marker
@@ -363,10 +363,14 @@ namespace TldBuddy.Mod
         sealed class LiveState
         {
             public List<SceneSample> scenes;
+            public GameInfo.Save save;
+            public GameInfo.World world;
 
-            public LiveState(List<SceneSample> scenes)
+            public LiveState(List<SceneSample> scenes, GameInfo.Save save, GameInfo.World world)
             {
                 this.scenes = scenes;
+                this.save = save;
+                this.world = world;
             }
         }
 
@@ -411,14 +415,17 @@ namespace TldBuddy.Mod
             public string id;
             public string type = "mark";
             public List<SceneSample> scenes;
+            /// <summary>GameInfo.SaveId: the event goes to the run linked to that save.</summary>
+            public string save;
             public MarkItem item;
             /// <summary>Where the aimed item lies; null when nothing was aimed at.</summary>
             public Point at;
 
-            public MarkEvent(string id, List<SceneSample> scenes, MarkItem item, Point at)
+            public MarkEvent(string id, List<SceneSample> scenes, string save, MarkItem item, Point at)
             {
                 this.id = id;
                 this.scenes = scenes;
+                this.save = save;
                 this.item = item;
                 this.at = at;
             }
@@ -442,14 +449,16 @@ namespace TldBuddy.Mod
             public string id;
             public string type;
             public List<SceneSample> scenes;
+            public string save;
             public List<MarkItem> items = new List<MarkItem>();
             public string container;
 
-            public ItemsEvent(string id, string type, List<SceneSample> scenes, string container)
+            public ItemsEvent(string id, string type, List<SceneSample> scenes, string save, string container)
             {
                 this.id = id;
                 this.type = type;
                 this.scenes = scenes;
+                this.save = save;
                 this.container = container;
             }
         }

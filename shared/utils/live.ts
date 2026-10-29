@@ -1,7 +1,7 @@
 // Live game state sent by the TLD mod, and how it maps onto the app's region maps.
 // Shared by the API (validation) and the client (positioning).
 
-import type { GameScene } from '../types/game'
+import { DIFFICULTIES, type Difficulty, type GameScene } from '../types/game'
 
 /** One scene the player was in: the current one first, then the ones they came from. */
 export interface LiveSceneSample {
@@ -19,6 +19,33 @@ export interface LiveState {
    * position in each scene they left, so an interior can be placed at its door outside.
    */
   scenes: LiveSceneSample[]
+  /** The save being played: a run linked to it is picked automatically. */
+  save?: LiveSave
+  /** In-game time, weather and the player's condition. */
+  world?: LiveWorld
+}
+
+/** A game save. `id` stays the same for all saves (auto, manual) of one playthrough. */
+export interface LiveSave {
+  id: string // e.g. "Sandbox-12", from the slot type and the game id
+  name: string // the name the player gave the save, or the game's slot name
+  /** Experience mode ("Stalker", "Custom"), or null when unknown. */
+  mode: string | null
+}
+
+export interface LiveWorld {
+  day: number // day of the run, from 1
+  hour: number
+  minute: number
+  /** WeatherStage name, e.g. "LightSnow", "ClearAurora". */
+  weather: string
+  /** Air temperature where the player is, °C (indoors: the indoor temperature). */
+  airC: number
+  /** With wind chill, °C: what the game's HUD shows as "feels like". */
+  feelsC: number
+  windMph: number
+  /** Player condition, 0–100. */
+  condition: number
 }
 
 /** Affine transform from world x/z to app map x/y (Leaflet CRS.Simple: y up from the bottom). */
@@ -62,6 +89,8 @@ export interface LiveMarkEvent {
   /** Stamped by the server when it accepts the event (the game PC's clock is not trusted). */
   createdAt: number
   scenes: LiveSceneSample[]
+  /** LiveSave.id of the save it happened in: it goes to the run linked to that save. */
+  save?: string | null
   item?: LiveMarkItem | null
   /** Where the aimed item lies (same scene as scenes[0]); the marker goes there, not at the player. */
   at?: { x: number; y: number; z: number } | null
@@ -76,6 +105,7 @@ export interface LiveItemsEvent {
   type: 'pickup' | 'drop'
   createdAt: number
   scenes: LiveSceneSample[]
+  save?: string | null
   items: LiveMarkItem[]
   /** Name of the container the items came from or went into, e.g. "Locker". */
   container?: string | null
@@ -111,15 +141,69 @@ function validateScenes(scenes: unknown): string | null {
 
 const cleanScenes = (scenes: LiveSceneSample[]) => scenes.map(({ scene, x, y, z, heading }) => ({ scene, x, y, z, heading }))
 
+const SAVE_ID = /^[A-Za-z0-9_-]{1,64}$/
+const WORD = /^[A-Za-z0-9_]{1,32}$/
+const MAX_SAVE_NAME = 60
+
+function validateSave(save: unknown): string | null {
+  if (!save || typeof save !== 'object') return 'save must be an object'
+  const { id, name, mode } = save as Record<string, unknown>
+  if (typeof id !== 'string' || !SAVE_ID.test(id)) return 'save.id is not a save id'
+  if (typeof name !== 'string' || name.length > MAX_SAVE_NAME) return 'save.name must be a short string'
+  if (mode !== undefined && mode !== null && (typeof mode !== 'string' || !WORD.test(mode))) return 'save.mode is not a mode name'
+  return null
+}
+
+function validateWorld(world: unknown): string | null {
+  if (!world || typeof world !== 'object') return 'world must be an object'
+  const w = world as Record<string, unknown>
+  const ranges: Record<string, [number, number]> = {
+    day: [0, 100_000], hour: [0, 23], minute: [0, 59], airC: [-200, 200], feelsC: [-200, 200], windMph: [0, 500], condition: [0, 100],
+  }
+  for (const [key, [min, max]] of Object.entries(ranges)) {
+    const v = w[key]
+    if (typeof v !== 'number' || !Number.isFinite(v) || v < min || v > max) return `world.${key} must be a number ${min}–${max}`
+  }
+  if (typeof w.weather !== 'string' || !WORD.test(w.weather)) return 'world.weather is not a weather name'
+  return null
+}
+
 /** Problem with a POST body, or null when it is a valid LiveState. */
 export function validateLiveState(body: unknown): string | null {
   if (!body || typeof body !== 'object') return 'body must be an object'
-  return validateScenes((body as { scenes?: unknown }).scenes)
+  const { scenes, save, world } = body as Record<string, unknown>
+  return validateScenes(scenes)
+    ?? (save === undefined || save === null ? null : validateSave(save))
+    ?? (world === undefined || world === null ? null : validateWorld(world))
 }
+
+const cleanSaveName = (name: string) => name.replace(/\p{Cc}/gu, '').trim()
 
 /** Keeps only the known fields, so nothing else from the request is stored or broadcast. */
 export function cleanLiveState(body: LiveState): LiveState {
-  return { scenes: cleanScenes(body.scenes) }
+  const state: LiveState = { scenes: cleanScenes(body.scenes) }
+  if (body.save) state.save = { id: body.save.id, name: cleanSaveName(body.save.name), mode: body.save.mode ?? null }
+  if (body.world) {
+    const { day, hour, minute, weather, airC, feelsC, windMph, condition } = body.world
+    state.world = { day, hour, minute, weather, airC, feelsC, windMph, condition }
+  }
+  return state
+}
+
+/** Experience mode → the app's difficulty, or null for modes without one (Custom, challenges). */
+export function difficultyForMode(mode: string | null | undefined): Difficulty | null {
+  const d = mode?.toLowerCase()
+  return (DIFFICULTIES as readonly string[]).includes(d ?? '') ? d as Difficulty : null
+}
+
+const WEATHER_LABELS: Record<string, string> = {
+  Clear: 'Clear', PartlyCloudy: 'Partly cloudy', Cloudy: 'Cloudy', LightSnow: 'Light snow', HeavySnow: 'Heavy snow',
+  Blizzard: 'Blizzard', LightFog: 'Light fog', DenseFog: 'Dense fog', ClearAurora: 'Aurora', ToxicFog: 'Toxic fog',
+}
+
+/** "LightSnow" → "Light snow"; unknown stages are split at capitals. */
+export function weatherLabel(stage: string): string {
+  return WEATHER_LABELS[stage] ?? stage.replace(/(?<=[a-z])(?=[A-Z])/g, ' ').toLowerCase().replace(/^./, (c) => c.toUpperCase())
 }
 
 function validateItem(item: unknown, at: string): string | null {
@@ -137,11 +221,12 @@ function validateItem(item: unknown, at: string): string | null {
 /** Problem with a POST /api/live/v1/events body, or null when it is a valid game event. */
 export function validateLiveEvent(body: unknown): string | null {
   if (!body || typeof body !== 'object') return 'body must be an object'
-  const { id, type, scenes, item, items, container, at } = body as Record<string, unknown>
+  const { id, type, scenes, save, item, items, container, at } = body as Record<string, unknown>
   if (typeof id !== 'string' || !EVENT_ID.test(id)) return 'id must be 8–64 letters, digits or dashes'
   if (type !== 'mark' && type !== 'pickup' && type !== 'drop') return 'type must be "mark", "pickup" or "drop"'
   const problem = validateScenes(scenes)
   if (problem) return problem
+  if (save !== undefined && save !== null && (typeof save !== 'string' || !SAVE_ID.test(save))) return 'save is not a save id'
   if (type === 'mark') {
     if (at !== undefined && at !== null) {
       if (typeof at !== 'object') return 'at must be an object'
@@ -168,13 +253,14 @@ const cleanItem = (item: LiveMarkItem): LiveMarkItem => ({ name: item.name.trim(
 /** Keeps only the known fields of a validated event, and stamps the server's time. */
 export function cleanLiveEvent(body: Omit<LiveMarkEvent, 'createdAt'> | Omit<LiveItemsEvent, 'createdAt'>, createdAt: number): LiveGameEvent {
   const scenes = cleanScenes(body.scenes)
+  const save = body.save ?? null
   if (body.type === 'mark') {
     const at = body.at ? { x: body.at.x, y: body.at.y, z: body.at.z } : null
-    return { id: body.id, type: 'mark', createdAt, scenes, item: body.item ? cleanItem(body.item) : null, at }
+    return { id: body.id, type: 'mark', createdAt, scenes, save, item: body.item ? cleanItem(body.item) : null, at }
   }
   // No control characters: the name ends up in a marker note
   const container = body.container?.replace(/\p{Cc}/gu, '').trim() || null
-  return { id: body.id, type: body.type, createdAt, scenes, items: body.items.map(cleanItem), container }
+  return { id: body.id, type: body.type, createdAt, scenes, save, items: body.items.map(cleanItem), container }
 }
 
 // ── Turning a mark event into a marker ──────────────────────────────────────

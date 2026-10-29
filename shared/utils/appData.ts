@@ -118,6 +118,7 @@ export function validateAppData(raw: unknown): string | null {
     if (r.name !== undefined && typeof r.name !== 'string') return `runs[${i}].name must be a string`
     if (!isDifficulty(r.difficulty)) return `runs[${i}].difficulty is invalid`
     if (r.createdAt !== undefined && !isFiniteNumber(r.createdAt)) return `runs[${i}].createdAt must be a number`
+    if (!optString(r.gameSave)) return `runs[${i}].gameSave must be a string`
     runIds.add(r.id)
   }
 

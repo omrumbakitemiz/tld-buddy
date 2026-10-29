@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
   applyTransform, cleanLiveEvent, cleanLiveState, headingOnMap, markerIdForEvent, matchItem, planItemsEvent, planMark, resolveLivePosition,
-  sceneLabel, UNSORTED_ITEM_ID, validateLiveEvent, validateLiveState,
+  difficultyForMode, sceneLabel, UNSORTED_ITEM_ID, validateLiveEvent, validateLiveState, weatherLabel,
   type LiveItemsEvent, type LiveMarkEvent, type LiveState, type MapCalibration, type MapTransform, type MarkerChange, type MarkerLike,
 } from '../shared/utils/live'
 import type { GameScene } from '../shared/types/game'
@@ -43,6 +43,38 @@ test('valid state passes, junk is rejected', () => {
 test('clean drops unknown fields', () => {
   const dirty = { scenes: [{ ...sample('LakeRegion'), extra: 'x' }], other: 1 } as unknown as LiveState
   assert.deepEqual(cleanLiveState(dirty), { scenes: [sample('LakeRegion')] })
+})
+
+const world = { day: 12, hour: 7, minute: 5, weather: 'LightSnow', airC: -8.5, feelsC: -15, windMph: 12, condition: 87 }
+
+test('save and world: valid ones pass and are kept, bad ones are rejected', () => {
+  const save = { id: 'Sandbox-12', name: 'My run\u0007 ', mode: 'Stalker' }
+  const state = { scenes: [sample('LakeRegion')], save, world: { ...world, extra: 1 } }
+  assert.equal(validateLiveState(state), null)
+  assert.deepEqual(cleanLiveState(state as LiveState), { scenes: [sample('LakeRegion')], save: { id: 'Sandbox-12', name: 'My run', mode: 'Stalker' }, world })
+  assert.notEqual(validateLiveState({ ...state, save: { ...save, id: 'a b' } }), null)
+  assert.notEqual(validateLiveState({ ...state, save: { ...save, name: 'x'.repeat(61) } }), null)
+  assert.notEqual(validateLiveState({ ...state, world: { ...world, hour: 24 } }), null)
+  assert.notEqual(validateLiveState({ ...state, world: { ...world, weather: '<b>' } }), null)
+  assert.notEqual(validateLiveState({ ...state, world: { ...world, condition: Number.NaN } }), null)
+})
+
+test('experience mode → difficulty, weather labels', () => {
+  assert.equal(difficultyForMode('Stalker'), 'stalker')
+  assert.equal(difficultyForMode('Misery'), 'misery')
+  assert.equal(difficultyForMode('Custom'), null)
+  assert.equal(difficultyForMode(null), null)
+  assert.equal(weatherLabel('LightSnow'), 'Light snow')
+  assert.equal(weatherLabel('ClearAurora'), 'Aurora')
+  assert.equal(weatherLabel('SomethingNew'), 'Something new')
+})
+
+test('events carry the save they happened in', () => {
+  const body = { id: 'abcdefgh-1', type: 'drop' as const, scenes: [sample('LakeRegion')], save: 'Sandbox-12', items: [{ name: 'Flare' }] }
+  assert.equal(validateLiveEvent(body), null)
+  assert.equal(cleanLiveEvent(body, 1).save, 'Sandbox-12')
+  assert.equal(cleanLiveEvent({ ...body, save: undefined }, 1).save, null)
+  assert.notEqual(validateLiveEvent({ ...body, save: '../x' }), null)
 })
 
 test('transform maps world x/z to map x/y', () => {

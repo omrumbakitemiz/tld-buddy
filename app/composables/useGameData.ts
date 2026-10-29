@@ -21,8 +21,12 @@ export function useGameData() {
   const runs = computed(() => appData.value.runs)
   const currentRun = computed(() => appData.value.runs.find((r) => r.id === appData.value.currentRunId) ?? null)
 
-  function addRun(name: string, difficulty: Difficulty): Run {
+  function addRun(name: string, difficulty: Difficulty, gameSave?: string): Run {
     const run: Run = { id: createId('run'), name, difficulty, createdAt: Date.now() }
+    if (gameSave) {
+      for (const r of appData.value.runs) if (r.gameSave === gameSave) delete r.gameSave
+      run.gameSave = gameSave
+    }
     appData.value.runs.push(run)
     appData.value.currentRunId = run.id
     commit()
@@ -48,6 +52,19 @@ export function useGameData() {
 
   function setCurrentRun(runId: string) {
     appData.value.currentRunId = runId
+    commit()
+  }
+
+  /** Makes `runId` the run for a game save (one run per save), or unlinks it with null. */
+  function linkRunToSave(runId: string, gameSave: string | null) {
+    for (const r of appData.value.runs) {
+      if (r.id === runId) {
+        if (gameSave) r.gameSave = gameSave
+        else delete r.gameSave
+      } else if (gameSave && r.gameSave === gameSave) {
+        delete r.gameSave
+      }
+    }
     commit()
   }
 
@@ -317,6 +334,7 @@ export function useGameData() {
     clearRunItems,
     setCurrentRun,
     updateRun,
+    linkRunToSave,
     // Maps
     currentMap,
     currentMapId,

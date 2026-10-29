@@ -9,6 +9,7 @@
     <NuxtRouteAnnouncer />
     <AppTopBar @logout="auth.logout" />
     <SyncBanner />
+    <GameRunBanner />
 
     <div class="relative flex min-h-0 flex-1">
       <TravelModeView v-if="travelMode" class="flex-1" />
@@ -87,6 +88,7 @@ import SearchPalette from '~/components/SearchPalette.vue'
 import ShortcutsDialog from '~/components/ShortcutsDialog.vue'
 import SidePanel from '~/components/SidePanel.vue'
 import SyncBanner from '~/components/SyncBanner.vue'
+import GameRunBanner from '~/components/GameRunBanner.vue'
 import TravelModeView from '~/components/TravelModeView.vue'
 import { useAddItem } from '~/composables/useAddItem'
 import { useAddUi, type AddRequest } from '~/composables/useAddUi'

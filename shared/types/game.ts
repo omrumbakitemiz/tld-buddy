@@ -9,6 +9,8 @@ export interface Run {
   name: string
   difficulty: Difficulty
   createdAt: number
+  /** LiveSave.id of the game save this run tracks: the app switches to it while that save is played. */
+  gameSave?: string
 }
 
 // ── Static game data (public/data/*.json) ───────────────────────────────────
