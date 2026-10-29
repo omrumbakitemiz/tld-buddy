@@ -1,4 +1,70 @@
 {
+  "AshCanyonRegion": {
+    "mapId": "ash-canyon",
+    "default": {
+      "matrix": [
+        1.529802301,
+        -0.007455680015,
+        1659.012084,
+        0.06769645005,
+        1.539677154,
+        2285.782372
+      ],
+      "rmsPx": 4.61,
+      "imageWidth": 3313,
+      "imageHeight": 3917,
+      "points": [
+        {
+          "target": "AshMine",
+          "exitPoint": "GoldMineEnterPoint1",
+          "world": [
+            -632.83,
+            777.15
+          ],
+          "map": [
+            680.3,
+            3436.5
+          ]
+        },
+        {
+          "target": "AshMine",
+          "exitPoint": "GoldMineEnterPoint2",
+          "world": [
+            -839.01,
+            634.3
+          ],
+          "map": [
+            376.2,
+            3208.9
+          ]
+        },
+        {
+          "target": "CrashMountainRegion",
+          "exitPoint": "CrashMountainEnterPoint2",
+          "world": [
+            784.42,
+            -911.63
+          ],
+          "map": [
+            2867.6,
+            936.4
+          ]
+        },
+        {
+          "target": "PrepperCacheA",
+          "exitPoint": "PrepperCacheEnterPoint",
+          "world": [
+            -42.05,
+            -796.8
+          ],
+          "map": [
+            1598.2,
+            1054.6
+          ]
+        }
+      ]
+    }
+  },
   "CrashMountainRegion": {
     "mapId": "timberwolf-mountain",
     "default": {
