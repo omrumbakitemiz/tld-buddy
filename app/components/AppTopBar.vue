@@ -103,7 +103,7 @@
             <MoonIcon class="size-4" /> Night map <kbd class="ml-auto">N</kbd>
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem v-model="showTrail" class="menu-item">
-            <FootprintsIcon class="size-4" /> Show trail
+            <FootprintsIcon class="size-4" /> Show trail (last 3 days)
           </DropdownMenuCheckboxItem>
           <DropdownMenuItem class="menu-item" @select="showShortcuts = true">
             <KeyboardIcon class="size-4" /> Keyboard shortcuts <kbd class="ml-auto">?</kbd>

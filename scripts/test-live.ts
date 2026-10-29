@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
   applyTransform, cleanLiveEvent, cleanLiveState, headingOnMap, markerIdForEvent, matchItem, planItemsEvent, planMark, resolveLivePosition,
-  difficultyForMode, sceneLabel, UNSORTED_ITEM_ID, trailLines, validateLiveEvent, validateLiveState, weatherLabel,
+  difficultyForMode, gameNameFromNote, recentTrail, sceneLabel, withoutGameName, UNSORTED_ITEM_ID, trailLines, validateLiveEvent, validateLiveState, weatherLabel,
   type LiveItemsEvent, type LiveMarkEvent, type LiveState, type MapCalibration, type MapTransform, type MarkerChange, type MarkerLike,
 } from '../shared/utils/live'
 import type { GameScene } from '../shared/types/game'
@@ -378,5 +378,23 @@ test('trail: lines on the map through its calibration, broken by other scenes an
   // Interloper artwork of the same size uses the default calibration
   assert.equal(trailLines(points, 'mystery-lake', scenes, cal, 'interloper', () => ({ imageWidth: 100, imageHeight: 100 })).length, 2)
   assert.equal(trailLines(points, 'mystery-lake', scenes, cal, 'interloper').length, 0)
+})
+
+test('trail: the last 3 in-game days, counted from the newest point', () => {
+  const p = (d: number | undefined, t: number) => ({ s: 'LakeRegion', x: 0, z: 0, t, d })
+  const days = (points: ReturnType<typeof p>[]) => recentTrail(points).map((q) => q.d)
+  assert.deepEqual(days([p(undefined, 1), p(1, 2), p(2, 3), p(3, 4), p(4, 5), p(5, 6)]), [3, 4, 5])
+  // An older save loaded on day 8: back on day 3, the days after it are hidden
+  assert.deepEqual(days([p(6, 1), p(7, 2), p(8, 3), p(2, 4), p(3, 5)]), [2, 3])
+  // No days recorded yet: everything
+  assert.equal(recentTrail([p(undefined, 1), p(undefined, 2)]).length, 2)
+})
+
+test('unsorted markers: the game name from the note, and the note without it', () => {
+  assert.equal(gameNameFromNote('Inside Camp Office · Game: New Wolf Pelt'), 'Wolf Pelt')
+  assert.equal(gameNameFromNote('Dropped'), null)
+  assert.equal(gameNameFromNote(undefined), null)
+  assert.equal(withoutGameName('Inside Camp Office · Game: Wolf Pelt'), 'Inside Camp Office')
+  assert.equal(withoutGameName('Game: Wolf Pelt'), '')
 })
 console.log(`\n${passed} passed`)

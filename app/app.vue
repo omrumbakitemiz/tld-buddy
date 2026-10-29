@@ -228,8 +228,8 @@ function onSaveMarker(data: { items: Array<{ itemId: string; name: string; quant
   if (count === 1 && last) ui.selectMarker((last as Marker).id)
 }
 
-function onUpdateMarker(data: { id: string; name: string; quantity: number; note: string; looted: boolean }) {
-  updateMarker(data.id, { name: data.name, quantity: data.quantity, note: data.note })
+function onUpdateMarker(data: { id: string; itemId: string; name: string; quantity: number; note: string; looted: boolean }) {
+  updateMarker(data.id, { itemId: data.itemId, name: data.name, quantity: data.quantity, note: data.note })
   setLooted(data.id, data.looted)
   editingMarker.value = null
 }

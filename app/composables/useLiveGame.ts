@@ -1,7 +1,7 @@
 import { computed, ref, shallowRef, watch } from 'vue'
 import { getVariantKey, type Run } from '~/types'
 import {
-  planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveSave, type LiveState, type LiveWorld, type TrailPoint,
+  planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveSave, type LiveState, type LiveWorld, type TrailPoint, recentTrail,
 } from '#shared/utils/live'
 import { useAddUi } from './useAddUi'
 import { useAuth } from './useAuth'
@@ -430,8 +430,8 @@ export function useLiveGame() {
   const save = computed<LiveSave | null>(() => (online.value ? state.value?.save ?? null : null))
   const world = computed<LiveWorld | null>(() => (online.value ? state.value?.world ?? null : null))
 
-  /** Trail points of the current run's save, oldest first. */
-  const trailPoints = computed(() => (trail.value.save && trail.value.save === currentRun.value?.gameSave ? trail.value.points : []))
+  /** Trail points of the current run's save from the last TRAIL_DAYS in-game days, oldest first. */
+  const trailPoints = computed(() => (trail.value.save && trail.value.save === currentRun.value?.gameSave ? recentTrail(trail.value.points) : []))
 
   return { connected, online, position, currentScene, save, world, trailPoints }
 }

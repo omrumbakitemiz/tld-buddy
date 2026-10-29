@@ -82,6 +82,8 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   maxHeight?: string
   autofocus?: boolean
+  /** Search to start with, e.g. what the game called an unsorted item */
+  initialQuery?: string
 }>(), {
   selectedIds: () => [],
   multiple: false,
@@ -98,7 +100,7 @@ const emit = defineEmits<{
 
 const { items, itemCategories, currentRunMarkers, currentRunStashedItems, getItemById } = useGameData()
 
-const query = ref('')
+const query = ref(props.initialQuery ?? '')
 const searchRef = ref<InstanceType<typeof Input> | null>(null)
 const gridRef = ref<HTMLElement | null>(null)
 

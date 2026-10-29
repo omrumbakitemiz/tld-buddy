@@ -559,6 +559,21 @@ export interface TrailPoint {
   x: number
   z: number
   t: number
+  /** In-game day (LiveWorld.day); missing on points from before it was recorded. */
+  d?: number
+}
+
+/** The map draws the trail of the last few in-game days: today and the two before. */
+export const TRAIL_DAYS = 3
+
+/** Points of the last TRAIL_DAYS in-game days, counted back from the newest point's day. */
+export function recentTrail(points: TrailPoint[], days = TRAIL_DAYS): TrailPoint[] {
+  // The newest point's day, not the highest: loading an older save goes back in days
+  const latest = points.findLast((p) => p.d != null)?.d
+  if (latest == null) return points
+  // Points without a day are from before days were recorded: older than any that have one
+  // Also not the days after it: after loading an older save, those didn't happen
+  return points.filter((p) => p.d != null && p.d > latest - days && p.d <= latest)
 }
 
 /** The server keeps a point once the player is this far from the last one (or changed scene). */
@@ -606,4 +621,19 @@ export function trailLines(
   }
   if (line.length > 1) lines.push(line)
   return lines
+}
+
+// ── Sorting an unsorted marker ──────────────────────────────────────────────
+
+const GAME_NOTE = 'Game: '
+
+/** What the game called an item the app didn't know ("Game: Wolf Pelt" in the note), without "New ". */
+export function gameNameFromNote(note: string | undefined): string | null {
+  const part = (note ?? '').split(' · ').find((p) => p.startsWith(GAME_NOTE))
+  return part ? part.slice(GAME_NOTE.length).replace(/^New /, '').trim() || null : null
+}
+
+/** The note without its "Game: …" part, once the marker has its real item. */
+export function withoutGameName(note: string | undefined): string {
+  return (note ?? '').split(' · ').filter((p) => !p.startsWith(GAME_NOTE)).join(' · ')
 }

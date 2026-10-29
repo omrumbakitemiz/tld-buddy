@@ -21,6 +21,7 @@ function nextPoint(state: LiveState, now: number): { save: string; point: TrailP
   const prev = last.get(save)
   if (prev && prev.s === here.scene && Math.hypot(prev.x - here.x, prev.z - here.z) < TRAIL_STEP_M) return null
   const point: TrailPoint = { s: here.scene, x: Math.round(here.x * 10) / 10, z: Math.round(here.z * 10) / 10, t: now }
+  if (state.world) point.d = state.world.day
   last.set(save, point)
   return { save, point }
 }
