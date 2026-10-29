@@ -49,7 +49,7 @@ Optional settings in the same section:
 
 - `MarkKey = "F4"`: F1–F12, a letter or a digit.
 - `RunInBackground = true`: keep the game running while TLD Buddy has focus.
-- `HudKey = "F6"`, `ShowHud = true`: the in-game compass (see below).
+- `HudKey = "F7"`, `ShowHud = true`: the in-game compass (see below).
 
 ### Runs follow the save
 
@@ -66,7 +66,7 @@ A dotted trail on the map shows where you walked in that save: the server keeps 
 
 A strip at the top of the screen shows the run's markers ahead of you, up to 250 m: loot in yellow, your stashes in blue, with their distance. A marker inside a building sits on its door ("Hatchet (in Camp Office)"). Below the strip, "Nearby" lists what is within 20 m. Indoors, "In this building" lists the markers noted inside it.
 
-- The HudKey (default `F6`) turns it on and off, and `ShowHud` remembers the choice.
+- The HudKey (default `F7`; not F6, the game's quick load) turns it on and off, and `ShowHud` remembers the choice.
 - It hides while a menu, the map or the inventory is open.
 - The mod asks the server for markers every 5 seconds (`GET /api/live/v1/hud`), and sooner after a pickup or drop. Looted markers drop off once a TLD Buddy tab has applied the pickup.
 - It needs the save linked to a run, or a current run that tracks no other save.

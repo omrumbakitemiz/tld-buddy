@@ -47,7 +47,7 @@ namespace TldBuddy.Mod
         string hudRequestScene;
         /// <summary>How often the HUD asks for markers; sooner after a pickup or drop.</summary>
         const float HudFetchInterval = 5f;
-        const string DefaultHudKey = "F6";
+        const string DefaultHudKey = "F7";
 
         float nextTick;
         int ticks;
@@ -85,6 +85,13 @@ namespace TldBuddy.Mod
             bridge = new LiveBridge(LoggerInstance);
             ItemEvents.Log = LoggerInstance;
             markKey = ParseKey(markKeyName.Value, DefaultMarkKey, "MarkKey");
+            // F6 was the first default, but it is the game's quick load
+            if (hudKeyName.Value.Trim().Equals("F6", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hudKeyName.Value = DefaultHudKey;
+                prefs.SaveToFile(false);
+                LoggerInstance.Msg($"HudKey F6 is the game's quick load: changed to {DefaultHudKey}");
+            }
             hudKey = ParseKey(hudKeyName.Value, DefaultHudKey, "HudKey");
             hud = new Hud(LoggerInstance) { Visible = showHud.Value };
 
