@@ -65,7 +65,7 @@ Press the mark key in game (default F4) while aiming at an item. A marker for it
 The mod also reports what you pick up and put down, without a key press:
 
 - **Pickup** (from the ground or a container): the nearest marker for that item within 20 m is set to looted. If the marker holds more than you took, its quantity goes down instead. Indoors, only markers noted as inside the same building count, and a stash in the container you took from comes first.
-- **Drop** (on the ground, or into a container): a "Stashed" marker at your position, or "Stashed in Locker" for a container. Putting more of the same item in the same place adds to that marker.
+- **Drop** (on the ground, or into a container): a "Dropped" marker at your position, or "Stored in Locker" for a container. Putting more of the same item in the same place adds to that marker.
 
 The MelonLoader log shows each one ("Picked up: Stick x3 in LakeRegion"). Nothing is recorded while a save loads, so loading doesn't loot your markers.
 

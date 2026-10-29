@@ -163,7 +163,8 @@ function start() {
       const already: string[] = []
       const moved: string[] = []
       const looted: string[] = []
-      const stashed: string[] = []
+      const dropped: string[] = []
+      const stored: string[] = []
       const stillUnplaced: LiveGameEvent[] = []
       const newlyUnplaced: LiveGameEvent[] = []
       const keep = (event: LiveGameEvent) => {
@@ -204,14 +205,16 @@ function start() {
           continue
         }
         handled.push(event.id)
+        // Items put into a container are "stored", on the ground "dropped" (the marker notes say the same)
+        const putDown = event.container ? stored : dropped
         for (const c of changes) {
           if (c.kind === 'add') {
             if (game.markers.value.some((m) => m.id === c.marker.id)) continue
             game.addMarker({ ...c.marker, runId: run.id })
-            stashed.push(counted(c.marker.name, c.marker.quantity))
+            putDown.push(counted(c.marker.name, c.marker.quantity))
           } else if (c.kind === 'quantity') {
             game.updateMarker(c.markerId, { quantity: c.quantity })
-            ;(c.by > 0 ? stashed : looted).push(counted(c.name, Math.abs(c.by)))
+            ;(c.by > 0 ? putDown : looted).push(counted(c.name, Math.abs(c.by)))
           } else {
             game.setLooted(c.markerId, true)
             looted.push(c.name)
@@ -228,7 +231,8 @@ function start() {
       if (already.length) parts.push(`Already on the map: ${[...new Set(already)].join(', ')}`)
       if (moved.length) parts.push(`Moved: ${[...new Set(moved)].join(', ')}`)
       if (looted.length) parts.push(`Looted: ${looted.join(', ')}`)
-      if (stashed.length) parts.push(`Stashed: ${stashed.join(', ')}`)
+      if (dropped.length) parts.push(`Dropped: ${dropped.join(', ')}`)
+      if (stored.length) parts.push(`Stored: ${stored.join(', ')}`)
       if (newlyUnplaced.length) {
         const where = [...new Set(newlyUnplaced.map(placeName))].join(', ')
         parts.push(`Kept ${newlyUnplaced.length === 1 ? 'a mark' : `${newlyUnplaced.length} marks`} from ${where}: shown once that map is calibrated`)

@@ -293,10 +293,16 @@ export function planMark<I extends { id: string; name: string }>(
 export const REPEAT_MARK_RADIUS_M = 1.5
 export const REPEAT_MARK_WINDOW_MS = 2 * 60 * 1000
 
-/** A stash note ("Stashed · Inside Camp Office") for the same place as a mark's note. */
+/** Note labels of markers for items the player put down. "Stashed" is what older builds wrote. */
+const DROPPED = 'Dropped'
+const STORED_IN = 'Stored in '
+const isStashLabel = (part: string) => part === DROPPED || part.startsWith(STORED_IN) || part.startsWith('Stashed')
+
+/** A stash note ("Dropped · Inside Camp Office") for the same place as a mark's note. */
 function isStashOf(stashNote: string | undefined, markNote: string | undefined): boolean {
-  if (!stashNote?.startsWith('Stashed')) return false
-  const rest = (note: string | undefined) => (note ?? '').split(' · ').filter((p) => !p.startsWith('Stashed'))
+  const parts = (stashNote ?? '').split(' · ')
+  if (!isStashLabel(parts[0]!)) return false
+  const rest = (note: string | undefined) => (note ?? '').split(' · ').filter((p) => !isStashLabel(p))
   return rest(stashNote).join(' · ') === rest(markNote).join(' · ')
 }
 
@@ -387,7 +393,7 @@ export function planItemsEvent<I extends { id: string; name: string }>(
       continue
     }
 
-    const notes = [event.container ? `Stashed in ${event.container}` : 'Stashed']
+    const notes = [event.container ? `${STORED_IN}${event.container}` : DROPPED]
     if (inside) notes.push(inside)
     if (!item) notes.push(`Game: ${it.name}`)
     const note = notes.join(' · ')

@@ -220,8 +220,8 @@ test('indoors a pickup only matches markers inside that building, preferring its
   const markers = [
     marker('outside'),
     marker('cabin', { note: 'Inside Lake Cabin A' }),
-    marker('desk', { note: 'Stashed in Desk · Inside Camp Office' }),
-    marker('locker', { note: 'Stashed in Locker · Inside Camp Office' }),
+    marker('desk', { note: 'Stored in Desk · Inside Camp Office' }),
+    marker('locker', { note: 'Stored in Locker · Inside Camp Office' }),
   ]
   assert.deepEqual(summary(planItemsEvent(itemsEvent('pickup', [{ name: 'Hatchet' }], { ...indoors, container: 'Locker' }), withMarkers(markers))), ['looted locker'])
   // Outdoors, markers inside buildings (all at their door) are left alone
@@ -230,15 +230,15 @@ test('indoors a pickup only matches markers inside that building, preferring its
 
 test('drop adds a stash marker, and more of the same joins it', () => {
   const dropped = planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }, { name: 'Mystery Box', quantity: 2 }]), withMarkers([]))
-  assert.deepEqual(summary(dropped), ['add hatchet×1 Stashed', `add ${UNSORTED_ITEM_ID}×2 Stashed · Game: Mystery Box`])
+  assert.deepEqual(summary(dropped), ['add hatchet×1 Dropped', `add ${UNSORTED_ITEM_ID}×2 Dropped · Game: Mystery Box`])
   const ids = dropped!.map((c) => (c.kind === 'add' ? c.marker.id : ''))
   assert.equal(new Set(ids).size, 2)
   assert.equal(Number(ids[0]!.split('-')[1]), 1761700000000)
-  const stash = [marker('s', { quantity: 2, note: 'Stashed' })]
+  const stash = [marker('s', { quantity: 2, note: 'Dropped' })]
   assert.deepEqual(summary(planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }]), withMarkers(stash))), ['s=3'])
   // In a container indoors: noted, and kept apart from a loose stash at the same door
   const inLocker = planItemsEvent(itemsEvent('drop', [{ name: 'Hatchet' }], { scenes: [sample('CampOffice'), sample('LakeRegion', 10, 20)], container: 'Locker' }), withMarkers(stash))
-  assert.deepEqual(summary(inLocker), ['add hatchet×1 Stashed in Locker · Inside Camp Office'])
+  assert.deepEqual(summary(inLocker), ['add hatchet×1 Stored in Locker · Inside Camp Office'])
 })
 
 test('pickups and drops without a calibrated position are kept for later', () => {
@@ -282,6 +282,8 @@ test('the mark key pressed again on the same thing is a repeat', () => {
 test('marking an item just put down is a repeat of its stash', () => {
   const t = 1761700000000
   const stash = (note: string) => marker(`marker-${t - 5_000}-abc`, { note })
+  assert.equal(planMark(mark(), { ...ctx, markers: [stash('Dropped')] })?.repeatOf, `marker-${t - 5_000}-abc`)
+  // Notes from before the rename still count
   assert.equal(planMark(mark(), { ...ctx, markers: [stash('Stashed')] })?.repeatOf, `marker-${t - 5_000}-abc`)
   // Unknown items keep the game's name in both notes
   assert.equal(planMark(mark({ item: { name: 'Mystery Box' } }), { ...ctx, markers: [stash('Stashed · Game: Mystery Box')].map((m) => ({ ...m, itemId: UNSORTED_ITEM_ID })) })?.repeatOf, `marker-${t - 5_000}-abc`)
