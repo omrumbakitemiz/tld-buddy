@@ -584,11 +584,7 @@ export function trailLines(
   const image = imageFor?.(mapId)
   for (const s of scenes) {
     if (s.mapId !== mapId) continue
-    const cal = calibration[s.scene]
-    // The other artwork's calibration fits too when its image has the same size (as in resolveLivePosition)
-    const fallback = cal?.[variant === 'default' ? 'interloper' : 'default']
-    const sameImage = !!image && fallback?.imageWidth === image.imageWidth && fallback?.imageHeight === image.imageHeight
-    const t = cal?.[variant] ?? (sameImage ? fallback : undefined)
+    const t = sceneTransform(calibration, s.scene, variant, image)
     if (t) transforms.set(s.scene, t)
   }
   const lines: { x: number; y: number }[][] = []
@@ -606,4 +602,29 @@ export function trailLines(
   }
   if (line.length > 1) lines.push(line)
   return lines
+}
+
+/**
+ * A scene's calibration for the run's artwork. The other artwork's fits too when `image` (the
+ * run's artwork) has the same size, as in resolveLivePosition.
+ */
+export function sceneTransform(
+  calibration: MapCalibration,
+  scene: string,
+  variant: 'default' | 'interloper',
+  image?: { imageWidth: number; imageHeight: number },
+): MapTransform | undefined {
+  const cal = calibration[scene]
+  const fallback = cal?.[variant === 'default' ? 'interloper' : 'default']
+  const sameImage = !!image && fallback?.imageWidth === image.imageWidth && fallback?.imageHeight === image.imageHeight
+  return cal?.[variant] ?? (sameImage ? fallback : undefined)
+}
+
+/** Map x/y back to world x/z (the inverse of applyTransform), or null for a degenerate transform. */
+export function invertTransform(t: MapTransform, mapX: number, mapY: number): { x: number; z: number } | null {
+  const [a, b, c, d, e, f] = t.matrix as [number, number, number, number, number, number]
+  const det = a * e - b * d
+  if (!Number.isFinite(det) || Math.abs(det) < 1e-12) return null
+  const u = mapX - c, v = mapY - f
+  return { x: (e * u - b * v) / det, z: (a * v - d * u) / det }
 }

@@ -111,6 +111,46 @@ namespace TldBuddy.Mod
             notices.Enqueue(failedNotice);
         }
 
+        int hudInFlight;
+        string hudJson;
+
+        /// <summary>
+        /// Fetches the in-game HUD's markers (GET /api/live/v1/hud), one request at a time. The
+        /// answer is picked up with TryTakeHud on the game thread.
+        /// </summary>
+        public void FetchHud(string serverUrl, string token, string query)
+        {
+            if (Interlocked.CompareExchange(ref hudInFlight, 1, 0) != 0) return;
+            string url = serverUrl.TrimEnd('/') + "/api/live/v1/hud?" + query;
+            _ = GetHudAsync(url, token);
+        }
+
+        async Task GetHudAsync(string url, string token)
+        {
+            try
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                using var response = await http.SendAsync(request).ConfigureAwait(false);
+                // Failures are already reported by the state updates to the same server
+                if (response.IsSuccessStatusCode) Interlocked.Exchange(ref hudJson, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                Interlocked.Exchange(ref hudInFlight, 0);
+            }
+        }
+
+        /// <summary>The latest HUD answer not taken yet. Call from the game thread.</summary>
+        public bool TryTakeHud(out string json)
+        {
+            json = Interlocked.Exchange(ref hudJson, null);
+            return json != null;
+        }
+
         /// <summary>Logs the first failure, then at most once a minute while it keeps failing.</summary>
         void Failed(string url, string reason)
         {

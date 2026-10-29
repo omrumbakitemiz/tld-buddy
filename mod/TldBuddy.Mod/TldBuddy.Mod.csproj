@@ -35,6 +35,8 @@
     <Reference Include="Il2Cppmscorlib" HintPath="$(Il2CppDir)\Il2Cppmscorlib.dll" Private="false" />
     <Reference Include="Il2CppTLD.PDID" HintPath="$(Il2CppDir)\Il2CppTLD.PDID.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(Il2CppDir)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.IMGUIModule" HintPath="$(Il2CppDir)\UnityEngine.IMGUIModule.dll" Private="false" />
+    <Reference Include="UnityEngine.TextRenderingModule" HintPath="$(Il2CppDir)\UnityEngine.TextRenderingModule.dll" Private="false" />
   </ItemGroup>
 
   <Target Name="CheckTldDir" BeforeTargets="ResolveAssemblyReferences">

@@ -37,8 +37,17 @@ namespace TldBuddy.Mod
         MelonPreferences_Entry<string> token;
         MelonPreferences_Entry<bool> runInBackground;
         MelonPreferences_Entry<string> markKeyName;
+        MelonPreferences_Entry<string> hudKeyName;
+        MelonPreferences_Entry<bool> showHud;
         LiveBridge bridge;
         Hotkey markKey;
+        Hotkey hudKey;
+        Hud hud;
+        float nextHudFetch;
+        string hudRequestScene;
+        /// <summary>How often the HUD asks for markers; sooner after a pickup or drop.</summary>
+        const float HudFetchInterval = 5f;
+        const string DefaultHudKey = "F6";
 
         float nextTick;
         int ticks;
@@ -67,16 +76,17 @@ namespace TldBuddy.Mod
                 description: "Keep the game running while another window (TLD Buddy) has focus, so the live position keeps updating");
             markKeyName = prefs.CreateEntry("MarkKey", DefaultMarkKey,
                 description: "Key that marks the item under the crosshair (or the spot) on the TLD Buddy map: F1-F12, a letter or a digit");
+            hudKeyName = prefs.CreateEntry("HudKey", DefaultHudKey,
+                description: "Key that shows or hides the TLD Buddy compass and nearby loot at the top of the screen");
+            showHud = prefs.CreateEntry("ShowHud", true,
+                description: "Show the TLD Buddy compass and nearby loot (the HudKey toggles it)");
             prefs.SaveToFile(false);
             ApplyRunInBackground();
             bridge = new LiveBridge(LoggerInstance);
             ItemEvents.Log = LoggerInstance;
-            markKey = Hotkey.Parse(markKeyName.Value);
-            if (markKey == null)
-            {
-                LoggerInstance.Warning($"MarkKey \"{markKeyName.Value}\" is not F1-F12, a letter or a digit; using {DefaultMarkKey}");
-                markKey = Hotkey.Parse(DefaultMarkKey);
-            }
+            markKey = ParseKey(markKeyName.Value, DefaultMarkKey, "MarkKey");
+            hudKey = ParseKey(hudKeyName.Value, DefaultHudKey, "HudKey");
+            hud = new Hud(LoggerInstance) { Visible = showHud.Value };
 
             LoggerInstance.Msg(string.IsNullOrWhiteSpace(token.Value)
                 ? "TLD Buddy loaded. Live bridge off: set Token under [TldBuddy] in UserData/MelonPreferences.cfg"
@@ -98,6 +108,30 @@ namespace TldBuddy.Mod
             ApplyRunInBackground();
         }
 
+        Hotkey ParseKey(string value, string fallback, string setting)
+        {
+            var key = Hotkey.Parse(value);
+            if (key != null) return key;
+            LoggerInstance.Warning($"{setting} \"{value}\" is not F1-F12, a letter or a digit; using {fallback}");
+            return Hotkey.Parse(fallback);
+        }
+
+        public override void OnGUI()
+        {
+            string scene = InGameScene();
+            if (scene == null) return;
+            try
+            {
+                hud.Draw(scene, GameManager.GetPlayerTransform());
+            }
+            catch (System.Exception e)
+            {
+                // Drawing runs several times a frame: switch it off rather than flood the log
+                hud.Visible = false;
+                LoggerInstance.Error($"HUD switched off after an error: {e}");
+            }
+        }
+
         void ApplyRunInBackground()
         {
             if (runInBackground.Value) Application.runInBackground = true;
@@ -108,6 +142,14 @@ namespace TldBuddy.Mod
             // Every frame: key presses and notices from background requests
             while (bridge.TryTakeNotice(out string notice)) HUDMessage.AddMessage(notice, false, false);
             if (markKey.Pressed(Application.isFocused)) MarkHere();
+            if (hudKey.Pressed(Application.isFocused) && InGameScene() != null)
+            {
+                hud.Visible = !hud.Visible;
+                showHud.Value = hud.Visible;
+                HUDMessage.AddMessage(hud.Visible ? "TLD Buddy: compass on" : "TLD Buddy: compass off", false, false);
+                if (hud.Visible) nextHudFetch = 0f;
+            }
+            if (bridge.TryTakeHud(out string hudJson)) hud.SetData(hudJson, hudRequestScene);
 
             float now = Time.unscaledTime;
             if (now < nextTick) return;
@@ -121,6 +163,7 @@ namespace TldBuddy.Mod
                 trail.Clear();
                 ItemEvents.Ready = false;
                 ItemEvents.Discard();
+                hud.Clear();
                 return;
             }
 
@@ -149,6 +192,7 @@ namespace TldBuddy.Mod
             if (BridgeOn)
             {
                 bridge.Send(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(new LiveState(trail, GameInfo.CurrentSave(LoggerInstance), GameInfo.CurrentWorld(LoggerInstance)), JsonOptions));
+                if (hud.Visible && now >= nextHudFetch) FetchHud(gameScene, pos);
             }
 
             if (ticks++ % LogEveryTicks == 0)
@@ -161,6 +205,21 @@ namespace TldBuddy.Mod
         }
 
         bool BridgeOn => !string.IsNullOrWhiteSpace(token.Value);
+
+        void FetchHud(string scene, Vector3 pos)
+        {
+            nextHudFetch = Time.unscaledTime + HudFetchInterval;
+            string save = GameInfo.SaveId(LoggerInstance);
+            if (save == null)
+            {
+                hud.Clear();
+                return;
+            }
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            hudRequestScene = scene;
+            bridge.FetchHud(serverUrl.Value, token.Value.Trim(),
+                $"save={System.Uri.EscapeDataString(save)}&scene={System.Uri.EscapeDataString(scene)}&x={pos.x.ToString("F1", inv)}&z={pos.z.ToString("F1", inv)}");
+        }
 
         /// <summary>The game's scene name while playing; null in the main menu or while loading.</summary>
         static string InGameScene()
@@ -196,6 +255,7 @@ namespace TldBuddy.Mod
             string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
             bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions),
                 $"TLD Buddy: marked {label}", "TLD Buddy: could not send the mark (see MelonLoader log)");
+            nextHudFetch = Mathf.Min(nextHudFetch, Time.unscaledTime + 2f);
             // Prefab name and object id too: they decide the item match and the duplicate check
             LoggerInstance.Msg($"Mark: {label} in {scene} (prefab {item?.gearName ?? "-"}, id {item?.objectId ?? "-"})");
             SaveMarkPoint(at != null ? new SceneSample(scene, at.x, at.y, at.z, 0) : trail[0], label);
@@ -255,6 +315,8 @@ namespace TldBuddy.Mod
                 LoggerInstance.Msg($"{(ev.type == "pickup" ? "Picked up" : "Put down")}: {what}{(ev.container != null ? $" ({ev.container})" : "")} in {trail[0].scene}");
                 bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(ev, JsonOptions),
                     null, $"TLD Buddy: could not send a {ev.type} (see MelonLoader log)");
+                // A browser tab applies it to the markers within a second or so; then show the change
+                nextHudFetch = Mathf.Min(nextHudFetch, Time.unscaledTime + 2f);
             }
         }
 

@@ -46,6 +46,8 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'node-server',
+    // The game data the server needs for the in-game HUD (map calibration, scenes), read with useStorage('assets:gamedata')
+    serverAssets: [{ baseName: 'gamedata', dir: '../public/data' }],
   },
 
   runtimeConfig: {
