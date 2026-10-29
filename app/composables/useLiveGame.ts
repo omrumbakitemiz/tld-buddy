@@ -42,29 +42,75 @@ const pendingEvents = shallowRef<LiveGameEvent[]>([])
 /** Breadcrumb trail of the current run's game save: loaded from the server, then extended live. */
 const trail = shallowRef<{ save: string | null; points: TrailPoint[] }>({ save: null, points: [] })
 
+/**
+ * The server pings every 15 s. Nothing for this long means the connection died without telling
+ * (laptop sleep, Wi-Fi change): Chrome still counts it as open, so drop it and connect again.
+ */
+const SILENT_MS = 45_000
+const STREAM_LOCK = 'tld-buddy-live-stream'
+
+type LiveMessage = { state: LiveState | null; ageMs: number | null }
+/** What the tab holding the stream passes on to the browser's other tabs. */
+type Relay =
+  | { kind: 'state'; message: LiveMessage }
+  | { kind: 'game'; event: LiveGameEvent }
+  | { kind: 'trail'; save: string; point: TrailPoint }
+  | { kind: 'connected'; value: boolean }
+  | { kind: 'hello' }
+
 let source: EventSource | null = null
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null
+let lastMessageAt = 0
+let channel: BroadcastChannel | null = null
 let started = false
 
+function onState(message: LiveMessage) {
+  state.value = message.state
+  receivedAt.value = message.ageMs == null ? 0 : Date.now() - message.ageMs
+}
+
+function onGame(event: LiveGameEvent) {
+  if (!pendingEvents.value.some((m) => m.id === event.id)) pendingEvents.value = [...pendingEvents.value, event]
+}
+
+function onTrail(save: string, point: TrailPoint) {
+  if (save === trail.value.save) trail.value = { save, points: [...trail.value.points, point] }
+}
+
+function setConnected(value: boolean) {
+  connected.value = value
+  channel?.postMessage({ kind: 'connected', value } satisfies Relay)
+}
+
+/** Opens the stream in this tab, and relays what it receives to the others. */
 function connect() {
   disconnect()
+  lastMessageAt = Date.now()
   source = new EventSource('/api/live/v1/stream')
-  source.addEventListener('open', () => (connected.value = true))
-  source.addEventListener('state', (e) => {
-    const message = JSON.parse((e as MessageEvent<string>).data) as { state: LiveState | null; ageMs: number | null }
-    state.value = message.state
-    receivedAt.value = message.ageMs == null ? 0 : Date.now() - message.ageMs
+  const on = (name: string, fn: (data: string) => void) =>
+    source!.addEventListener(name, (e) => {
+      lastMessageAt = Date.now()
+      fn((e as MessageEvent<string>).data)
+    })
+  on('open', () => setConnected(true))
+  on('ping', () => {})
+  on('state', (data) => {
+    const message = JSON.parse(data) as LiveMessage
+    onState(message)
+    channel?.postMessage({ kind: 'state', message } satisfies Relay)
   })
-  source.addEventListener('game', (e) => {
-    const event = JSON.parse((e as MessageEvent<string>).data) as LiveGameEvent
-    if (!pendingEvents.value.some((m) => m.id === event.id)) pendingEvents.value = [...pendingEvents.value, event]
+  on('game', (data) => {
+    const event = JSON.parse(data) as LiveGameEvent
+    onGame(event)
+    channel?.postMessage({ kind: 'game', event } satisfies Relay)
   })
-  source.addEventListener('trail', (e) => {
-    const { save, point } = JSON.parse((e as MessageEvent<string>).data) as { save: string; point: TrailPoint }
-    if (save === trail.value.save) trail.value = { save, points: [...trail.value.points, point] }
+  on('trail', (data) => {
+    const { save, point } = JSON.parse(data) as { save: string; point: TrailPoint }
+    onTrail(save, point)
+    channel?.postMessage({ kind: 'trail', save, point } satisfies Relay)
   })
   source.addEventListener('error', () => {
-    connected.value = false
+    setConnected(false)
     // EventSource retries on network errors by itself, but gives up on HTTP errors (401, 503)
     if (source?.readyState === EventSource.CLOSED) {
       reconnectTimer = setTimeout(connect, RECONNECT_MS)
@@ -75,9 +121,48 @@ function connect() {
 function disconnect() {
   if (reconnectTimer) clearTimeout(reconnectTimer)
   reconnectTimer = null
+  if (source) setConnected(false)
   source?.close()
   source = null
-  connected.value = false
+}
+
+/** Messages from the tab holding the stream (or, for "hello", from a tab that just opened). */
+function onRelay(relay: Relay) {
+  if (relay.kind === 'hello') {
+    // Catch the new tab up; the server only sends the current state on connect
+    if (source && state.value) {
+      channel?.postMessage({ kind: 'state', message: { state: state.value, ageMs: Date.now() - receivedAt.value } } satisfies Relay)
+    }
+    if (source) channel?.postMessage({ kind: 'connected', value: connected.value } satisfies Relay)
+  } else if (relay.kind === 'state') onState(relay.message)
+  else if (relay.kind === 'game') onGame(relay.event)
+  else if (relay.kind === 'trail') onTrail(relay.save, relay.point)
+  else if (!source) connected.value = relay.value
+}
+
+/**
+ * Takes the stream when no other tab of this browser has it: one tab streams for all of them,
+ * so any number of tabs and windows use a single connection. Returns a function that stops
+ * streaming (or stops waiting to); another waiting tab then takes over.
+ */
+function leadStream(): () => void {
+  if (!navigator.locks) {
+    connect()
+    return disconnect
+  }
+  const abort = new AbortController()
+  let release: (() => void) | null = null
+  navigator.locks.request(STREAM_LOCK, { signal: abort.signal }, () => new Promise<void>((resolve) => {
+    connect()
+    release = () => {
+      disconnect()
+      resolve()
+    }
+  })).catch(() => {}) // aborted while waiting
+  return () => {
+    abort.abort()
+    release?.()
+  }
 }
 
 function readList<T>(key: string, keep: (x: unknown) => x is T): T[] {
@@ -110,9 +195,15 @@ function start() {
   started = true
   const auth = useAuth()
   // Browsers allow only 6 connections per site over plain http, shared by all tabs, and each
-  // stream holds one for good: with a few tabs open, new pages would wait forever. So only
-  // visible tabs stream; a hidden tab lets go after a short grace and catches up on return
-  // (the server sends the current state and unacked marks on connect).
+  // stream holds one for good: once they are used up, new pages wait forever. So one visible
+  // tab streams and relays to the others (BroadcastChannel). When it is hidden or closed,
+  // another visible tab takes over; with none visible, nothing streams, and the next tab to
+  // show catches up (the server sends the current state and unacked events on connect).
+  if (typeof BroadcastChannel !== 'undefined') {
+    channel = new BroadcastChannel('tld-buddy-live')
+    channel.onmessage = (e: MessageEvent<Relay>) => onRelay(e.data)
+    channel.postMessage({ kind: 'hello' } satisfies Relay)
+  }
   const visible = ref(document.visibilityState === 'visible')
   let hideTimer: ReturnType<typeof setTimeout> | null = null
   document.addEventListener('visibilitychange', () => {
@@ -121,18 +212,24 @@ function start() {
     if (document.visibilityState === 'visible') visible.value = true
     else hideTimer = setTimeout(() => (visible.value = false), HIDDEN_GRACE_MS)
   })
+  let stopLeading: (() => void) | null = null
   watch([auth.state, visible], ([s, v]) => {
+    const want = s === 'signed-in' && v
+    if (want && !stopLeading) stopLeading = leadStream()
+    if (!want && stopLeading) {
+      stopLeading()
+      stopLeading = null
+    }
     if (s !== 'signed-in') {
-      disconnect()
       state.value = null
       pendingEvents.value = []
-    } else if (v) {
-      if (!source) connect()
-    } else {
-      disconnect()
     }
   }, { immediate: true })
-  setInterval(() => (now.value = Date.now()), 1000)
+  setInterval(() => {
+    now.value = Date.now()
+    // A stream that went silent is dead even if the browser still thinks it is open
+    if (source && now.value - lastMessageAt > SILENT_MS) connect()
+  }, 1000)
 
   const game = useGameData()
   const statics = useStaticData()

@@ -30,7 +30,8 @@ export default defineEventHandler(async (event) => {
     else if (b.kind === 'event') push('game', b.event)
     else push('trail', { save: b.save, point: b.point })
   })
-  const keepalive = setInterval(() => void stream.push({ event: 'ping', data: '' }), KEEPALIVE_MS)
+  // Not empty: browsers drop events without data, and the client's watchdog counts pings
+  const keepalive = setInterval(() => void stream.push({ event: 'ping', data: '1' }), KEEPALIVE_MS)
   stream.onClosed(async () => {
     unsubscribe()
     clearInterval(keepalive)
