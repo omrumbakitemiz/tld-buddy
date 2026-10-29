@@ -65,6 +65,60 @@
       ]
     }
   },
+  "CoastalRegion": {
+    "mapId": "coastal-highway",
+    "default": {
+      "matrix": [
+        1.496854343,
+        0.01064452761,
+        2182.882133,
+        -0.02073473026,
+        1.468711729,
+        999.301091
+      ],
+      "rmsPx": 0,
+      "imageWidth": 4028,
+      "imageHeight": 3128,
+      "points": [
+        {
+          "target": "HighwayTransitionZone",
+          "exitPoint": "CoastalRegionExitPoint",
+          "world": [
+            714.51,
+            -521.15
+          ],
+          "map": [
+            3246.9,
+            219.1
+          ]
+        },
+        {
+          "target": "QuonsetGasStation",
+          "exitPoint": "GasStationFrontEnterPoint",
+          "world": [
+            761.75,
+            647.06
+          ],
+          "map": [
+            3330,
+            1933.9
+          ]
+        },
+        {
+          "target": "RavineTransitionZone",
+          "exitPoint": "CoastalRegionExitPoint",
+          "world": [
+            -1179.2,
+            1203.25
+          ],
+          "map": [
+            430.6,
+            2791
+          ]
+        }
+      ]
+    }
+  },
   "CrashMountainRegion": {
     "mapId": "timberwolf-mountain",
     "default": {
