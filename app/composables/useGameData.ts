@@ -139,7 +139,7 @@ export function useGameData() {
     return newMarker
   }
 
-  function updateMarker(markerId: string, updates: Partial<Pick<Marker, 'name' | 'quantity' | 'note' | 'x' | 'y'>>) {
+  function updateMarker(markerId: string, updates: Partial<Pick<Marker, 'name' | 'quantity' | 'note' | 'x' | 'y' | 'gameId'>>) {
     const marker = findMarker(markerId)
     if (!marker) return
     Object.assign(marker, updates)

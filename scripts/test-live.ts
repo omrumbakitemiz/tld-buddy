@@ -314,4 +314,13 @@ test('marking a moved object again moves its marker', () => {
   assert.deepEqual(same && [same.repeatOf, same.moved], ['marker-1-x', undefined])
 })
 
+test('the first mark with a new id joins the stash already there, which takes the id', () => {
+  const stash = marker(`marker-${1761700000000 - 60_000}-abc`, { note: 'Stashed' })
+  const plan = planMark(mark({ item: { name: 'Hatchet', objectId: 'new-id' } }), { ...ctx, markers: [stash] })
+  assert.deepEqual(plan && [plan.repeatOf, plan.adoptId, plan.moved], [stash.id, true, undefined])
+  // A marker that already belongs to another object is not taken over
+  const other = marker('marker-1-y', { note: 'Stashed', gameId: 'someone-else' })
+  assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'new-id' } }), { ...ctx, markers: [other] })?.repeatOf, undefined)
+})
+
 console.log(`\n${passed} passed`)

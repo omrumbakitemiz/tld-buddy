@@ -226,6 +226,8 @@ export interface PlannedMark {
   repeatOf?: string
   /** With repeatOf: the object now lies elsewhere, so the marker should move to this plan's spot. */
   moved?: boolean
+  /** With repeatOf: the repeated marker has no game id yet and should take this plan's gameId. */
+  adoptId?: boolean
 }
 
 /**
@@ -266,17 +268,23 @@ export function planMark<I extends { id: string; name: string }>(
     note: notes.length ? notes.join(' · ') : undefined,
   }
   const near = (m: MarkerLike) => Math.hypot(m.x - plan.x, m.y - plan.y) <= REPEAT_MARK_RADIUS_M * (pos.pxPerMeter ?? 0)
-  const repeat = ctx.markers?.find((m) => !m.lootedAt && m.mapId === plan.mapId && (plan.gameId
-    ? m.gameId === plan.gameId
-    : !m.gameId && m.itemId === plan.itemId && near(m) && (
-      // A stash of it lies right there (the player put it down): whenever that was
-      isStashOf(m.note, plan.note)
-      // Without an object id: the same thing marked moments ago
-      || (m.note === plan.note && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS))))
-  if (repeat) {
-    plan.repeatOf = repeat.id
+  const live = (ctx.markers ?? []).filter((m) => !m.lootedAt && m.mapId === plan.mapId)
+  // The very object, wherever its marker is
+  const byId = plan.gameId ? live.find((m) => m.gameId === plan.gameId) : undefined
+  // Otherwise a marker without an id for the same thing at this spot
+  const byPlace = byId ? undefined : live.find((m) => !m.gameId && m.itemId === plan.itemId && near(m) && (
+    // A stash of it lies right there (the player put it down): whenever that was
+    isStashOf(m.note, plan.note)
+    // The same thing marked moments ago
+    || (m.note === plan.note && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS)))
+  if (byId) {
+    plan.repeatOf = byId.id
     // The same object somewhere else: the player moved it, so its marker should follow
-    if (plan.gameId && !near(repeat)) plan.moved = true
+    if (!near(byId)) plan.moved = true
+  } else if (byPlace) {
+    plan.repeatOf = byPlace.id
+    // From now on that marker knows its object (a stash made before the item had an id)
+    if (plan.gameId) plan.adoptId = true
   }
   return plan
 }

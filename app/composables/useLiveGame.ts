@@ -190,6 +190,7 @@ function start() {
             continue
           }
           if (plan.repeatOf) {
+            if (plan.adoptId) game.updateMarker(plan.repeatOf, { gameId: plan.gameId })
             already.push(plan.name)
             continue
           }
