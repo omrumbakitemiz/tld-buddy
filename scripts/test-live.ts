@@ -260,4 +260,23 @@ test('a marked object is looted only by picking up that object', () => {
   assert.notEqual(validateLiveEvent(body), null)
 })
 
+test('items the game calls "New …" still match', () => {
+  assert.equal(matchItem({ name: 'New Tin of Peaches' }, ITEMS)?.id, 'peaches')
+})
+
+test('the mark key pressed again on the same thing is a repeat', () => {
+  const t = 1761700000000
+  const earlier = (extra: Partial<MarkerLike> = {}) => marker(`marker-${t - 30_000}-abc`, extra)
+  const withRun = (markers: MarkerLike[]) => ({ ...ctx, markers })
+  // Same object id: a repeat however long ago
+  assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'g1' } }), withRun([marker('marker-1-x', { gameId: 'g1' })]))?.repeatOf, 'marker-1-x')
+  // No id: same item, same spot, moments ago
+  assert.equal(planMark(mark(), withRun([earlier()]))?.repeatOf, `marker-${t - 30_000}-abc`)
+  // Not a repeat: looted, a metre and a half away, long ago, or another object of the same kind
+  assert.equal(planMark(mark(), withRun([earlier({ lootedAt: 1 })]))?.repeatOf, undefined)
+  assert.equal(planMark(mark(), withRun([earlier({ x: 123 })]))?.repeatOf, undefined)
+  assert.equal(planMark(mark(), withRun([marker(`marker-${t - 10 * 60_000}-abc`)]))?.repeatOf, undefined)
+  assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'g2' } }), withRun([marker('marker-1-x', { gameId: 'g1' })]))?.repeatOf, undefined)
+})
+
 console.log(`\n${passed} passed`)

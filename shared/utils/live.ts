@@ -175,7 +175,9 @@ const fold = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 export function matchItem<I extends { id: string; name: string }>(item: LiveMarkItem | null | undefined, items: I[]): I | null {
   if (!item) return null
   const name = fold(item.name)
-  const byName = items.find((i) => fold(i.name) === name)
+  // The game prefixes items the player hasn't had yet with "New" ("New Pork and Beans")
+  const plain = fold(item.name.replace(/^\s*new\s+/i, ''))
+  const byName = items.find((i) => fold(i.name) === name) ?? items.find((i) => fold(i.name) === plain)
   if (byName) return byName
   if (!item.gearName) return null
   const gear = fold(item.gearName.replace(/^GEAR_/i, ''))
@@ -206,6 +208,8 @@ export interface PlannedMark {
   note?: string
   /** Game object id, for marks of one specific item (not stashes, which can hold several). */
   gameId?: string
+  /** Set when this mark repeats an existing marker (the key pressed again): add nothing. */
+  repeatOf?: string
 }
 
 /**
@@ -220,6 +224,8 @@ export function planMark<I extends { id: string; name: string }>(
     variant: 'default' | 'interloper'
     imageFor?: (mapId: string) => { imageWidth: number; imageHeight: number } | undefined
     items: I[]
+    /** The run's markers, to spot the mark key pressed again on the same thing. */
+    markers?: MarkerLike[]
   },
 ): PlannedMark | null {
   const pos = resolveLivePosition({ scenes: event.scenes }, ctx.scenes, ctx.calibration, ctx.variant, ctx.imageFor)
@@ -229,7 +235,7 @@ export function planMark<I extends { id: string; name: string }>(
   if (pos.indoors) notes.push(`Inside ${sceneLabel(event.scenes[0]!.scene)}`)
   // Keep what the game called it when the app has no such item, so it can be sorted later
   if (!item && event.item) notes.push(`Game: ${event.item.name}`)
-  return {
+  const plan: PlannedMark = {
     id: markerIdForEvent(event),
     mapId: pos.mapId,
     x: pos.point.x,
@@ -240,7 +246,22 @@ export function planMark<I extends { id: string; name: string }>(
     gameId: event.item?.objectId,
     note: notes.length ? notes.join(' · ') : undefined,
   }
+  const repeat = ctx.markers?.find((m) => !m.lootedAt && m.mapId === plan.mapId && (plan.gameId
+    ? m.gameId === plan.gameId
+    // Without an object id: the same thing marked from the same spot moments ago
+    : !m.gameId && m.itemId === plan.itemId && m.note === plan.note
+      && Math.hypot(m.x - plan.x, m.y - plan.y) <= REPEAT_MARK_RADIUS_M * (pos.pxPerMeter ?? 0)
+      && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS))
+  if (repeat) plan.repeatOf = repeat.id
+  return plan
 }
+
+/** A mark of the same item this close to, and this soon after, an earlier one is a repeat. */
+export const REPEAT_MARK_RADIUS_M = 1
+export const REPEAT_MARK_WINDOW_MS = 2 * 60 * 1000
+
+/** Epoch ms in a `marker-<ms>-<rand>` id; 0 when absent. */
+const markerTime = (id: string) => Number(id.split('-')[1]) || 0
 
 /** Within this distance a pickup counts as taking a marked item (covers hand-placed markers too). */
 export const PICKUP_RADIUS_M = 20

@@ -25,6 +25,7 @@ namespace TldBuddy.Mod
             try
             {
                 string id = go != null ? ObjectGuid.MaybeGetGuidFromGameObject(go) : null;
+                if (string.IsNullOrEmpty(id) && go != null && go.transform.parent != null) id = ObjectGuid.MaybeGetGuidFromGameObject(go.transform.parent.gameObject);
                 if (string.IsNullOrEmpty(id) || id.Length > 64) return null;
                 foreach (char c in id) if (!(char.IsLetterOrDigit(c) && c < 128 || c == '-' || c == '_')) return null;
                 return id;

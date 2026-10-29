@@ -196,7 +196,8 @@ namespace TldBuddy.Mod
             string label = item != null ? (item.quantity > 1 ? $"{item.name} x{item.quantity}" : item.name) : "spot";
             bridge.SendEvent(serverUrl.Value, token.Value.Trim(), JsonSerializer.Serialize(mark, JsonOptions),
                 $"TLD Buddy: marked {label}", "TLD Buddy: could not send the mark (see MelonLoader log)");
-            LoggerInstance.Msg($"Mark: {label} in {scene}");
+            // Prefab name and object id too: they decide the item match and the duplicate check
+            LoggerInstance.Msg($"Mark: {label} in {scene} (prefab {item?.gearName ?? "-"}, id {item?.objectId ?? "-"})");
             SaveMarkPoint(trail[0], label);
         }
 
@@ -264,12 +265,13 @@ namespace TldBuddy.Mod
             {
                 PlayerManager pm = GameManager.GetPlayerManagerComponent();
                 GameObject target = pm != null ? pm.GetInteractiveObjectUnderCrosshairs(AimRange) : null;
-                GearItem gear = target != null ? target.GetComponent<GearItem>() : null;
+                // The crosshair may hit a child (a mesh or collider) of the item
+                GearItem gear = target != null ? target.GetComponent<GearItem>() ?? target.GetComponentInParent<GearItem>() : null;
                 if (gear == null) return null;
                 string name = gear.DisplayName;
                 if (string.IsNullOrWhiteSpace(name)) return null;
                 int units = Gear.Units(gear);
-                return new MarkItem(name.Trim(), Gear.PrefabName(target.name), Mathf.Clamp(units, 1, 9999), Gear.ObjectId(target));
+                return new MarkItem(name.Trim(), Gear.PrefabName(gear.gameObject.name), Mathf.Clamp(units, 1, 9999), Gear.ObjectId(gear.gameObject));
             }
             catch (System.Exception e)
             {

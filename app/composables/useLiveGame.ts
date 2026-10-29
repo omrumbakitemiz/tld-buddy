@@ -173,7 +173,7 @@ function start() {
       for (const event of batch) {
         if (handled.includes(event.id)) continue
         if (event.type === 'mark') {
-          const plan = planMark(event, placing)
+          const plan = planMark(event, { ...placing, markers: game.markers.value.filter((m) => m.runId === run.id) })
           if (!plan) {
             keep(event)
             continue
@@ -182,7 +182,7 @@ function start() {
           // Another browser may have added it already and synced it here
           if (game.markers.value.some((m) => m.id === plan.id)) continue
           // The mark key pressed again on an item that already has a marker
-          if (plan.gameId && game.markers.value.some((m) => m.runId === run.id && m.gameId === plan.gameId && !m.lootedAt)) {
+          if (plan.repeatOf) {
             already.push(plan.name)
             continue
           }
