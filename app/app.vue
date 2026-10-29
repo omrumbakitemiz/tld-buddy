@@ -286,6 +286,7 @@ useShortcuts(() => {
         { key: 'p', handler: () => (ui.panelOpen.value = !ui.panelOpen.value) },
         ...tabs.map((tab, i) => ({ key: String(i + 1), handler: () => ui.openPanel(tab) })),
         { key: 'f', handler: () => mapRef.value?.fit() },
+        { key: 'c', handler: () => mapRef.value?.toggleFollow() },
         { key: '+', handler: () => mapRef.value?.zoomIn() },
         { key: '=', handler: () => mapRef.value?.zoomIn() },
         { key: '-', handler: () => mapRef.value?.zoomOut() },

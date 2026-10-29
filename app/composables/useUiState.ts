@@ -14,6 +14,8 @@ const lootFilter = useLocalStorage<LootFilter>('tld-buddy-ui-loot-filter', 'rema
 const nightMap = useLocalStorage('tld-buddy-ui-night-map', true)
 /** Draw the breadcrumb trail of where the player walked in game */
 const showTrail = useLocalStorage('tld-buddy-ui-show-trail', true)
+/** Keep the map centred on the player while the game runs; dragging the map turns it off */
+const followPlayer = useLocalStorage('tld-buddy-ui-follow-player', true)
 
 const selectedMarkerId = ref<string | null>(null)
 /** Several markers drawn as one tile, picked together */
@@ -75,6 +77,7 @@ export function useUiState() {
     lootFilter,
     nightMap,
     showTrail,
+    followPlayer,
     selectedMarkerId,
     selectedGroupIds,
     selectedPOIId,

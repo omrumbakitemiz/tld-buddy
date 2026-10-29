@@ -27,6 +27,7 @@ export const SHORTCUT_HELP: { keys: string[]; label: string }[] = [
   { keys: ['P', '['], label: 'Collapse or expand the side panel' },
   { keys: ['1', '2', '3'], label: 'Panel: Loot, Places, Maps' },
   { keys: ['F'], label: 'Fit the whole map' },
+  { keys: ['C'], label: 'Follow me on the map (while the game runs)' },
   { keys: ['+', '−'], label: 'Zoom' },
   { keys: ['T'], label: 'Travel mode (two maps)' },
   { keys: ['R'], label: 'Runs' },

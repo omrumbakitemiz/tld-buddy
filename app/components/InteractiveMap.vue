@@ -73,9 +73,11 @@
       <button
         v-if="livePoint"
         class="map-ctl border-b border-border"
-        :aria-label="live.position.value?.indoors ? 'Show where you went indoors' : 'Show your position'"
-        :title="live.position.value?.indoors ? 'Show where you went indoors' : 'Show your position'"
-        @click="flyTo(livePoint.x, livePoint.y, 0)"
+        :class="{ 'map-ctl--on': followPlayer }"
+        :aria-pressed="followPlayer"
+        aria-label="Follow me"
+        :title="followPlayer ? 'Following you: drag the map to stop (C)' : 'Follow me (C)'"
+        @click="toggleFollow"
       >
         <LocateFixedIcon class="size-4" />
       </button>
@@ -116,7 +118,7 @@ const {
 } = useGameData()
 const statics = useStaticData()
 const ui = useUiState()
-const { selectedMarkerId, selectedGroupIds, selectedPOIId, placingLoot, pinningPOIId, hideLooted, nightMap, showTrail, cancelPlacement } = ui
+const { selectedMarkerId, selectedGroupIds, selectedPOIId, placingLoot, pinningPOIId, hideLooted, nightMap, showTrail, followPlayer, cancelPlacement } = ui
 
 const addUi = useAddUi()
 
@@ -151,7 +153,7 @@ let liveMarkerIndoors = false
 /** Unwrapped arrow angle, so the CSS transition always turns the short way. */
 let liveRotation = 0
 
-const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMapVariant, (map) => {
+const { zoomIn, zoomOut, fit: fitMap, flyTo, getMap } = useImageMap(container, currentMapVariant, (map) => {
   markerViews.clear()
   poiViews.clear()
   // The old marker belonged to the map that was just replaced
@@ -228,6 +230,9 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
 
   // Grouping depends on zoom: regroup after every zoom change
   map.on('zoomend', renderMarkers)
+  // Looking around by hand ends following
+  map.on('dragstart', () => (followPlayer.value = false))
+  setWheelZoom(map)
 
   renderMarkers()
   renderTrail()
@@ -426,6 +431,7 @@ function renderLive() {
     return
   }
   const indoors = !!live.position.value?.indoors
+  const created = !liveMarker
   if (!liveMarker) {
     liveMarker = L.marker([point.y, point.x], {
       icon: liveIcon(indoors),
@@ -442,6 +448,7 @@ function renderLive() {
       liveMarkerIndoors = indoors
     }
   }
+  if (followPlayer.value) follow(map, point, !created)
   const arrow = liveMarker.getElement()?.querySelector<HTMLElement>('.tld-live__arrow')
   const rotation = live.position.value?.rotation
   if (arrow && rotation != null) {
@@ -449,6 +456,37 @@ function renderLive() {
     liveRotation += ((rotation - liveRotation + 540) % 360) - 180
     arrow.style.transform = `rotate(${liveRotation}deg)`
   }
+}
+
+/** Keep the player centred: a smooth pan as they walk, a jump when they first show up on this map. */
+function follow(map: L.Map, point: { x: number; y: number }, smooth: boolean) {
+  const at = map.latLngToContainerPoint([point.y, point.x])
+  const size = map.getSize()
+  // Already about centred: don't nudge the map for every step
+  if (smooth && Math.abs(at.x - size.x / 2) < 2 && Math.abs(at.y - size.y / 2) < 2) return
+  if (smooth) map.panTo([point.y, point.x], reducedMotion() ? { animate: false } : { animate: true, duration: 0.8, easeLinearity: 1 })
+  // A new map starts fitted: close enough in to see where you are
+  else map.setView([point.y, point.x], Math.max(map.getZoom(), 0), { animate: false })
+}
+
+function fit() {
+  followPlayer.value = false
+  fitMap()
+}
+
+/** While following, the wheel zooms on the player rather than under the cursor, so nothing jumps back after. */
+function setWheelZoom(map: L.Map) {
+  map.options.scrollWheelZoom = followPlayer.value && !!livePoint.value ? 'center' : true
+}
+watch([followPlayer, () => !!livePoint.value], () => {
+  const map = getMap()
+  if (map) setWheelZoom(map)
+})
+
+function toggleFollow() {
+  followPlayer.value = !followPlayer.value
+  const point = livePoint.value
+  if (followPlayer.value && point) flyTo(point.x, point.y, 0)
 }
 
 watch(() => live.position.value, renderLive)
@@ -509,7 +547,7 @@ onBeforeUnmount(() => {
   addUi.pointer.value = null
 })
 
-defineExpose({ flyToPosition, fit, zoomIn, zoomOut, getMap, revealPosition })
+defineExpose({ flyToPosition, fit, zoomIn, zoomOut, getMap, revealPosition, toggleFollow })
 </script>
 
 <style scoped>
