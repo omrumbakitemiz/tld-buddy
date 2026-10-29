@@ -161,6 +161,7 @@ function start() {
       const counted = (name: string, n: number) => (n > 1 ? `${name} ×${n}` : name)
       const added: string[] = []
       const already: string[] = []
+      const moved: string[] = []
       const looted: string[] = []
       const stashed: string[] = []
       const stillUnplaced: LiveGameEvent[] = []
@@ -182,6 +183,12 @@ function start() {
           // Another browser may have added it already and synced it here
           if (game.markers.value.some((m) => m.id === plan.id)) continue
           // The mark key pressed again on an item that already has a marker
+          if (plan.repeatOf && plan.moved) {
+            // Position only: the note may hold the player's own words
+            game.updateMarker(plan.repeatOf, { x: plan.x, y: plan.y })
+            moved.push(plan.name)
+            continue
+          }
           if (plan.repeatOf) {
             already.push(plan.name)
             continue
@@ -218,6 +225,7 @@ function start() {
       const parts: string[] = []
       if (added.length) parts.push(`Marked from the game: ${added.join(', ')}`)
       if (already.length) parts.push(`Already on the map: ${[...new Set(already)].join(', ')}`)
+      if (moved.length) parts.push(`Moved: ${[...new Set(moved)].join(', ')}`)
       if (looted.length) parts.push(`Looted: ${looted.join(', ')}`)
       if (stashed.length) parts.push(`Stashed: ${stashed.join(', ')}`)
       if (newlyUnplaced.length) {

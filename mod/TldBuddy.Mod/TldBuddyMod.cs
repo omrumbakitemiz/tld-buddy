@@ -277,7 +277,9 @@ namespace TldBuddy.Mod
                 int units = Gear.Units(gear);
                 Vector3 p = gear.transform.position;
                 at = new Point(Round(p.x), Round(p.y), Round(p.z));
-                return new MarkItem(name.Trim(), Gear.PrefabName(gear.gameObject.name), Mathf.Clamp(units, 1, 9999), Gear.ObjectId(gear.gameObject));
+                string objectId = Gear.EnsureObjectId(gear.gameObject, out bool assigned);
+                if (assigned) LoggerInstance.Msg($"Gave {name.Trim()} a game id ({objectId}): it had none, as items the player dropped");
+                return new MarkItem(name.Trim(), Gear.PrefabName(gear.gameObject.name), Mathf.Clamp(units, 1, 9999), objectId);
             }
             catch (System.Exception e)
             {

@@ -224,6 +224,8 @@ export interface PlannedMark {
   gameId?: string
   /** Set when this mark repeats an existing marker (the key pressed again): add nothing. */
   repeatOf?: string
+  /** With repeatOf: the object now lies elsewhere, so the marker should move to this plan's spot. */
+  moved?: boolean
 }
 
 /**
@@ -271,7 +273,11 @@ export function planMark<I extends { id: string; name: string }>(
       isStashOf(m.note, plan.note)
       // Without an object id: the same thing marked moments ago
       || (m.note === plan.note && Math.abs(event.createdAt - markerTime(m.id)) <= REPEAT_MARK_WINDOW_MS))))
-  if (repeat) plan.repeatOf = repeat.id
+  if (repeat) {
+    plan.repeatOf = repeat.id
+    // The same object somewhere else: the player moved it, so its marker should follow
+    if (plan.gameId && !near(repeat)) plan.moved = true
+  }
   return plan
 }
 

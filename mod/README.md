@@ -55,7 +55,7 @@ Optional settings in the same section:
 Press the mark key in game (default F4) while aiming at an item. A marker for it appears in the current run where the item lies (at your position when you aim at nothing), and the game shows "TLD Buddy: marked Hatchet".
 
 - Items are matched to the app's item list by display name, then by prefab name (`GEAR_Hatchet`).
-- The marker remembers the game object. Pressing the key again on the same item adds nothing ("Already on the map" in TLD Buddy), and only picking up that object loots it. Items you dropped have no object id; for those, a mark within 1.5 m of the same item's stash, or of a mark from the last two minutes, counts as a repeat.
+- The marker remembers the game object. Pressing the key again on the same item adds nothing ("Already on the map" in TLD Buddy), and only picking up that object loots it. Items you dropped have no object id: the mod gives them one when you mark them, so they stay tracked when you move them. Marking a marked object again somewhere else moves its marker ("Moved" in TLD Buddy). Before an item has an id, a mark within 1.5 m of its stash, or of a mark from the last two minutes, counts as a repeat.
 - If you aim at nothing, or at something the app doesn't know, you get an "Unsorted loot" marker. Its note records what the game called it.
 - Indoors, the marker goes on the door you came in by, with an "Inside Camp Office" note.
 - The server holds marks until a TLD Buddy tab picks them up, so marks made with no tab open still arrive.

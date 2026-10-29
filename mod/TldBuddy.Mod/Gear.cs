@@ -36,6 +36,29 @@ namespace TldBuddy.Mod
             }
         }
 
+        /// <summary>
+        /// ObjectId, giving the object a new game id first when it has none (items the player
+        /// dropped). The id stays with the object when it is moved, so a later pickup or mark finds
+        /// the same marker. `assigned` tells whether the id is new.
+        /// </summary>
+        public static string EnsureObjectId(UnityEngine.GameObject go, out bool assigned)
+        {
+            assigned = false;
+            string id = ObjectId(go);
+            if (id != null || go == null) return id;
+            try
+            {
+                ObjectGuid.MaybeAttachObjectGuidAndRegister(go, System.Guid.NewGuid().ToString());
+            }
+            catch
+            {
+                return null;
+            }
+            id = ObjectId(go);
+            assigned = id != null;
+            return id;
+        }
+
         /// <summary>Units in a stack (arrows, matches), 1 for single items.</summary>
         public static int Units(GearItem gi) => gi.m_StackableItem != null ? gi.m_StackableItem.m_Units : 1;
     }

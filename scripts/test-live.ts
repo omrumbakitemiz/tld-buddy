@@ -305,4 +305,13 @@ test('a mark goes where the item lies, and its stash counts however old', () => 
   assert.notEqual(validateLiveEvent(body), null)
 })
 
+test('marking a moved object again moves its marker', () => {
+  const placed = marker('marker-1-x', { gameId: 'g1' })
+  const plan = planMark(mark({ item: { name: 'Hatchet', objectId: 'g1' }, at: { x: 30, y: 5, z: 20 } }), { ...ctx, markers: [placed] })
+  assert.deepEqual(plan && [plan.repeatOf, plan.moved, plan.x], ['marker-1-x', true, 160])
+  // Still where it was: just a repeat
+  const same = planMark(mark({ item: { name: 'Hatchet', objectId: 'g1' } }), { ...ctx, markers: [placed] })
+  assert.deepEqual(same && [same.repeatOf, same.moved], ['marker-1-x', undefined])
+})
+
 console.log(`\n${passed} passed`)
