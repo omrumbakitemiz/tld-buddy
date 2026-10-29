@@ -366,14 +366,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Breadcrumb trail of where the player walked: a dotted line in the live marker's bone white */
+/* Breadcrumb trail of where the player walked: a solid dark ink line, readable on the cream map art */
 .tld-trail {
-  stroke: oklch(0.945 0.014 85 / 0.75);
-  stroke-width: 2.5px;
-  stroke-dasharray: 1 6;
+  stroke: oklch(0.3 0.06 258 / 0.85);
+  stroke-width: 3px;
   stroke-linecap: round;
+  stroke-linejoin: round;
   fill: none;
-  filter: drop-shadow(0 0 1px oklch(0.16 0.03 258));
 }
 
 /* Live player position from the game mod: bone white like the game's HUD, with a heading arrow */

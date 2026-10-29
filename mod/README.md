@@ -59,7 +59,7 @@ The mod also sends which save you're playing (its name and experience mode), plu
 - Marks, pickups and drops go to the run of the save they happened in, even if you have another run open. Events from a save no run is linked to wait until you link one.
 - To unlink, edit the run in Runs.
 
-A dotted trail on the map shows where you walked in that save: the server keeps a point every 5 m (in Redis, per save, up to 20,000 points). It survives closing the game and the browser. The line breaks indoors and at fast travel. Turn it off with "Show trail" in the ⋮ menu. "Clear items" on the run also clears its trail.
+A dark trail line on the map shows where you walked in that save: the server keeps a point every 5 m (in Redis, per save, up to 20,000 points). It survives closing the game and the browser. The line breaks indoors and at fast travel. Turn it off with "Show trail" in the ⋮ menu. "Clear items" on the run also clears its trail.
 
 ### Mark here
 
