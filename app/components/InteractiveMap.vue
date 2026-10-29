@@ -100,10 +100,11 @@ import { Button } from '~/components/ui/button'
 import { useGameData } from '~/composables/useGameData'
 import { useImageMap } from '~/composables/useImageMap'
 import { useLiveGame } from '~/composables/useLiveGame'
+import { useStaticData } from '~/composables/useStaticData'
 import { useUiState } from '~/composables/useUiState'
 import { useAddUi, type AddRequest, type MapTile } from '~/composables/useAddUi'
-import type { Marker } from '~/types'
-import { weatherLabel } from '#shared/utils/live'
+import { getVariantKey, type Marker } from '~/types'
+import { trailLines, weatherLabel } from '#shared/utils/live'
 
 const emit = defineEmits<{
   'request-add-marker': [request: AddRequest]
@@ -111,10 +112,11 @@ const emit = defineEmits<{
 
 const {
   currentMap, currentMapVariant, currentMapMarkers, currentMapPOIPins,
-  items, getItemById, getPOIById, getStashedItemCount, pinPOI, staticDataReady,
+  items, getItemById, getPOIById, getStashedItemCount, pinPOI, staticDataReady, currentRun,
 } = useGameData()
+const statics = useStaticData()
 const ui = useUiState()
-const { selectedMarkerId, selectedGroupIds, selectedPOIId, placingLoot, pinningPOIId, hideLooted, nightMap, cancelPlacement } = ui
+const { selectedMarkerId, selectedGroupIds, selectedPOIId, placingLoot, pinningPOIId, hideLooted, nightMap, showTrail, cancelPlacement } = ui
 
 const addUi = useAddUi()
 
@@ -141,6 +143,9 @@ const livePoint = computed(() => {
 const world = live.world
 /** In-game time as the game shows it, e.g. "07:05". */
 const clock = computed(() => (world.value ? `${String(world.value.hour).padStart(2, '0')}:${String(world.value.minute).padStart(2, '0')}` : ''))
+let trailLayer: L.LayerGroup | null = null
+/** What the trail layer shows, so a position update that adds no point redraws nothing. */
+let renderedTrail = ''
 let liveMarker: L.Marker | null = null
 let liveMarkerIndoors = false
 /** Unwrapped arrow angle, so the CSS transition always turns the short way. */
@@ -151,6 +156,9 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
   poiViews.clear()
   // The old marker belonged to the map that was just replaced
   liveMarker = null
+  // Under the POIs and markers
+  trailLayer = L.layerGroup().addTo(map)
+  renderedTrail = ''
   poiLayer = L.layerGroup().addTo(map)
   markerLayer = L.layerGroup().addTo(map)
 
@@ -222,6 +230,7 @@ const { zoomIn, zoomOut, fit, flyTo, getMap } = useImageMap(container, currentMa
   map.on('zoomend', renderMarkers)
 
   renderMarkers()
+  renderTrail()
   renderPOIs()
   renderLive()
 
@@ -444,6 +453,26 @@ function renderLive() {
 
 watch(() => live.position.value, renderLive)
 watch(() => currentMap.value?.id, renderLive)
+
+// ── Breadcrumb trail ─────────────────────────────────────────────────────────
+
+function renderTrail() {
+  const map = currentMap.value
+  const run = currentRun.value
+  const points = showTrail.value ? live.trailPoints.value : []
+  const key = `${map?.id}|${run?.difficulty}|${points.length}|${points.at(-1)?.t ?? 0}|${statics.ready.value}`
+  if (!trailLayer || key === renderedTrail) return
+  renderedTrail = key
+  trailLayer.clearLayers()
+  if (!map || !run || !points.length) return
+  const variant = getVariantKey(run.difficulty)
+  const lines = trailLines(points, map.id, statics.gameScenes.value, statics.calibration.value, variant, (id) => statics.getMap(id)?.[variant])
+  for (const line of lines) {
+    L.polyline(line.map((p) => [p.y, p.x] as [number, number]), { className: 'tld-trail', interactive: false }).addTo(trailLayer)
+  }
+}
+
+watch([() => live.trailPoints.value, showTrail, () => currentMap.value?.id, () => currentRun.value?.difficulty, statics.ready], renderTrail)
 
 function escapeHtml(text: string) {
   return text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' })[c]!)

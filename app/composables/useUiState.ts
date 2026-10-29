@@ -12,6 +12,8 @@ const hideLooted = useLocalStorage('tld-buddy-ui-hide-looted', false)
 const lootFilter = useLocalStorage<LootFilter>('tld-buddy-ui-loot-filter', 'remaining')
 /** Dim the bright cream map images for dark rooms */
 const nightMap = useLocalStorage('tld-buddy-ui-night-map', true)
+/** Draw the breadcrumb trail of where the player walked in game */
+const showTrail = useLocalStorage('tld-buddy-ui-show-trail', true)
 
 const selectedMarkerId = ref<string | null>(null)
 /** Several markers drawn as one tile, picked together */
@@ -72,6 +74,7 @@ export function useUiState() {
     hideLooted,
     lootFilter,
     nightMap,
+    showTrail,
     selectedMarkerId,
     selectedGroupIds,
     selectedPOIId,

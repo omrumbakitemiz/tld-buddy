@@ -550,3 +550,60 @@ export function resolveLivePosition(
   }
   return null
 }
+
+// ── Breadcrumb trail ────────────────────────────────────────────────────────
+
+/** A point of the trail: scene, world x/z, and when (server time, ms). */
+export interface TrailPoint {
+  s: string
+  x: number
+  z: number
+  t: number
+}
+
+/** The server keeps a point once the player is this far from the last one (or changed scene). */
+export const TRAIL_STEP_M = 5
+/** A longer jump between two points is a fast travel or a load, not a walk: the line breaks there. */
+export const TRAIL_BREAK_M = 80
+
+export const isSaveId = (v: unknown): v is string => typeof v === 'string' && SAVE_ID.test(v)
+
+/**
+ * The trail as lines on one map: points from that map's scenes, through its calibration.
+ * Lines break where the player left the map (indoors, another region) or jumped.
+ */
+export function trailLines(
+  points: TrailPoint[],
+  mapId: string,
+  scenes: GameScene[],
+  calibration: MapCalibration,
+  variant: 'default' | 'interloper',
+  imageFor?: (mapId: string) => { imageWidth: number; imageHeight: number } | undefined,
+): { x: number; y: number }[][] {
+  const transforms = new Map<string, MapTransform>()
+  const image = imageFor?.(mapId)
+  for (const s of scenes) {
+    if (s.mapId !== mapId) continue
+    const cal = calibration[s.scene]
+    // The other artwork's calibration fits too when its image has the same size (as in resolveLivePosition)
+    const fallback = cal?.[variant === 'default' ? 'interloper' : 'default']
+    const sameImage = !!image && fallback?.imageWidth === image.imageWidth && fallback?.imageHeight === image.imageHeight
+    const t = cal?.[variant] ?? (sameImage ? fallback : undefined)
+    if (t) transforms.set(s.scene, t)
+  }
+  const lines: { x: number; y: number }[][] = []
+  let line: { x: number; y: number }[] = []
+  let prev: TrailPoint | null = null
+  for (const p of points) {
+    const t = transforms.get(p.s)
+    const joined = !!t && !!prev && prev.s === p.s && Math.hypot(prev.x - p.x, prev.z - p.z) <= TRAIL_BREAK_M
+    if (!joined && line.length) {
+      if (line.length > 1) lines.push(line)
+      line = []
+    }
+    if (t) line.push(applyTransform(t, p.x, p.z))
+    prev = p
+  }
+  if (line.length > 1) lines.push(line)
+  return lines
+}

@@ -102,6 +102,9 @@
           <DropdownMenuCheckboxItem v-model="nightMap" class="menu-item">
             <MoonIcon class="size-4" /> Night map <kbd class="ml-auto">N</kbd>
           </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem v-model="showTrail" class="menu-item">
+            <FootprintsIcon class="size-4" /> Show trail
+          </DropdownMenuCheckboxItem>
           <DropdownMenuItem class="menu-item" @select="showShortcuts = true">
             <KeyboardIcon class="size-4" /> Keyboard shortcuts <kbd class="ml-auto">?</kbd>
           </DropdownMenuItem>
@@ -132,7 +135,7 @@ import {
   DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger,
 } from 'reka-ui'
 import {
-  CheckIcon, ChevronDownIcon, CompassIcon, EllipsisVerticalIcon, EyeOffIcon, KeyboardIcon, LogOutIcon,
+  CheckIcon, ChevronDownIcon, CompassIcon, EllipsisVerticalIcon, EyeOffIcon, FootprintsIcon, KeyboardIcon, LogOutIcon,
   MapIcon, MoonIcon, PanelLeftIcon, SearchIcon, SlidersHorizontalIcon, SwordsIcon,
 } from '@lucide/vue'
 import { Button } from '~/components/ui/button'
@@ -145,7 +148,7 @@ import DifficultyChip from '~/components/DifficultyChip.vue'
 const emit = defineEmits<{ logout: [] }>()
 
 const { currentMap, currentRun, travelMode, toggleTravelMode } = useGameData()
-const { panelOpen, openPanel, showRuns, showSearch, showShortcuts, showPOIConfig, hideLooted, nightMap } = useUiState()
+const { panelOpen, openPanel, showRuns, showSearch, showShortcuts, showPOIConfig, hideLooted, nightMap, showTrail } = useUiState()
 const addUi = useAddUi()
 </script>
 

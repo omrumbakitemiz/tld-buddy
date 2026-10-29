@@ -1,7 +1,7 @@
 import { computed, ref, shallowRef, watch } from 'vue'
 import { getVariantKey, type Run } from '~/types'
 import {
-  planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveSave, type LiveState, type LiveWorld,
+  planItemsEvent, planMark, resolveLivePosition, sceneLabel, type LiveGameEvent, type LiveSave, type LiveState, type LiveWorld, type TrailPoint,
 } from '#shared/utils/live'
 import { useAddUi } from './useAddUi'
 import { useAuth } from './useAuth'
@@ -39,6 +39,9 @@ const connected = ref(false)
 /** Game events received but not applied yet (data still loading, or no run selected). */
 const pendingEvents = shallowRef<LiveGameEvent[]>([])
 
+/** Breadcrumb trail of the current run's game save: loaded from the server, then extended live. */
+const trail = shallowRef<{ save: string | null; points: TrailPoint[] }>({ save: null, points: [] })
+
 let source: EventSource | null = null
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null
 let started = false
@@ -55,6 +58,10 @@ function connect() {
   source.addEventListener('game', (e) => {
     const event = JSON.parse((e as MessageEvent<string>).data) as LiveGameEvent
     if (!pendingEvents.value.some((m) => m.id === event.id)) pendingEvents.value = [...pendingEvents.value, event]
+  })
+  source.addEventListener('trail', (e) => {
+    const { save, point } = JSON.parse((e as MessageEvent<string>).data) as { save: string; point: TrailPoint }
+    if (save === trail.value.save) trail.value = { save, points: [...trail.value.points, point] }
   })
   source.addEventListener('error', () => {
     connected.value = false
@@ -259,6 +266,28 @@ function start() {
     })
   })
 
+  // Load the trail of the current run's save; again after a reconnect, for points missed meanwhile
+  let trailRequest = 0
+  watch([() => game.currentRun.value?.gameSave ?? null, connected], async ([save, isConnected]) => {
+    const request = ++trailRequest
+    if (!save) {
+      trail.value = { save: null, points: [] }
+      return
+    }
+    if (trail.value.save !== save) trail.value = { save, points: [] }
+    if (!isConnected) return
+    try {
+      const res = await fetch(`/api/live/v1/trail?save=${encodeURIComponent(save)}`)
+      if (!res.ok || request !== trailRequest) return
+      const { points } = (await res.json()) as { points: TrailPoint[] }
+      // Points streamed in while the request ran come after the stored ones
+      const lastStored = points.at(-1)?.t ?? 0
+      trail.value = { save, points: [...points, ...trail.value.points.filter((p) => p.t > lastStored)] }
+    } catch {
+      // Keep what we have; the next reconnect tries again
+    }
+  }, { immediate: true })
+
   // Open the run of the save being played. Only when the game starts reporting a save (load, or
   // another save), so picking another run by hand while playing is not undone every second.
   let followedSave: string | null = null
@@ -275,6 +304,12 @@ function start() {
 /** Drops game events kept for maps not calibrated yet, so they don't come back after a reset. */
 export function forgetKeptGameEvents() {
   localStorage.removeItem(UNPLACED_KEY)
+}
+
+/** Deletes a save's breadcrumb trail on the server (and here). */
+export async function clearTrail(save: string) {
+  if (trail.value.save === save) trail.value = { save, points: [] }
+  await fetch(`/api/live/v1/trail?save=${encodeURIComponent(save)}`, { method: 'DELETE' }).catch(() => {})
 }
 
 export function useLiveGame() {
@@ -298,5 +333,8 @@ export function useLiveGame() {
   const save = computed<LiveSave | null>(() => (online.value ? state.value?.save ?? null : null))
   const world = computed<LiveWorld | null>(() => (online.value ? state.value?.world ?? null : null))
 
-  return { connected, online, position, currentScene, save, world }
+  /** Trail points of the current run's save, oldest first. */
+  const trailPoints = computed(() => (trail.value.save && trail.value.save === currentRun.value?.gameSave ? trail.value.points : []))
+
+  return { connected, online, position, currentScene, save, world, trailPoints }
 }

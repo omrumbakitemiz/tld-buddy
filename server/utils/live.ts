@@ -1,7 +1,8 @@
 import crypto from 'node:crypto'
 import type { H3Event } from 'h3'
-import type { LiveGameEvent, LiveState } from '#shared/utils/live'
+import type { LiveGameEvent, LiveState, TrailPoint } from '#shared/utils/live'
 import { getModToken } from './config'
+import { recordTrail } from './trail'
 
 /**
  * Latest state from the game mod, kept in memory only. It is a live view, not saved data:
@@ -25,7 +26,10 @@ export interface LiveMessage {
   ageMs: number | null
 }
 
-export type LiveBroadcast = { kind: 'state'; message: LiveMessage } | { kind: 'event'; event: LiveGameEvent }
+export type LiveBroadcast =
+  | { kind: 'state'; message: LiveMessage }
+  | { kind: 'event'; event: LiveGameEvent }
+  | { kind: 'trail'; save: string; point: TrailPoint }
 
 const listeners = new Set<(broadcast: LiveBroadcast) => void>()
 
@@ -40,6 +44,8 @@ export function currentLiveMessage(): LiveMessage {
 export function publishLiveState(state: LiveState) {
   latest = { state, receivedAt: Date.now() }
   broadcast({ kind: 'state', message: currentLiveMessage() })
+  const trail = recordTrail(state)
+  if (trail) broadcast({ kind: 'trail', ...trail })
 }
 
 function prunePending(now: number) {

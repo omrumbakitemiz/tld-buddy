@@ -95,7 +95,7 @@
   <ConfirmDialog
     :open="!!pendingClearRunId"
     title="Clear all items in this run?"
-    description="Removes every loot and stash marker in the run, looted or not. The run itself and your pinned places stay."
+    description="Removes every loot and stash marker in the run, looted or not, and the trail of its game save. The run itself and your pinned places stay."
     confirm-label="Clear items"
     @update:open="(v) => { if (!v) pendingClearRunId = null }"
     @confirm="confirmClearRun"
@@ -112,7 +112,7 @@ import { Label } from '~/components/ui/label'
 import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import DifficultyPicker from '~/components/DifficultyPicker.vue'
 import { useGameData } from '~/composables/useGameData'
-import { forgetKeptGameEvents } from '~/composables/useLiveGame'
+import { clearTrail, forgetKeptGameEvents } from '~/composables/useLiveGame'
 import DifficultyChip from '~/components/DifficultyChip.vue'
 import { cn } from '~/lib/utils'
 import type { Difficulty, Run } from '~/types'
@@ -174,6 +174,8 @@ function confirmDeleteRun() {
 function confirmClearRun() {
   if (pendingClearRunId.value) {
     clearRunItems(pendingClearRunId.value)
+    const save = runs.value.find((r) => r.id === pendingClearRunId.value)?.gameSave
+    if (save) void clearTrail(save)
     // Marks from the game still waiting for a calibrated map would come back otherwise
     forgetKeptGameEvents()
   }

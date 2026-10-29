@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
   applyTransform, cleanLiveEvent, cleanLiveState, headingOnMap, markerIdForEvent, matchItem, planItemsEvent, planMark, resolveLivePosition,
-  difficultyForMode, sceneLabel, UNSORTED_ITEM_ID, validateLiveEvent, validateLiveState, weatherLabel,
+  difficultyForMode, sceneLabel, UNSORTED_ITEM_ID, trailLines, validateLiveEvent, validateLiveState, weatherLabel,
   type LiveItemsEvent, type LiveMarkEvent, type LiveState, type MapCalibration, type MapTransform, type MarkerChange, type MarkerLike,
 } from '../shared/utils/live'
 import type { GameScene } from '../shared/types/game'
@@ -357,4 +357,26 @@ test('the first mark with a new id joins the stash already there, which takes th
   assert.equal(planMark(mark({ item: { name: 'Hatchet', objectId: 'new-id' } }), { ...ctx, markers: [other] })?.repeatOf, undefined)
 })
 
+
+test('trail: lines on the map through its calibration, broken by other scenes and jumps', () => {
+  const scenes: GameScene[] = [{ scene: 'LakeRegion', mapId: 'mystery-lake' } as GameScene, { scene: 'RuralRegion', mapId: 'pleasant-valley' } as GameScene]
+  const t: MapTransform = { matrix: [1, 0, 0, 0, 1, 0], imageWidth: 100, imageHeight: 100 }
+  const cal: MapCalibration = { LakeRegion: { mapId: 'mystery-lake', default: t } }
+  const p = (s: string, x: number, z: number, i: number) => ({ s, x, z, t: i })
+  const points = [
+    p('LakeRegion', 0, 0, 1), p('LakeRegion', 5, 0, 2), p('LakeRegion', 10, 0, 3),
+    p('CampOffice', 1, 1, 4), // indoors: breaks the line
+    p('LakeRegion', 10, 5, 5), p('LakeRegion', 10, 10, 6),
+    p('LakeRegion', 500, 500, 7), // fast travel: alone, so no line
+    p('RuralRegion', 1, 1, 8),
+  ]
+  assert.deepEqual(trailLines(points, 'mystery-lake', scenes, cal, 'default'), [
+    [{ x: 0, y: 0 }, { x: 5, y: 0 }, { x: 10, y: 0 }],
+    [{ x: 10, y: 5 }, { x: 10, y: 10 }],
+  ])
+  assert.deepEqual(trailLines(points, 'pleasant-valley', scenes, cal, 'default'), [])
+  // Interloper artwork of the same size uses the default calibration
+  assert.equal(trailLines(points, 'mystery-lake', scenes, cal, 'interloper', () => ({ imageWidth: 100, imageHeight: 100 })).length, 2)
+  assert.equal(trailLines(points, 'mystery-lake', scenes, cal, 'interloper').length, 0)
+})
 console.log(`\n${passed} passed`)
