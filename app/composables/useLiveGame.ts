@@ -229,6 +229,11 @@ function start() {
   })
 }
 
+/** Drops game events kept for maps not calibrated yet, so they don't come back after a reset. */
+export function forgetKeptGameEvents() {
+  localStorage.removeItem(UNPLACED_KEY)
+}
+
 export function useLiveGame() {
   start()
   const { currentRun } = useGameData()

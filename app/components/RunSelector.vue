@@ -47,6 +47,17 @@
             <Button size="icon" variant="ghost" class="size-9 shrink-0" :aria-label="`Edit ${run.name}`" @click="startEdit(run)">
               <PencilIcon class="size-4" />
             </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              class="size-9 shrink-0 text-muted-foreground hover:text-destructive"
+              :aria-label="`Clear items in ${run.name}`"
+              title="Clear items"
+              :disabled="!stats(run.id).remaining && !stats(run.id).looted"
+              @click="pendingClearRunId = run.id"
+            >
+              <EraserIcon class="size-4" />
+            </Button>
             <Button size="icon" variant="ghost" class="mr-1 size-9 shrink-0 text-muted-foreground hover:text-destructive" :aria-label="`Delete ${run.name}`" @click="pendingDeleteRunId = run.id">
               <TrashIcon class="size-4" />
             </Button>
@@ -76,11 +87,20 @@
     @update:open="(v) => { if (!v) pendingDeleteRunId = null }"
     @confirm="confirmDeleteRun"
   />
+
+  <ConfirmDialog
+    :open="!!pendingClearRunId"
+    title="Clear all items in this run?"
+    description="Removes every loot and stash marker in the run, looted or not. The run itself and your pinned places stay."
+    confirm-label="Clear items"
+    @update:open="(v) => { if (!v) pendingClearRunId = null }"
+    @confirm="confirmClearRun"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CheckIcon, PencilIcon, PlusIcon, TrashIcon } from '@lucide/vue'
+import { CheckIcon, EraserIcon, PencilIcon, PlusIcon, TrashIcon } from '@lucide/vue'
 import { Dialog, DialogDescription, DialogHeader, DialogScrollContent, DialogTitle } from '~/components/ui/dialog'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
@@ -88,6 +108,7 @@ import { Label } from '~/components/ui/label'
 import ConfirmDialog from '~/components/ConfirmDialog.vue'
 import DifficultyPicker from '~/components/DifficultyPicker.vue'
 import { useGameData } from '~/composables/useGameData'
+import { forgetKeptGameEvents } from '~/composables/useLiveGame'
 import DifficultyChip from '~/components/DifficultyChip.vue'
 import { cn } from '~/lib/utils'
 import type { Difficulty, Run } from '~/types'
@@ -95,11 +116,12 @@ import type { Difficulty, Run } from '~/types'
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
-const { runs, currentRun, markers, addRun, deleteRun, setCurrentRun, updateRun } = useGameData()
+const { runs, currentRun, markers, addRun, deleteRun, clearRunItems, setCurrentRun, updateRun } = useGameData()
 
 const newRunName = ref('')
 const selectedDifficulty = ref<Difficulty | null>(null)
 const pendingDeleteRunId = ref<string | null>(null)
+const pendingClearRunId = ref<string | null>(null)
 const editingRunId = ref<string | null>(null)
 const editName = ref('')
 const editDifficulty = ref<Difficulty | null>(null)
@@ -143,6 +165,15 @@ function handleSaveEdit() {
 function confirmDeleteRun() {
   if (pendingDeleteRunId.value) deleteRun(pendingDeleteRunId.value)
   pendingDeleteRunId.value = null
+}
+
+function confirmClearRun() {
+  if (pendingClearRunId.value) {
+    clearRunItems(pendingClearRunId.value)
+    // Marks from the game still waiting for a calibrated map would come back otherwise
+    forgetKeptGameEvents()
+  }
+  pendingClearRunId.value = null
 }
 
 function handleCreateRun() {

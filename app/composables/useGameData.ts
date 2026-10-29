@@ -38,6 +38,14 @@ export function useGameData() {
     commit()
   }
 
+  /** Removes a run's markers and stashes but keeps the run (a fresh start, e.g. while testing the game mod). */
+  function clearRunItems(runId: string) {
+    const d = appData.value
+    d.markers = d.markers.filter((m) => m.runId !== runId)
+    d.stashedItems = d.stashedItems.filter((s) => s.runId !== runId)
+    commit()
+  }
+
   function setCurrentRun(runId: string) {
     appData.value.currentRunId = runId
     commit()
@@ -306,6 +314,7 @@ export function useGameData() {
     currentRun,
     addRun,
     deleteRun,
+    clearRunItems,
     setCurrentRun,
     updateRun,
     // Maps
